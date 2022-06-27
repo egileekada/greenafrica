@@ -28,19 +28,17 @@ module.exports = {
         70: "70px",
       },
       colors: {
-        black: " #000000",
+        dark: "#0E0E0E",
+        green: "#47FF5A",
         primary: {
-          main: "#FF6600",
+          main: "#261F5E",
           light: "#EF792A",
           fade: "#FF692324",
         },
         grey: {
-          fa: "#F5F7FA",
-          ed: "#EDEDED",
-          fb: "#F3F6FB",
-          gc: "#373C41",
+          light: "#F8F8F8",
           dark: "#1F1F1F",
-          seven: "#777777",
+          seven: "#7A7794",
         },
       },
 
