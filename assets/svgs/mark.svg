@@ -1,0 +1,15 @@
+<svg
+  id="ic_Search"
+  xmlns="http://www.w3.org/2000/svg"
+  width="20"
+  height="20"
+  viewBox="0 0 20 20"
+>
+  <rect id="Base" width="20" height="20" fill="none" />
+  <path
+    id="Shape"
+    d="M2.185,12.715A7.39,7.39,0,0,1,1.856,2.571l.162-.178.2-.206a7.468,7.468,0,0,1,10-.5l.193.163.191.172.175.169a7.4,7.4,0,0,1,.2,10.359l-.166.169L7.5,18Z"
+    transform="translate(3 1)"
+    fill="#ff6923"
+  />
+</svg>

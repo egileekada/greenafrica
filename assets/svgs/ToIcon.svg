@@ -1,0 +1,52 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="32.177"
+  height="32.177"
+  viewBox="0 0 32.177 32.177"
+>
+  <g
+    id="Web_-_Back"
+    data-name="Web - Back"
+    transform="translate(31.427 31.427) rotate(180)"
+  >
+    <g
+      id="Arrow_-_Left_Circle"
+      data-name="Arrow - Left Circle"
+      transform="translate(30.677) rotate(90)"
+    >
+      <path
+        id="Stroke_1"
+        data-name="Stroke 1"
+        d="M0,15.339A15.339,15.339,0,1,0,15.339,0,15.339,15.339,0,0,0,0,15.339Z"
+        fill="none"
+        stroke="#f60"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-miterlimit="10"
+        stroke-width="1.5"
+      />
+      <path
+        id="Stroke_3"
+        data-name="Stroke 3"
+        d="M0,0,5.756,5.781,11.511,0"
+        transform="translate(9.583 17.774)"
+        fill="none"
+        stroke="#f60"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-miterlimit="10"
+        stroke-width="1.5"
+      />
+      <line
+        id="Line_170"
+        data-name="Line 170"
+        x1="0.643"
+        y1="16.895"
+        transform="translate(14.695 6.328)"
+        fill="none"
+        stroke="#f60"
+        stroke-width="1.5"
+      />
+    </g>
+  </g>
+</svg>

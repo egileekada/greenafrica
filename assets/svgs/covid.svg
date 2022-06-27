@@ -1,0 +1,39 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="27"
+  height="27"
+  viewBox="0 0 27 27"
+>
+  <rect
+    id="Rectangle_22"
+    data-name="Rectangle 22"
+    width="27"
+    height="27"
+    rx="5"
+    fill="#f60"
+  />
+  <g id="Notification" transform="translate(6.916 5.667)">
+    <path
+      id="Path_425"
+      d="M0,9.823V9.64A3,3,0,0,1,.5,8.125,4.059,4.059,0,0,0,1.5,6.2c0-.555,0-1.119.049-1.674C1.8,1.849,4.439,0,7.051,0h.065c2.611,0,5.255,1.849,5.514,4.523.049.555,0,1.119.04,1.674a4.129,4.129,0,0,0,.994,1.936,2.922,2.922,0,0,1,.5,1.508v.175a2.972,2.972,0,0,1-.7,1.991,3.755,3.755,0,0,1-2.377,1.143,37.565,37.565,0,0,1-8.012,0A3.8,3.8,0,0,1,.7,11.806,3,3,0,0,1,0,9.823Z"
+      transform="translate(0 0)"
+      fill="none"
+      stroke="#fff"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-miterlimit="10"
+      stroke-width="1.5"
+    />
+    <path
+      id="Path_421"
+      d="M0,0A2.551,2.551,0,0,0,1.7.939,2.573,2.573,0,0,0,3.574.421,2.4,2.4,0,0,0,4.01,0"
+      transform="translate(5.046 15.71)"
+      fill="none"
+      stroke="#fff"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-miterlimit="10"
+      stroke-width="1.5"
+    />
+  </g>
+</svg>

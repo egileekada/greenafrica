@@ -1,0 +1,53 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="21"
+  height="21"
+  viewBox="0 0 21 21"
+>
+  <g
+    id="Ellipse_6"
+    data-name="Ellipse 6"
+    fill="none"
+    stroke="#f60"
+    stroke-width="1.5"
+  >
+    <circle cx="10.5" cy="10.5" r="10.5" stroke="none" />
+    <circle cx="10.5" cy="10.5" r="9.75" fill="none" />
+  </g>
+  <g
+    id="Iconly_Light_Arrow_-_Right"
+    data-name="Iconly/Light/Arrow - Right"
+    transform="translate(5.199 6.259)"
+  >
+    <g
+      id="Arrow_-_Right"
+      data-name="Arrow - Right"
+      transform="translate(0 8.649) rotate(-90)"
+    >
+      <path
+        id="Stroke_1"
+        data-name="Stroke 1"
+        d="M0,10.768V0"
+        transform="translate(4.325)"
+        fill="none"
+        stroke="#f60"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-miterlimit="10"
+        stroke-width="2.5"
+      />
+      <path
+        id="Stroke_3"
+        data-name="Stroke 3"
+        d="M8.649,0,4.325,4.343,0,0"
+        transform="translate(0 6.425)"
+        fill="none"
+        stroke="#f60"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-miterlimit="10"
+        stroke-width="2.5"
+      />
+    </g>
+  </g>
+</svg>
