@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
 @import url('../assets/fonts/Cosmical/fonts.css');
 @import 'antd/dist/antd.css';
-
-
+@import './loader.scss';
 
 // @import './carousel.scss';
 // @import './abstract.scss';
@@ -13,11 +12,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 // Tailwind Styles
 @layer components {
-  
 }
 
 // Clean up Styles
@@ -32,7 +28,6 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
-
 
 textarea {
   resize: none;
