@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="100" height="80" viewBox="0 0 100 80">
-  <g id="view_next_posts" data-name="view next posts" transform="translate(-1445 -3336)">
-    <g id="button">
-      <rect id="background" width="100" height="80" rx="5" transform="translate(1445 3336)" fill="#fff0d2"/>
-      <path id="icon" d="M-394.8,325.168a1.548,1.548,0,0,1-1.1.456,1.548,1.548,0,0,1-1.1-.456,1.548,1.548,0,0,1,0-2.195l6.088-6.088h-23.261a1.559,1.559,0,0,1-1.56-1.56,1.559,1.559,0,0,1,1.56-1.56h23.261l-6.088-6.088a1.548,1.548,0,0,1,0-2.195,1.548,1.548,0,0,1,2.195,0l8.739,8.739a1.548,1.548,0,0,1,0,2.195Zm0,0" transform="translate(1895.74 3060.973)" fill="#ff6923"/>
-    </g>
-  </g>
-</svg>

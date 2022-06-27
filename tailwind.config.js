@@ -10,9 +10,10 @@ module.exports = {
       DEFAULT: "1px",
     },
     fontFamily: {
-      display: ["Cerebri Sans"],
-      displaybold: ["Cerebri Sans Bold"],
-      body: ["Nunito Sans"],
+      body: ["Cosmica"],
+      title: ["Cosmica Semi-bold"],
+      header: ["Cosmica Bold"],
+      display: ["Cosmica Extra-bold"],
     },
     extend: {
       fontSize: {
@@ -49,8 +50,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwind-scrollbar"),
-    require("@themesberg/flowbite/plugin"),
-  ],
+  plugins: [require("tailwind-scrollbar")],
 };

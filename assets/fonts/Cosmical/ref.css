@@ -1,0 +1,56 @@
+/* @import url('../assets/fonts/fonts.css'); */
+
+@font-face {
+  font-family: 'Futura';
+  src: local('Futura'), url('./fonts/futura/futur.ttf') format('trutype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Futura Bold';
+  src: local('Futura Bold'),
+    url('./fonts//futura/Futura\ Bold\ font.ttf') format('trutype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Akzentica4F Bold';
+  src: local('Akzentica4F Bold'),
+    url('./fonts/Akzentica-4F-Font/otf/Akzentica4F-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir'), url('./fonts/Avenir/AvenirLTStd-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir Bold';
+  src: local('Avenir Bold'), url('./fonts//Avenir/AvenirLTStd-Black.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+/* 
+@tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* @font-face {
+  font-family: 'Cerebri Sans';
+  src: local('Cerebri Sans'), url('./CerebriSansBook.ttf'),
+    url('./Cerebri\ Sans\ Bold.ttf'), url('./Cerebri\ Sans\ ExtraBold.ttf'),
+    url('./Cerebri\ Sans\ SemiBold.ttf'), url('./CerebriSans-Light.ttf'),
+    url('./CerebriSans-Regular.ttf') format('truetype');
+  /* font-weight: 400; */
+  font-style: normal;
+  font-display: swap; */
+}
