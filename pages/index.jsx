@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <BaseLayout>
       <section className="w-full">
-        {/* <p className="text-lg font-body text-[24px] font-normal">
+        <p className="text-lg font-body text-[24px] font-normal">
           Welcome to the future 400
         </p>
         <h2 className="text-lg font-body text-[24px] font-normal">
@@ -19,7 +19,7 @@ const Home = () => {
         </h2>
         <h2 className="font-display text-[24px] text-[#26205E]">
           Welcome to the future 700
-        </h2> */}
+        </h2>
       </section>
     </BaseLayout>
   );
