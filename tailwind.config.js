@@ -18,6 +18,7 @@ module.exports = {
     extend: {
       fontSize: {
         base: ["16px", "21px"],
+        header: ["34px", "44px"],
         xxs: ["10px", "12px"],
       },
       padding: {
@@ -41,7 +42,9 @@ module.exports = {
           seven: "#7A7794",
         },
       },
-
+      gridTemplateColumns: {
+        contact__cards: "repeat(auto-fit, minmax(381px, 1fr))",
+      },
       screens: {
         xlg: "1080px",
         tab: "900px",

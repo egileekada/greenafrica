@@ -14,6 +14,69 @@
 
 // Tailwind Styles
 @layer components {
+  .fit-x-bleed {
+    @apply px-8 sm:px-24;
+  }
+
+  .header-text {
+    @apply text-primary-main font-body text-header;
+  }
+
+  // Button
+  .btn {
+    @apply font-normal font-body rounded-xl min-w-[133px] py-[15px] px-[30px] transition-all;
+
+    &.btn-primary {
+      @apply bg-primary-main text-green hover:bg-opacity-80;
+    }
+
+    &.btn-white {
+      @apply bg-white  text-primary-main border-[2px] border-primary-main hover:bg-primary-main hover:text-white;
+
+      &.white {
+        @apply border-white;
+      }
+    }
+
+    &.btn-outline {
+      @apply bg-transparent text-white border-[2px] border-white
+       hover:bg-primary-main hover:border-primary-main hover:text-white;
+    }
+  }
+  // Button
+
+  .ga__footer {
+    @apply bg-primary-main  py-20 flex flex-col;
+
+    .line {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+      @apply my-10 mx-10;
+    }
+  }
+
+  .contact__cards {
+    @apply py-[53px] grid gap-x-[36px] gap-y-[45px]  grid-cols-1 sm:grid-cols-contact__cards;
+
+    .contact__card {
+      @apply flex bg-grey-light rounded-xl p-7;
+
+      figure {
+        @apply mr-[25px];
+      }
+    }
+  }
+
+  .offices__container {
+    @apply flex py-[53px];
+  }
+
+  .newsletter {
+    @apply flex justify-between items-center  bg-grey-light px-28 py-16 rounded-xl;
+
+    h2 {
+      @apply text-[#26205E] font-body text-2xl;
+    }
+  }
 }
 
 // Clean up Styles
