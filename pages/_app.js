@@ -1,8 +1,11 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import "../styles/globals.scss";
 import "../styles/loader.scss";
+
+import Preloader from "components/Preloader";
+
 
 const MyApp = ({ Component, pageProps }) => {
   return (
@@ -61,9 +64,11 @@ const MyApp = ({ Component, pageProps }) => {
           /> */}
       </Head>
       <Fragment>
-        <section className="ga__loader"></section>
-        <Toaster />
-        <Component {...pageProps} />
+        <main className="main">
+          <Preloader />
+          <Toaster />
+          <Component {...pageProps} />
+        </main>
       </Fragment>
     </Fragment>
   );
