@@ -1,26 +1,13 @@
-// import Header from "./partials/Header";
-// import Navbar from "./partials/Navbar";
-// import MobileNav from "./partials/MobileNav";
-
-import { useCycle } from "framer-motion";
+import Header from "layouts/Base/partials/Header";
+import Footer from "layouts/Base/partials/Footer";
 
 const BaseLayout = ({ children, path }) => {
-  const [open, cycleOpen] = useCycle(false, true);
   return (
     <>
       <section className="w-full bg-white relative">
-        {/* {open && (
-          <div className="navMobile">
-            <MobileNav open={open} cycleOpen={cycleOpen} />
-          </div>
-        )}
-
-        <div className="fixed z-10 w-inherit">
-          <Header />
-          <Navbar cycleOpen={cycleOpen} />
-        </div> */}
+        <Header />
         <div>{children}</div>
-        {/* <Footer /> */}
+        <Footer />
       </section>
     </>
   );
