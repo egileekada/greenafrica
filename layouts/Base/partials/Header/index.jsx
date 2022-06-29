@@ -1,7 +1,11 @@
+import NoticeHeader from "./components/NoticeHeader";
+import Navbar from "./components/Navbar";
+
 const Header = () => {
   return (
-    <section className="bg-primary-main h-12">
-      <h2>Header</h2>
+    <section className="min-h-max">
+      <NoticeHeader />
+      <Navbar />
     </section>
   );
 };

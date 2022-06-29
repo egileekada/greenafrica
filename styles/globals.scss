@@ -18,6 +18,10 @@
     @apply px-8 sm:px-24;
   }
 
+  .scrollable {
+    @apply scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent;
+  }
+
   .header-text {
     @apply text-primary-main font-body text-header;
   }
@@ -75,6 +79,31 @@
 
     h2 {
       @apply text-[#26205E] font-body text-2xl;
+    }
+  }
+
+   .vertical--marquee {
+    @apply flex flex-col  overflow-y-scroll scrollable;
+
+    .text--holder {
+      @apply relative h-6 w-[80vw];
+
+      a {
+        @apply absolute top-0 left-0 w-full h-auto font-body text-white;
+        -webkit-transition: opacity 2s ease-in-out;
+        -moz-transition: opacity 2s ease-in-out;
+        -o-transition: opacity 2s ease-in-out;
+        transition: opacity 2s ease-in-out;
+        opacity: 0;
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+        filter: alpha(opacity=0);
+
+        &.activeText {
+          opacity: 1;
+          -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)';
+          filter: alpha(opacity=1);
+        }
+      }
     }
   }
 }
