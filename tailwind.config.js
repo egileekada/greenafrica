@@ -21,6 +21,9 @@ module.exports = {
         header: ["34px", "44px"],
         xxs: ["10px", "12px"],
       },
+      borderColor: {
+        faqs: "rgba(229, 230, 236, 0.6)",
+      },
       padding: {
         "1px": "1px",
         70: "70px",
@@ -41,6 +44,7 @@ module.exports = {
           dark: "#1F1F1F",
           seven: "#7A7794",
         },
+        faq__border: "rgba(229, 230, 236, 0.6)",
       },
       gridTemplateColumns: {
         contact__cards: "repeat(auto-fit, minmax(381px, 1fr))",
