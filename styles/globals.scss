@@ -43,7 +43,7 @@
     }
 
     &.btn-outline {
-      @apply bg-transparent text-white border-[2px] border-white
+      @apply bg-transparent text-white border-[2px] border-primary-main
        hover:bg-primary-main hover:border-primary-main hover:text-white;
     }
   }
@@ -82,7 +82,7 @@
     }
   }
 
-   .vertical--marquee {
+  .vertical--marquee {
     @apply flex flex-col  overflow-y-scroll scrollable;
 
     .text--holder {
@@ -104,6 +104,18 @@
           filter: alpha(opacity=1);
         }
       }
+    }
+  }
+}
+
+.faqs__tabs {
+  button.btn {
+    color: #29255d;
+    margin-right:16px;
+    border: 1px solid rgba(158, 155, 191, 0.27);
+
+    &.active {
+      color: white;
     }
   }
 }
