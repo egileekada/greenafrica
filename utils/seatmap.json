@@ -1,0 +1,1695 @@
+{
+  "transport": {
+    "id": "3443344635333745343134323536374532303333333033303745353133393745333233303332333232443330333732443330333237453335333133333339333734353332333033333333333333303333333033373435333233303337343533373435333434333334343633353333333734353333333033333337333234363333333033333332333234363333333233333330333333323333333233323330333333303333333633333431333333303333333033373435333433313334333233353336333734353333333033333337333234363333333033333332333234363333333233333330333333323333333233323330333333303333333733333431333333343333333033373435333734357E4154377E",
+    "segment": {
+      "segmentId": "4C4F537E4142567E203330307E51397E323032322D30372D30327E353133393745323033333330333037453230374537453443344635333745333033373246333033323246333233303332333232303330333633413330333037453431343235363745333033373246333033323246333233303332333232303330333733413334333037453745"
+    },
+    "type": "AT7",
+    "sufix": "",
+    "decks": [
+      {
+        "number": 0,
+        "cabins": [
+          {
+            "classType": "Y",
+            "distributions": [
+              {
+                "rowMin": 0,
+                "rowMax": 20,
+                "sectors": [
+                  { "number": 0, "columns": ["A", "B"] },
+                  { "number": 1, "columns": ["C", "D"] }
+                ],
+                "seatMap": [
+                  [
+                    { "type": "ExitDoor", "spaces": 1 },
+                    null,
+                    null,
+                    { "type": "ExitDoor", "spaces": 1 }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "1A",
+                        "column": "A",
+                        "row": 1,
+                        "category": "1",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Unavailable"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": true },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": true },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": true }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "1B",
+                        "column": "B",
+                        "row": 1,
+                        "category": "1",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Unavailable"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": true },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": true },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "1C",
+                        "column": "C",
+                        "row": 1,
+                        "category": "1",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Unavailable"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": true },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": true },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "1D",
+                        "column": "D",
+                        "row": 1,
+                        "category": "1",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Unavailable"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": true },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": true },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "2A",
+                        "column": "A",
+                        "row": 2,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "2B",
+                        "column": "B",
+                        "row": 2,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "2C",
+                        "column": "C",
+                        "row": 2,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "2D",
+                        "column": "D",
+                        "row": 2,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "3A",
+                        "column": "A",
+                        "row": 3,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "3B",
+                        "column": "B",
+                        "row": 3,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "3C",
+                        "column": "C",
+                        "row": 3,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "3D",
+                        "column": "D",
+                        "row": 3,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "4A",
+                        "column": "A",
+                        "row": 4,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "4B",
+                        "column": "B",
+                        "row": 4,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "4C",
+                        "column": "C",
+                        "row": 4,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "4D",
+                        "column": "D",
+                        "row": 4,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "5A",
+                        "column": "A",
+                        "row": 5,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "5B",
+                        "column": "B",
+                        "row": 5,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "5C",
+                        "column": "C",
+                        "row": 5,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "5D",
+                        "column": "D",
+                        "row": 5,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "6A",
+                        "column": "A",
+                        "row": 6,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "6B",
+                        "column": "B",
+                        "row": 6,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "6C",
+                        "column": "C",
+                        "row": 6,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "6D",
+                        "column": "D",
+                        "row": 6,
+                        "category": "3",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "7A",
+                        "column": "A",
+                        "row": 7,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "7B",
+                        "column": "B",
+                        "row": 7,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "7C",
+                        "column": "C",
+                        "row": 7,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "7D",
+                        "column": "D",
+                        "row": 7,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "8A",
+                        "column": "A",
+                        "row": 8,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "8B",
+                        "column": "B",
+                        "row": 8,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "8C",
+                        "column": "C",
+                        "row": 8,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "8D",
+                        "column": "D",
+                        "row": 8,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "9A",
+                        "column": "A",
+                        "row": 9,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "9B",
+                        "column": "B",
+                        "row": 9,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "9C",
+                        "column": "C",
+                        "row": 9,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "9D",
+                        "column": "D",
+                        "row": 9,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "10A",
+                        "column": "A",
+                        "row": 10,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "10B",
+                        "column": "B",
+                        "row": 10,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "10C",
+                        "column": "C",
+                        "row": 10,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "10D",
+                        "column": "D",
+                        "row": 10,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "11A",
+                        "column": "A",
+                        "row": 11,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "11B",
+                        "column": "B",
+                        "row": 11,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "11C",
+                        "column": "C",
+                        "row": 11,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "11D",
+                        "column": "D",
+                        "row": 11,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "12A",
+                        "column": "A",
+                        "row": 12,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "12B",
+                        "column": "B",
+                        "row": 12,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "12C",
+                        "column": "C",
+                        "row": 12,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "12D",
+                        "column": "D",
+                        "row": 12,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "13A",
+                        "column": "A",
+                        "row": 13,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "13B",
+                        "column": "B",
+                        "row": 13,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "13C",
+                        "column": "C",
+                        "row": 13,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "13D",
+                        "column": "D",
+                        "row": 13,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "14A",
+                        "column": "A",
+                        "row": 14,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "14B",
+                        "column": "B",
+                        "row": 14,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "14C",
+                        "column": "C",
+                        "row": 14,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "14D",
+                        "column": "D",
+                        "row": 14,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "15A",
+                        "column": "A",
+                        "row": 15,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "15B",
+                        "column": "B",
+                        "row": 15,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "15C",
+                        "column": "C",
+                        "row": 15,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "15D",
+                        "column": "D",
+                        "row": 15,
+                        "category": "4",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "16A",
+                        "column": "A",
+                        "row": 16,
+                        "category": "5",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "16B",
+                        "column": "B",
+                        "row": 16,
+                        "category": "5",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "16C",
+                        "column": "C",
+                        "row": 16,
+                        "category": "5",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "16D",
+                        "column": "D",
+                        "row": 16,
+                        "category": "5",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": true },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "17A",
+                        "column": "A",
+                        "row": 17,
+                        "category": "2",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "17B",
+                        "column": "B",
+                        "row": 17,
+                        "category": "2",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "17C",
+                        "column": "C",
+                        "row": 17,
+                        "category": "2",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Unavailable"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "17D",
+                        "column": "D",
+                        "row": 17,
+                        "category": "2",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "18A",
+                        "column": "A",
+                        "row": 18,
+                        "category": "2",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Available"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Seat",
+                      "spaces": 1,
+                      "seatInfo": {
+                        "seatNumber": "18B",
+                        "column": "B",
+                        "row": 18,
+                        "category": "2",
+                        "availabilityByPax": {
+                          "64616E697E4A6F686E7E313939392D30372D31377E333035453330": "Unavailable"
+                        },
+                        "properties": [
+                          { "type": "IsExtraLeg", "value": false },
+                          { "type": "IsEvenMoreExtraLeg", "value": false },
+                          { "type": "IsExitRow", "value": false },
+                          { "type": "IsChildAllowed", "value": true },
+                          { "type": "IsInfantAllowed", "value": false },
+                          { "type": "IsPrmAllowed", "value": false },
+                          { "type": "IsPetAllowed", "value": false },
+                          { "type": "IsBlocked", "value": false }
+                        ]
+                      }
+                    },
+                    { "type": "Bar", "spaces": 2 },
+                    null
+                  ],
+                  [
+                    { "type": "ExitDoor", "spaces": 1 },
+                    null,
+                    null,
+                    { "type": "ExitDoor", "spaces": 1 }
+                  ],
+                  [{ "type": "WC", "spaces": 2 }, null, null, null]
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "error": { "code": "", "description": "", "trace": "" },
+  "success": true
+}

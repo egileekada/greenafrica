@@ -6,7 +6,6 @@ import "../styles/loader.scss";
 
 import Preloader from "components/Preloader";
 
-
 const MyApp = ({ Component, pageProps }) => {
   return (
     <Fragment>
