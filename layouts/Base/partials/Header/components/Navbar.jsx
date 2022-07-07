@@ -10,7 +10,7 @@ const Navbar = () => {
           <LogoIcon />
         </figure>
       </Link>
-      <ul className="flex items-center">
+      <ul className="hidden tab:flex items-center">
         <li>
           <Link href="/de">
             <a className="mr-16 text-white font-body text-sm">Destinations</a>
