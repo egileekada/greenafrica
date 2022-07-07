@@ -6,7 +6,7 @@ const Accordion = ({ item: { question, answer } }) => {
   const [active, setActive] = useState(false);
   const [height, setHeight] = useState("0px");
   const [rotate, setRotate] = useState(
-    "transform duration-700 ease rotate-180"
+    "transform duration-700 ease"
   );
 
   const contentSpace = useRef(null);
@@ -22,28 +22,28 @@ const Accordion = ({ item: { question, answer } }) => {
   };
 
   return (
-    <div className="basis-full md:basis-[45%] flex flex-col border-b-[1px] border-b-faqss mb-16 py-5">
+    <div className="basis-full md:basis-[45%] flex flex-col border-b-[1px] border-b-faqss md:mb-16 py-5">
       <button
-        className={`py-7 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between w-full px-10 transition-all ${
+        className={`py-7 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between w-full px-4 md:px-10 transition-all  ${
           active ? "bg-primary-main rounded-xl" : ""
         } `}
         onClick={toggleAccordion}
       >
         <p
-          className={`inline-block text-[#26205E] text-lg font-body text-left transition-all ${
+          className={`inline-block text-[#26205E] text-base  md:text-lg font-body text-left transition-all w-[80%] md:w-auto ${
             active ? "text-green" : ""
           }  `}
         >
           {question}
         </p>
-        <ArrowIcon className={rotate} />
+        <ArrowIcon className={`w-10 ml-4 ${rotate}`} />
       </button>
       <div
         ref={contentSpace}
         style={{ maxHeight: `${height}` }}
         className="overflow-auto transition-max-height duration-700 ease-in-out"
       >
-        <div className="px-10 pt-10">
+        <div className="px-4 md:px-10 pt-4 md:pt-10">
           {" "}
           <p className="text-[#4B4F63] font-body text-sm">{answer}</p>
         </div>

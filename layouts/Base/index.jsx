@@ -1,7 +1,7 @@
 import Header from "layouts/Base/partials/Header";
 import Footer from "layouts/Base/partials/Footer";
 
-const BaseLayout = ({ children, path }) => {
+const BaseLayout = ({ children }) => {
   return (
     <>
       <section className="w-full bg-white relative">
