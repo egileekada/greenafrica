@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
+import { useState } from "react";
 import BaseLayout from "layouts/Base";
 import Newsletter from "components/Newsletter";
 import FlightIcon from "../assets/svgs/flightIcon.svg";
-// import FlightIconT from "../assets/images/banner-image.png";
+import Popup from "components/Popup";
 
 const Home = () => {
+  const [showPopUp, setShow] = useState(true);
   return (
     <BaseLayout>
       <div className="relative h-4/6">
@@ -182,6 +183,35 @@ const Home = () => {
         </div>
         <Newsletter />
       </section>
+
+      <Popup display={showPopUp} closeModal={() => setShow(false)}>
+        <section className="w-full bg-white rounded-xl p-3">
+          <section className="flex">
+            <div className="basis-1/2 flex-shrink-0">
+              <div className="flex flex-col pt-24 pl-8 pr-28">
+                <h2 className="text-primary-main font-semibold font-body text-3xl mb-[18px]">
+                  Welcome to the future
+                </h2>
+                <p className="text-sm leading-[29px] font-light text-primary-main mb-6">
+                  You are one flight closer to your dreams and destinations.
+                </p>
+                <button className="btn btn-primary w-[133px] py-4 px-6">
+                  Get Started
+                </button>
+              </div>
+            </div>
+            <div className="basis-1/2 flex-shrink-0">
+              <figure className="h-[483px]">
+                <img
+                  src="https://static.greenafrica.com/media/1003/green-africa_atr_mountain_final.jpeg?cropmode=percentaje&width=1200"
+                  alt=""
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </figure>
+            </div>
+          </section>
+        </section>
+      </Popup>
     </BaseLayout>
   );
 };
