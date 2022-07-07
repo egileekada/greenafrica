@@ -1,6 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
 import BaseLayout from "layouts/Base";
-import MapArea from "assets/svgs/Map.svg";
 import Newsletter from "components/Newsletter";
 
 const OfficesPage = () => {
@@ -9,7 +7,7 @@ const OfficesPage = () => {
       <section className="w-full fit-x-bleed py-14">
         <h2 className="header-text">Offices</h2>
         <section className="offices__container">
-          <div className="basis-1/2 flex flex-col">
+          <div className="basis-full tab:basis-1/2 flex flex-col flex-shrink-0 mb-8 tab:mb-0">
             <div className="flex flex-col mb-14 ">
               <h3 className="text-[#26205E] text-xl font-body mb-4">
                 Our Head Office
@@ -27,9 +25,9 @@ const OfficesPage = () => {
               </p>
             </div>
           </div>
-          <div className="basis-1/2">
-            <figure>
-              <MapArea />
+          <div className="basis-full tab:basis-1/2 overflow-hidden">
+            <figure className="w-full tab:w-[600px]">
+              <img src="/images/map.png" alt="map" />
             </figure>
           </div>
         </section>
