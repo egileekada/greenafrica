@@ -2,15 +2,17 @@
 import { useState } from "react";
 import PromoIcon from "assets/svgs/promo.svg";
 import CheckInTab from "./tabs/CheckInTab";
+import BookingTab from "./tabs/BookingTab";
 
 const DesktopFilter = () => {
-  const [activeTab, setActiveTab] = useState(3);
+  const [activeTab, setActiveTab] = useState(4);
 
   return (
     <section className="ga__desktop__filter w-full bg-green min-h-[168px] flex flex-col">
       <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3">
         <div className="flex items-center">
           <button
+            onClick={() => setActiveTab(1)}
             className={`btn ${
               activeTab === 1 ? "btn-primary" : "btn-text"
             } mr-[22px]`}
@@ -18,6 +20,7 @@ const DesktopFilter = () => {
             One Way
           </button>
           <button
+            onClick={() => setActiveTab(2)}
             className={`btn ${
               activeTab === 2 ? "btn-primary" : "btn-text"
             } mr-[22px]`}
@@ -25,6 +28,7 @@ const DesktopFilter = () => {
             Round Trip
           </button>
           <button
+            onClick={() => setActiveTab(3)}
             className={`btn ${
               activeTab === 3 ? "btn-primary" : "btn-text"
             } mr-[22px]`}
@@ -32,6 +36,7 @@ const DesktopFilter = () => {
             Check In
           </button>
           <button
+            onClick={() => setActiveTab(4)}
             className={`btn ${
               activeTab === 4 ? "btn-primary" : "btn-text"
             } mr-[22px]`}
@@ -39,6 +44,7 @@ const DesktopFilter = () => {
             My Booking
           </button>
           <button
+            onClick={() => setActiveTab(5)}
             className={`btn ${
               activeTab === 5 ? "btn-primary" : "btn-text"
             } mr-[22px]`}
@@ -55,6 +61,7 @@ const DesktopFilter = () => {
       </div>
       <section className="ga__desktop__filter__content px-5 pb-11 pt-[18px]">
         {activeTab === 3 && <CheckInTab />}
+        {activeTab === 4 && <CheckInTab />}
       </section>
     </section>
   );
