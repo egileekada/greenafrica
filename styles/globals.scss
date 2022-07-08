@@ -49,6 +49,42 @@
   }
   // Button
 
+  // Form
+  .form {
+    @apply flex justify-between flex-wrap;
+
+    .form-row-half {
+      @apply mb-4 flex flex-col basis-full md:basis-[48%];
+    }
+
+    .form-row-full {
+      @apply mb-4 flex flex-col basis-[100%];
+    }
+  }
+
+  .form-group {
+    border: 1px solid #d8d7e2;
+    border-radius: 6px;
+    padding:8px 30px;
+
+    label {
+      @apply font-body text-[#979797] text-[12px] mb-[7px] font-normal;
+    }
+
+    input {
+      @apply bg-transparent border-none outline-none text-black text-base font-normal  w-full focus:ring-0 focus:outline-none  placeholder-black ;
+
+      &.white-bg {
+        @apply bg-white;
+      }
+
+      &.filter-input-form {
+        @apply bg-transparent  rounded-none border-transparent border-b-[#e4e9f2] px-0 text-xl;
+      }
+    }
+  }
+  // Form
+
   .ga__footer {
     @apply bg-primary-main  py-20 flex flex-col;
 
@@ -137,6 +173,16 @@
   }
 }
 
+.faq__input {
+  border: 1px solid #d8d7e2;
+  border-radius: 6px;
+  @apply w-full flex justify-between items-center px-9 py-5;
+
+  input {
+    @apply basis-[80%] bg-transparent border-[2px] border-none outline-none text-[#4B4F63] text-opacity-60 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#4B4F63] placeholder-opacity-60;
+  }
+}
+
 .ga__popup {
   position: absolute;
   position: fixed;
@@ -149,15 +195,15 @@
   display: none;
 
   &.active {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   animation: scaleIn 0.3s ease-in-out;
-   pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.3s ease-in-out;
+    pointer-events: auto;
   }
 
   &.inactive {
-    opacity:0;
+    opacity: 0;
     pointer-events: none;
     animation: scaleOut 0.3s ease-in-out;
   }
@@ -167,12 +213,11 @@
     position: relative;
     background-color: transparent;
     width: 825px;
-    // height: 537.11px;
     overflow-y: scroll;
 
-    // @include respond(phone) {
-    //   width: 100%;
-    // }
+    @media (max-width: 900px) {
+      width: 90%;
+    }
 
     span.close {
       border: none;
@@ -185,25 +230,25 @@
     .ga__popup__main {
       background-color: transparent;
       margin: 1.5rem 0;
-      margin-top:3rem;
+      margin-top: 3rem;
       display: flex;
       width: 100%;
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
 
-//       @include respond(phone) {
-//         margin-top: 5rem;
-//       }
+      //       @include respond(phone) {
+      //         margin-top: 5rem;
+      //       }
 
-//       &.active {
-//         animation: slideIn 0.3s ease-in-out;
-//         animation-delay: 0.3s;
-//       }
+      //       &.active {
+      //         animation: slideIn 0.3s ease-in-out;
+      //         animation-delay: 0.3s;
+      //       }
 
-//       &.inactive {
-//         display: none;
-//       }
+      //       &.inactive {
+      //         display: none;
+      //       }
     }
   }
 }
@@ -212,6 +257,23 @@
   cursor: pointer;
 }
 
+.ga__desktop__filter {
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+
+  &__header {
+    border-bottom: 1px solid rgba(192, 207, 214, 0.23);
+
+    button.btn-text {
+      color: rgba(17, 16, 32, 0.5);
+      @apply hover:text-green;
+    }
+  }
+
+  &__content {
+  }
+}
 
 // Clean up Styles
 /* Chrome, Safari, Edge, Opera */
