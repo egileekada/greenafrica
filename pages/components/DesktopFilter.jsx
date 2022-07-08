@@ -10,11 +10,41 @@ const DesktopFilter = () => {
     <section className="ga__desktop__filter w-full bg-green min-h-[168px] flex flex-col">
       <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3">
         <div className="flex items-center">
-          <button className="btn btn-primary mr-[22px]">One Way</button>
-          <button className="btn btn-text mr-[22px]">Round Trip</button>
-          <button className="btn btn-text mr-[22px]">Check In</button>
-          <button className="btn btn-text mr-[22px]">My Booking</button>
-          <button className="btn btn-text mr-[22px]">Flight Schedule</button>
+          <button
+            className={`btn ${
+              activeTab === 1 ? "btn-primary" : "btn-text"
+            } mr-[22px]`}
+          >
+            One Way
+          </button>
+          <button
+            className={`btn ${
+              activeTab === 2 ? "btn-primary" : "btn-text"
+            } mr-[22px]`}
+          >
+            Round Trip
+          </button>
+          <button
+            className={`btn ${
+              activeTab === 3 ? "btn-primary" : "btn-text"
+            } mr-[22px]`}
+          >
+            Check In
+          </button>
+          <button
+            className={`btn ${
+              activeTab === 4 ? "btn-primary" : "btn-text"
+            } mr-[22px]`}
+          >
+            My Booking
+          </button>
+          <button
+            className={`btn ${
+              activeTab === 5 ? "btn-primary" : "btn-text"
+            } mr-[22px]`}
+          >
+            Flight Schedule
+          </button>
         </div>
         <button className="flex items-center">
           <figure className="mr-2">
@@ -23,7 +53,7 @@ const DesktopFilter = () => {
           <span className="text-primary text-sm">Use promo code</span>
         </button>
       </div>
-      <section className="ga__desktop__filter__content px-5 py-3">
+      <section className="ga__desktop__filter__content px-5 pb-11 pt-[18px]">
         {activeTab === 3 && <CheckInTab />}
       </section>
     </section>

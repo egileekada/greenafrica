@@ -4,7 +4,7 @@ import PromoIcon from "assets/svgs/promo.svg";
 const CheckInTab = () => {
   return (
     <section className="flex  items-center justify-between">
-      <div className=" basis-[70%] form">
+      <div className=" basis-[80%] form">
         <div className="form-row-half form-group">
           <label>PNR</label>
           <input
@@ -24,7 +24,7 @@ const CheckInTab = () => {
           ></input>
         </div>
       </div>
-      <button className="btn btn-primary">Confirm</button>
+      <button className="btn btn-primary h-[60px]">Confirm</button>
     </section>
   );
 };

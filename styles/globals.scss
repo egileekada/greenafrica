@@ -54,11 +54,11 @@
     @apply flex justify-between flex-wrap;
 
     .form-row-half {
-      @apply mb-4 flex flex-col basis-full md:basis-[48%];
+      @apply flex flex-col basis-full md:basis-[48%];
     }
 
     .form-row-full {
-      @apply mb-4 flex flex-col basis-[100%];
+      @apply  flex flex-col basis-[100%];
     }
   }
 
