@@ -49,6 +49,42 @@
   }
   // Button
 
+  // Form
+  .form {
+    @apply flex justify-between flex-wrap;
+
+    .form-row-half {
+      @apply mb-4 flex flex-col basis-full md:basis-[48%];
+    }
+
+    .form-row-full {
+      @apply mb-4 flex flex-col basis-[100%];
+    }
+  }
+
+  .form-group {
+    border: 1px solid #d8d7e2;
+    border-radius: 6px;
+    padding:8px 30px;
+
+    label {
+      @apply font-body text-[#979797] text-[12px] mb-[7px] font-normal;
+    }
+
+    input {
+      @apply bg-transparent border-none outline-none text-black text-base font-normal  w-full focus:ring-0 focus:outline-none  placeholder-black ;
+
+      &.white-bg {
+        @apply bg-white;
+      }
+
+      &.filter-input-form {
+        @apply bg-transparent  rounded-none border-transparent border-b-[#e4e9f2] px-0 text-xl;
+      }
+    }
+  }
+  // Form
+
   .ga__footer {
     @apply bg-primary-main  py-20 flex flex-col;
 
@@ -222,7 +258,7 @@
 }
 
 .ga__desktop__filter {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
 
@@ -233,6 +269,9 @@
       color: rgba(17, 16, 32, 0.5);
       @apply hover:text-green;
     }
+  }
+
+  &__content {
   }
 }
 
