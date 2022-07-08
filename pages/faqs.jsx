@@ -2,6 +2,7 @@
 import BaseLayout from "layouts/Base";
 import Newsletter from "components/Newsletter";
 import Accordion from "components/Accordion";
+import SearchIcon from "assets/svgs/search.svg";
 
 const FaPage = () => {
   const FAQS = [
@@ -51,7 +52,17 @@ const FaPage = () => {
             </button>
           </section>
 
-          {/* <Input Field/> */}
+          <div className="faq__input">
+            <input
+              type="text"
+              id="firstname"
+              name="firstname"
+              placeholder="Search"
+            ></input>
+            <figure>
+              <SearchIcon />
+            </figure>
+          </div>
 
           <>
             {FAQS.length > 0 ? (

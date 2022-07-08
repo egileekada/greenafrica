@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <nav className="nav bg-primary-main fit-x-bleed flex items-center justify-between py-7">
       <Link href="/">
-        <figure>
+        <figure className="cursor-pointer">
           <LogoIcon />
         </figure>
       </Link>
