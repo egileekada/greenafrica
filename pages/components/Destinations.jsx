@@ -12,7 +12,7 @@ const Destinations = () => {
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 sm:grid-flow-col gap-x-12">
-        <div className="my-4">
+        <a className="my-4" href="/destination/abuja">
           <div className="relative">
             <FlightIcon className="inline-block absolute" />
             <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
@@ -27,9 +27,9 @@ const Destinations = () => {
             alt=""
             className="object-cover w-full rounded-lg"
           />
-        </div>
+        </a>
 
-        <div className="my-4">
+        <a className="my-4" href="/destination/abuja">
           <div className="relative">
             <FlightIcon className="inline-block absolute" />
             <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
@@ -44,9 +44,9 @@ const Destinations = () => {
             alt=""
             className="object-cover w-full rounded-lg"
           />
-        </div>
+        </a>
 
-        <div className="my-4">
+        <a className="my-4" href="/destination/abuja">
           <div className="relative">
             <FlightIcon className="inline-block absolute" />
             <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
@@ -61,9 +61,9 @@ const Destinations = () => {
             alt=""
             className="object-cover w-full rounded-lg"
           />
-        </div>
+        </a>
 
-        <div className="my-4">
+        <a className="my-4" href="/destination/abuja">
           <div className="relative">
             <FlightIcon className="inline-block absolute" />
             <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
@@ -78,7 +78,7 @@ const Destinations = () => {
             alt=""
             className="object-cover w-full rounded-lg"
           />
-        </div>
+        </a>
       </div>
     </section>
   );
