@@ -27,6 +27,54 @@ class MyDocument extends Document {
             href="/favicon.png"
           ></link>
           <link rel="shortcut icon" href="/favicon.png"></link>
+
+          {/* Primary Meta Tags  */}
+          <title>
+            Green Africa — One flight closer to your dreams and destinations.
+          </title>
+          <meta
+            name="title"
+            content="Green Africa — You are one flight closer to your dreams and destinations."
+          />
+          <meta
+            name="description"
+            content="We are a new carrier that offers safe, reliable and affordable air travel to a much broader group of customers."
+          />
+
+          {/* Open Graph / Facebook  */}
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://dev-website.gadevenv.com/" />
+          <meta
+            property="og:title"
+            content="Green Africa — One flight closer to your dreams and destinations."
+          />
+          <meta
+            property="og:description"
+            content="We are a new carrier that offers safe, reliable and affordable air travel to a much broader group of customers."
+          />
+          <meta
+            property="og:image"
+            content="https://dev-website.gadevenv.com/images/seo_image.jpg"
+          />
+
+          {/* Twitter  */}
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta
+            property="twitter:url"
+            content="https://dev-website.gadevenv.com/"
+          />
+          <meta
+            property="twitter:title"
+            content="Green Africa — One flight closer to your dreams and destinations."
+          />
+          <meta
+            property="twitter:description"
+            content="We are a new carrier that offers safe, reliable and affordable air travel to a much broader group of customers."
+          />
+          <meta
+            property="twitter:image"
+            content="https://dev-website.gadevenv.com/images/seo_image.jpg"
+          />
         </Head>
         <body>
           <Main />
