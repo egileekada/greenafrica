@@ -1,41 +1,33 @@
 export const FOOTER__EXPLORE = [
   {
-    name: "About Green Africa",
-    link: "/deals",
-  },
-  {
     name: "Contacts",
-    link: "/deals",
+    link: "/contact",
   },
   {
     name: "Our Story",
-    link: "/deals",
+    link: "/our-story",
   },
   {
     name: "Careers",
-    link: "/deals",
+    link: "https://careers.greenafrica.com/",
   },
 ];
 
 export const FOOTER__HELP = [
   {
-    name: "Support",
-    link: "/deals",
-  },
-  {
     name: "Terms & Conditions",
-    link: "/deals",
+    link: "/terms-and-condition",
   },
   {
     name: "Privacy Policy",
-    link: "/deals",
+    link: "/privacy-policy",
   },
   {
     name: "Offices",
-    link: "/deals",
+    link: "/offices",
   },
   {
     name: "FAQ",
-    link: "/deals",
+    link: "/faqs",
   },
 ];
