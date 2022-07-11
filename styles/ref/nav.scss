@@ -1,0 +1,109 @@
+// Tailwind Styles
+@layer components {
+  .nav {
+    @apply text-black w-full bg-white mx-auto relative px-0;
+    box-shadow: 0px 3px 6px #0000000f;
+
+    .desktop--nav {
+      @apply hidden tab:flex items-center justify-between relative;
+    }
+
+    .mobile--nav {
+      @apply flex items-center justify-between px-8 py-8 tab:hidden;
+
+      button.btn-black {
+        @apply bg-black rounded-[17px] text-white px-6 py-2;
+      }
+    }
+
+    .desktop--links {
+      ul {
+        @apply flex;
+
+        li {
+          @apply flex justify-center items-center font-normal text-base py-8 px-4 lg:px-10 hover:text-gray-500 transition-all text-center;
+        }
+
+        &.link {
+          li {
+            @apply relative;
+            a {
+              @apply flex items-center hover:text-primary-main;
+
+              svg {
+                @apply ml-2;
+              }
+            }
+          }
+        }
+        &.cta {
+          @apply bg-[#FFECD0];
+          a {
+            @apply flex items-center hover:text-primary-main;
+          }
+        }
+        &.auth {
+          @apply text-white;
+
+          li {
+            &:first-child {
+              @apply bg-black;
+            }
+            &:last-child {
+              @apply bg-dark;
+            }
+
+            a {
+              @apply flex items-center hover:text-primary-main;
+            }
+          }
+        }
+      }
+    }
+
+    .aero-dropdown {
+      @apply absolute bottom-[10000%] left-[250px] bg-white rounded-b-[5px] z-10  flex w-[40%] h-52;
+
+      &.show {
+        @apply -bottom-[186px] opacity-100;
+        // animation: dropdownAniom 0.3s ease-in-out forwards;
+      }
+
+      ul {
+        @apply px-10 pt-5 pb-2 h-full;
+
+        li {
+          @apply w-32 mb-2 text-caption text-black hover:text-primary-main cursor-pointer;
+        }
+      }
+      .aero-indicator {
+        svg {
+          path {
+            @apply fill-primary-main;
+          }
+        }
+      }
+    }
+  }
+
+  .nav--dropdown {
+    @apply flex bg-black h-52 min-w-[640px];
+
+    &.mobile {
+      z-index: 100000;
+    }
+
+    &--icon {
+      @apply basis-[100px] flex-grow-0 bg-black flex items-center justify-center;
+    }
+
+    &--links {
+      @apply basis-auto flex-grow p-4 pb-0 bg-white;
+      box-shadow: 0px 3px 6px #0000000f;
+
+      li {
+        @apply pb-3 px-4 text-caption text-black hover:text-primary-main cursor-pointer;
+      }
+    }
+  }
+}
