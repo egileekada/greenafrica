@@ -20,29 +20,47 @@ const Footer = () => {
               <p className="text-white font-body text-sm mb-8">Follow Us</p>
               <ul className="flex items-center">
                 <li className="mr-8">
-                  <figure>
-                    <FacebookIcon />
-                  </figure>
+                  <a
+                    href="https://web.facebook.com/greenafricaairways/"
+                    target="_blank"
+                  >
+                    <figure>
+                      <FacebookIcon />
+                    </figure>
+                  </a>
                 </li>
                 <li className="mr-8">
-                  <figure>
-                    <TwitterIcon />
-                  </figure>
+                  <a href="https://twitter.com/greenafrica" target="_blank">
+                    <figure>
+                      <TwitterIcon />
+                    </figure>
+                  </a>
                 </li>
                 <li className="mr-8">
-                  <figure>
-                    <InstagramIcon />
-                  </figure>
+                  <a
+                    href="https://www.instagram.com/greenafrica__/"
+                    target="_blank"
+                  >
+                    <figure>
+                      <InstagramIcon />
+                    </figure>
+                  </a>
                 </li>
                 <li>
-                  <figure>
-                    <LinkedinIcon />
-                  </figure>
+                  <a
+                    href="https://www.linkedin.com/company/greenafricaairways"
+                    target="_blank"
+                  >
+                    <figure>
+                      <LinkedinIcon />
+                    </figure>
+                  </a>
                 </li>
               </ul>
             </div>
           </div>
           <div className="ga__footer__item">
+            <h5>About Green Africa</h5>
             <ul className="ga__footer__item__box">
               {FOOTER__EXPLORE.map((item) => {
                 return (
@@ -56,6 +74,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="ga__footer__item">
+            <h5>Support</h5>
             <ul className="ga__footer__item__box">
               {FOOTER__HELP.map((item) => {
                 return (
