@@ -30,7 +30,7 @@ const Home = () => {
       <BaseLayout>
         <section className="w-full px-3.5 py-14 lg:fit-x-bleed support-docs">
           <h1>Terms and conditions</h1>
-          <div class="">
+          <div className="">
             <h5>
               <a name="_Toc72506819"></a>
               <strong>ARTICLE 1 – DEFINITIONS</strong>
