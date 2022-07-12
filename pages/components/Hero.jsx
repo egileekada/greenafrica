@@ -25,7 +25,8 @@ const HomeHero = () => {
       </div>
       <div className="basis-ful min-h-[300px] w-full  absolute -bottom-[16rem]">
         <div className="w-[90%] mx-auto ">
-          {width > 899 ? <DesktopFilter /> : <MobileFilter />}
+          <DesktopFilter />
+          {/* {width > 899 ? <DesktopFilter /> : <MobileFilter />} */}
         </div>
       </div>
     </section>

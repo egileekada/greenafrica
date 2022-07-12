@@ -30,7 +30,7 @@ const Home = () => {
         <section className="w-full px-3.5 py-14 lg:fit-x-bleed support-docs">
           <h1>Privacy Policy</h1>
 
-          <h5 class="context-h3 text-primary context-h4">
+          <h5 className="context-h3 text-primary context-h4">
             <strong>INTRODUCTION</strong>
           </h5>
           <p>
@@ -44,7 +44,7 @@ const Home = () => {
             and sharing of information as discussed below.
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>1. PERSONAL INFORMATION WE COLLECT</strong>
           </h5>
 
@@ -102,7 +102,7 @@ const Home = () => {
             and similar technologies like many other businesses.
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>2. PURPOSE OF COLLECTION</strong>
           </h5>
 
@@ -221,7 +221,7 @@ const Home = () => {
             improve content, technology and layout
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>3. DATA SUBJECT CONSENT</strong>
           </h5>
 
@@ -273,7 +273,7 @@ const Home = () => {
             </span>
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>4. DATA SUBJECT RIGHT</strong>
           </h5>
 
@@ -339,7 +339,7 @@ const Home = () => {
           </ul>
           <p>To request the movement of data from us to a third Party.</p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>5. SHARING INFORMATION WITH THIRD PARTIES</strong>
           </h5>
 
@@ -409,7 +409,7 @@ const Home = () => {
             activity.
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>6. RETENTION POLICY</strong>
           </h5>
 
@@ -432,7 +432,7 @@ const Home = () => {
             accounting or other requirements
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>7. GOVERNING PRINCIPLES</strong>
           </h5>
 
@@ -467,7 +467,7 @@ const Home = () => {
             exposure to other natural elements.
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>8. REPORTING PERSONAL DATA BREACH</strong>
           </h5>
 
@@ -527,7 +527,7 @@ const Home = () => {
             party designated by a User.
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>9. POLICY UPDATES</strong>
           </h5>
 
@@ -542,7 +542,7 @@ const Home = () => {
             </span>
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>10. DATA PROTECTION OFFICER</strong>
           </h5>
 
@@ -569,7 +569,7 @@ const Home = () => {
             regarding the protection of your data or this Policy.
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <strong>11. GOVERNING LAW</strong>
           </h5>
 
@@ -581,7 +581,7 @@ const Home = () => {
             </span>
           </p>
 
-          <h5 class="context-h4 text-primary">
+          <h5 className="context-h4 text-primary">
             <span>
               <strong>CONSENT CLAUSE</strong>
             </span>

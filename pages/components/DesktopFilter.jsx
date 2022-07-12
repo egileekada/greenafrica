@@ -3,13 +3,14 @@ import { useState } from "react";
 import PromoIcon from "assets/svgs/promo.svg";
 import CheckInTab from "./tabs/CheckInTab";
 import BookingTab from "./tabs/BookingTab";
+import Book from "./tabs/Book";
 
 const DesktopFilter = () => {
-  const [activeTab, setActiveTab] = useState(4);
+  const [activeTab, setActiveTab] = useState(1);
 
   return (
     <section className="ga__desktop__filter w-full bg-green min-h-[168px] flex flex-col">
-      <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3">
+      <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3 hidden">
         <div className="flex items-center">
           <button
             onClick={() => setActiveTab(1)}
@@ -59,7 +60,8 @@ const DesktopFilter = () => {
           <span className="text-primary text-sm">Use promo code</span>
         </button>
       </div>
-      <section className="ga__desktop__filter__content px-5 pb-11 pt-[18px]">
+      <section className="ga__desktop__filter__content px-5 py-[18px]">
+        {activeTab === 1 && <Book />}
         {activeTab === 3 && <CheckInTab />}
         {activeTab === 4 && <CheckInTab />}
       </section>

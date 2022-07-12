@@ -344,3 +344,29 @@ textarea {
     }
   }
 }
+
+.datepicker {
+  @apply font-body;
+  font-size: 14px;
+}
+
+.react-date-picker__calendar-button {
+  @apply hidden;
+}
+
+.react-date-picker__wrapper {
+  border: none !important;
+}
+
+.react-date-picker__inputGroup {
+  padding: 0px !important;
+}
+.react-date-picker__button {
+  padding: 0px 6px !important;
+}
+
+.booking__wrapper {
+  border: 2px solid #d8d7e2;
+  height: 60px;
+  @apply rounded-lg px-2 py-2;
+}
