@@ -10,7 +10,7 @@ import CheckIcon from "assets/svgs/check.svg";
 import NullIcon from "assets/svgs/null.svg";
 
 const IbeTripVariant = ({ variant }) => {
-  const [showPopUp, setShow] = useState(true);
+  const [showPopUp, setShow] = useState(false);
 
   return (
     <Fragment>
@@ -52,13 +52,19 @@ const IbeTripVariant = ({ variant }) => {
           </ul>
         </div>
         {variant === "saver" && (
-          <button className="btn btn-outline ">Continue For ₦16,501</button>
+          <button onClick={() => setShow(true)} className="btn btn-outline ">
+            Continue For ₦16,501
+          </button>
         )}
         {variant === "classic" && (
-          <button className="btn btn-primary">Continue For ₦16,501</button>
+          <button onClick={() => setShow(true)} className="btn btn-primary">
+            Continue For ₦16,501
+          </button>
         )}
         {variant === "gflex" && (
-          <button className="btn btn-green">Continue For ₦16,501</button>
+          <button onClick={() => setShow(true)} className="btn btn-green">
+            Continue For ₦16,501
+          </button>
         )}
       </section>
       <Popup display={showPopUp} closeModal={() => setShow(false)} top={true}>

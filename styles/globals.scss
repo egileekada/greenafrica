@@ -26,6 +26,14 @@
     @apply text-primary-main font-body  text-header;
   }
 
+  .title-text {
+    @apply text-xxs text-left text-[#8F8CA4] font-header;
+  }
+
+  .content-text {
+    @apply text-xs text-left text-[#101010] font-body;
+  }
+
   // Button
   .btn {
     @apply font-normal font-body rounded-xl min-w-[133px] py-[15px] px-[30px] transition-all;
@@ -51,7 +59,7 @@
     }
 
     &.btn-outline {
-      @apply bg-transparent text-white border-[2px] border-primary-main
+      @apply bg-transparent text-primary-main border-[2px] border-primary-main
        hover:bg-primary-main hover:border-primary-main hover:text-white;
 
       &.dotted {
@@ -132,6 +140,24 @@
           @apply hover:text-green;
         }
       }
+    }
+  }
+
+  .ga__counter {
+    ant-input {
+      border: 1px solid #d8d7e2;
+      border-radius: 6px;
+    }
+    ant-input:hover {
+      border: 1px solid #d8d7e2;
+      border-radius: 6px;
+    }
+
+    .ant-input:focus,
+    .ant-input-focused {
+      border-color: #26205e !important;
+      box-shadow: none !important;
+      outline: 0;
     }
   }
 
@@ -217,6 +243,11 @@
 
     &.tripView {
       @apply px-24;
+
+      &.bordered {
+        border: 0.5px solid #cfceda;
+        border-radius: 6px;
+      }
     }
 
     p.tripType,
@@ -407,6 +438,95 @@
       }
     }
   }
+
+  .primary-checkbox {
+    .ant-switch {
+      widt: 24px;
+      height: 24px;
+    }
+
+    .ant-switch-checked {
+      background-color: #26205e !important;
+    }
+
+    .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: #26205e !important;
+      border-color: #26205e;
+    }
+  }
+
+  .baggage__card {
+    @apply flex flex-col items-center justify-center p-7;
+
+    background: rgba(38, 31, 94, 0.06);
+    border-radius: 6px;
+  }
+
+  .meal__card {
+    @apply flex flex-col items-center justify-center p-7 rounded-md;
+    background: rgba(38, 31, 94, 0.06);
+
+    figure {
+      @apply w-full h-[195px] mb-4 overflow-hidden;
+
+      img {
+        @apply w-full h-full;
+      }
+    }
+  }
+
+  .payment-section {
+    h2 {
+      @apply font-display text-base  text-black;
+    }
+
+    p {
+      @apply font-body text-sm text-black;
+    }
+
+    h6 {
+      @apply text-primary-main font-body text-xxs;
+    }
+
+    h5 {
+      @apply text-primary-main font-display text-[28px] leading-[36px];
+    }
+
+    .payment-card {
+      @apply py-9 px-14  mb-8 rounded-md bg-white flex justify-between items-center border-none transition-all cursor-pointer relative transition-all;
+
+      &:hover {
+        box-shadow: 0 0 5px 0 rgba(195, 198, 205, 0.5);
+      }
+
+      figure.check-payment {
+        @apply absolute top-4 left-4;
+      }
+
+      &.active {
+        border: 1px solid rgba(38, 32, 94, 0.51);
+      }
+    }
+  }
+
+  .trip__summary {
+    h2.trip-title {
+      font-family: 'Cosmica';
+      font-style: normal;
+      font-weight: 822;
+      font-size: 14px;
+      line-height: 18px;
+      color: #261f5e;
+    }
+    p.trip-body {
+      font-family: 'Cosmica';
+      font-style: normal;
+      font-weight: 661;
+      font-size: 12px;
+      line-height: 16px;
+      color: #26205e;
+    }
+  }
 }
 
 .ga__popup {
@@ -442,7 +562,7 @@
     display: flex;
     position: relative;
     background-color: transparent;
-    width: 825px;
+    // width: 825px;
     overflow-y: scroll;
 
     @media (max-width: 900px) {
@@ -556,6 +676,12 @@ input[type='number'] {
 
 textarea {
   resize: none;
+}
+
+svg.primary-main {
+  path {
+    fill: #26205e;
+  }
 }
 
 .scrollbar-none {

@@ -3,7 +3,6 @@ import Link from "next/link";
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import { Checkbox, Switch } from "antd";
-import CaretDown from "assets/svgs/caretdown.svg"
 
 const PassengerForm = () => {
   const onChange = (e) => {
