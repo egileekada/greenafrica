@@ -10,7 +10,7 @@ const DesktopFilter = () => {
 
   return (
     <section className="ga__desktop__filter w-full bg-green min-h-[168px] flex flex-col">
-      <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3 hidden">
+      <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3">
         <div className="flex items-center">
           <button
             onClick={() => setActiveTab(1)}
@@ -32,7 +32,7 @@ const DesktopFilter = () => {
             onClick={() => setActiveTab(3)}
             className={`btn ${
               activeTab === 3 ? "btn-primary" : "btn-text"
-            } mr-[22px]`}
+            } mr-[22px] hidden md:inline`}
           >
             Check In
           </button>
@@ -40,7 +40,7 @@ const DesktopFilter = () => {
             onClick={() => setActiveTab(4)}
             className={`btn ${
               activeTab === 4 ? "btn-primary" : "btn-text"
-            } mr-[22px]`}
+            } mr-[22px] hidden md:inline`}
           >
             My Booking
           </button>
@@ -48,12 +48,12 @@ const DesktopFilter = () => {
             onClick={() => setActiveTab(5)}
             className={`btn ${
               activeTab === 5 ? "btn-primary" : "btn-text"
-            } mr-[22px]`}
+            } mr-[22px] hidden md:inline`}
           >
             Flight Schedule
           </button>
         </div>
-        <button className="flex items-center">
+        <button className="flex items-center hidden md:flex">
           <figure className="mr-2">
             <PromoIcon />
           </figure>
@@ -62,6 +62,7 @@ const DesktopFilter = () => {
       </div>
       <section className="ga__desktop__filter__content px-5 py-[18px]">
         {activeTab === 1 && <Book />}
+        {activeTab === 2 && <Book type={"round_trip"} />}
         {activeTab === 3 && <CheckInTab />}
         {activeTab === 4 && <CheckInTab />}
       </section>
