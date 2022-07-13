@@ -7,6 +7,9 @@ import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
 import { data } from "../../../utils/calendar";
 
+import Add from "../../../public/images/_add.svg";
+import Subtract from "../../../public/images/subtract.svg";
+
 const BookingTab = ({ type }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [value, onChange] = useState(new Date());
@@ -54,6 +57,8 @@ const BookingTab = ({ type }) => {
             <div className="w-full mx-2">
               <p className="mb-1 text-xs mb-0">FROM</p>
               <Select
+                id="from"
+                instanceId="from"
                 defaultValue={selectedOption}
                 onChange={setSelectedOption}
                 options={options}
@@ -77,6 +82,8 @@ const BookingTab = ({ type }) => {
             <div className="w-full mx-2">
               <p className="mb-1 text-xs mb-0">TO</p>
               <Select
+                id="to"
+                instanceId="to"
                 defaultValue={selectedOption}
                 onChange={setSelectedOption}
                 options={options}
@@ -93,7 +100,7 @@ const BookingTab = ({ type }) => {
           } grid grid-cols-1 gap-2 md:col-auto`}
         >
           <div className="booking__wrapper flex items-end">
-            <span className="mx-2 pb-1">
+            <span className="mr-2 ml-1 pb-1">
               <svg
                 width="26"
                 height="22"
@@ -114,6 +121,7 @@ const BookingTab = ({ type }) => {
             <div>
               <p className="mb-1 text-xs">DEPARTING</p>
               <DatePicker
+                id="departing"
                 onChange={onChange}
                 value={value}
                 tileContent={hasContent}
@@ -124,7 +132,7 @@ const BookingTab = ({ type }) => {
 
           {type && (
             <div className="booking__wrapper flex items-end">
-              <span className="mx-2 pb-1">
+              <span className="mr-2 ml-1 pb-1">
                 <svg
                   width="26"
                   height="22"
@@ -146,6 +154,7 @@ const BookingTab = ({ type }) => {
               <div>
                 <p className="mb-1 text-xs">RETURNING</p>
                 <DatePicker
+                  id="returning"
                   onChange={onChange}
                   value={value}
                   tileContent={hasContent}
@@ -158,8 +167,12 @@ const BookingTab = ({ type }) => {
 
         <div className="booking__wrapper" data-modal-toggle="defaultModal">
           <p className="mb-1 text-xs mx-4">PASSENGERS</p>
-          <div className="flex items-end relative">
-            <span className="mx-4 pb-1">
+          <div
+            className="flex items-center relative"
+            onClick={() => setShow(!show)}
+            role="button"
+          >
+            <span className="ml-4 mr-0 pb-1">
               <svg
                 width="18"
                 height="17"
@@ -174,13 +187,26 @@ const BookingTab = ({ type }) => {
               </svg>
             </span>
 
-            <div className="w-full relative">
-              <Select
-                defaultValue={selectedOption}
-                onChange={setSelectedOption}
-                options={options}
-                styles={colourStyles}
-              />
+            <div className="w-1/6 text-center">
+              <span>1</span>
+            </div>
+
+            <div>
+              <svg
+                width="25"
+                height="24"
+                viewBox="0 0 19 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.70135 7.84741L9.42857 10.3341L12.1558 7.84741"
+                  stroke="#261F5E"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
 
             {/* <div className="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40"></div> */}
@@ -190,7 +216,11 @@ const BookingTab = ({ type }) => {
               // aria-hidden="true"
               className="absolute top-10 left-0 right-0 z-50 w-full h-modal h-auto"
             >
-              <div className="relative w-full h-full max-w-2xl md:h-auto widget-border rounded-lg shadow dark:bg-gray-700 bg-white">
+              <div
+                className={`${
+                  !show && "hidden"
+                } relative w-full h-full max-w-2xl md:h-auto widget-border rounded-lg shadow dark:bg-gray-700 bg-white`}
+              >
                 <div className="relative">
                   <div className="p-6 space-y-6">
                     <div className="grid grid-cols-2 gap-3 mb-3">
@@ -200,16 +230,16 @@ const BookingTab = ({ type }) => {
                       </div>
                       <div className="flex items-center">
                         <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2">
-                          <img
-                            src="images/subtract.svg"
-                            alt=""
-                            value={0}
-                            readOnly
-                          />
+                          <img src="/images/subtract.svg" alt="" />
                         </div>
-                        <input type="tel" className="w-10 mx-2 rounded-lg" />
+                        <input
+                          type="tel"
+                          className="w-10 mx-2 rounded-lg text-center"
+                          value={0}
+                          readOnly
+                        />
                         <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1">
-                          <img src="images/_add.svg" alt="" />
+                          <img src="/images/_add.svg" alt="" className="" />
                         </div>
                       </div>
                     </div>
@@ -221,16 +251,16 @@ const BookingTab = ({ type }) => {
                       </div>
                       <div className="flex items-center">
                         <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2">
-                          <img src="images/subtract.svg" alt="" />
+                          <img src="/images/subtract.svg" alt="" />
                         </div>
                         <input
                           type="tel"
-                          className="w-10 mx-2 rounded-lg"
+                          className="w-10 mx-2 rounded-lg text-center"
                           value={0}
                           readOnly
                         />
                         <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1">
-                          <img src="images/_add.svg" alt="" />
+                          <img src="/images/_add.svg" alt="" />
                         </div>
                       </div>
                     </div>
@@ -242,15 +272,16 @@ const BookingTab = ({ type }) => {
                       </div>
                       <div className="flex items-center">
                         <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2">
-                          <img src="images/subtract.svg" alt="" value={0} />
+                          <img src="/images/subtract.svg" alt="" />
                         </div>
                         <input
                           type="tel"
-                          className="w-10 mx-2 rounded-lg"
+                          className="w-10 mx-2 rounded-lg text-center"
+                          value={0}
                           readOnly
                         />
                         <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1">
-                          <img src="images/_add.svg" alt="" />
+                          <img src="/images/_add.svg" alt="" />
                         </div>
                       </div>
                     </div>
@@ -268,7 +299,7 @@ const BookingTab = ({ type }) => {
         </div>
       </div>
 
-      <Modal show={show} onClose={() => setShow(false)}>
+      {/* <Modal show={show} onClose={() => setShow(false)}>
         <Modal.Header>Terms of Service</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
@@ -302,7 +333,7 @@ const BookingTab = ({ type }) => {
             Decline
           </button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
