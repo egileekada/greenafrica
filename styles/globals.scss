@@ -31,7 +31,7 @@
 
   // Button
   .btn {
-    @apply font-normal font-body rounded-xl min-w-[133px] py-[15px] px-[30px] transition-all;
+    @apply font-normal font-body rounded-xl min-w-[133px] py-[15px] px-[20px] transition-all;
 
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;
@@ -350,7 +350,8 @@ textarea {
   font-size: 14px;
 }
 
-.react-date-picker__calendar-button {
+.react-date-picker__calendar-button,
+.react-date-picker__clear-button {
   @apply hidden;
 }
 
@@ -369,4 +370,36 @@ textarea {
   border: 2px solid #d8d7e2;
   height: 60px;
   @apply rounded-lg px-2 py-2;
+}
+
+.react-calendar {
+  @apply font-body;
+}
+
+.react-calendar__tile {
+  background: rgba(31, 25, 85, 0.07) !important;
+  border: 2px solid #fff !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  padding-bottom: 0px !important;
+}
+
+.react-calendar__tile--active {
+  background: #1f1955 !important;
+  color: #47ff5a !important;
+}
+
+.react-calendar__tile--now {
+  border: 2px dashed #1f195591 !important;
+  color: #47ff5a !important;
+}
+
+.react-calendar__navigation__label__labelText {
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+}
+
+.widget-border {
+  border: 1px solid #eaebf3;
+  border-radius: 6px;
 }

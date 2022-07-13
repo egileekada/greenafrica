@@ -4,6 +4,7 @@ module.exports = {
     "./layouts/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./containers/**/*.{js,ts,jsx,tsx}",
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     borderWidth: {
@@ -43,6 +44,8 @@ module.exports = {
           light: "#F8F8F8",
           dark: "#1F1F1F",
           seven: "#7A7794",
+          eight: "#D9D9D9",
+          nine: "#474747",
         },
         faq__border: "rgba(229, 230, 236, 0.6)",
       },
@@ -55,5 +58,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwind-scrollbar")],
+  plugins: [require("tailwind-scrollbar"), require("flowbite/plugin")],
 };
