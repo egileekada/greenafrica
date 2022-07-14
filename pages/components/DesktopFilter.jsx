@@ -32,7 +32,7 @@ const DesktopFilter = () => {
             onClick={() => setActiveTab(3)}
             className={`btn ${
               activeTab === 3 ? "btn-primary" : "btn-text"
-            } mr-[22px] hidden md:inline`}
+            } mr-[22px] hidden lg:inline`}
           >
             Check In
           </button>
@@ -40,7 +40,7 @@ const DesktopFilter = () => {
             onClick={() => setActiveTab(4)}
             className={`btn ${
               activeTab === 4 ? "btn-primary" : "btn-text"
-            } mr-[22px] hidden md:inline`}
+            } mr-[22px] hidden lg:inline`}
           >
             My Booking
           </button>
@@ -48,7 +48,7 @@ const DesktopFilter = () => {
             onClick={() => setActiveTab(5)}
             className={`btn ${
               activeTab === 5 ? "btn-primary" : "btn-text"
-            } mr-[22px] hidden md:inline`}
+            } mr-[22px] hidden lg:inline`}
           >
             Flight Schedule
           </button>
