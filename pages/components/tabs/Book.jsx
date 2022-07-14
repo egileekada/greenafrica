@@ -117,7 +117,7 @@ const BookingTab = ({ type }) => {
                 />
               </svg>
             </span>
-            <div>
+            <div className="flex-auto">
               <p className="mb-1 text-xs">DEPARTING</p>
               <DatePicker
                 id="departing"
@@ -150,7 +150,7 @@ const BookingTab = ({ type }) => {
                 </svg>
               </span>
 
-              <div>
+              <div className="flex-auto">
                 <p className="mb-1 text-xs">RETURNING</p>
                 <DatePicker
                   id="returning"
