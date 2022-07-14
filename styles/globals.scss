@@ -2,6 +2,7 @@
 @import url("../assets/fonts/Cosmical/fonts.css");
 @import "antd/dist/antd.css";
 @import "./loader.scss";
+@import "./carousel.scss";
 
 // @import './carousel.scss';
 // @import './abstract.scss';
@@ -31,7 +32,7 @@
 
   // Button
   .btn {
-    @apply font-normal font-body rounded-xl min-w-[133px] py-[15px] px-[20px] transition-all;
+    @apply font-normal font-body rounded-xl min-w-[133px] py-[15px] px-[20px] transition-all text-center;
 
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;
@@ -382,6 +383,10 @@ textarea {
   font-weight: 700 !important;
   font-size: 15px !important;
   padding-bottom: 0px !important;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #000 !important;
 }
 
 .react-calendar__tile--active {
