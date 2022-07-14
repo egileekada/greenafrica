@@ -1,11 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
-import FlightIcon from "assets/svgs/flightIcon.svg";
+import FlightIcon from "assets/svgs/flight_icon.svg";
 
 const Destinations = () => {
   return (
     <section className="container mx-auto mb-10">
-      <h1 className="text-primary-main font-semibold text-3xl mb-2">
-        Explore Our Destinations from Lagos
+      <h1 className="text-primary-main font-semibold text-2xl mb-2">
+        Explore Our Destinations from{" "}
+        <select
+          name=""
+          id=""
+          className="border-none font-semibold text-2xl pl-0"
+        >
+          <option value="Lagos">Lagos</option>
+          <option value="Lagos">Abuja</option>
+        </select>
       </h1>
       <p className="text-lg text-primary-main font-light mb-10">
         You are one flight closer to your dreams and destinations.
