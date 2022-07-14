@@ -10,6 +10,8 @@ import { data } from "../../../utils/calendar";
 const BookingTab = ({ type }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [value, onChange] = useState(new Date());
+  const [departing, setDeparting] = useState(new Date());
+  const [returning, setReturning] = useState(new Date());
   const [show, setShow] = useState(false);
 
   const options = [
@@ -43,7 +45,7 @@ const BookingTab = ({ type }) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-5 sm:grid-flex-col items-center gap-2">
+      <div className="grid grid-cols-1 lg:grid-flex-col xl:grid-cols-4 sm:grid-flex-col items-center gap-2">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:col-span-2">
           <div className="flex items-end booking__wrapper relative">
             <img
@@ -93,7 +95,7 @@ const BookingTab = ({ type }) => {
 
         <div
           className={`${
-            type && "lg:grid-cols-2"
+            type && "lg:grid-cols-2 md:col-span-2"
           } grid grid-cols-1 gap-2 md:col-auto`}
         >
           <div className="booking__wrapper flex items-end">
@@ -119,8 +121,8 @@ const BookingTab = ({ type }) => {
               <p className="mb-1 text-xs">DEPARTING</p>
               <DatePicker
                 id="departing"
-                onChange={onChange}
-                value={value}
+                onChange={setDeparting}
+                value={departing}
                 tileContent={hasContent}
                 className="datepicker border-0 w-full font-body"
               />
@@ -152,8 +154,8 @@ const BookingTab = ({ type }) => {
                 <p className="mb-1 text-xs">RETURNING</p>
                 <DatePicker
                   id="returning"
-                  onChange={onChange}
-                  value={value}
+                  onChange={setReturning}
+                  value={returning}
                   tileContent={hasContent}
                   className="datepicker border-0 w-full font-body"
                 />
@@ -162,68 +164,81 @@ const BookingTab = ({ type }) => {
           )}
         </div>
 
-        <div className="booking__wrapper" data-modal-toggle="defaultModal">
-          <p className="mb-1 text-xs mx-4">PASSENGERS</p>
+        <div
+          // className={`${
+          //   type && "lg:grid-cols-2 md:col-span-2"
+          // } grid grid-cols-1 lg:grid-cols-2 gap-3`}
+          className="flex gap-3"
+        >
           <div
-            className="flex items-center relative"
-            onClick={() => setShow(!show)}
-            role="button"
+            className="booking__wrapper flex-auto relative"
+            data-modal-toggle="defaultModal"
           >
-            <span className="ml-4 mr-0 pb-1">
-              <svg
-                width="18"
-                height="17"
-                viewBox="0 0 18 17"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9 0.5C7.63608 0.5 6.32799 0.991931 5.36341 1.86753C4.39898 2.74327 3.85714 3.93087 3.85714 5.16917C3.85714 6.40747 4.39898 7.59508 5.36341 8.47081C6.32799 9.34642 7.63608 9.83835 9 9.83835C10.3639 9.83835 11.672 9.34642 12.6366 8.47081C13.601 7.59508 14.1429 6.40747 14.1429 5.16917C14.1429 3.93087 13.601 2.74327 12.6366 1.86753C11.672 0.991931 10.3639 0.5 9 0.5ZM4.83649 9.60255C1.96343 10.9672 0 13.6944 0 16.8421H18C18 13.6943 16.0366 10.967 13.1635 9.60255C12.0394 10.4748 10.5855 11.0058 9 11.0058C7.41453 11.0058 5.96064 10.4748 4.83649 9.60255Z"
-                  fill="#261F5E"
-                />
-              </svg>
-            </span>
+            <p className="mb-1 text-xs mx-4">PASSENGERS</p>
+            <div
+              className="flex items-center relative"
+              onClick={() => setShow(!show)}
+              role="button"
+            >
+              <span className="ml-4 mr-0 pb-1">
+                <svg
+                  width="18"
+                  height="17"
+                  viewBox="0 0 18 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 0.5C7.63608 0.5 6.32799 0.991931 5.36341 1.86753C4.39898 2.74327 3.85714 3.93087 3.85714 5.16917C3.85714 6.40747 4.39898 7.59508 5.36341 8.47081C6.32799 9.34642 7.63608 9.83835 9 9.83835C10.3639 9.83835 11.672 9.34642 12.6366 8.47081C13.601 7.59508 14.1429 6.40747 14.1429 5.16917C14.1429 3.93087 13.601 2.74327 12.6366 1.86753C11.672 0.991931 10.3639 0.5 9 0.5ZM4.83649 9.60255C1.96343 10.9672 0 13.6944 0 16.8421H18C18 13.6943 16.0366 10.967 13.1635 9.60255C12.0394 10.4748 10.5855 11.0058 9 11.0058C7.41453 11.0058 5.96064 10.4748 4.83649 9.60255Z"
+                    fill="#261F5E"
+                  />
+                </svg>
+              </span>
 
-            <div className="w-1/6 text-center">
-              <span>1</span>
+              <div className="w-1/6 text-center">
+                <span>1</span>
+              </div>
+
+              <div>
+                <svg
+                  width="25"
+                  height="24"
+                  viewBox="0 0 19 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6.70135 7.84741L9.42857 10.3341L12.1558 7.84741"
+                    stroke="#261F5E"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+
+              {/* <div className="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40"></div> */}
             </div>
 
-            <div>
-              <svg
-                width="25"
-                height="24"
-                viewBox="0 0 19 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.70135 7.84741L9.42857 10.3341L12.1558 7.84741"
-                  stroke="#261F5E"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-
-            {/* <div className="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40"></div> */}
             <div
               id="defaultModal"
               // tabindex="-1"
               // aria-hidden="true"
-              className="absolute top-10 left-0 right-0 z-50 w-full h-modal h-auto"
+              className="absolute top-20 left-0 right-0 z-50 w-full h-modal h-auto w-[250px]"
             >
               <div
                 className={`${
                   !show && "hidden"
-                } relative w-full h-full max-w-2xl md:h-auto widget-border rounded-lg shadow dark:bg-gray-700 bg-white`}
+                } relative w-full h-full max-w-lg md:h-auto widget-border rounded-lg shadow dark:bg-gray-700 bg-white`}
               >
                 <div className="relative">
-                  <div className="p-6 space-y-6">
-                    <div className="grid grid-cols-2 gap-3 mb-3">
+                  <div className="p-4 space-y-6">
+                    <div className="grid grid-cols-2 mb-3">
                       <div className="">
                         <p className="text-base">Adults</p>
-                        <p className="mb-0 text-grey-nine">12 + years</p>
+                        <p className="mb-0 text-xs text-grey-nine">
+                          12 + years
+                        </p>
                       </div>
                       <div className="flex items-center">
                         <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2">
@@ -241,14 +256,16 @@ const BookingTab = ({ type }) => {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div className="grid grid-cols-2 mb-3">
                       <div className="">
                         <p className="text-base">Children</p>
-                        <p className="mb-0 text-grey-nine">2 - 12 years</p>
+                        <p className="mb-0 text-xs text-grey-nine">
+                          2 - 12 years
+                        </p>
                       </div>
                       <div className="flex items-center">
                         <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2">
-                          <img src="/images/subtract.svg" alt="" />
+                          <img src="/images/subtract.svg" alt="subtract" />
                         </div>
                         <input
                           type="tel"
@@ -262,10 +279,12 @@ const BookingTab = ({ type }) => {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div className="grid grid-cols-2 mb-3">
                       <div className="">
                         <p className="text-base">Infants</p>
-                        <p className="mb-0 text-grey-nine">0 - 2 years</p>
+                        <p className="mb-0 text-xs text-grey-nine">
+                          0 - 2 years
+                        </p>
                       </div>
                       <div className="flex items-center">
                         <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2">
@@ -287,12 +306,12 @@ const BookingTab = ({ type }) => {
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="h-full">
-          <button className="btn btn-primary block w-full h-full">
-            Search
-          </button>
+          <div className="">
+            <button className="btn btn-primary block w-ful h-full">
+              Search
+            </button>
+          </div>
         </div>
       </div>
 
