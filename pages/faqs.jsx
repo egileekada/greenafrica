@@ -41,7 +41,7 @@ const FaPage = () => {
       <section className="w-full fit-x-bleed py-14">
         <h2 className="header-text">FAQS</h2>
 
-        <section className="flex flex-col mb-8 md:mb-0">
+        <section className="flex flex-col mb-8 md:mb-5">
           <section className="faqs__tabs my-6">
             <button className="btn btn-primary active mr-4">
               Booking A Flight

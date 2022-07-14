@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect, useRef } from "react";
 import useDeviceSize from "hooks/useWindowSize";
-import { getDesktopBanners, getMobileBanners } from "services/general";
+// import { getDesktopBanners, getMobileBanners } from "services/general";
 import { Spin } from "antd";
 import toast from "react-hot-toast";
 
@@ -12,23 +12,69 @@ const HeroSlider = () => {
   const slide = useRef();
   var timer = useRef();
   const [width] = useDeviceSize();
-  const [desktopBanners, setDesktopBanners] = useState([]);
-  const [mobileBanners, setMobileBanners] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [desktopBanners, setDesktopBanners] = useState([
+    {
+      id: 13,
+      slug: "banners/July2022/HE0ArV5tMW5oR38ti6Go.jpg",
+      type: "desktop",
+      alt_text: "Happy Eid Kabir",
+      title: "Happy Eid Kabir",
+      show: 1,
+      created_at: "2022-07-09T07:21:00.000000Z",
+      updated_at: "2022-07-09T07:32:36.000000Z",
+      url: "https://static.greenafrica.com/media/1013/eidkabir_lg_new.gif",
+    },
+    {
+      id: 11,
+      slug: "banners/May2022/PRk7s7lxyewDbFVlvG64.jpg",
+      type: "desktop",
+      alt_text: null,
+      title: "Happy Children's Day",
+      show: 1,
+      created_at: "2022-05-27T07:37:37.000000Z",
+      updated_at: "2022-05-27T07:37:37.000000Z",
+      url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
+    },
+    {
+      id: 7,
+      slug: "banners/April2022/a1kEQpvvqm6uV43v0rkK.png",
+      type: "desktop",
+      alt_text: null,
+      title: "Corper's FlyMax",
+      show: 1,
+      created_at: "2022-04-24T12:10:31.000000Z",
+      updated_at: "2022-04-24T12:10:31.000000Z",
+      url: "https://static.greenafrica.com/media/1013/eidkabir_lg_new.gif",
+    },
+  ]);
+  const [mobileBanners, setMobileBanners] = useState([
+    {
+      id: 12,
+      slug: "banners/May2022/uYtvFKsmpEocAPCO1VIy.png",
+      type: "mobile",
+      alt_text: null,
+      title: "Children's Day",
+      show: 1,
+      created_at: "2022-05-27T07:48:47.000000Z",
+      updated_at: "2022-05-27T07:48:47.000000Z",
+      url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
+    },
+  ]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const requests = Promise.all([getDesktopBanners(), getMobileBanners()]);
-        const responses = await requests;
-        setDesktopBanners(responses[0].items);
-        setMobileBanners(responses[1].items);
-      } catch (err) {
-        toast.error("Error occured");
-      }
-      setLoading(false);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const requests = Promise.all([getDesktopBanners(), getMobileBanners()]);
+  //       const responses = await requests;
+  //       setDesktopBanners(responses[0].items);
+  //       setMobileBanners(responses[1].items);
+  //     } catch (err) {
+  //       toast.error("Error occured");
+  //     }
+  //     setLoading(false);
+  //   })();
+  // }, []);
 
   useEffect(() => {
     if (width > 899) {

@@ -7,9 +7,6 @@ import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
 import { data } from "../../../utils/calendar";
 
-import Add from "../../../public/images/_add.svg";
-import Subtract from "../../../public/images/subtract.svg";
-
 const BookingTab = ({ type }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [value, onChange] = useState(new Date());
@@ -38,7 +35,7 @@ const BookingTab = ({ type }) => {
   function hasContent({ date }) {
     for (const key in data) {
       if (key === format(date, "yyyy-MM-dd")) {
-        return <p className="text-xs mt-2">${Math.round(data[key])}</p>;
+        return <p className="text-[10px] mt-2">${Math.round(data[key])}</p>;
       }
     }
     return <p></p>;
