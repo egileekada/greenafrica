@@ -16,7 +16,7 @@ const TripPayment = () => {
       {/* <section className="w-full px-3.5 py-24 lg:fit-x-bleed"> */}
       <section className="w-full">
         <section className="flex">
-          <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12 payment-section">
+        <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12 payment-section">
             <div className="mb-8">
               <h2 className="text-black font-extrabold text-2xl mb-4">
                 Payment

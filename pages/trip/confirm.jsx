@@ -3,16 +3,16 @@ import Link from "next/link";
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import FlightIcon from "assets/svgs/flightcircle.svg";
-import ArrowTo from "assets/svgs/arrowto.svg";
 
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
-import WorkIcon from "assets/svgs/work.svg";
+
+import Fare from "containers/IbeSummary/Fare";
+import SummaryDetails from "containers/IbeSummary/SummaryDetails";
 
 const TripConfirm = () => {
   return (
     <BaseLayout>
-      {/* <section className="w-full px-3.5 py-24 lg:fit-x-bleed"> */}
       <section className="w-full">
         <section className="flex">
           <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12">
@@ -40,14 +40,16 @@ const TripConfirm = () => {
               {/* Flight Summary */}
               <div className="flex items-center justify-between px-12 py-8">
                 <div className="flex flex-col">
-                  <h2>FLIGHT SUMMARY</h2>
-                  <p>Departing on June 22, 2022</p>
+                  <h2 className="trip-title mb-3">FLIGHT SUMMARY</h2>
+                  <p className="text-primary-main text-sm font-body font-normal">
+                    Departing on June 22, 2022
+                  </p>
                 </div>
                 <button className="btn btn-outline">Download Ticket</button>
               </div>
               {/* Flight Summary */}
               {/* Trip Itenary */}
-              <section className="ibe__trip__item tripView bordered mx-12 mb-9">
+              <section className="ibe__trip__item summaryView bordered mx-12 mb-9">
                 <div className="basis-full flex  flex-col min-h-[54px] ">
                   <p className="tripType self-center">Direct Flight</p>
                   <div className="flex justify-between">
@@ -78,9 +80,17 @@ const TripConfirm = () => {
               </section>
               {/* Trip Itenary */}
               {/* Passenger & Fare */}
+              <section className="flex justify-between px-12 mb-4">
+                <div className="basis-[48%]">
+                  <SummaryDetails />
+                </div>
+                <div className="basis-[48%]">
+                  <Fare />
+                </div>
+              </section>
               {/* Passenger & Fare */}
               {/* CTA */}
-              <div className="flex items-center px-8">
+              <div className="flex items-center px-12">
                 <button className="btn btn-primary mr-2">Manage Booking</button>
                 <button className="btn btn-outline mr-2">Check In</button>
               </div>

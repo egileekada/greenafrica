@@ -4,13 +4,11 @@ import FlightIcon from "assets/svgs/flightcircle.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
-import CheckInCard from "components/Cards/checkin";
 import IbeAdbar from "containers/IbeAdbar";
 
-const CheckInDetails = () => {
+const ManageBookings = () => {
   return (
     <BaseLayout>
-      {/* <section className="w-full px-3.5 py-24 lg:fit-x-bleed"> */}
       <section className="w-full checkin">
         <section className="flex">
           <div className="basis-[80%] flex flex-col greylike py-10 pl-28 pr-12">
@@ -23,19 +21,6 @@ const CheckInDetails = () => {
                 checking in
               </p>
             </div>
-
-            <section className="bg-white py-11 px-8 flex-col mb-8 rounded-md">
-              <h3 className="title-text mb-[6px]">PASSENGER DETAILS</h3>
-              <p className="font-body text-black text-xs mb-7">
-                Kindly confirm that the information below is correct before
-                checking in
-              </p>
-              <div className="grid grid-cols-3 gap-8">
-                <CheckInCard />
-                <CheckInCard />
-                <CheckInCard />
-              </div>
-            </section>
 
             <section className="flex flex-col bg-white pb-24">
               {/* TripHeader */}
@@ -130,10 +115,77 @@ const CheckInDetails = () => {
                   additional fees
                 </p>
               </section>
-              {/* heckin Info*/}
+              {/* Checkin Info*/}
+              {/* CTA */}
               <div className="flex mx-6">
-                <button className="btn btn-primary">Check In</button>
+                <button className="btn btn-outline mr-3">
+                  Update Itinerary
+                </button>
+                <button className="btn btn-outline mr-3">
+                  Manage Services
+                </button>
+                <button className="btn btn-outline mr-3">
+                  Seat Management
+                </button>
               </div>
+              {/* CTA */}
+              {/* Summary */}
+              <div className="flex flex-col mx-6 mt-10">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center">
+                    <h6 className="font-display text-xs text-primary-main">
+                      Round Trip ABV - LOS
+                    </h6>
+                  </div>
+                  <div>
+                    <h6 className="font-header text-base text-primary-main">
+                      {" "}
+                      ₦26,501
+                    </h6>
+                  </div>
+                </div>
+                <div className="checkin__row">
+                  <div className="flex items-center">
+                    <h6>2 x 10 kg baggage:</h6>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+                <div className="checkin__row subrow">
+                  <div className="flex items-center">
+                    <h6>1x Seat Selected</h6>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+                <div className="checkin__row subrow">
+                  <div className="flex items-center">
+                    <h6>1x Seat Selected</h6>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+                <div className="checkin__row mb-10">
+                  <div className="flex items-center">
+                    <h6>1x Seat Selected</h6>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+                <div className="checkin__row totalRow">
+                  <div className="flex items-center">
+                    <h5>Amount Due</h5>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+              </div>
+              {/* Summary */}
             </section>
           </div>
           <div className="basis-[20%] bg-white px-6 py-8">
@@ -145,4 +197,4 @@ const CheckInDetails = () => {
   );
 };
 
-export default CheckInDetails;
+export default ManageBookings;
