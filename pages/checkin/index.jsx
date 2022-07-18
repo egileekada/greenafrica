@@ -64,6 +64,7 @@ const CheckInDetails = () => {
                     </h6>
                   </div>
                 </div>
+                
               </div>
 
               <div className="mx-6">
