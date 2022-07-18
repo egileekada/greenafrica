@@ -19,7 +19,7 @@ module.exports = {
       fontSize: {
         base: ["16px", "21px"],
         header: ["34px", "44px"],
-        xxs: ["10px", "12px"],
+        xxs: ["10px", "13px"],
       },
       borderColor: {
         faqs: "rgba(229, 230, 236, 0.6)",
@@ -45,6 +45,9 @@ module.exports = {
           seven: "#7A7794",
         },
         faq__border: "rgba(229, 230, 236, 0.6)",
+        purple: {
+          light: "#ECEAFD",
+        },
       },
       gridTemplateColumns: {
         contact__cards: "repeat(auto-fit, minmax(381px, 1fr))",

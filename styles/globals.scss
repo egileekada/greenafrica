@@ -12,6 +12,9 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-size: 80%;
+}
 // Tailwind Styles
 @layer components {
   .fit-x-bleed {
@@ -23,7 +26,15 @@
   }
 
   .header-text {
-    @apply text-primary-main font-body text-header;
+    @apply text-primary-main font-body  text-header;
+  }
+
+  .title-text {
+    @apply text-xxs text-left text-[#8F8CA4] font-header;
+  }
+
+  .content-text {
+    @apply text-xs text-left text-[#101010] font-body;
   }
 
   // Button
@@ -32,6 +43,14 @@
 
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;
+    }
+
+    &.btn-green {
+      @apply bg-green text-primary-main;
+
+      &:hover {
+        @apply bg-opacity-5;
+      }
     }
 
     &.btn-white {
@@ -43,13 +62,30 @@
     }
 
     &.btn-outline {
-      @apply bg-transparent text-white border-[2px] border-primary-main
+      @apply bg-transparent text-primary-main border-[2px] border-primary-main
        hover:bg-primary-main hover:border-primary-main hover:text-white;
+
+      &.dotted {
+        border: 2px dotted #26205e;
+        color: #26205e;
+
+        &:hover {
+          span {
+            color: white;
+          }
+        }
+      }
     }
   }
   // Button
 
   // Form
+
+  // input
+  // select
+  // radio
+  // number
+
   .form {
     @apply flex justify-between flex-wrap;
 
@@ -58,29 +94,33 @@
     }
 
     .form-row-full {
-      @apply  flex flex-col basis-[100%];
+      @apply flex flex-col basis-[100%];
     }
   }
 
   .form-group {
     border: 1px solid #d8d7e2;
-    border-radius: 6px;
-    padding:8px 30px;
+    @apply flex flex-col mb-4 py-[8px] px-[22px] rounded-md;
+
+    &.select-group {
+      @apply px-[16px] relative;
+    }
 
     label {
       @apply font-body text-[#979797] text-[12px] mb-[7px] font-normal;
     }
 
-    input {
-      @apply bg-transparent border-none outline-none text-black text-base font-normal  w-full focus:ring-0 focus:outline-none  placeholder-black ;
+    input,
+    input[type='date'] {
+      @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-base font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
+    }
 
-      &.white-bg {
-        @apply bg-white;
-      }
+    select {
+      @apply bg-transparent appearance-none w-full border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal focus:ring-0 focus:outline-none min-w-[130px];
+    }
 
-      &.filter-input-form {
-        @apply bg-transparent  rounded-none border-transparent border-b-[#e4e9f2] px-0 text-xl;
-      }
+    .select-icon {
+      @apply absolute right-[10%] bottom-4 z-[2];
     }
   }
   // Form
@@ -106,27 +146,21 @@
     }
   }
 
-  .contact__cards {
-    @apply py-[53px] grid gap-x-[36px] gap-y-[35px] sm:gap-y-[45px]  grid-cols-1 sm:grid-cols-contact__cards;
-
-    .contact__card {
-      @apply flex bg-grey-light rounded-xl p-5 sm:p-7;
-
-      figure {
-        @apply mr-[25px];
-      }
+  .ga__counter {
+    ant-input {
+      border: 1px solid #d8d7e2;
+      border-radius: 6px;
     }
-  }
+    ant-input:hover {
+      border: 1px solid #d8d7e2;
+      border-radius: 6px;
+    }
 
-  .offices__container {
-    @apply flex flex-wrap tab:flex-nowrap py-[53px];
-  }
-
-  .newsletter {
-    @apply flex flex-wrap md:flex-nowrap justify-between items-center  bg-grey-light px-8 sm:px-16 tab:px-28 py-8 md:py-16 rounded-xl;
-
-    h2 {
-      @apply text-[#26205E] font-body text-xl md:text-2xl mb-6 md:mb-0;
+    .ant-input:focus,
+    .ant-input-focused {
+      border-color: #26205e !important;
+      box-shadow: none !important;
+      outline: 0;
     }
   }
 
@@ -155,31 +189,562 @@
       }
     }
   }
-}
 
-.faqs__tabs {
-  button.btn {
-    color: #29255d;
-    margin-right: 16px;
-    border: 1px solid rgba(158, 155, 191, 0.27);
+  .ibe__flight__info {
+    @apply bg-[#ffffff] rounded-md mb-14;
 
-    @media (max-width: 800px) {
-      margin-bottom: 12px;
+    &__destination {
+      @apply bg-[#26205e]  h-14 flex items-center relative px-12;
+      border-radius: 6px 6px 0px 0px;
+
+      p {
+        @apply font-display text-white font-extrabold text-2xl;
+      }
     }
 
-    &.active {
-      color: white;
+    &__dates {
+      @apply bg-white min-h-[100px] p-6;
+      border-radius: 0px 0px 6px 6px;
+
+      .ibe__date__item {
+        @apply basis-[14.3%] flex-grow-0 flex-shrink-0 flex justify-center;
+        border-right: 1px solid rgba(38, 31, 94, 0.06);
+
+        button {
+          @apply flex flex-col items-start px-6 py-[20px] transition-all;
+
+          h6 {
+            @apply text-primary-main font-extrabold text-[11px] leading-[14px] font-body mb-2;
+          }
+
+          p {
+            @apply text-primary-main font-bold text-base;
+          }
+
+          &:hover {
+            @apply bg-primary-main bg-opacity-5 rounded-md;
+          }
+
+          &.active {
+            @apply bg-primary-main rounded-md;
+
+            h6 {
+              @apply text-white;
+            }
+
+            p {
+              @apply text-green;
+            }
+          }
+        }
+      }
     }
   }
-}
 
-.faq__input {
-  border: 1px solid #d8d7e2;
-  border-radius: 6px;
-  @apply w-full flex justify-between items-center px-9 py-5;
+  .ibe__trip__item {
+    @apply flex items-center bg-white pt-6 pb-10 px-7 rounded-t-md;
 
-  input {
-    @apply basis-[80%] bg-transparent border-[2px] border-none outline-none text-[#4B4F63] text-opacity-60 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#4B4F63] placeholder-opacity-60;
+    &.tripView {
+      @apply px-24;
+
+      &.bordered {
+        border: 0.5px solid #cfceda;
+        border-radius: 6px;
+      }
+    }
+
+    &.summaryView {
+      @apply px-6;
+
+      &.bordered {
+        border: 0.5px solid #cfceda;
+        border-radius: 6px;
+      }
+    }
+
+    &.checkinView {
+      @apply px-0 pt-8 pb-0 relative flex-col;
+
+      &.bordered {
+        border: 0.5px solid #cfceda;
+        border-radius: 6px;
+      }
+
+      .trip-details {
+        background: rgba(158, 155, 191, 0.12);
+        @apply px-6 pt-4 pb-6 flex basis-full w-full;
+
+        &-item {
+          @apply flex flex-col mr-12 h-10;
+
+          h5,
+          h5 span {
+            @apply font-display text-sm text-primary-main;
+
+            button.btn-outline {
+              min-width: 48px;
+              max-width: 50px;
+              width: 48.8px;
+              height: 22px;
+              @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display;
+            }
+          }
+          h6 {
+            @apply font-title text-xxs text-primary-main mb-[10px];
+          }
+        }
+      }
+    }
+
+    p.tripType,
+    p.tripTime {
+      @apply font-extrabold text-primary-main text-sm font-body;
+    }
+  }
+
+  .ibe__trip__package {
+    @apply bg-white px-24 py-6;
+
+    h5 {
+      @apply text-xs text-black font-header mb-2;
+    }
+
+    h6 {
+      @apply text-xs text-[25px] leading-[32px] text-primary-main font-display;
+    }
+  }
+
+  .ibe__trip__number {
+    @apply bg-[#EDEDFF] py-4 px-7;
+
+    &.tripView {
+      @apply px-24 py-[30px];
+
+      h4 {
+        @apply mb-0 font-body text-sm;
+      }
+    }
+
+    h4 {
+      @apply font-semibold font-body text-[10px] leading-[13px] text-primary-main mb-2;
+    }
+
+    p {
+      @apply font-extrabold font-header text-xs text-primary-main;
+    }
+
+    button.btn-outline {
+      @apply text-primary-main font-bold;
+    }
+  }
+
+  .ibe__trip__variant {
+    @apply flex flex-col w-full px-[14px] py-6  border-t-[6px];
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 6px 6px 0px 0px;
+
+    button {
+      @apply flex flex-col text-base font-bold;
+    }
+
+    &.saver {
+      @apply border-t-primary-main;
+
+      button {
+        @apply text-primary-main;
+      }
+    }
+
+    &.classic {
+      @apply border-t-black;
+
+      button {
+        @apply text-white;
+      }
+    }
+
+    &.gflex {
+      @apply border-t-green;
+    }
+  }
+
+  .ibe__sidebar {
+    &__item {
+      @apply w-full;
+
+      h1 {
+        @apply text-primary-main text-[10px] leading-[13px] font-extrabold font-body;
+      }
+    }
+
+    &__content {
+      @apply w-full p-4 bg-primary-main rounded-md;
+
+      h4 {
+        @apply text-white text-xs font-body font-extrabold;
+      }
+    }
+
+    &__flightInfo {
+      @apply w-full flex items-center justify-between p-4 bg-primary-main rounded-md;
+    }
+
+    &__box {
+      @apply pt-[20px] flex flex-col;
+
+      &.payment {
+        border: 0.5px solid #9e9bbf;
+        border-radius: 6px;
+        @apply pt-8 pb-5 px-3;
+
+        .ibe__sidebar__row {
+          @apply py-2;
+
+          &.subrow {
+            @apply pl-6;
+          }
+
+          &.totalRow {
+            @apply border-t;
+
+            h5 {
+              @apply font-title text-xs text-primary-main;
+            }
+
+            h6 {
+              @apply font-display text-primary-main text-base;
+            }
+          }
+        }
+      }
+    }
+
+    &__empty {
+      @apply flex flex-col items-center justify-center  rounded-md;
+      border: 0.5px solid #9e9bbf;
+      min-height: 72px;
+    }
+
+    &__row {
+      @apply flex justify-between items-center py-4;
+
+      &.bordered {
+        border-bottom: 0.4px solid rgba(38, 32, 94, 0.2);
+      }
+
+      figure {
+        @apply mr-2 w-6 h-6 flex items-center justify-center;
+      }
+
+      h6 {
+        @apply text-primary-main text-xs font-body;
+      }
+    }
+  }
+
+  .ibe__adbar {
+    @apply flex flex-col;
+
+    h1 {
+      @apply text-[#101010] text-sm font-header mb-5;
+    }
+
+    figure.adImage {
+      @apply mb-[22px] overflow-hidden;
+
+      img {
+        @apply w-full h-full object-cover;
+      }
+    }
+  }
+
+  .passenger__form {
+    @apply flex flex-col;
+
+    &__box {
+      @apply bg-white mb-10 py-11 px-9 flex flex-col;
+
+      label.check-label {
+        @apply text-[#101010] text-xs font-body;
+
+        span {
+          @apply font-title;
+        }
+      }
+
+      .ant-switch {
+        height: 22px;
+        background-color: #ced6de !important;
+      }
+
+      .ant-switch-checked {
+        background-color: #3ddc97 !important;
+      }
+
+      .ant-checkbox-checked .ant-checkbox-inner {
+        background-color: #3ddc97 !important;
+        border-color: #3ddc97;
+      }
+
+      .checkbox-copy {
+        .ant-checkbox-checked .ant-checkbox-inner {
+          background-color: #26205e !important;
+          border-color: #26205e;
+        }
+      }
+    }
+    button.cta {
+      @apply w-[195px];
+      &.btn-outline {
+        @apply text-primary-main;
+      }
+    }
+  }
+
+  .primary-checkbox {
+    .ant-switch {
+      widt: 24px;
+      height: 24px;
+    }
+
+    .ant-switch-checked {
+      background-color: #26205e !important;
+    }
+
+    .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: #26205e !important;
+      border-color: #26205e;
+    }
+  }
+
+  .baggage__card {
+    @apply flex flex-col items-center justify-center p-7;
+
+    background: rgba(38, 31, 94, 0.06);
+    border-radius: 6px;
+  }
+
+  .meal__card {
+    @apply flex flex-col items-center justify-center p-7 rounded-md;
+    background: rgba(38, 31, 94, 0.06);
+
+    figure {
+      @apply w-full h-[195px] mb-4 overflow-hidden;
+
+      img {
+        @apply w-full h-full;
+      }
+    }
+  }
+
+  .payment-section {
+    h2 {
+      @apply font-display text-base  text-black;
+    }
+
+    p {
+      @apply font-body text-sm text-black;
+    }
+
+    h6 {
+      @apply text-primary-main font-body text-xxs;
+    }
+
+    h5 {
+      @apply text-primary-main font-display text-[28px] leading-[36px];
+    }
+
+    .payment-card {
+      @apply py-9 px-14  mb-8 rounded-md bg-white flex justify-between items-center border-none transition-all cursor-pointer relative transition-all;
+
+      &:hover {
+        box-shadow: 0 0 5px 0 rgba(195, 198, 205, 0.5);
+      }
+
+      figure.check-payment {
+        @apply absolute top-4 left-4;
+      }
+
+      &.active {
+        border: 1px solid rgba(38, 32, 94, 0.51);
+      }
+    }
+  }
+
+  .trip__summary {
+    h2.trip-title {
+      @apply text-primary-main text-sm font-display;
+    }
+
+    p.trip-body {
+      @apply text-primary-main text-xs font-title;
+    }
+
+    &__item {
+      border: 0.5px solid #cfceda;
+      @apply py-5 px-5 rounded-md flex flex-col w-full;
+    }
+
+    &__row {
+      @apply flex justify-between items-center py-4 pl-4;
+      border-bottom: 1px solid rgba(158, 155, 191, 0.15);
+
+      &.subrow {
+        @apply pl-6;
+      }
+
+      &.totalRow {
+        @apply border-none;
+
+        h5 {
+          @apply text-primary-main text-xs font-title;
+        }
+
+        h6 {
+          @apply text-primary-main text-base font-display;
+        }
+      }
+
+      h6 {
+        @apply text-primary-main text-xs font-body;
+      }
+    }
+
+    &__details {
+      @apply flex items-center mb-3;
+
+      .f-1 {
+        @apply basis-1/2;
+
+        h5 {
+          @apply text-primary-main text-xs font-body;
+        }
+
+        h6 {
+          @apply text-primary-main text-xs font-header;
+        }
+      }
+    }
+  }
+
+  .checkin {
+    h3.title-text {
+      @apply font-display text-xs text-primary-main;
+    }
+
+    &__card {
+      @apply flex items-center;
+      figure {
+        // @apply w-[160px] h-[160px] rounded-[50%] bg-[#F2F2F2] mr-4;
+        @apply mr-4;
+      }
+
+      h6 {
+        @apply font-title text-xs text-black;
+      }
+
+      p {
+        @apply font-body text-xs text-black;
+      }
+    }
+
+    &__info {
+      @apply px-6 py-6 bg-[#F3F3F7] rounded;
+
+      p {
+        @apply font-body text-xs text-black;
+      }
+    }
+
+    &__row {
+      @apply flex justify-between items-center py-4 pl-4;
+      border-bottom: 1px solid rgba(158, 155, 191, 0.15);
+
+      h6 {
+        @apply text-primary-main text-xs font-body;
+      }
+
+      &.subrow {
+        @apply pl-6;
+      }
+
+      &.totalRow {
+        @apply border-none;
+
+        h5 {
+          @apply font-title text-xs text-primary-main;
+        }
+
+        h6 {
+          @apply font-display text-primary-main text-base;
+        }
+      }
+    }
+  }
+
+  .seats__legend {
+    @apply flex flex-col;
+
+    &__item {
+      @apply flex items-center mb-4;
+
+      p {
+        @apply text-primary-main text-sm font-title;
+
+        &.confirmed-p {
+          color: white;
+        }
+      }
+
+      figure {
+        @apply rounded-[5px] w-[30px] h-[30px] bg-white flex items-center justify-center mr-[15px];
+        border: 2px solid #efedff;
+        padding: 2px;
+
+        .seat-box {
+          @apply w-[26px] h-[24px] rounded-[5px] flex items-center justify-center;
+        }
+      }
+    }
+  }
+
+  .cabin__legend {
+    p {
+      @apply text-xs;
+    }
+  }
+
+  .seats {
+    &__row {
+      @apply flex px-6 my-2;
+    }
+
+    &__item {
+      @apply mr-1 flex items-center justify-center bg-primary-main w-[38px] h-[49px] rounded-md cursor-pointer hover:bg-opacity-70;
+
+      p {
+        @apply text-white text-lg font-header;
+      }
+
+      &.seatRow {
+        @apply bg-transparent w-[20px];
+        p {
+          @apply text-primary-main text-xs font-body;
+        }
+      }
+
+      &.unavailable {
+        @apply bg-[#F1F1F1];
+      }
+
+      &.row-title {
+        @apply bg-transparent;
+
+        p {
+          @apply text-primary-main;
+        }
+      }
+    }
   }
 }
 
@@ -200,6 +765,10 @@
     justify-content: center;
     animation: scaleIn 0.3s ease-in-out;
     pointer-events: auto;
+
+    &.top {
+      align-items: flex-start;
+    }
   }
 
   &.inactive {
@@ -212,7 +781,7 @@
     display: flex;
     position: relative;
     background-color: transparent;
-    width: 825px;
+    // width: 825px;
     overflow-y: scroll;
 
     @media (max-width: 900px) {
@@ -253,26 +822,69 @@
   }
 }
 
+.benefits__popup {
+  @apply flex flex-col;
+
+  &__row {
+    @apply w-full flex;
+
+    &.item-center {
+      .benefits__popup__row__item {
+        @apply justify-center items-center;
+      }
+    }
+
+    &:first-child {
+      .benefits__popup__row__item {
+        @apply px-4;
+      }
+    }
+
+    &__item {
+      @apply basis-[25%] flex-shrink-0 flex flex-col py-7 px-8;
+
+      &:not(:last-child) {
+        @apply border-r border-b;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      h3 {
+        @apply text-center text-[25px] leading-[32px] text-primary-main font-semibold font-display;
+      }
+
+      h4 {
+        @apply text-center text-sm text-black font-normal font-body;
+      }
+
+      h5 {
+        @apply text-center text-sm text-black font-semibold font-body;
+      }
+
+      p {
+        @apply text-center text-xs text-black font-normal font-body mt-[10px];
+      }
+
+      figure {
+        @apply flex items-center justify-center w-[22px] h-[22px];
+      }
+    }
+  }
+}
+
 .modal--close--icon {
   cursor: pointer;
 }
 
-.ga__desktop__filter {
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
-  border-radius: 6px;
+.greylike {
+  background-color: rgba(158, 155, 191, 0.17);
+}
 
-  &__header {
-    border-bottom: 1px solid rgba(192, 207, 214, 0.23);
-
-    button.btn-text {
-      color: rgba(17, 16, 32, 0.5);
-      @apply hover:text-green;
-    }
-  }
-
-  &__content {
-  }
+.plane-seats {
+  background-image: url('./bg/cab.png');
+  background-size: 35%;
+  background-repeat: no-repeat;
+  background-position-x: 50%;
 }
 
 // Clean up Styles
@@ -290,6 +902,12 @@ input[type='number'] {
 
 textarea {
   resize: none;
+}
+
+svg.primary-main {
+  path {
+    fill: #26205e;
+  }
 }
 
 .scrollbar-none {
