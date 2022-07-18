@@ -12,6 +12,9 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-size: 80%;
+}
 // Tailwind Styles
 @layer components {
   .fit-x-bleed {
@@ -269,7 +272,7 @@
 
       .trip-details {
         background: rgba(158, 155, 191, 0.12);
-        @apply px-6 pt-4 flex basis-full w-full;
+        @apply px-6 pt-4 pb-6 flex basis-full w-full;
 
         &-item {
           @apply flex flex-col mr-12 h-10;
@@ -678,6 +681,71 @@
       }
     }
   }
+
+  .seats__legend {
+    @apply flex flex-col;
+
+    &__item {
+      @apply flex items-center mb-4;
+
+      p {
+        @apply text-primary-main text-sm font-title;
+
+        &.confirmed-p {
+          color: white;
+        }
+      }
+
+      figure {
+        @apply rounded-[5px] w-[30px] h-[30px] bg-white flex items-center justify-center mr-[15px];
+        border: 2px solid #efedff;
+        padding: 2px;
+
+        .seat-box {
+          @apply w-[26px] h-[24px] rounded-[5px] flex items-center justify-center;
+        }
+      }
+    }
+  }
+
+  .cabin__legend {
+    p {
+      @apply text-xs;
+    }
+  }
+
+  .seats {
+    &__row {
+      @apply flex px-6 my-2;
+    }
+
+    &__item {
+      @apply mr-1 flex items-center justify-center bg-primary-main w-[38px] h-[49px] rounded-md cursor-pointer hover:bg-opacity-70;
+
+      p {
+        @apply text-white text-lg font-header;
+      }
+
+      &.seatRow {
+        @apply bg-transparent w-[20px];
+        p {
+          @apply text-primary-main text-xs font-body;
+        }
+      }
+
+      &.unavailable {
+        @apply bg-[#F1F1F1];
+      }
+
+      &.row-title {
+        @apply bg-transparent;
+
+        p {
+          @apply text-primary-main;
+        }
+      }
+    }
+  }
 }
 
 .ga__popup {
@@ -810,6 +878,13 @@
 
 .greylike {
   background-color: rgba(158, 155, 191, 0.17);
+}
+
+.plane-seats {
+  background-image: url('./bg/cab.png');
+  background-size: 35%;
+  background-repeat: no-repeat;
+  background-position-x: 50%;
 }
 
 // Clean up Styles
