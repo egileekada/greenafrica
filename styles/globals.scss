@@ -374,8 +374,8 @@ textarea {
 }
 
 .booking__wrapper {
-  border: 1px solid #d8d7e2;
-  // height: 60px;
+  // border: 1px solid #d8d7e2;
+  box-shadow: 0 0 5px 0 rgb(195 198 205 / 50%);
   @apply rounded-lg px-2 py-2;
 }
 
