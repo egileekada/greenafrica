@@ -63,7 +63,7 @@ const IbeTripItem = () => {
         }`}
       >
         <div className="border-t border-t-black border-opacity-20 mx-6 mb-7"></div>
-        <div className="flex flex-wrap lg:flex-nowrap justify-between px-12">
+        <div className="flex flex-wrap lg:flex-nowrap justify-between px-6 lg:px-12">
           <div className="basis-full lg:basis-[32%] mb-7">
             <IbeTripVariant variant="saver" />
           </div>

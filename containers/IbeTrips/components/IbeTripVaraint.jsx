@@ -52,7 +52,7 @@ const IbeTripVariant = ({ variant }) => {
           </ul>
         </div>
         {variant === "saver" && (
-          <button onClick={() => setShow(true)} className="btn btn-outline ">
+          <button onClick={() => setShow(true)} className="btn btn-outline">
             Continue For ₦16,501
           </button>
         )}

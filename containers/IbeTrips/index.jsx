@@ -4,8 +4,8 @@ import IbeTripItem from "./components/IbeTripItem";
 const IbeTrips = () => {
   return (
     <section className="ibe__flight__trips">
-      <h2 className="text-primary-main font-extrabold text-base mb-8">
-        SELECT FLIGHT
+      <h2 className="text-primary-main font-extrabold text-xs mb-8">
+        DEPARTURE
       </h2>
 
       <section className="flex flex-col">
