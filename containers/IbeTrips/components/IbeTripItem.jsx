@@ -23,9 +23,9 @@ const IbeTripItem = () => {
               </p>
             </div>
             <div className="flex items-center basis-[70%] justify-between px-4 lg:px-0">
-              <DottedLine className="w-[30%]" />
-              <AeroIcon className="w-[20%]" />
-              <DottedLine className="w-[30%]" />
+              <DottedLine className="w-[30%] lg:w-auto" />
+              <AeroIcon className="w-[20%] lg:w-auto" />
+              <DottedLine className="w-[30%] lg:w-auto" />
             </div>
             <div className="flex flex-col items-end">
               <h5 className="font-extrabold font-header text-xl lg:text-2xl text-primary-main text-right">

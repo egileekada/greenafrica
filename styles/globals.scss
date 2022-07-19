@@ -864,6 +864,14 @@
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       }
 
+      &.rr {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      &.cta-row {
+        border: none;
+      }
+
       h3 {
         @apply text-center text-[25px] leading-[32px] text-primary-main font-semibold font-display;
       }

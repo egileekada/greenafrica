@@ -199,11 +199,31 @@ const IbeTripVariant = ({ variant }) => {
                   </figure>
                   <p>You selected:</p>
                 </div>
-                <div className="benefits__popup__row__item ">
+                <div className="benefits__popup__row__item rr">
                   <figure>
                     <CheckIcon />
                   </figure>
                   <p>&nbsp;</p>
+                </div>
+              </div>
+              <div className="benefits__popup__row item-center">
+                <div className="benefits__popup__row__item cta-row">
+                  <h5>&nbsp;</h5>
+                </div>
+                <div className="benefits__popup__row__item cta-row">
+                  <button className="btn btn-outline">
+                    +N50,000 / Per Person
+                  </button>
+                </div>
+                <div className="benefits__popup__row__item cta-row">
+                  <button className="btn btn-outline">
+                    +N50,000 / Per Person
+                  </button>
+                </div>
+                <div className="benefits__popup__row__item cta-row">
+                  <button className="btn btn-outline">
+                    +N50,000 / Per Person
+                  </button>
                 </div>
               </div>
             </section>
