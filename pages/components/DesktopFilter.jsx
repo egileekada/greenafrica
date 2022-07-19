@@ -44,6 +44,7 @@ const DesktopFilter = () => {
           >
             My Booking
           </button>
+
           <button
             onClick={() => setActiveTab(5)}
             className={`btn ${
@@ -52,6 +53,15 @@ const DesktopFilter = () => {
           >
             Flight Schedule
           </button>
+
+          {/* <a
+            href="/flight-schedule"
+            className={`btn ${
+              activeTab === 5 ? "btn-primary" : "btn-text"
+            } mr-[22px] hidden lg:inline`}
+          >
+            Flight Schedule
+          </a> */}
         </div>
         <button className="flex items-center hidden md:flex">
           <figure className="mr-2">

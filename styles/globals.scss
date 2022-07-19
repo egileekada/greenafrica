@@ -360,6 +360,12 @@ textarea {
   border: none !important;
 }
 
+.css-4o4p50-Input input:focus {
+  outline: 0px !important;
+  border: 0px !important;
+  box-shadow: none;
+}
+
 .react-date-picker__inputGroup {
   padding: 0px !important;
 }
@@ -368,8 +374,8 @@ textarea {
 }
 
 .booking__wrapper {
-  border: 2px solid #d8d7e2;
-  height: 60px;
+  border: 1px solid #d8d7e2;
+  // height: 60px;
   @apply rounded-lg px-2 py-2;
 }
 
@@ -411,4 +417,26 @@ textarea {
 
 .react-date-picker {
   width: 100%;
+}
+
+.schedule {
+  background: #fafaff;
+  border-radius: 12px;
+}
+
+.schedule__grid {
+  border: 0.2px solid #9e9bbf;
+  border-top: 0px;
+  border-radius: 0px 0px 12px 12px;
+}
+
+.schedule__strip {
+  background: #26205e;
+  border: 0.2px solid #26205e;
+  border-radius: 12px 12px 0px 0px;
+}
+
+.select__wrapper {
+  border: 1px solid #d8d7e2;
+  @apply rounded-lg py-2;
 }
