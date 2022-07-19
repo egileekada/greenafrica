@@ -12,7 +12,6 @@ import WorkIcon from "assets/svgs/work.svg";
 const TripView = () => {
   return (
     <BaseLayout>
-      {/* <section className="w-full px-3.5 py-24 lg:fit-x-bleed"> */}
       <section className="w-full">
         <section className="flex">
           <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12">
@@ -53,7 +52,7 @@ const TripView = () => {
                       <AeroIcon />
                       <DottedLine />
                     </div>
-                    <div className="flex flex-col  items-end">
+                    <div className="flex flex-col items-end">
                       <h5 className="font-extrabold font-header text-2xl text-primary-main">
                         19:35
                       </h5>

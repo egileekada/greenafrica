@@ -7,26 +7,23 @@ import IbeSidebar from "containers/IbeSidebar";
 import { Fragment, useState } from "react";
 import Popup from "components/Popup";
 
-
 const Home = () => {
-  const [showPopUp, setShow] = useState(true);
+  const [showPopUp, setShow] = useState(false);
 
   return (
     <Fragment>
       <BaseLayout>
-        <section className="w-full">
-          <section className="flex">
-            <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12">
-              <h2 className="text-primary-main font-extrabold text-2xl mb-8">
-                SELECT FLIGHT
-              </h2>
-              <IbeHeader />
-              <IbeTrips />
-            </div>
-            <div className="basis-[25%] bg-white px-6 py-8">
-              <IbeSidebar />
-            </div>
-          </section>
+        <section className="flex flex-wrap xlg:flex-nowrap w-full">
+          <div className="basis-full xlg:basis-[75%] flex flex-col greylike py-10 px-4 md:px-8 tab:px-16 xxl:pl-24 xlg:pr-12">
+            <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
+              SELECT FLIGHT
+            </h2>
+            <IbeHeader />
+            <IbeTrips />
+          </div>
+          <div className="basis-full xlg:basis-[25%] bg-white px-8 py-8">
+            <IbeSidebar />
+          </div>
         </section>
       </BaseLayout>
       <Popup

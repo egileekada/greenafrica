@@ -8,17 +8,24 @@
 // @import './nav.scss';
 // @import './form.scss';
 
+//  width="61"
+//   height="61"
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-  // font-size: 80%;
+@media (min-width: 1200px) {
+  html {
+    font-size: 80%;
+  }
 }
+
 // Tailwind Styles
 @layer components {
   .fit-x-bleed {
-    @apply px-8 sm:px-16 tab:px-24;
+    // @apply px-8 sm:px-16 tab:px-12 xxl:px-24;
+    @apply px-4 xxl:pl-28;
   }
 
   .scrollable {
@@ -146,6 +153,10 @@ html {
     }
   }
 
+  figure.flightCircle {
+    @apply absolute left-3 md:-left-6 w-[29px] h-[29px] md:w-[61px] md:h-[61px];
+  }
+
   .ga__counter {
     ant-input {
       border: 1px solid #d8d7e2;
@@ -198,27 +209,31 @@ html {
       border-radius: 6px 6px 0px 0px;
 
       p {
-        @apply font-display text-white font-extrabold text-2xl;
+        @apply font-display text-white font-extrabold text-xs md:text-2xl;
       }
     }
 
     &__dates {
-      @apply bg-white min-h-[100px] p-6;
+      @apply bg-white min-h-[100px]  sm:px-6 py-4 sm:py-6 flex;
       border-radius: 0px 0px 6px 6px;
 
       .ibe__date__item {
-        @apply basis-[14.3%] flex-grow-0 flex-shrink-0 flex justify-center;
+        @apply basis-[14.3%] flex-grow flex-shrink-0 flex justify-center;
         border-right: 1px solid rgba(38, 31, 94, 0.06);
 
+        &.b-r-none {
+          border-right: none;
+        }
+
         button {
-          @apply flex flex-col items-start px-6 py-[20px] transition-all;
+          @apply flex flex-col items-start px-4 sm:px-6 py-[20px] transition-all;
 
           h6 {
-            @apply text-primary-main font-extrabold text-[11px] leading-[14px] font-body mb-2;
+            @apply text-primary-main font-extrabold text-xxs md:text-[11px] leading-[14px] font-body mb-2;
           }
 
           p {
-            @apply text-primary-main font-bold text-base;
+            @apply text-primary-main font-bold text-xs md:text-base;
           }
 
           &:hover {
@@ -242,7 +257,7 @@ html {
   }
 
   .ibe__trip__item {
-    @apply flex items-center bg-white pt-6 pb-10 px-7 rounded-t-md;
+    @apply flex flex-wrap lg:flex-nowrap items-center bg-white pt-6 pb-10 px-7 rounded-t-md;
 
     &.tripView {
       @apply px-24;

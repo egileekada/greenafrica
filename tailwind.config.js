@@ -53,6 +53,7 @@ module.exports = {
         contact__cards: "repeat(auto-fit, minmax(381px, 1fr))",
       },
       screens: {
+        xxl: "1200px",
         xlg: "1080px",
         tab: "900px",
       },

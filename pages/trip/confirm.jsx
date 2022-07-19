@@ -54,10 +54,10 @@ const TripConfirm = () => {
                   <p className="tripType self-center">Direct Flight</p>
                   <div className="flex justify-between">
                     <div className="flex flex-col">
-                      <h5 className="font-extrabold font-header  text-2xl text-primary-main">
+                      <h5 className="font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left">
                         18:00
                       </h5>
-                      <p className="font-semibold font-body text-sm text-black">
+                      <p className="font-semibold font-body text-xs lg:text-sm text-black text-left">
                         Lagos (LOS)
                       </p>
                     </div>
@@ -67,10 +67,10 @@ const TripConfirm = () => {
                       <DottedLine />
                     </div>
                     <div className="flex flex-col  items-end">
-                      <h5 className="font-extrabold font-header text-2xl text-primary-main">
+                      <h5 className="font-extrabold font-header text-xl lg:text-2xl text-primary-main text-right">
                         19:35
                       </h5>
-                      <p className="font-semibold font-body text-sm text-black">
+                      <p className="font-semibold font-body text-xs lg:text-sm text-black text-right">
                         Akure (AKR)
                       </p>
                     </div>

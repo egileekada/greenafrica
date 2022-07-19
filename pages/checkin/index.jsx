@@ -10,7 +10,6 @@ import IbeAdbar from "containers/IbeAdbar";
 const CheckInDetails = () => {
   return (
     <BaseLayout>
-      {/* <section className="w-full px-3.5 py-24 lg:fit-x-bleed"> */}
       <section className="w-full checkin">
         <section className="flex">
           <div className="basis-[80%] flex flex-col greylike py-10 pl-28 pr-12">
