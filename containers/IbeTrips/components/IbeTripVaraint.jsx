@@ -12,6 +12,26 @@ import NullIcon from "assets/svgs/null.svg";
 const IbeTripVariant = ({ variant }) => {
   const [showPopUp, setShow] = useState(false);
 
+  const gSaver = [
+    `Online Check-In`,
+    `Free Hand Luggage
+      (7KG)`,
+  ];
+
+  const gClassic = [
+    `Online Check-In`,
+    `Checked Baggage :15kg. Extra N500/KG`,
+    `Free Standard Seat (Pay for Non Standard)`,
+    `Free Hand Luggage (7KG)`,
+  ];
+
+  const gFlex = [
+    `Online Check-In`,
+    `Checked Baggage :15kg. Extra N500/KG`,
+    `Free Standard Seat (Pay for Non Standard)`,
+    `Free Hand Luggage (7KG)`,
+  ];
+
   return (
     <Fragment>
       <section className={`ibe__trip__variant ${variant}`}>
@@ -68,7 +88,7 @@ const IbeTripVariant = ({ variant }) => {
         )}
       </section>
       <Popup display={showPopUp} closeModal={() => setShow(false)} top={true}>
-        <section className="w-full bg-white rounded-xl ">
+        <section className="w-full bg-white rounded-xl hidden lg:flex flex-col">
           <div className="bg-primary-main text-center flex items-center justify-center p-8 rounded-t-xl">
             <h3 className="text-white">
               Upgrade your fare and enjoy more benefits
@@ -211,23 +231,92 @@ const IbeTripVariant = ({ variant }) => {
                   <h5>&nbsp;</h5>
                 </div>
                 <div className="benefits__popup__row__item cta-row">
-                  <button className="btn btn-outline">
+                  <button
+                    onClick={() => setShow(false)}
+                    className="btn btn-outline"
+                  >
                     +N50,000 / Per Person
                   </button>
                 </div>
                 <div className="benefits__popup__row__item cta-row">
-                  <button className="btn btn-outline">
+                  <button
+                    onClick={() => setShow(false)}
+                    className="btn btn-outline"
+                  >
                     +N50,000 / Per Person
                   </button>
                 </div>
                 <div className="benefits__popup__row__item cta-row">
-                  <button className="btn btn-outline">
+                  <button
+                    onClick={() => setShow(false)}
+                    className="btn btn-outline"
+                  >
                     +N50,000 / Per Person
                   </button>
                 </div>
               </div>
             </section>
           </section>
+        </section>
+        <section className="w-full bg-white rounded-xl flex flex-col  lg:hidden p-8">
+          <div className="mobile__benefits__item">
+            <h4>Upgrade your fare and enjoy more benefits</h4>
+            <p>You selected:</p>
+            <h5>gClassic</h5>
+            <ul>
+              {gClassic.map((_gClassic) => {
+                return (
+                  <li className="flex items-center mb-5">
+                    <figure>
+                      <CheckIcon />
+                    </figure>
+                    <span>{_gClassic}</span>
+                  </li>
+                );
+              })}
+            </ul>
+            <button onClick={() => setShow(false)} className="btn btn-primary">
+              Continue With gSaver
+            </button>
+          </div>
+          <div className="mobile__benefits__item">
+            <p>Our Recommendation</p>
+            <h5>gClassic</h5>
+            <ul>
+              {gSaver.map((_gSaver) => {
+                return (
+                  <li className="flex items-center mb-5">
+                    <figure>
+                      <CheckIcon />
+                    </figure>
+                    <span>{_gSaver}</span>
+                  </li>
+                );
+              })}
+            </ul>
+            <button onClick={() => setShow(false)} className="btn btn-primary">
+              Continue With gSaver
+            </button>
+          </div>
+          <div className="mobile__benefits__item">
+            <p>Our Recommendation</p>
+            <h5>gFlex</h5>
+            <ul>
+              {gFlex.map((_gFlex) => {
+                return (
+                  <li className="flex items-center mb-5">
+                    <figure>
+                      <CheckIcon />
+                    </figure>
+                    <span>{_gFlex}</span>
+                  </li>
+                );
+              })}
+            </ul>
+            <button onClick={() => setShow(false)} className="btn btn-primary">
+              Continue With gSaver
+            </button>
+          </div>
         </section>
       </Popup>
     </Fragment>

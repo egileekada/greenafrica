@@ -800,7 +800,7 @@
     overflow-y: scroll;
 
     @media (max-width: 900px) {
-      width: 90%;
+      width: 95%;
     }
 
     span.close {
@@ -890,6 +890,37 @@
 
       figure {
         @apply flex items-center justify-center w-[22px] h-[22px];
+      }
+    }
+  }
+}
+
+.mobile__benefits {
+  &__item {
+    @apply flex flex-col mb-9;
+
+    h4 {
+      @apply text-black text-xl font-header mb-3;
+    }
+
+    h5 {
+      @apply text-primary-main text-2xl font-display mb-6;
+    }
+
+    p {
+      @apply text-primary-main text-sm font-body;
+    }
+
+    ul {
+      @apply flex flex-col;
+
+      li {
+        figure {
+        }
+
+        span {
+          @apply text-black text-sm font-body ml-4;
+        }
       }
     }
   }
