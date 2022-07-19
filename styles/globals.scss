@@ -23,6 +23,26 @@
 
 // Tailwind Styles
 @layer components {
+  button {
+    @apply focus:outline-none;
+  }
+
+  .ga__section {
+    @apply flex flex-wrap xlg:flex-nowrap w-full;
+
+    &__main {
+      @apply basis-full xlg:basis-[75%] flex flex-col greylike py-10 px-4 md:px-8 tab:px-16 xxl:pl-24 xlg:pr-12;
+
+      &.payment-section {
+        @apply pt-28 lg:py-10;
+      }
+    }
+
+    &__side {
+      @apply basis-full xlg:basis-[25%] bg-white px-8 py-8;
+    }
+  }
+
   .fit-x-bleed {
     // @apply px-8 sm:px-16 tab:px-12 xxl:px-24;
     @apply px-4 xxl:pl-28;
@@ -209,7 +229,7 @@
       border-radius: 6px 6px 0px 0px;
 
       p {
-        @apply font-display text-white font-extrabold text-xs md:text-2xl;
+        @apply font-display text-white font-extrabold text-xs md:text-2xl mx-4;
       }
     }
 
@@ -259,8 +279,35 @@
   .ibe__trip__item {
     @apply flex flex-wrap lg:flex-nowrap items-center bg-white pt-6 pb-10 px-7 rounded-t-md;
 
+    h5.tripTime {
+      @apply font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left;
+      &.right-text {
+        @apply text-right;
+      }
+    }
+
+    p.tripCity {
+      @apply font-semibold font-body text-xs lg:text-sm text-black text-left;
+
+      &.right-text {
+        @apply text-right;
+      }
+    }
+
+    .tripIconPath {
+      @apply flex items-center basis-[70%] justify-between px-4 lg:px-0;
+
+      .dotted-svg {
+        @apply w-[30%] lg:w-auto;
+      }
+
+      .aero-svg {
+        @apply w-[20%] lg:w-auto;
+      }
+    }
+
     &.tripView {
-      @apply px-24;
+      @apply lg:px-24;
 
       &.bordered {
         border: 0.5px solid #cfceda;
@@ -313,19 +360,19 @@
 
     p.tripType,
     p.tripTime {
-      @apply font-extrabold text-primary-main text-sm font-body;
+      @apply font-extrabold text-primary-main text-xxs lg:text-sm font-body;
     }
   }
 
   .ibe__trip__package {
-    @apply bg-white px-24 py-6;
+    @apply bg-white px-7 lg:px-24 py-6;
 
     h5 {
-      @apply text-xs text-black font-header mb-2;
+      @apply text-xxs lg:text-xs text-black font-header mb-2;
     }
 
     h6 {
-      @apply text-xs text-[25px] leading-[32px] text-primary-main font-display;
+      @apply text-xl lg:text-[25px] leading-[32px] text-primary-main font-display;
     }
   }
 
@@ -333,10 +380,10 @@
     @apply bg-[#EDEDFF] py-4 px-7;
 
     &.tripView {
-      @apply px-24 py-[30px];
+      @apply px-7 lg:px-24 py-[30px];
 
       h4 {
-        @apply mb-0 font-body text-sm;
+        @apply mb-0 font-body text-xs lg:text-sm;
       }
     }
 
@@ -558,19 +605,19 @@
     }
 
     p {
-      @apply font-body text-sm text-black;
+      @apply font-body text-xs lg:text-sm text-black;
     }
 
     h6 {
-      @apply text-primary-main font-body text-xxs;
+      @apply text-primary-main font-body text-[8px] leading-[9px] lg:text-xxs;
     }
 
     h5 {
-      @apply text-primary-main font-display text-[28px] leading-[36px];
+      @apply text-primary-main font-display text-sm lg:text-[28px] leading-[36px];
     }
 
     .payment-card {
-      @apply py-9 px-14  mb-8 rounded-md bg-white flex justify-between items-center border-none transition-all cursor-pointer relative transition-all;
+      @apply py-5 lg:py-9 pl-12 pr-6 lg:px-14  mb-8 rounded-md bg-white flex justify-between items-start lg:items-center border-none transition-all cursor-pointer relative;
 
       &:hover {
         box-shadow: 0 0 5px 0 rgba(195, 198, 205, 0.5);

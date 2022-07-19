@@ -13,15 +13,15 @@ const Home = () => {
   return (
     <Fragment>
       <BaseLayout>
-        <section className="flex flex-wrap xlg:flex-nowrap w-full">
-          <div className="basis-full xlg:basis-[75%] flex flex-col greylike py-10 px-4 md:px-8 tab:px-16 xxl:pl-24 xlg:pr-12">
+        <section className="ga__section">
+          <div className="ga__section__main">
             <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
               SELECT FLIGHT
             </h2>
             <IbeHeader />
             <IbeTrips />
           </div>
-          <div className="basis-full xlg:basis-[25%] bg-white px-8 py-8">
+          <div className="ga__section__side">
             <IbeSidebar />
           </div>
         </section>

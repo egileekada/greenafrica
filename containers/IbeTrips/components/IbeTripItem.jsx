@@ -15,25 +15,17 @@ const IbeTripItem = () => {
           <p className="tripType self-center">Direct Flight</p>
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <h5 className="font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left">
-                18:00
-              </h5>
-              <p className="font-semibold font-body text-xs lg:text-sm text-black text-left">
-                Lagos (LOS)
-              </p>
+              <h5 className="tripType">18:00</h5>
+              <p className="tripCity">Lagos (LOS)</p>
             </div>
-            <div className="flex items-center basis-[70%] justify-between px-4 lg:px-0">
-              <DottedLine className="w-[30%] lg:w-auto" />
-              <AeroIcon className="w-[20%] lg:w-auto" />
-              <DottedLine className="w-[30%] lg:w-auto" />
+            <div className="tripIconPath">
+              <DottedLine className="dotted-svg" />
+              <AeroIcon className="aero-svg" />
+              <DottedLine className="dotted-svg" />
             </div>
             <div className="flex flex-col items-end">
-              <h5 className="font-extrabold font-header text-xl lg:text-2xl text-primary-main text-right">
-                19:35
-              </h5>
-              <p className="font-semibold font-body text-xs lg:text-sm text-black text-right">
-                Akure (AKR)
-              </p>
+              <h5 className="tripType">19:00</h5>
+              <p className="tripCity">Abuja (ABJ)</p>
             </div>
           </div>
           <p className="tripTime self-center">1h 35mins</p>

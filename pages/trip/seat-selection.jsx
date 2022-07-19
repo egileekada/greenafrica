@@ -8,7 +8,6 @@ import Popup from "components/Popup";
 import Seatslegend from "containers/Seats/SeatPopUp";
 import PlaneSeats from "containers/Seats/PlaneSeats";
 
-
 const SeatSelection = () => {
   const [showPopUp, setShow] = useState(false);
   const [showEmergency, setEmergency] = useState(false);
@@ -29,7 +28,8 @@ const SeatSelection = () => {
                 {/* TripHeader */}
                 <section className="ibe__flight__info__destination">
                   <p>Booking Code: 9J78BG</p>
-                  <figure className="absolute -left-6">
+                  {/* <figure className="absolute -left-6"> */}
+                  <figure className="flightCircle">
                     <FlightIcon />
                   </figure>
                 </section>
