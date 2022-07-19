@@ -21,17 +21,30 @@ const BookingTab = ({ type }) => {
   ];
 
   const colourStyles = {
-    control: (styles) => ({
+    control: (styles, { isFocused, isSelected }) => ({
       ...styles,
       borderWidth: "0px",
       minHeight: "auto",
       boxShadow: "0px",
+      border: "0px",
+      boxShadow: "none",
     }),
     valueContainer: (styles) => ({ ...styles, padding: "0px" }),
     dropdownIndicator: (styles) => ({ ...styles, padding: "0px" }),
     indicatorSeparator: (styles) => ({ ...styles, display: "none" }),
     placeholder: (styles) => ({ ...styles, marginLeft: "0px" }),
-    input: (styles) => ({ ...styles, margin: "0px" }),
+    input: (styles, { isFocused, isSelected }) => ({
+      ...styles,
+      margin: "0px",
+      outline: isSelected && "0px",
+      border: isSelected && "5px solid green",
+      boxShadow: "none !important",
+      "& input": {
+        "&:focus": {
+          "box-shadow": "none",
+        },
+      },
+    }),
   };
 
   function hasContent({ date }) {
@@ -308,9 +321,7 @@ const BookingTab = ({ type }) => {
           </div>
 
           <div className="">
-            <button className="btn btn-primary block w-ful h-full">
-              Search
-            </button>
+            <button className="btn btn-primary block h-full">Search</button>
           </div>
         </div>
       </div>

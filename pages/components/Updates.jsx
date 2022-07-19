@@ -23,7 +23,7 @@ const Updates = () => {
         </div>
       </div>
 
-      <div className="container mx-auto grid sm:grid-flow-col gap-x-24 mb-10">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 sm:grid-flow-col gap-x-24 xl:gap-x-24 md:gap-x-5 mb-10">
         <div className="my-5">
           <img
             src="https://static.greenafrica.com/media/1003/green-africa_atr_mountain_final.jpeg?cropmode=percentaje&width=1200"

@@ -19,7 +19,7 @@ const Destinations = () => {
         You are one flight closer to your dreams and destinations.
       </p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 sm:grid-flow-col gap-x-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-x-12 md:gap-x-5 xl:gap-x-12">
         <a className="my-4" href="/destination/abuja">
           <div className="relative">
             <FlightIcon className="inline-block absolute" />
