@@ -4,7 +4,7 @@ import FlightIcon from "assets/svgs/flight_icon.svg";
 const Destinations = () => {
   return (
     <section className="container mx-auto mb-10">
-      <h1 className="text-primary-main font-semibold text-2xl mb-2">
+      <h1 className="text-primary-main font-semibold text-2xl my-2">
         Explore Our Destinations from{" "}
         <select
           name=""

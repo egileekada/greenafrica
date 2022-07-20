@@ -23,7 +23,7 @@ const BookingTab = () => {
           ></input>
         </div>
       </div>
-      <button className="btn btn-primary h-[60px]">Confirm</button>
+      <button className="btn btn-primary h-[60px] font-title">Confirm</button>
     </section>
   );
 };

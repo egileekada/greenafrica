@@ -7,6 +7,7 @@ import HomePopup from "./components/HomePopup";
 import HomeHero from "./components/Hero";
 
 const Home = () => {
+  
   return (
     <BaseLayout>
       <HomeHero />

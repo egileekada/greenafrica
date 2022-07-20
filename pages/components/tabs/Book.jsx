@@ -321,7 +321,9 @@ const BookingTab = ({ type }) => {
           </div>
 
           <div className="">
-            <button className="btn btn-primary block h-full">Search</button>
+            <button className="btn btn-primary font-title block h-full">
+              Search
+            </button>
           </div>
         </div>
       </div>

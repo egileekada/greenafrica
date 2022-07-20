@@ -1,9 +1,8 @@
-import { cloneElement, ReactElement } from "react";
+import { cloneElement } from "react";
 import { useRouter } from "next/router";
-import Link, { LinkProps } from "next/link";
+import Link from "next/link";
 
 export function NavLink({ children, activeClassName, ...rest }) {
-  console.log(rest);
   const { asPath } = useRouter();
   const childClassName = rest.className ?? "";
   const newClassName = `${childClassName} ${activeClassName ?? ""}`;
