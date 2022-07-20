@@ -1,21 +1,19 @@
 import React from "react";
 import BaseLayout from "layouts/Base";
-import HomeHero from "./components/Hero";
 
 const flightSchedule = () => {
   return (
     <BaseLayout>
-      <HomeHero />
+      {/* <HomeHero /> */}
       <section className="w-full px-3.5 py-10 lg:fit-x-bleed">
         <div className="container mx-auto mb-10">
-          <h1 className="text-primary-main font-semibold text-2xl mb-4">
+          <h1 className="text-primary-main lg:font-semibold text-2xl mb-4">
             Flight Schedule
           </h1>
-          <div className="grid grid-cols-1 lg:grid-cols-5    gap-3">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
             <div className="my-3">
               <div className="select__wrapper px-5">
                 <p className="text-xs text-uppercase mb-2">FLIGHTS FROM</p>
-
                 <select
                   name=""
                   id=""
@@ -27,7 +25,7 @@ const flightSchedule = () => {
               </div>
             </div>
 
-            <div className="my-3 col-start-5">
+            <div className="my-3 lg:col-start-5">
               <button className="btn btn-primary font-title h-full block w-full">
                 Download Schedule
               </button>

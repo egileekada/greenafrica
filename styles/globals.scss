@@ -3,6 +3,7 @@
 @import "antd/dist/antd.css";
 @import "./loader.scss";
 @import "./carousel.scss";
+@import "./mobile.css";
 
 // @import './carousel.scss';
 // @import './abstract.scss';
@@ -36,6 +37,10 @@
 
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;
+
+      &.white {
+        @apply text-white;
+      }
     }
 
     &.btn-white {
@@ -273,9 +278,13 @@
   &__header {
     border-bottom: 1px solid rgba(192, 207, 214, 0.23);
 
-    button.btn-text {
+    .btn-text {
       color: rgba(17, 16, 32, 0.5);
-      @apply hover:text-green;
+      @apply hover:font-bold hover:text-white hover:bg-primary-main;
+
+      a {
+        @apply hover:font-bold hover:text-white;
+      }
     }
   }
 

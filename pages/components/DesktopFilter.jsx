@@ -15,7 +15,7 @@ const DesktopFilter = () => {
           <button
             onClick={() => setActiveTab(1)}
             className={`btn ${
-              activeTab === 1 ? "btn-primary" : "btn-text"
+              activeTab === 1 ? "btn-primary white font-title" : "btn-text"
             } mr-[22px]`}
           >
             One Way
@@ -23,7 +23,7 @@ const DesktopFilter = () => {
           <button
             onClick={() => setActiveTab(2)}
             className={`btn ${
-              activeTab === 2 ? "btn-primary" : "btn-text"
+              activeTab === 2 ? "btn-primary white font-title" : "btn-text"
             } mr-[22px]`}
           >
             Round Trip
@@ -31,7 +31,7 @@ const DesktopFilter = () => {
           <button
             onClick={() => setActiveTab(3)}
             className={`btn ${
-              activeTab === 3 ? "btn-primary" : "btn-text"
+              activeTab === 3 ? "btn-primary white font-title" : "btn-text"
             } mr-[22px] hidden lg:inline`}
           >
             Check In
@@ -39,20 +39,20 @@ const DesktopFilter = () => {
           <button
             onClick={() => setActiveTab(4)}
             className={`btn ${
-              activeTab === 4 ? "btn-primary" : "btn-text"
+              activeTab === 4 ? "btn-primary white font-title" : "btn-text"
             } mr-[22px] hidden lg:inline`}
           >
             My Booking
           </button>
 
-          <button
-            onClick={() => setActiveTab(5)}
+          <a
             className={`btn ${
-              activeTab === 5 ? "btn-primary" : "btn-text"
+              activeTab === 5 ? "btn-primary white font-title" : "btn-text"
             } mr-[22px] hidden lg:inline`}
+            href="/flight-schedule"
           >
             Flight Schedule
-          </button>
+          </a>
 
           {/* <a
             href="/flight-schedule"
