@@ -40,11 +40,11 @@ const Home = () => {
               Your booking session is about to expire due to inactivity. Do you
               need more time?
             </p>
-            <div className="flex items-center justify-between w-full">
-              <button className="btn btn-primary basis-[48%]  mr-2">
+            <div className="flex flex-wrap lg:flex-nowrap items-center justify-between w-full">
+              <button className="btn btn-primary basis-full lg:basis-[48%] lg:mr-2">
                 Yes, I need more time
               </button>
-              <button className="btn btn-outline basis-[48%]">
+              <button className="btn btn-outline basis-full lg:basis-[48%]">
                 I don’t need it
               </button>
             </div>

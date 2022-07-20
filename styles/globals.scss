@@ -31,7 +31,11 @@
     @apply flex flex-wrap xlg:flex-nowrap w-full;
 
     &__main {
-      @apply basis-full xlg:basis-[75%] flex flex-col greylike py-10 px-4 md:px-8 tab:px-16 xxl:pl-24 xlg:pr-12;
+      // @apply basis-full xlg:basis-[75%] flex flex-col greylike py-10
+      //         px-4 md:px-8 tab:px-16 xxl:pl-24 xlg:pr-12;
+
+      @apply basis-full xlg:basis-[75%] flex flex-col greylike py-10 
+            px-4 md:px-8 tab:px-16 xxl:px-24;
 
       &.payment-section {
         @apply pt-28 lg:py-10;

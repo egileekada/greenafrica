@@ -9,7 +9,7 @@ import { Fragment, useState } from "react";
 import Popup from "components/Popup";
 
 const PassengerBaggage = () => {
-  const [showPopUp, setShow] = useState(true);
+  const [showPopUp, setShow] = useState(false);
 
   const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
@@ -35,7 +35,7 @@ const PassengerBaggage = () => {
           </div>
         </div>
         <h2 className="title-text mb-4">BAGGAGE INFORMATION</h2>
-        <section className="grid grid-cols-3 gap-x-10 mb-7">
+        <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
           <BaggageCard />
           <BaggageCard />
           <BaggageCard />
@@ -63,11 +63,11 @@ const PassengerBaggage = () => {
             <p className="text-center font-body text-sm mb-6">
               Are you sure you want to leave without including your baggage?
             </p>
-            <div className="flex items-center justify-between w-full">
-              <button className="btn btn-primary basis-[48%]  mr-2">
+            <div className="flex flex-wrap lg:flex-nowrap items-center justify-between w-full">
+              <button className="btn btn-primary basis-full lg:basis-[48%] lg:mr-2 mb-3 lg:mb-0">
                 Select Baggage
               </button>
-              <button className="btn btn-outline basis-[48%]">
+              <button className="btn btn-outline basis-full lg:basis-[48%]">
                 I don’t need it
               </button>
             </div>

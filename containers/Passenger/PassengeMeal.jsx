@@ -29,7 +29,7 @@ const PassengerMeal = () => {
         </div>
       </div>
       <h2 className="title-text mb-4">BAGGAGE INFORMATION</h2>
-      <section className="grid grid-cols-3 gap-x-10 mb-7">
+      <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
         <MealCard />
         <MealCard />
         <MealCard />

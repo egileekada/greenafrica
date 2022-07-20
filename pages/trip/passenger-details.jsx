@@ -16,8 +16,9 @@ const PassengerDetails = () => {
   return (
     <BaseLayout>
       <section className="w-full">
-        <section className="flex">
-          <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12">
+        <section className="ga__section">
+          {/* <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12"> */}
+          <div className="ga__section__main">
             <h2 className="text-primary-main font-extrabold text-2xl mb-8">
               Additional Services
             </h2>
@@ -50,7 +51,7 @@ const PassengerDetails = () => {
               </div>
             </section>
           </div>
-          <div className="basis-[25%] bg-white px-6 py-8">
+          <div className="ga__section__side">
             <IbeSidebar />
           </div>
         </section>
