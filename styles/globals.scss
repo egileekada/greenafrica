@@ -528,7 +528,7 @@
     @apply flex flex-col;
 
     &__box {
-      @apply bg-white mb-10 py-11 px-9 flex flex-col;
+      @apply bg-white mb-10 py-8 tab:py-11 px-5 md:px-9 flex flex-col;
 
       label.check-label {
         @apply text-[#101010] text-xs font-body;
@@ -536,6 +536,10 @@
         span {
           @apply font-title;
         }
+      }
+
+      .form-group {
+        @apply w-full md:w-auto;
       }
 
       .ant-switch {
