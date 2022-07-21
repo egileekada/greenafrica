@@ -456,3 +456,27 @@ textarea {
   border: 1px solid #d8d7e2;
   @apply rounded-lg py-2;
 }
+
+.blog__post {
+  color: #232e52;
+  h1 {
+    color: #232e52;
+  }
+}
+
+.blog__post:hover {
+  color: #232e52;
+  p,
+  h1 {
+    text-decoration: underline;
+  }
+}
+
+.blog__search {
+  input {
+    border-bottom: 1px solid #596281;
+  }
+  input::placeholder {
+    color: #b5b2d8;
+  }
+}
