@@ -16,8 +16,8 @@ const Navigation = () => {
         <button
           className={
             open
-              ? "md:hidden p-0 hamburger hamburger--stand is-active"
-              : "md:hidden p-0 hamburger hamburger--stand"
+              ? "lg:hidden p-0 hamburger hamburger--stand is-active"
+              : "lg:hidden p-0 hamburger hamburger--stand"
           }
           type="button"
           aria-expanded="false"
