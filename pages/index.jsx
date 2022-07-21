@@ -3,7 +3,6 @@ import BaseLayout from "layouts/Base";
 import Newsletter from "components/Newsletter";
 import Updates from "./components/Updates";
 import Destinations from "./components/Destinations";
-import HomePopup from "./components/HomePopup";
 import HomeHero from "./components/Hero";
 
 const Home = () => {
@@ -16,7 +15,6 @@ const Home = () => {
         <Updates />
         <Newsletter />
       </section>
-      <HomePopup />
     </BaseLayout>
   );
 };
