@@ -2,34 +2,144 @@
 import { useState } from "react";
 import Popup from "components/Popup";
 
-const HomePopup = () => {
-  const [showPopUp, setShow] = useState(false);
+const HomePopup = ({ show, setShow }) => {
+  // const [showPopUp, setShow] = useState(true);
 
   return (
-    <Popup display={showPopUp} closeModal={() => setShow(false)}>
-      <section className="w-full bg-white rounded-xl p-3">
-        <section className="flex">
-          <div className="basis-full tab:basis-1/2 flex-shrink-0">
-            <div className="flex flex-col px-7 py-14 tab:pt-24 tab:pl-8 tab:pr-28">
-              <h2 className="text-primary-main font-semibold font-body text-3xl mb-[18px]">
-                Welcome to the future
-              </h2>
-              <p className="text-sm leading-[29px] font-light text-primary-main mb-6">
-                You are one flight closer to your dreams and destinations.
+    <Popup display={show} closeModal={() => setShow(false)}>
+      <section className="w-full bg-white rounded-xl p-">
+        <section className="flex flex-col lg:flex-row items-center justify-between h-full">
+          <div className="basis-full md:basis-1/3 lg:bg-[#483E95] rounded-l-xl h-full px-7 py-5 lg:pt-24 lg:px-10 flex items-center">
+            <div className="">
+              <h1 className="text-primary-main lg:text-white font-semibold font-body text-xl lg:text-4xl mb-[18px]">
+                Join Our Community
+              </h1>
+              <p className="text-sm leading-[29px] font-light text-dark lg:text-white mb-6">
+                Join the gFlyer Community to enjoy exclusive benefits!
               </p>
-              <button className="btn btn-primary w-[133px] py-4 px-6">
-                Get Started
-              </button>
             </div>
           </div>
-          <div className="hidden tab:basis-1/2 flex-shrink-0">
-            <figure className="h-[483px]">
-              <img
-                src="https://static.greenafrica.com/media/1003/green-africa_atr_mountain_final.jpeg?cropmode=percentaje&width=1200"
-                alt=""
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </figure>
+
+          <div className="h-full">
+            <form class="w-full max-w-lg px-6 py-5 lg:py-20">
+              <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-first-name"
+                  >
+                    First Name
+                  </label>
+                  <input
+                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                    id="grid-first-name"
+                    type="text"
+                    placeholder="Jane"
+                  />
+                  <p class="text-red-500 text-xs italic">
+                    Please fill out this field.
+                  </p>
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-last-name"
+                  >
+                    Last Name
+                  </label>
+                  <input
+                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-last-name"
+                    type="text"
+                    placeholder="Doe"
+                  />
+                </div>
+              </div>
+              <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-password"
+                  >
+                    Password
+                  </label>
+                  <input
+                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-password"
+                    type="password"
+                    placeholder="******************"
+                  />
+                  <p class="text-gray-600 text-xs italic">
+                    Make it as long and as crazy as you'd like
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-city"
+                  >
+                    City
+                  </label>
+                  <input
+                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-city"
+                    type="text"
+                    placeholder="Albuquerque"
+                  />
+                </div>
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-state"
+                  >
+                    State
+                  </label>
+                  <div class="relative">
+                    <select
+                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="grid-state"
+                    >
+                      <option>New Mexico</option>
+                      <option>Missouri</option>
+                      <option>Texas</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg
+                        class="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                  <label
+                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    for="grid-zip"
+                  >
+                    Zip
+                  </label>
+                  <input
+                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-zip"
+                    type="text"
+                    placeholder="90210"
+                  />
+                </div>
+              </div>
+
+              <div class="flex flex-wrap -mx-3 mb-2">
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                  <button className="btn btn-primary w-[133px] font-semibold py-4 px-6">
+                    Get Started
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </section>
       </section>
