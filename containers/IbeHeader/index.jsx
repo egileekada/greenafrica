@@ -41,6 +41,7 @@ const IbeHeader = () => {
               {arr.map((x, i) => {
                 return (
                   <div
+                    key={i}
                     className={`ibe__date__item ${
                       i === arr.length - 1 ? "b-r-none" : ""
                     }`}

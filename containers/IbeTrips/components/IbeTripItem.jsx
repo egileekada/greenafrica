@@ -24,8 +24,8 @@ const IbeTripItem = () => {
               <DottedLine className="dotted-svg" />
             </div>
             <div className="flex flex-col items-end">
-              <h5 className="tripType">19:00</h5>
-              <p className="tripCity">Abuja (ABJ)</p>
+              <h5 className="tripType right-text">19:00</h5>
+              <p className="tripCity right-text">Abuja (ABJ)</p>
             </div>
           </div>
           <p className="tripTime self-center">1h 35mins</p>

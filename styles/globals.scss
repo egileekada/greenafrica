@@ -17,7 +17,7 @@
 
 @media (min-width: 1200px) {
   html {
-    font-size: 80%;
+    // font-size: 80%;
   }
 }
 
@@ -338,10 +338,10 @@
 
       .trip-details {
         background: rgba(158, 155, 191, 0.12);
-        @apply px-6 pt-4 pb-6 flex basis-full w-full;
+        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap  basis-full w-full;
 
         &-item {
-          @apply flex flex-col mr-12 h-10;
+          @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
 
           h5,
           h5 span {
@@ -778,19 +778,37 @@
     }
   }
 
+  .cabin__main {
+    @apply h-[1700px] overflow-hidden hidden xlg:absolute left-[30%] z-10 -translate-x-[50%];
+  }
+
+  .cabin__base {
+    @apply overflow-hidden hidden xlg:absolute top-[1690px] w-[1200px] left-[40%] z-[9] -translate-x-[50%];
+  }
+
+  .cabin__container {
+    @apply min-h-[150px] z-20 relative xlg:absolute xlg:top-[250px] xlg:left-[13%] xlg:-translate-x-[50%] mb-4 xlg:mb-8;
+  }
+
   .cabin__legend {
+    @apply hidden xxl:absolute z-[9] top-[25px] right-5;
     p {
       @apply text-xs;
     }
   }
 
   .seats {
+    @apply flex flex-col items-center xlg:items-start;
     &__row {
       @apply flex px-6 my-2;
     }
 
     &__item {
       @apply mr-1 flex items-center justify-center bg-primary-main w-[38px] h-[49px] rounded-md cursor-pointer hover:bg-opacity-70;
+
+      &.transparent {
+        @apply bg-transparent;
+      }
 
       p {
         @apply text-white text-lg font-header;

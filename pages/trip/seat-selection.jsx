@@ -8,6 +8,8 @@ import Popup from "components/Popup";
 import Seatslegend from "containers/Seats/SeatPopUp";
 import PlaneSeats from "containers/Seats/PlaneSeats";
 
+import InfoIcon from "assets/svgs/seats/info.svg";
+
 const SeatSelection = () => {
   const [showPopUp, setShow] = useState(false);
   const [showEmergency, setEmergency] = useState(false);
@@ -16,8 +18,8 @@ const SeatSelection = () => {
     <Fragment>
       <BaseLayout>
         <section className="w-full checkin">
-          <section className="flex">
-            <div className="basis-[80%] flex flex-col greylike py-10 pl-28 pr-6">
+          <section className="ga__section">
+            <div className="ga__section__main">
               <div className="mb-8">
                 <h2 className="text-black font-extrabold text-2xl mb-2">
                   Seat Selection
@@ -34,8 +36,8 @@ const SeatSelection = () => {
                   </figure>
                 </section>
                 {/* TripHeader*/}
-                <div className="flex">
-                  <div className="basis-[30%]">
+                <div className="flex flex-wrap xlg:flex-nowrap">
+                  <div className="basis-full xlg:basis-[30%]">
                     {/* Seat Info */}
                     <div className="mx-6 mt-12 flex flex-col">
                       <div className="flex flex-col mb-6">
@@ -62,21 +64,33 @@ const SeatSelection = () => {
                           </h6>
                         </div>
                       </div>
+                      <button className="flex xxl:hidden mb-3">
+                        <InfoIcon />
+                        <span className="ml-2 text-xs text-black font-title text-left">
+                          See what the color codes for our seats mean&nbsp;
+                          <span
+                            className="underline text-primary-main"
+                            onClick={() => setShow(true)}
+                          >
+                            here
+                          </span>
+                        </span>
+                      </button>
                     </div>
                     {/* Seat Info */}
                   </div>
-                  <div className="basis-[70%] pt-4">
+                  <div className="basis-full xlg:basis-[70%] pt-4">
                     <PlaneSeats />
                   </div>
                 </div>
 
-                <div className="flex mx-6">
+                <div className="hidden lg:flex mx-6">
                   <button className="btn btn-outline mr-4">Go Back</button>
                   <button className="btn btn-primary">Check In</button>
                 </div>
               </section>
             </div>
-            <div className="basis-[20%] bg-white px-6 py-8">
+            <div className="ga__section__side">
               <IbeSidebar />
             </div>
           </section>

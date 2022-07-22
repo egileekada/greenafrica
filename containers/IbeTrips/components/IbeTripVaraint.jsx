@@ -264,9 +264,9 @@ const IbeTripVariant = ({ variant }) => {
             <p>You selected:</p>
             <h5>gClassic</h5>
             <ul>
-              {gClassic.map((_gClassic) => {
+              {gClassic.map((_gClassic, _i) => {
                 return (
-                  <li className="flex items-center mb-5">
+                  <li key={_i} className="flex items-center mb-5">
                     <figure>
                       <CheckIcon />
                     </figure>
@@ -283,9 +283,9 @@ const IbeTripVariant = ({ variant }) => {
             <p>Our Recommendation</p>
             <h5>gClassic</h5>
             <ul>
-              {gSaver.map((_gSaver) => {
+              {gSaver.map((_gSaver,_i) => {
                 return (
-                  <li className="flex items-center mb-5">
+                  <li key={_i} className="flex items-center mb-5">
                     <figure>
                       <CheckIcon />
                     </figure>
@@ -302,9 +302,9 @@ const IbeTripVariant = ({ variant }) => {
             <p>Our Recommendation</p>
             <h5>gFlex</h5>
             <ul>
-              {gFlex.map((_gFlex) => {
+              {gFlex.map((_gFlex, _i) => {
                 return (
-                  <li className="flex items-center mb-5">
+                  <li key={_i} className="flex items-center mb-5">
                     <figure>
                       <CheckIcon />
                     </figure>

@@ -1,25 +1,39 @@
 /* eslint-disable @next/next/no-img-element */
 import XIcon from "assets/svgs/seats/x.svg";
 import EmergrncyIcon from "assets/svgs/seats/emergency.svg";
+import CaretLeft from "assets/svgs/seats/caretleft.svg";
+import CaretRight from "assets/svgs/seats/caretright.svg";
 
 const PlaneSeats = () => {
   const arr = new Array(22).fill(0);
 
   return (
     <div className="plane h-auto w-auto overflow-hidden">
-      <section className="cabin min-h-[1900px] relative">
-        <figure className="h-[1700px] overflow-hidden absolute left-[40%] z-10 -translate-x-[50%]">
+      <section className="cabin min-xlg:h-[1900px] relative">
+        <figure className="cabin__main ">
           <img
             className="h-full w-[300px]"
             src="/images/cabin.png"
-            alt="food"
+            alt="cabin"
           />
         </figure>
-        <figure className="overflow-hidden absolute top-[1690px] w-[1200px] left-[40%] z-9 -translate-x-[50%]">
+        <figure className="cabin__base">
           <img className="h-full w-full" src="/images/base.png" alt="food" />
         </figure>
-        <section className="cabin__container min-h-[150px] z-20 absolute  top-[250px] left-[23%] -translate-x-[50%">
+        <section className="cabin__container ">
           <div className="seats">
+            <div className="seats__row">
+              <div className="seats__item transparent">
+                <CaretLeft />
+              </div>
+              <div className="seats__item transparent"></div>
+              <div className="seats__item seatRow "></div>
+              <div className="seats__item transparent"></div>
+              <div className="seats__item transparent">
+                <CaretRight />
+              </div>
+            </div>
+
             <div className="seats__row">
               <div className="seats__item row-title">
                 <p>A</p>
@@ -50,7 +64,7 @@ const PlaneSeats = () => {
             </div>
             {arr.map((x, index) => {
               return (
-                <div className="seats__row">
+                <div key={index} className="seats__row">
                   <div className="seats__item">
                     <p>MJ</p>
                   </div>
@@ -65,7 +79,7 @@ const PlaneSeats = () => {
             })}
           </div>
         </section>
-        <section className="cabin__legend absolute z-10 top-[25px] right-5">
+        <section className="cabin__legend ">
           <section className="w-[235px] bg-white rounded-xl ">
             <div className="flex flex-col px-[21px] py-6">
               <h2 className="text-black font-header text-xl mb-8">

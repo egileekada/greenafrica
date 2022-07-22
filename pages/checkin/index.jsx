@@ -11,9 +11,9 @@ const CheckInDetails = () => {
   return (
     <BaseLayout>
       <section className="w-full checkin">
-        <section className="flex">
-          <div className="basis-[80%] flex flex-col greylike py-10 pl-28 pr-12">
-            <div className="mb-8">
+        <section className="ga__section">
+          <div className="ga__section__main">
+            <div className="mb-8 mt-16 xlg:mt-0">
               <h2 className="text-black font-extrabold text-2xl mb-2">
                 Check In
               </h2>
@@ -29,7 +29,7 @@ const CheckInDetails = () => {
                 Kindly confirm that the information below is correct before
                 checking in
               </p>
-              <div className="grid grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <CheckInCard />
                 <CheckInCard />
                 <CheckInCard />
@@ -64,7 +64,6 @@ const CheckInDetails = () => {
                     </h6>
                   </div>
                 </div>
-                
               </div>
 
               <div className="mx-6">
@@ -72,36 +71,29 @@ const CheckInDetails = () => {
               </div>
 
               <section className="ibe__trip__item checkinView bordered mx-6 my-3">
-                <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-[18px]">
+                <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3 lg:top-[18px]">
                   gSaver
                 </p>
-                <div className="basis-full w-full flex flex-col min-h-[54px] px-6 mb-10">
+                <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
                   <p className="tripType self-center">Direct Flight</p>
                   <div className="flex justify-between">
                     <div className="flex flex-col">
-                      <h5 className="font-extrabold font-header  text-2xl text-primary-main">
-                        18:00
-                      </h5>
-                      <p className="font-semibold font-body text-sm text-black">
-                        Lagos (LOS)
-                      </p>
+                      <h5 className="tripType">18:00</h5>
+                      <p className="tripCity">Lagos (LOS)</p>
                     </div>
-                    <div className="flex items-center basis-[70%] justify-between">
-                      <DottedLine />
-                      <AeroIcon />
-                      <DottedLine />
+                    <div className="tripIconPath">
+                      <DottedLine className="dotted-svg" />
+                      <AeroIcon className="aero-svg" />
+                      <DottedLine className="dotted-svg" />
                     </div>
                     <div className="flex flex-col  items-end">
-                      <h5 className="font-extrabold font-header text-2xl text-primary-main">
-                        19:35
-                      </h5>
-                      <p className="font-semibold font-body text-sm text-black">
-                        Akure (AKR)
-                      </p>
+                      <h5 className="tripType right-text">19:00</h5>
+                      <p className="tripCity right-text">Abuja (ABJ)</p>
                     </div>
                   </div>
                   <p className="tripTime self-center">1h 35mins</p>
                 </div>
+
                 <div className="trip-details">
                   <div className="trip-details-item">
                     <h6>FLIGHT NUMBER</h6>
@@ -137,7 +129,7 @@ const CheckInDetails = () => {
               </div>
             </section>
           </div>
-          <div className="basis-[20%] bg-white px-6 py-8">
+          <div className="ga__section__side">
             <IbeAdbar />
           </div>
         </section>
