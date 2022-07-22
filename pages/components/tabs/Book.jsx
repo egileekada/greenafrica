@@ -50,7 +50,11 @@ const BookingTab = ({ type }) => {
   function hasContent({ date }) {
     for (const key in data) {
       if (key === format(date, "yyyy-MM-dd")) {
-        return <p className="text-[10px] mt-2">${Math.round(data[key])}</p>;
+        return (
+          <p className="text-[10px] font-light my-0 text-[#9E9BBF]">
+            ₦{Math.round(data[key])}K
+          </p>
+        );
       }
     }
     return <p></p>;

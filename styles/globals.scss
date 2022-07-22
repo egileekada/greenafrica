@@ -398,6 +398,10 @@ textarea {
 
 .react-calendar {
   @apply font-body;
+  border: 1px solid #eaebf3 !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  padding: 2px !important;
 }
 
 .react-calendar__tile {
