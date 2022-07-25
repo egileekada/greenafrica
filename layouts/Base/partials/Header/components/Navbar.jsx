@@ -33,7 +33,17 @@ const Navigation = () => {
 
         <ul className="hidden tab:flex items-center">
           <li>
-            <Link href="/e">
+            <Link href="/check-in">
+              <a className="mr-16 text-white font-body text-sm">Check In</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/my-bookings">
+              <a className="mr-16 text-white font-body text-sm">My Bookings</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/destinations">
               <a className="mr-16 text-white font-body text-sm">Destinations</a>
             </Link>
           </li>
@@ -54,7 +64,7 @@ const Navigation = () => {
                 label={
                   <>
                     <svg
-                      class="h-4.5 w-4.5 rounded-full mr-2"
+                      className="h-4.5 w-4.5 rounded-full mr-2"
                       width="23"
                       height="16"
                       viewBox="0 0 23 16"
@@ -69,7 +79,7 @@ const Navigation = () => {
                         rx="1.75"
                         fill="white"
                         stroke="#F5F5F5"
-                        stroke-width="0.5"
+                        strokeWidth="0.5"
                       />
                       <mask
                         id="mask0_328_7139"
@@ -88,7 +98,7 @@ const Navigation = () => {
                           rx="1.75"
                           fill="white"
                           stroke="white"
-                          stroke-width="0.5"
+                          strokeWidth="0.5"
                         />
                       </mask>
                       <g mask="url(#mask0_328_7139)">
@@ -99,8 +109,8 @@ const Navigation = () => {
                           fill="#189B62"
                         />
                         <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
                           d="M0 16H7.66667V0H0V16Z"
                           fill="#189B62"
                         />
@@ -113,12 +123,12 @@ const Navigation = () => {
                 <Dropdown.Item>
                   <a
                     href="#"
-                    class="block text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="block text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
                   >
-                    <div class="inline-flex items-center">
+                    <div className="inline-flex items-center">
                       <svg
-                        class="h-3.5 w-3.5 rounded-full mr-2"
+                        className="h-3.5 w-3.5 rounded-full mr-2"
                         width="23"
                         height="16"
                         viewBox="0 0 23 16"
@@ -133,7 +143,7 @@ const Navigation = () => {
                           rx="1.75"
                           fill="white"
                           stroke="#F5F5F5"
-                          stroke-width="0.5"
+                          strokeWidth="0.5"
                         />
                         <mask
                           id="mask0_328_7139"
@@ -152,7 +162,7 @@ const Navigation = () => {
                             rx="1.75"
                             fill="white"
                             stroke="white"
-                            stroke-width="0.5"
+                            strokeWidth="0.5"
                           />
                         </mask>
                         <g mask="url(#mask0_328_7139)">
@@ -163,8 +173,8 @@ const Navigation = () => {
                             fill="#189B62"
                           />
                           <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M0 16H7.66667V0H0V16Z"
                             fill="#189B62"
                           />
@@ -177,12 +187,12 @@ const Navigation = () => {
                 <Dropdown.Item>
                   <a
                     href=""
-                    class="block text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="block text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
                   >
-                    <div class="inline-flex items-center">
+                    <div className="inline-flex items-center">
                       <svg
-                        class="h-3.5 w-3.5 rounded-full mr-2"
+                        className="h-3.5 w-3.5 rounded-full mr-2"
                         // width="23"
                         // height="16"
                         width="16"
@@ -252,13 +262,13 @@ const Navigation = () => {
               </figure>
             </Navbar.Brand>
 
-            <div class="flex items-center md:order-2">
+            <div className="flex items-center md:order-2">
               <Dropdown
                 inline
                 label={
                   <>
                     <svg
-                      class="mr-2 w-5 h-5 rounded-full"
+                      className="mr-2 w-5 h-5 rounded-full"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -268,7 +278,7 @@ const Navigation = () => {
                       <path
                         d="M0 450h7410m0 600H0m0 600h7410m0 600H0m0 600h7410m0 600H0"
                         stroke="#fff"
-                        stroke-width="300"
+                        strokeWidth="300"
                       ></path>
                       <path fill="#3c3b6e" d="M0 0h2964v2100H0z"></path>
                       <g fill="#fff">
@@ -302,10 +312,10 @@ const Navigation = () => {
                 <Dropdown.Item>
                   <a
                     href="#"
-                    class="block text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="block text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
                   >
-                    <div class="inline-flex items-center">
+                    <div className="inline-flex items-center">
                       <svg
                         width="23"
                         height="16"
@@ -321,7 +331,7 @@ const Navigation = () => {
                           rx="1.75"
                           fill="white"
                           stroke="#F5F5F5"
-                          stroke-width="0.5"
+                          strokeWidth="0.5"
                         />
                         <mask
                           id="mask0_328_7139"
@@ -340,7 +350,7 @@ const Navigation = () => {
                             rx="1.75"
                             fill="white"
                             stroke="white"
-                            stroke-width="0.5"
+                            strokeWidth="0.5"
                           />
                         </mask>
                         <g mask="url(#mask0_328_7139)">
@@ -351,8 +361,8 @@ const Navigation = () => {
                             fill="#189B62"
                           />
                           <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M0 16H7.66667V0H0V16Z"
                             fill="#189B62"
                           />
@@ -365,12 +375,12 @@ const Navigation = () => {
                 <Dropdown.Item>
                   <a
                     href=""
-                    class="block text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="block text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
                   >
-                    <div class="inline-flex items-center">
+                    <div className="inline-flex items-center">
                       <svg
-                        class="h-3.5 w-3.5 rounded-full mr-2"
+                        className="h-3.5 w-3.5 rounded-full mr-2"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         id="flag-icon-css-de"
