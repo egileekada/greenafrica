@@ -63,7 +63,7 @@ const Destinations = () => {
       <link
         rel="stylesheet"
         type="text/css"
-        charset="UTF-8"
+        charSet="UTF-8"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
       />
       <link
@@ -77,7 +77,8 @@ const Destinations = () => {
           <select
             name=""
             id=""
-            className="border-none font-semibold text-2xl pl-0"
+            className="border-none font-semibold text-2xl pl-0 pb-0"
+            style={{ borderBottom: "1px solid #26205E" }}
           >
             <option value="Lagos">Lagos</option>
             <option value="Lagos">Abuja</option>
