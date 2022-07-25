@@ -7,7 +7,7 @@ const HomePopup = ({ show, setShow }) => {
 
   return (
     <Popup display={show} closeModal={() => setShow(false)}>
-      <section className="w-full bg-white rounded-xl p-">
+      <section className="w-full bg-white rounded-xl">
         <section className="flex flex-col lg:flex-row items-center justify-between h-full">
           <div className="basis-full md:basis-1/3 lg:bg-[#483E95] rounded-l-xl h-full px-7 py-5 lg:pt-24 lg:px-10 flex items-center">
             <div className="">
