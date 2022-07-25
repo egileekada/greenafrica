@@ -4,9 +4,9 @@ import Newsletter from "components/Newsletter";
 import Updates from "./components/Updates";
 import Destinations from "./components/Destinations";
 import HomeHero from "./components/Hero";
+import Announcer from "./components/Announcer";
 
 const Home = () => {
-  
   return (
     <BaseLayout>
       <HomeHero />
@@ -14,6 +14,7 @@ const Home = () => {
         <Destinations />
         <Updates />
         <Newsletter />
+        <Announcer />
       </section>
     </BaseLayout>
   );
