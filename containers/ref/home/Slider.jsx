@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import useDeviceSize from "hooks/useWindowSize";
 // import { getDesktopBanners, getMobileBanners } from "services/general";
 import { Spin } from "antd";
-import toast from "react-hot-toast";
 
 const HeroSlider = () => {
   const [currIndex, setCurrIndex] = useState(0);
@@ -57,7 +56,7 @@ const HeroSlider = () => {
       show: 1,
       created_at: "2022-05-27T07:48:47.000000Z",
       updated_at: "2022-05-27T07:48:47.000000Z",
-      url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
+      url: "https://static.greenafrica.com/media/1002/banner-home.png",
     },
   ]);
   const [loading, setLoading] = useState(false);
@@ -111,6 +110,7 @@ const HeroSlider = () => {
                 {desktopBanners.map((bg, index) => {
                   return (
                     <div
+                      data-key={index}
                       key={index}
                       ref={slide}
                       className="carousel__content-item"
@@ -146,6 +146,7 @@ const HeroSlider = () => {
                         : "/images/mobile-hero.png"
                     }
                     alt="imagesd"
+                    className="object-cover w-full"
                   />
                 </figure>
               </div>

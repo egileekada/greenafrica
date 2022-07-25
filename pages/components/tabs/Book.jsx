@@ -9,6 +9,7 @@ import { data } from "../../../utils/calendar";
 
 const BookingTab = ({ type }) => {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption2, setSelectedOption2] = useState(null);
   const [value, onChange] = useState(new Date());
   const [departing, setDeparting] = useState(new Date());
   const [returning, setReturning] = useState(new Date());
@@ -60,6 +61,13 @@ const BookingTab = ({ type }) => {
     return <p></p>;
   }
 
+  const onClick = () => {
+    const aTemp = selectedOption;
+    const bTemp = selectedOption2;
+    setSelectedOption(bTemp); // swap a
+    setSelectedOption2(aTemp); // swap b
+  };
+
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-flex-col xl:grid-cols-4 sm:grid-flex-col items-center gap-2">
@@ -71,11 +79,12 @@ const BookingTab = ({ type }) => {
               className="block mx-2 pb-2"
             />
             <div className="w-full mx-2">
-              <p className="mb-1 text-xs mb-0">FROM</p>
+              <p className="mb-1 text-xs mb-0 text-[#979797]">FROM</p>
               <Select
                 id="from"
                 instanceId="from"
                 defaultValue={selectedOption}
+                value={selectedOption}
                 onChange={setSelectedOption}
                 options={options}
                 className="border-0"
@@ -83,6 +92,8 @@ const BookingTab = ({ type }) => {
               />
             </div>
             <img
+              onClick={() => onClick()}
+              role="button"
               src="/images/to_from.svg"
               alt=""
               className="absolute -right-6 bottom-2.5 invisible lg:visible"
@@ -96,12 +107,13 @@ const BookingTab = ({ type }) => {
               className="block mx-2 pb-2"
             />
             <div className="w-full mx-2">
-              <p className="mb-1 text-xs mb-0">TO</p>
+              <p className="mb-1 text-xs mb-0 text-[#979797]">TO</p>
               <Select
                 id="to"
                 instanceId="to"
-                defaultValue={selectedOption}
-                onChange={setSelectedOption}
+                defaultValue={selectedOption2}
+                value={selectedOption2}
+                onChange={setSelectedOption2}
                 options={options}
                 className="border-0"
                 styles={colourStyles}
@@ -135,13 +147,14 @@ const BookingTab = ({ type }) => {
               </svg>
             </span>
             <div className="flex-auto">
-              <p className="mb-1 text-xs">DEPARTING</p>
+              <p className="mb-1 text-xs text-[#979797]">DEPARTING</p>
               <DatePicker
                 id="departing"
                 onChange={setDeparting}
                 value={departing}
                 tileContent={hasContent}
                 className="datepicker border-0 w-full font-body"
+                minDate={new Date()}
               />
             </div>
           </div>
@@ -168,30 +181,26 @@ const BookingTab = ({ type }) => {
               </span>
 
               <div className="flex-auto">
-                <p className="mb-1 text-xs">RETURNING</p>
+                <p className="mb-1 text-xs text-[#979797]">RETURNING</p>
                 <DatePicker
                   id="returning"
                   onChange={setReturning}
                   value={returning}
                   tileContent={hasContent}
                   className="datepicker border-0 w-full font-body"
+                  minDate={new Date()}
                 />
               </div>
             </div>
           )}
         </div>
 
-        <div
-          // className={`${
-          //   type && "lg:grid-cols-2 md:col-span-2"
-          // } grid grid-cols-1 lg:grid-cols-2 gap-3`}
-          className="flex gap-3"
-        >
+        <div className="flex gap-3">
           <div
             className="booking__wrapper flex-auto relative"
             data-modal-toggle="defaultModal"
           >
-            <p className="mb-1 text-xs mx-4">PASSENGERS</p>
+            <p className="mb-1 text-xs mx-4 text-[#979797]">PASSENGERS</p>
             <div
               className="flex items-center relative"
               onClick={() => setShow(!show)}
@@ -239,8 +248,6 @@ const BookingTab = ({ type }) => {
 
             <div
               id="defaultModal"
-              // tabindex="-1"
-              // aria-hidden="true"
               className="absolute top-20 left-0 right-0 z-50 w-full h-modal h-auto w-[250px]"
             >
               <div
@@ -331,42 +338,6 @@ const BookingTab = ({ type }) => {
           </div>
         </div>
       </div>
-
-      {/* <Modal show={show} onClose={() => setShow(false)}>
-        <Modal.Header>Terms of Service</Modal.Header>
-        <Modal.Body>
-          <div className="space-y-6">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <button
-            type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            onClick={() => setShow(false)}
-          >
-            I accept
-          </button>
-          <button
-            data-modal-toggle="defaultModal"
-            type="button"
-            className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-          >
-            Decline
-          </button>
-        </Modal.Footer>
-      </Modal> */}
     </>
   );
 };
