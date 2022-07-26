@@ -492,11 +492,76 @@ textarea {
 
 /* the slides */
 .slick-slide {
-  // margin: 0 10px;
   padding: 0 8px;
   box-sizing: border-box;
 }
-/* the parent */
-.slick-list {
-  // margin: 0 -10px;
+
+// dropdown
+.dropdown-toggle {
+  white-space: nowrap;
+  &:after {
+    content: "";
+    display: inline-block;
+    width: 25%;
+    height: 10px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    vertical-align: middle;
+    background: url("data:image/svg+xml,%3Csvg stroke='white' fill='none' stroke-width='0' viewBox='0 0 24 24' class='ml-2 h-4 w-4' height='2rem' width='3rem' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")
+      no-repeat right 0.75rem center/10px 15px;
+    border: 0px solid #ced4da;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+.dropdown-large {
+  box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.16);
+  background: #fff;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  top: 80px;
+  width: 100%;
+}
+
+.dropdown-large h2 {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.dropdown-large h3 {
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.dropdown-large p {
+  color: #5a7184;
+  font-size: 14px;
+}
+
+.dropdown-large ul li a {
+  color: #2C2C2C;
+  font-size: 14px;
+}
+
+.dropdown-large ul li a:hover {
+  color: #183b56;
+  text-decoration: underline;
+}
+
+@media all and (min-width: 992px) {
+  nav .nav-item .dropdown-menu {
+    display: none;
+  }
+
+  nav .nav-item:hover .dropdown-menu {
+    display: block;
+  }
+
+  nav .nav-item .dropdown-menu {
+    margin-top: 0;
+  }
 }
