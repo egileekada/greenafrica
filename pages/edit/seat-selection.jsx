@@ -18,11 +18,11 @@ const SeatSelection = () => {
     <Fragment>
       <BaseLayout>
         <section className="w-full checkin">
-          <section className="ga__section">
-            <div className="ga__section__main">
+          <section className="ga__section bg-normal">
+            <div className="ga__section__main standalone">
               <div className="mb-8">
                 <h2 className="text-black font-extrabold text-2xl mb-2">
-                  Seat Selection
+                  Change Seat Selection
                 </h2>
               </div>
 
@@ -91,9 +91,6 @@ const SeatSelection = () => {
                   <button className="btn btn-primary">Check In</button>
                 </div>
               </section>
-            </div>
-            <div className="ga__section__side">
-              <IbeSidebar />
             </div>
           </section>
         </section>

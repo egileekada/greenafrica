@@ -36,11 +36,11 @@ const IbeTripVariant = ({ variant }) => {
     <Fragment>
       <section className={`ibe__trip__variant ${variant}`}>
         <div className="flex flex-col">
-          <div className="fle flex-col items-center">
-            <h2 className="text-center font-display font-extrabold text-xl text-primary-main">
+          <div className="type-header">
+            <h2 className="text-center font-display font-extrabold text-xl text-white">
               gSaver
             </h2>
-            <p className="text-black font-medium text-xs text-center">
+            <p className="text-white font-medium text-xs text-center">
               Recommended For You
             </p>
           </div>
@@ -71,21 +71,32 @@ const IbeTripVariant = ({ variant }) => {
             </li>
           </ul>
         </div>
-        {variant === "saver" && (
-          <button onClick={() => setShow(true)} className="btn btn-outline">
-            Continue For ₦16,501
-          </button>
-        )}
-        {variant === "classic" && (
-          <button onClick={() => setShow(true)} className="btn btn-primary">
-            Continue For ₦16,501
-          </button>
-        )}
-        {variant === "gflex" && (
-          <button onClick={() => setShow(true)} className="btn btn-green">
-            Continue For ₦16,501
-          </button>
-        )}
+        <div className="px-3 lg:px-[14px]">
+          {variant === "saver" && (
+            <button
+              onClick={() => setShow(true)}
+              className="btn btn-outline w-full"
+            >
+              Continue For ₦16,501
+            </button>
+          )}
+          {variant === "classic" && (
+            <button
+              onClick={() => setShow(true)}
+              className="btn btn-primary  w-full"
+            >
+              Continue For ₦16,501
+            </button>
+          )}
+          {variant === "gflex" && (
+            <button
+              onClick={() => setShow(true)}
+              className="btn btn-green  w-full"
+            >
+              Continue For ₦16,501
+            </button>
+          )}
+        </div>
       </section>
       <Popup display={showPopUp} closeModal={() => setShow(false)} top={true}>
         <section className="w-full bg-white rounded-xl hidden lg:flex flex-col">
@@ -283,7 +294,7 @@ const IbeTripVariant = ({ variant }) => {
             <p>Our Recommendation</p>
             <h5>gClassic</h5>
             <ul>
-              {gSaver.map((_gSaver,_i) => {
+              {gSaver.map((_gSaver, _i) => {
                 return (
                   <li key={_i} className="flex items-center mb-5">
                     <figure>

@@ -9,7 +9,7 @@ const PlaneSeats = () => {
 
   return (
     <div className="plane h-auto w-auto overflow-hidden">
-      <section className="cabin min-xlg:h-[1900px] relative">
+      <section className="cabin xlg:h-[2200px] relative">
         <figure className="cabin__main ">
           <img
             className="h-full w-[300px]"

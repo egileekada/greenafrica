@@ -95,7 +95,8 @@ const ManageBookings = () => {
                     <h6>BAGGAGES</h6>
                     <h5 className="flex items-center">
                       <span>0</span>
-                      <button className="btn btn-outline">Edit</button>
+                      <button className="btn btn-outline">View Selection</button>
+                      <button className="btn btn-outline ml-4">Add</button>
                     </h5>
                   </div>
                 </div>

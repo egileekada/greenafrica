@@ -103,14 +103,20 @@ const CheckInDetails = () => {
                     <h6>SEAT NUMBER</h6>
                     <h5 className="flex items-center">
                       <span>2A</span>
-                      <button className="btn btn-outline">Edit</button>
+                      <button className="btn btn-outline">
+                        View Selection
+                      </button>
+                      <button className="btn btn-outline ml-4">Add</button>
                     </h5>
                   </div>
                   <div className="trip-details-item">
                     <h6>BAGGAGES</h6>
                     <h5 className="flex items-center">
                       <span>0</span>
-                      <button className="btn btn-outline">Edit</button>
+                      <button className="btn btn-outline">
+                        View Selection
+                      </button>
+                      <button className="btn btn-outline ml-4">Add</button>
                     </h5>
                   </div>
                 </div>
@@ -123,7 +129,7 @@ const CheckInDetails = () => {
                   additional fees
                 </p>
               </section>
-              {/* heckin Info*/}
+              {/* Checkin Info*/}
               <div className="flex mx-6">
                 <button className="btn btn-primary">Check In</button>
               </div>

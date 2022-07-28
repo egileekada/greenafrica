@@ -94,10 +94,10 @@ const TripConfirm = () => {
 
               {/* CTA */}
               <section className="flex  flex-wrap md:flex-nowrap items-center px-6 lg:px-12">
-                <button className="basis-full md:basis-[48%] btn btn-primary mr-2 md:mr-0 mb-4 md:mb-0">
+                <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-0 md:mr-2 mb-4 md:mb-0">
                   Manage Booking
                 </button>
-                <button className="basis-full md:basis-[48%] btn btn-outline mr-2 md:mr-0">
+                <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2">
                   Check In
                 </button>
               </section>

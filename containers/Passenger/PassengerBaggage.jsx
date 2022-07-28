@@ -34,6 +34,16 @@ const PassengerBaggage = () => {
             </p>
           </div>
         </div>
+
+        {/* Checkin Info*/}
+        <section className="checkin__info my-3">
+          <p>
+            You added some new services so your fare has been updated with
+            additional fees
+          </p>
+        </section>
+        {/* Checkin Info*/}
+        
         <h2 className="title-text mb-4">BAGGAGE INFORMATION</h2>
         <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
           <BaggageCard />

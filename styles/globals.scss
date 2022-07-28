@@ -30,15 +30,22 @@
   .ga__section {
     @apply flex flex-wrap xlg:flex-nowrap w-full;
 
-    &__main {
-      // @apply basis-full xlg:basis-[75%] flex flex-col greylike py-10
-      //         px-4 md:px-8 tab:px-16 xxl:pl-24 xlg:pr-12;
+    &.bg-normal {
+      background-color: rgba(158, 155, 191, 0.17);
+    }
 
-      @apply basis-full xlg:basis-[75%] flex flex-col greylike py-10 
+    &__main {
+      @apply basis-full xlg:basis-[75%] flex flex-col  py-10 
             px-4 md:px-8 tab:px-16 xxl:px-24;
+      background-color: rgba(158, 155, 191, 0.17);
 
       &.payment-section {
         @apply pt-28 lg:py-10;
+      }
+
+      &.standalone {
+        @apply mx-auto xlg:basis-[80%] xl:basis-[70%];
+        background-color: rgba(158, 155, 191, 0);
       }
     }
 
@@ -48,7 +55,10 @@
   }
 
   .fit-x-bleed {
-    // @apply px-8 sm:px-16 tab:px-12 xxl:px-24;
+    @apply px-4 md:px-8 tab:px-16 xxl:px-24;
+  }
+
+  .fit-nav {
     @apply px-4 xxl:pl-28;
   }
 
@@ -349,10 +359,12 @@
 
             button.btn-outline {
               min-width: 48px;
-              max-width: 50px;
-              width: 48.8px;
+              // max-width: 50px;
+              // max-width: 150px;
+              // width: 48.8px;
+
               height: 22px;
-              @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display;
+              @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display w-max;
             }
           }
           h6 {
@@ -405,16 +417,22 @@
   }
 
   .ibe__trip__variant {
-    @apply flex flex-col w-full px-3 lg:px-[14px] py-6  border-t-[6px];
+    @apply flex flex-col w-full pb-6;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     border-radius: 6px 6px 0px 0px;
+
+    //
 
     button {
       @apply flex flex-col text-sm font-bold;
     }
 
     &.saver {
-      @apply border-t-primary-main;
+      .type-header {
+        @apply flex flex-col items-center py-5;
+        background: #26205e;
+        border-radius: 6px 6px 0px 0px;
+      }
 
       button {
         @apply text-primary-main;
@@ -424,13 +442,27 @@
     &.classic {
       @apply border-t-black;
 
+      .type-header {
+        @apply flex flex-col items-center py-5;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 6px 6px 0px 0px;
+      }
+
       button {
         @apply text-white;
       }
     }
 
     &.gflex {
-      @apply border-t-green;
+      .type-header {
+        @apply flex flex-col items-center py-5 bg-green;
+        border-radius: 6px 6px 0px 0px;
+
+        h2,
+        p {
+          @apply text-primary-main;
+        }
+      }
     }
   }
 
@@ -779,15 +811,15 @@
   }
 
   .cabin__main {
-    @apply h-[1700px] overflow-hidden hidden xlg:absolute left-[30%] z-10 -translate-x-[50%];
+    @apply h-[2000px] overflow-hidden hidden xlg:block xlg:absolute left-[30%] z-10 -translate-x-[50%];
   }
 
   .cabin__base {
-    @apply overflow-hidden hidden xlg:absolute top-[1690px] w-[1200px] left-[40%] z-[9] -translate-x-[50%];
+    @apply overflow-hidden hidden xlg:block xlg:absolute top-[1980px] w-[1200px] left-[30%] z-[9] -translate-x-[50%];
   }
 
   .cabin__container {
-    @apply min-h-[150px] z-20 relative xlg:absolute xlg:top-[250px] xlg:left-[13%] xlg:-translate-x-[50%] mb-4 xlg:mb-8;
+    @apply min-h-[150px] z-20 relative xlg:absolute top-0 xlg:top-[270px] xlg:left-[30%]  xlg:-translate-x-[50%] mb-4 xlg:mb-8;
   }
 
   .cabin__legend {
