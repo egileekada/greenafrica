@@ -7,8 +7,17 @@ import IbeSidebar from "containers/IbeSidebar";
 import { Fragment, useState } from "react";
 import Popup from "components/Popup";
 
+import { useSelector, useDispatch } from "react-redux";
+import { counterSelector, _increment } from "redux/reducers/counter";
+
 const Home = () => {
   const [showPopUp, setShow] = useState(false);
+  const { value, flightName } = useSelector(counterSelector);
+  const dispatch = useDispatch();
+
+  const _h = () => {
+    dispatch(_increment());
+  };
 
   return (
     <Fragment>
@@ -16,8 +25,9 @@ const Home = () => {
         <section className="ga__section">
           <div className="ga__section__main">
             <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
-              SELECT FLIGHT
+              SELECT FLIGHT {flightName} {value}
             </h2>
+            <button className="mb-6" onClick={_h}>addd</button>
             <IbeHeader />
             <IbeTrips />
           </div>
