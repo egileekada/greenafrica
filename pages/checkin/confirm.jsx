@@ -2,6 +2,7 @@
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/flightcircle.svg";
 import AeroIcon from "assets/svgs/aero.svg";
+import GreenCheck from "assets/svgs/green.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
 import CheckInCard from "components/Cards/checkin";
@@ -10,6 +11,9 @@ import IbeAdbar from "containers/IbeAdbar";
 const CheckInDetails = () => {
   return (
     <BaseLayout>
+      <section className="flex items-center justify-center bg-green px-3 py-3 pt-24 lg:pt-3">
+        <p className="text-center">Boarding pass has been emailed to test@greenafrica.net</p>
+      </section>
       <section className="w-full checkin">
         <section className="ga__section">
           <div className="ga__section__main">
@@ -103,36 +107,39 @@ const CheckInDetails = () => {
                     <h6>SEAT NUMBER</h6>
                     <h5 className="flex items-center">
                       <span>2A</span>
-                      {/* <button className="btn btn-outline">
-                        View Selection
-                      </button> */}
-                      <button className="btn btn-outline ml-4">Add</button>
                     </h5>
                   </div>
                   <div className="trip-details-item">
                     <h6>BAGGAGES</h6>
                     <h5 className="flex items-center">
                       <span>0</span>
-                      {/* <button className="btn btn-outline">
-                        View Selection
-                      </button> */}
-                      <button className="btn btn-outline ml-4">Add</button>
                     </h5>
+                  </div>
+                  <div className="trip-details-item">
+                    <h6>MEALS</h6>
+                    <h5 className="flex items-center">
+                      <span>0</span>
+                    </h5>
+                  </div>
+                  <div className="flex flex-wrap md:flex-nowrap items-center justify-between ml-auto">
+                    <button className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0">
+                      Download Boarding Pass
+                    </button>
+                    <button className="btn btn-outline  basis-full md:basis-auto">
+                      Email Boarding Pass
+                    </button>
                   </div>
                 </div>
               </section>
               {/* Trip Itenary */}
               {/* Checkin Info*/}
-              <section className="checkin__info mx-6 my-3">
-                <p>
-                  You added some new services so your fare has been updated with
-                  additional fees
-                </p>
+              <section className="flex items-center mx-6 my-3">
+                <figure className="mr-1">
+                  <GreenCheck />
+                </figure>
+                <p>You have been checked in successfully</p>
               </section>
               {/* Checkin Info*/}
-              <div className="flex mx-6">
-                <button className="btn btn-primary">Check In</button>
-              </div>
             </section>
           </div>
           <div className="ga__section__side">

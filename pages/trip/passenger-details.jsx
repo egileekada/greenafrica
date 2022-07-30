@@ -23,6 +23,33 @@ const PassengerDetails = () => {
               Additional Services
             </h2>
 
+            <section className="flex flex-col bg-white rounded-xl pb-12 mb-6">
+              <PassengerAccordion title="Michael Johnson">
+                <div className="flex flex-col">
+                  <h2 className="title-text mb-2">INSURANCE</h2>
+                  <div className="flex items-center primary-checkbox">
+                    <Checkbox onChange={onChange}>
+                      <label className="check-label">
+                        <p className="ml-2">Travel Insurance (N2,000)</p>
+                      </label>
+                    </Checkbox>
+                  </div>
+                </div>
+              </PassengerAccordion>
+
+              <DetailsAccordion title="Have Additional Baggage?">
+                <PassengerBaggage />
+              </DetailsAccordion>
+
+              <DetailsAccordion title="Request Meal?">
+                <PassengerMeal />
+              </DetailsAccordion>
+
+              <div className="flex items-center px-10">
+                <button className="btn btn-outline mr-2">Go Back</button>
+                <button className="btn btn-primary">Continue</button>
+              </div>
+            </section>
             <section className="flex flex-col bg-white rounded-xl pb-12">
               <PassengerAccordion title="Michael Johnson">
                 <div className="flex flex-col">
