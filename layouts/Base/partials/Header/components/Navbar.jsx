@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar, Dropdown, Avatar } from "flowbite-react";
+import { Dropdown } from "flowbite-react";
 import LogoIcon from "assets/svgs/logo.svg";
 import Link from "next/link";
 

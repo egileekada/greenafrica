@@ -12,9 +12,9 @@ module.exports = {
     },
     fontFamily: {
       body: ["Plus Jakarta Sans"],
-      title: ["Cosmica Semi-bold"],
-      header: ["Cosmica Bold"],
-      display: ["Cosmica Extra-bold"],
+      title: ["Plus Jakarta Sans"],
+      header: ["Plus Jakarta Sans"],
+      display: ["Plus Jakarta Sans"],
     },
     extend: {
       fontSize: {

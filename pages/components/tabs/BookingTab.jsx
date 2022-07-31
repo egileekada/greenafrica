@@ -23,9 +23,9 @@ const BookingTab = () => {
           ></input>
         </div>
       </div>
-      <button className="btn btn-primary h-[60px] font-title">Confirm</button>
+      <button className="btn btn-primary h-[60px] font-title">Search</button>
     </section>
   );
 };
 
-export default BookingTab; 
+export default BookingTab;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "flowbite-react";
 import Select from "react-select";
 import { format } from "date-fns";
@@ -13,6 +13,10 @@ const BookingTab = ({ type }) => {
   const [value, onChange] = useState(new Date());
   const [departing, setDeparting] = useState(new Date());
   const [returning, setReturning] = useState(new Date());
+  const [passengers, setPassengers] = useState(0);
+  const [infant, setInfant] = useState(0);
+  const [adult, setAdult] = useState(1);
+  const [child, setChild] = useState(0);
   const [show, setShow] = useState(false);
 
   const options = [
@@ -67,6 +71,29 @@ const BookingTab = ({ type }) => {
     setSelectedOption(bTemp); // swap a
     setSelectedOption2(aTemp); // swap b
   };
+
+  const updateInfant = (value) => {
+    if (infant >= 0) {
+      setInfant(Math.min(infant + value, 1));
+    }
+  };
+
+  const updateAdult = (value) => {
+    console.log(adult);
+    if (adult >= 0) {
+      setAdult(Math.min(adult + value, 9));
+    }
+  };
+
+  const updateChild = (value) => {
+    if (child >= 0) {
+      setChild(Math.min(child + value, 9));
+    }
+  };
+
+  useEffect(() => {
+    setPassengers(child + adult + infant);
+  }, [adult, infant, child]);
 
   return (
     <>
@@ -188,7 +215,7 @@ const BookingTab = ({ type }) => {
                   value={returning}
                   tileContent={hasContent}
                   className="datepicker border-0 w-full font-body"
-                  minDate={new Date()}
+                  minDate={departing}
                 />
               </div>
             </div>
@@ -222,7 +249,7 @@ const BookingTab = ({ type }) => {
               </span>
 
               <div className="w-1/6 text-center">
-                <span>1</span>
+                <span>{passengers}</span>
               </div>
 
               <div>
@@ -242,9 +269,13 @@ const BookingTab = ({ type }) => {
                   />
                 </svg>
               </div>
-
-              {/* <div className="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40"></div> */}
             </div>
+            <div
+              className={`${
+                !show && "hidden"
+              } bg-gray-900 bg-opacity-0 dark:bg-opacity-80 fixed inset-0 z-40`}
+              onClick={() => setShow(false)}
+            ></div>
 
             <div
               id="defaultModal"
@@ -265,16 +296,26 @@ const BookingTab = ({ type }) => {
                         </p>
                       </div>
                       <div className="flex items-center">
-                        <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2">
+                        <div
+                          className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                          role="button"
+                          disabled={passengers === 0}
+                          onClick={() => updateAdult(-1)}
+                        >
                           <img src="/images/subtract.svg" alt="" />
                         </div>
                         <input
                           type="tel"
                           className="w-10 mx-2 rounded-lg text-center"
-                          value={0}
+                          value={adult}
                           readOnly
                         />
-                        <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1">
+                        <div
+                          className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                          role="button"
+                          disabled={passengers === 9}
+                          onClick={() => updateAdult(1)}
+                        >
                           <img src="/images/_add.svg" alt="" className="" />
                         </div>
                       </div>
@@ -288,16 +329,26 @@ const BookingTab = ({ type }) => {
                         </p>
                       </div>
                       <div className="flex items-center">
-                        <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2">
+                        <div
+                          className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                          role="button"
+                          disabled={passengers === 0}
+                          onClick={() => updateChild(-1)}
+                        >
                           <img src="/images/subtract.svg" alt="subtract" />
                         </div>
                         <input
                           type="tel"
                           className="w-10 mx-2 rounded-lg text-center"
-                          value={0}
+                          value={child}
                           readOnly
                         />
-                        <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1">
+                        <div
+                          className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                          role="button"
+                          disabled={passengers === 9}
+                          onClick={() => updateChild(1)}
+                        >
                           <img src="/images/_add.svg" alt="" />
                         </div>
                       </div>
@@ -311,16 +362,26 @@ const BookingTab = ({ type }) => {
                         </p>
                       </div>
                       <div className="flex items-center">
-                        <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2">
+                        <div
+                          className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                          role="button"
+                          disabled={infant === 0}
+                          onClick={() => updateInfant(-1)}
+                        >
                           <img src="/images/subtract.svg" alt="" />
                         </div>
                         <input
                           type="tel"
                           className="w-10 mx-2 rounded-lg text-center"
-                          value={0}
+                          value={infant}
                           readOnly
                         />
-                        <div className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1">
+                        <div
+                          className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                          role="button"
+                          disabled={infant === 1 || passengers === 9}
+                          onClick={() => updateInfant(1)}
+                        >
                           <img src="/images/_add.svg" alt="" />
                         </div>
                       </div>

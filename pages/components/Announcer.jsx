@@ -17,7 +17,7 @@ const HomePopup = () => {
         setShow(true);
       }, 3000);
     }
-  }, [showPopUp]);
+  }, []);
 
   const hidePopup = () => {
     Cookies.set("ad_anouncement_popup", "yes", { expires: in1Hour });
@@ -28,7 +28,7 @@ const HomePopup = () => {
     <Popup display={showPopUp} closeModal={() => hidePopup()}>
       <section className="w-full">
         <section className="flex flex-col lg:flex-row items-center justify-between h-full rounded-xl">
-          <div className="basis-full md:basis-2/3 rounded-xl md:rounded-l-xl h-full px-7 py-5 lg:pt-10 lg:px-10 flex items-center bg-white md:bg-[#26205E]">
+          <div className="md:basis-80 rounded-xl md:rounded-l-xl h-full px-7 py-5 lg:pt-10 lg:px-10 flex items-center bg-white md:bg-[#26205E]">
             <div className="">
               <h2 className="text-primary-main md:text-white font-semibold font-body text-3xl mb-[18px]">
                 Welcome to the future
@@ -36,17 +36,20 @@ const HomePopup = () => {
               <p className="text-sm leading-[29px] font-light text-primary-main md:text-white mb-6">
                 You are one flight closer to your dreams and destinations.
               </p>
-              <button className="btn btn-primary md:white border border-white w-[133px] py-4 px-6">
+              <button
+                className="btn btn-primary md:white border border-white w-[133px] py-4 px-6"
+                onClick={() => setShow(false)}
+              >
                 Get Started
               </button>
             </div>
           </div>
-          <div className="h-full rounded-r-xl">
+          <div className="h-full rounded-r-xl md:w-auto">
             <figure className="h-[483px]">
               <img
                 src="https://static.greenafrica.com/media/1003/green-africa_atr_mountain_final.jpeg?cropmode=percentaje&width=1200"
                 alt=""
-                className="w-full h-full object-cover rounded-r-xl invisible md:visible"
+                className="w-full h-full object-cover rounded-r-xl invisible lg:visible"
               />
             </figure>
           </div>

@@ -80,16 +80,17 @@
   }
 
   .form-group {
-    border: 1px solid #d8d7e2;
+    // border: 1px solid #d8d7e2;
+    box-shadow: 0 0 5px 0 rgb(195 198 205 / 50%);
     border-radius: 6px;
     padding: 8px 30px;
 
     label {
-      @apply font-body text-[#979797] text-[12px] mb-[7px] font-normal;
+      @apply font-body text-[#979797] text-[12px] mb-[0px] font-normal uppercase;
     }
 
     input {
-      @apply bg-transparent border-none outline-none text-black text-base font-normal  w-full focus:ring-0 focus:outline-none  placeholder-black;
+      @apply bg-transparent border-none outline-none text-black text-base font-normal  w-full focus:ring-0 focus:outline-none  placeholder-black pl-0 pb-0;
 
       &.white-bg {
         @apply bg-white;
@@ -543,7 +544,7 @@ textarea {
 }
 
 .dropdown-large ul li a {
-  color: #2C2C2C;
+  color: #2c2c2c;
   font-size: 14px;
 }
 
@@ -564,4 +565,9 @@ textarea {
   nav .nav-item .dropdown-menu {
     margin-top: 0;
   }
+}
+
+div[disabled] {
+  pointer-events: none;
+  opacity: 0.4;
 }
