@@ -16,12 +16,40 @@ const PassengerDetails = () => {
   return (
     <BaseLayout>
       <section className="w-full">
-        <section className="flex">
-          <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12">
+        <section className="ga__section">
+          {/* <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12"> */}
+          <div className="ga__section__main">
             <h2 className="text-primary-main font-extrabold text-2xl mb-8">
               Additional Services
             </h2>
 
+            <section className="flex flex-col bg-white rounded-xl pb-12 mb-6">
+              <PassengerAccordion title="Michael Johnson">
+                <div className="flex flex-col">
+                  <h2 className="title-text mb-2">INSURANCE</h2>
+                  <div className="flex items-center primary-checkbox">
+                    <Checkbox onChange={onChange}>
+                      <label className="check-label">
+                        <p className="ml-2">Travel Insurance (N2,000)</p>
+                      </label>
+                    </Checkbox>
+                  </div>
+                </div>
+              </PassengerAccordion>
+
+              <DetailsAccordion title="Have Additional Baggage?">
+                <PassengerBaggage />
+              </DetailsAccordion>
+
+              <DetailsAccordion title="Request Meal?">
+                <PassengerMeal />
+              </DetailsAccordion>
+
+              <div className="flex items-center px-10">
+                <button className="btn btn-outline mr-2">Go Back</button>
+                <button className="btn btn-primary">Continue</button>
+              </div>
+            </section>
             <section className="flex flex-col bg-white rounded-xl pb-12">
               <PassengerAccordion title="Michael Johnson">
                 <div className="flex flex-col">
@@ -50,7 +78,7 @@ const PassengerDetails = () => {
               </div>
             </section>
           </div>
-          <div className="basis-[25%] bg-white px-6 py-8">
+          <div className="ga__section__side">
             <IbeSidebar />
           </div>
         </section>

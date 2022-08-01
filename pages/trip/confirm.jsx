@@ -14,9 +14,9 @@ const TripConfirm = () => {
   return (
     <BaseLayout>
       <section className="w-full">
-        <section className="flex">
-          <div className="basis-[75%] flex flex-col greylike py-10 pl-28 pr-12">
-            <div className="mb-8">
+        <section className="ga__section">
+          <div className="ga__section__main">
+            <div className="mb-8 mt-16 xlg:mt-0">
               <h2 className="text-black font-extrabold text-2xl mb-4">
                 Booking Confirmed
               </h2>
@@ -32,72 +32,79 @@ const TripConfirm = () => {
               {/* TripHeader */}
               <section className="ibe__flight__info__destination">
                 <p>Booking Code: 9J78BG</p>
-                <figure className="absolute -left-6">
+                <figure className="flightCircle">
                   <FlightIcon />
                 </figure>
               </section>
               {/* TripHeader*/}
               {/* Flight Summary */}
-              <div className="flex items-center justify-between px-12 py-8">
-                <div className="flex flex-col">
+              <div className="flex flex-wrap md:flex-nowrap items-center justify-between px-6 lg:px-12 py-6 lg:py-8">
+                <div className="basis-full md:basis-auto mb-4 md:mb-0 flex flex-col">
                   <h2 className="trip-title mb-3">FLIGHT SUMMARY</h2>
                   <p className="text-primary-main text-sm font-body font-normal">
                     Departing on June 22, 2022
                   </p>
                 </div>
-                <button className="btn btn-outline">Download Ticket</button>
+                <button className="basis-full md:basis-auto btn btn-outline">
+                  Download Ticket
+                </button>
               </div>
               {/* Flight Summary */}
+
               {/* Trip Itenary */}
-              <section className="ibe__trip__item summaryView bordered mx-12 mb-9">
+              <section className="ibe__trip__item summaryView bordered mx-6 lg:mx-12 mb-9">
                 <div className="basis-full flex  flex-col min-h-[54px] ">
                   <p className="tripType self-center">Direct Flight</p>
                   <div className="flex justify-between">
                     <div className="flex flex-col">
-                      <h5 className="font-extrabold font-header  text-2xl text-primary-main">
+                      <h5 className="font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left">
                         18:00
                       </h5>
-                      <p className="font-semibold font-body text-sm text-black">
+                      <p className="font-semibold font-body text-xs lg:text-sm text-black text-left">
                         Lagos (LOS)
                       </p>
                     </div>
-                    <div className="flex items-center basis-[70%] justify-between">
-                      <DottedLine />
-                      <AeroIcon />
-                      <DottedLine />
+                    <div className="tripIconPath">
+                      <DottedLine className="dotted-svg" />
+                      <AeroIcon className="aero-svg" />
+                      <DottedLine className="dotted-svg" />
                     </div>
                     <div className="flex flex-col  items-end">
-                      <h5 className="font-extrabold font-header text-2xl text-primary-main">
-                        19:35
+                      <h5 className="font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left">
+                        19:00
                       </h5>
-                      <p className="font-semibold font-body text-sm text-black">
-                        Akure (AKR)
-                      </p>
+                      <p className="tripCity right-text">Abuja (ABJ)</p>
                     </div>
                   </div>
                   <p className="tripTime self-center">1h 35mins</p>
                 </div>
               </section>
               {/* Trip Itenary */}
+
               {/* Passenger & Fare */}
-              <section className="flex justify-between px-12 mb-4">
-                <div className="basis-[48%]">
+              <section className="flex flex-wrap md:flex-nowrap justify-between px-6 lg:px-12 mb-4">
+                <div className="basis-full md:basis-[48%] mb-12 md:mb-0">
                   <SummaryDetails />
                 </div>
-                <div className="basis-[48%]">
+                <div className="basis-full md:basis-[48%]">
                   <Fare />
                 </div>
               </section>
               {/* Passenger & Fare */}
+
               {/* CTA */}
-              <div className="flex items-center px-12">
-                <button className="btn btn-primary mr-2">Manage Booking</button>
-                <button className="btn btn-outline mr-2">Check In</button>
-              </div>
+              <section className="flex  flex-wrap md:flex-nowrap items-center px-6 lg:px-12">
+                <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-0 md:mr-2 mb-4 md:mb-0">
+                  Manage Booking
+                </button>
+                <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2">
+                  Check In
+                </button>
+              </section>
               {/* CTA */}
             </section>
           </div>
-          <div className="basis-[25%] bg-white px-6 py-8">
+          <div className="ga__section__side">
             <IbeSidebar />
           </div>
         </section>

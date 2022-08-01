@@ -8,17 +8,58 @@
 // @import './nav.scss';
 // @import './form.scss';
 
+//  width="61"
+//   height="61"
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html {
-  font-size: 80%;
+@media (min-width: 1200px) {
+  html {
+    // font-size: 80%;
+  }
 }
+
 // Tailwind Styles
 @layer components {
+  button {
+    @apply focus:outline-none;
+  }
+
+  .ga__section {
+    @apply flex flex-wrap xlg:flex-nowrap w-full;
+
+    &.bg-normal {
+      background-color: rgba(158, 155, 191, 0.17);
+    }
+
+    &__main {
+      @apply basis-full xlg:basis-[75%] flex flex-col  py-10 
+            px-4 md:px-8 tab:px-16 xxl:px-24;
+      background-color: rgba(158, 155, 191, 0.17);
+
+      &.payment-section {
+        @apply pt-28 lg:py-10;
+      }
+
+      &.standalone {
+        @apply mx-auto xlg:basis-[80%] xl:basis-[70%];
+        background-color: rgba(158, 155, 191, 0);
+      }
+    }
+
+    &__side {
+      @apply basis-full xlg:basis-[25%] bg-white px-8 py-8;
+    }
+  }
+
   .fit-x-bleed {
-    @apply px-8 sm:px-16 tab:px-24;
+    @apply px-4 md:px-8 tab:px-16 xxl:px-24;
+  }
+
+  .fit-nav {
+    @apply px-4 xxl:pl-28;
   }
 
   .scrollable {
@@ -146,6 +187,10 @@ html {
     }
   }
 
+  figure.flightCircle {
+    @apply absolute left-3 md:-left-6 w-[29px] h-[29px] md:w-[61px] md:h-[61px];
+  }
+
   .ga__counter {
     ant-input {
       border: 1px solid #d8d7e2;
@@ -198,27 +243,31 @@ html {
       border-radius: 6px 6px 0px 0px;
 
       p {
-        @apply font-display text-white font-extrabold text-2xl;
+        @apply font-display text-white font-extrabold text-xs md:text-2xl mx-4;
       }
     }
 
     &__dates {
-      @apply bg-white min-h-[100px] p-6;
+      @apply bg-white min-h-[100px]  sm:px-6 py-4 sm:py-6 flex;
       border-radius: 0px 0px 6px 6px;
 
       .ibe__date__item {
-        @apply basis-[14.3%] flex-grow-0 flex-shrink-0 flex justify-center;
+        @apply basis-[14.3%] flex-grow flex-shrink-0 flex justify-center;
         border-right: 1px solid rgba(38, 31, 94, 0.06);
 
+        &.b-r-none {
+          border-right: none;
+        }
+
         button {
-          @apply flex flex-col items-start px-6 py-[20px] transition-all;
+          @apply flex flex-col items-start px-4 sm:px-6 py-[20px] transition-all;
 
           h6 {
-            @apply text-primary-main font-extrabold text-[11px] leading-[14px] font-body mb-2;
+            @apply text-primary-main font-extrabold text-xxs md:text-[11px] leading-[14px] font-body mb-2;
           }
 
           p {
-            @apply text-primary-main font-bold text-base;
+            @apply text-primary-main font-bold text-xs md:text-base;
           }
 
           &:hover {
@@ -242,10 +291,37 @@ html {
   }
 
   .ibe__trip__item {
-    @apply flex items-center bg-white pt-6 pb-10 px-7 rounded-t-md;
+    @apply flex flex-wrap lg:flex-nowrap items-center bg-white pt-6 pb-10 px-7 rounded-t-md;
+
+    h5.tripTime {
+      @apply font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left;
+      &.right-text {
+        @apply text-right;
+      }
+    }
+
+    p.tripCity {
+      @apply font-semibold font-body text-xs lg:text-sm text-black text-left;
+
+      &.right-text {
+        @apply text-right;
+      }
+    }
+
+    .tripIconPath {
+      @apply flex items-center basis-[70%] justify-between px-4 lg:px-0;
+
+      .dotted-svg {
+        @apply w-[30%] lg:w-auto;
+      }
+
+      .aero-svg {
+        @apply w-[20%] lg:w-auto;
+      }
+    }
 
     &.tripView {
-      @apply px-24;
+      @apply lg:px-24;
 
       &.bordered {
         border: 0.5px solid #cfceda;
@@ -272,10 +348,10 @@ html {
 
       .trip-details {
         background: rgba(158, 155, 191, 0.12);
-        @apply px-6 pt-4 pb-6 flex basis-full w-full;
+        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap  basis-full w-full;
 
         &-item {
-          @apply flex flex-col mr-12 h-10;
+          @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
 
           h5,
           h5 span {
@@ -283,10 +359,12 @@ html {
 
             button.btn-outline {
               min-width: 48px;
-              max-width: 50px;
-              width: 48.8px;
+              // max-width: 50px;
+              // max-width: 150px;
+              // width: 48.8px;
+
               height: 22px;
-              @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display;
+              @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display w-max;
             }
           }
           h6 {
@@ -298,19 +376,19 @@ html {
 
     p.tripType,
     p.tripTime {
-      @apply font-extrabold text-primary-main text-sm font-body;
+      @apply font-extrabold text-primary-main text-xxs lg:text-sm font-body;
     }
   }
 
   .ibe__trip__package {
-    @apply bg-white px-24 py-6;
+    @apply bg-white px-7 lg:px-24 py-6;
 
     h5 {
-      @apply text-xs text-black font-header mb-2;
+      @apply text-xxs lg:text-xs text-black font-header mb-2;
     }
 
     h6 {
-      @apply text-xs text-[25px] leading-[32px] text-primary-main font-display;
+      @apply text-xl lg:text-[25px] leading-[32px] text-primary-main font-display;
     }
   }
 
@@ -318,10 +396,10 @@ html {
     @apply bg-[#EDEDFF] py-4 px-7;
 
     &.tripView {
-      @apply px-24 py-[30px];
+      @apply px-7 lg:px-24 py-[30px];
 
       h4 {
-        @apply mb-0 font-body text-sm;
+        @apply mb-0 font-body text-xs lg:text-sm;
       }
     }
 
@@ -339,16 +417,22 @@ html {
   }
 
   .ibe__trip__variant {
-    @apply flex flex-col w-full px-[14px] py-6  border-t-[6px];
+    @apply flex flex-col w-full pb-6;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     border-radius: 6px 6px 0px 0px;
 
+    //
+
     button {
-      @apply flex flex-col text-base font-bold;
+      @apply flex flex-col text-sm font-bold;
     }
 
     &.saver {
-      @apply border-t-primary-main;
+      .type-header {
+        @apply flex flex-col items-center py-5;
+        background: #26205e;
+        border-radius: 6px 6px 0px 0px;
+      }
 
       button {
         @apply text-primary-main;
@@ -358,13 +442,27 @@ html {
     &.classic {
       @apply border-t-black;
 
+      .type-header {
+        @apply flex flex-col items-center py-5;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 6px 6px 0px 0px;
+      }
+
       button {
         @apply text-white;
       }
     }
 
     &.gflex {
-      @apply border-t-green;
+      .type-header {
+        @apply flex flex-col items-center py-5 bg-green;
+        border-radius: 6px 6px 0px 0px;
+
+        h2,
+        p {
+          @apply text-primary-main;
+        }
+      }
     }
   }
 
@@ -462,7 +560,7 @@ html {
     @apply flex flex-col;
 
     &__box {
-      @apply bg-white mb-10 py-11 px-9 flex flex-col;
+      @apply bg-white mb-10 py-8 tab:py-11 px-5 md:px-9 flex flex-col;
 
       label.check-label {
         @apply text-[#101010] text-xs font-body;
@@ -470,6 +568,10 @@ html {
         span {
           @apply font-title;
         }
+      }
+
+      .form-group {
+        @apply w-full md:w-auto;
       }
 
       .ant-switch {
@@ -543,19 +645,19 @@ html {
     }
 
     p {
-      @apply font-body text-sm text-black;
+      @apply font-body text-xs lg:text-sm text-black;
     }
 
     h6 {
-      @apply text-primary-main font-body text-xxs;
+      @apply text-primary-main font-body text-[8px] leading-[9px] lg:text-xxs;
     }
 
     h5 {
-      @apply text-primary-main font-display text-[28px] leading-[36px];
+      @apply text-primary-main font-display text-sm lg:text-[28px] leading-[36px];
     }
 
     .payment-card {
-      @apply py-9 px-14  mb-8 rounded-md bg-white flex justify-between items-center border-none transition-all cursor-pointer relative transition-all;
+      @apply py-5 lg:py-9 pl-12 pr-6 lg:px-14  mb-8 rounded-md bg-white flex justify-between items-start lg:items-center border-none transition-all cursor-pointer relative;
 
       &:hover {
         box-shadow: 0 0 5px 0 rgba(195, 198, 205, 0.5);
@@ -708,19 +810,37 @@ html {
     }
   }
 
+  .cabin__main {
+    @apply h-[2000px] overflow-hidden hidden xlg:block xlg:absolute left-[30%] z-10 -translate-x-[50%];
+  }
+
+  .cabin__base {
+    @apply overflow-hidden hidden xlg:block xlg:absolute top-[1980px] w-[1200px] left-[30%] z-[9] -translate-x-[50%];
+  }
+
+  .cabin__container {
+    @apply min-h-[150px] z-20 relative xlg:absolute top-0 xlg:top-[270px] xlg:left-[30%]  xlg:-translate-x-[50%] mb-4 xlg:mb-8;
+  }
+
   .cabin__legend {
+    @apply hidden xxl:absolute z-[9] top-[25px] right-5;
     p {
       @apply text-xs;
     }
   }
 
   .seats {
+    @apply flex flex-col items-center xlg:items-start;
     &__row {
       @apply flex px-6 my-2;
     }
 
     &__item {
       @apply mr-1 flex items-center justify-center bg-primary-main w-[38px] h-[49px] rounded-md cursor-pointer hover:bg-opacity-70;
+
+      &.transparent {
+        @apply bg-transparent;
+      }
 
       p {
         @apply text-white text-lg font-header;
@@ -785,7 +905,7 @@ html {
     overflow-y: scroll;
 
     @media (max-width: 900px) {
-      width: 90%;
+      width: 95%;
     }
 
     span.close {
@@ -849,6 +969,14 @@ html {
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       }
 
+      &.rr {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      &.cta-row {
+        border: none;
+      }
+
       h3 {
         @apply text-center text-[25px] leading-[32px] text-primary-main font-semibold font-display;
       }
@@ -867,6 +995,37 @@ html {
 
       figure {
         @apply flex items-center justify-center w-[22px] h-[22px];
+      }
+    }
+  }
+}
+
+.mobile__benefits {
+  &__item {
+    @apply flex flex-col mb-9;
+
+    h4 {
+      @apply text-black text-xl font-header mb-3;
+    }
+
+    h5 {
+      @apply text-primary-main text-2xl font-display mb-6;
+    }
+
+    p {
+      @apply text-primary-main text-sm font-body;
+    }
+
+    ul {
+      @apply flex flex-col;
+
+      li {
+        figure {
+        }
+
+        span {
+          @apply text-black text-sm font-body ml-4;
+        }
       }
     }
   }
