@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import rootReducer from "./reducers";
 import counterReducer from "redux/reducers/counter";
 
 export const store = configureStore({
@@ -6,3 +7,4 @@ export const store = configureStore({
     counter: counterReducer,
   },
 });
+
