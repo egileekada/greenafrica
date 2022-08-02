@@ -44,9 +44,9 @@ const IbeTripVariant = ({ variant }) => {
               Recommended For You
             </p>
           </div>
-          <ul className="mt-7 mb-10">
+          <ul className="mt-7 mb-10 px-8">
             <li className="flex items-center mb-6">
-              <figure className="w-[44px] h-[44px] bg-primary-main rounded-full flex items-center justify-center">
+              <figure className="w-[44px] h-[44px] bg-transparent rounded-full flex items-center justify-center">
                 <BriefcaseIcon />
               </figure>
               <p className="text-black font-medium text-sm ml-4">
@@ -54,7 +54,7 @@ const IbeTripVariant = ({ variant }) => {
               </p>
             </li>
             <li className="flex items-center mb-6">
-              <figure className="w-[44px] h-[44px] bg-primary-main  rounded-full flex items-center justify-center">
+              <figure className="w-[44px] h-[44px] bg-transparent  rounded-full flex items-center justify-center">
                 <PackageIcon />
               </figure>
               <p className="text-black font-medium text-sm ml-4">
@@ -62,7 +62,7 @@ const IbeTripVariant = ({ variant }) => {
               </p>
             </li>
             <li className="flex items-center">
-              <figure className="w-[44px] h-[44px] bg-primary-main  rounded-full flex items-center justify-center">
+              <figure className="w-[44px] h-[44px] bg-transparent  rounded-full flex items-center justify-center">
                 <SeatIcon />
               </figure>
               <p className="text-black font-medium text-sm ml-4">
@@ -75,7 +75,7 @@ const IbeTripVariant = ({ variant }) => {
           {variant === "saver" && (
             <button
               onClick={() => setShow(true)}
-              className="btn btn-outline w-full"
+              className="btn btn-primary w-full"
             >
               Continue For ₦16,501
             </button>
@@ -91,7 +91,7 @@ const IbeTripVariant = ({ variant }) => {
           {variant === "gflex" && (
             <button
               onClick={() => setShow(true)}
-              className="btn btn-green  w-full"
+              className="btn btn-primary  w-full"
             >
               Continue For ₦16,501
             </button>

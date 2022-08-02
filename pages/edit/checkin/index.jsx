@@ -12,7 +12,7 @@ import BaggageIcon from "assets/svgs/baggage.svg";
 
 const CheckInDetails = () => {
   const [showBaggage, setBaggage] = useState(false);
-  const [showMeal, setMeal] = useState(false);
+  const [showMeal, setMeal] = useState(true);
 
   return (
     <Fragment>
