@@ -25,9 +25,9 @@ const Home = () => {
         <section className="ga__section">
           <div className="ga__section__main">
             <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
-              SELECT FLIGHT {flightName} {value}
+              SELECT FLIGHT
             </h2>
-            <button className="mb-6" onClick={_h}>addd</button>
+            {/* <button className="mb-6" onClick={_h}>addd</button> */}
             <IbeHeader />
             <IbeTrips />
           </div>
