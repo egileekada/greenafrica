@@ -109,7 +109,7 @@ const IbeTripVariant = ({ variant }) => {
             <section className="benefits__popup">
               <div className="benefits__popup__row item-center">
                 <div className="benefits__popup__row__item"></div>
-                <div className="benefits__popup__row__item">
+                <div className="benefits__popup__row__item bg-green">
                   <h4>You selected:</h4>
                   <h3>gSaver</h3>
                 </div>
@@ -244,7 +244,7 @@ const IbeTripVariant = ({ variant }) => {
                 <div className="benefits__popup__row__item cta-row">
                   <button
                     onClick={() => setShow(false)}
-                    className="btn btn-outline"
+                    className="btn btn-primary"
                   >
                     +N50,000 / Per Person
                   </button>
