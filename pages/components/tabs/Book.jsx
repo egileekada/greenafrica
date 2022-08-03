@@ -19,11 +19,11 @@ const BookingTab = ({ type }) => {
   const [child, setChild] = useState(0);
   const [show, setShow] = useState(false);
 
-
   const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
+    { value: "Abuja", label: "Abuja", customAbbreviation: "ABV" },
+    { value: "Akure", label: "Akure", customAbbreviation: "AKR" },
+    { value: "Benin", label: "Benin", customAbbreviation: "BNI" },
+    { value: "Enugu", label: "Enugu", customAbbreviation: "ENU" },
   ];
 
   const colourStyles = {
@@ -92,6 +92,17 @@ const BookingTab = ({ type }) => {
     }
   };
 
+  const formatOptionLabel = ({ value, label, customAbbreviation }) => (
+    <div className="flex items-center">
+      <div>
+        <p className="font-bold mb-0">{label}</p>
+      </div>
+      <div className="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
+        {customAbbreviation}
+      </div>
+    </div>
+  );
+
   useEffect(() => {
     setPassengers(child + adult + infant);
   }, [adult, infant, child]);
@@ -112,6 +123,7 @@ const BookingTab = ({ type }) => {
                 id="from"
                 instanceId="from"
                 defaultValue={selectedOption}
+                formatOptionLabel={formatOptionLabel}
                 value={selectedOption}
                 onChange={setSelectedOption}
                 options={options}
@@ -142,6 +154,7 @@ const BookingTab = ({ type }) => {
                 defaultValue={selectedOption2}
                 value={selectedOption2}
                 onChange={setSelectedOption2}
+                formatOptionLabel={formatOptionLabel}
                 options={options}
                 className="border-0"
                 styles={colourStyles}
