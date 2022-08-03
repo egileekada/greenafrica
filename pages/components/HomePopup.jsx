@@ -9,7 +9,7 @@ const HomePopup = ({ show, setShow }) => {
     <Popup display={show} closeModal={() => setShow(false)}>
       <section className="w-full bg-white rounded-xl">
         <section className="flex flex-col lg:flex-row items-center justify-between h-full">
-          <div className="basis-full md:basis-1/3 lg:bg-[#483E95] rounded-l-xl h-full px-7 py-5 lg:pt-24 lg:px-10 flex items-center">
+          <div className="basis-full md:basis-1/3 lg:bg-[#26205E] rounded-l-xl h-full px-7 py-5 lg:pt-24 lg:px-10 flex items-center">
             <div className="">
               <h1 className="text-primary-main lg:text-white font-semibold font-body text-xl lg:text-4xl mb-[18px]">
                 Join Our Community

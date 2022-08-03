@@ -12,36 +12,46 @@ const Bookings = () => {
             Please input your 6 digit Booking Reference and email address used
             on your booking to retrieve your current flight information.
           </p>
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
-            <div className="my-3">
-              <div className="select__wrapper px-5">
-                <p className="text-xs uppercase mb-2 mt-1">PNR</p>
-                <input
-                  type="text"
-                  placeholder="Enter PNR Code"
-                  className="border-none pl-0 block w-full py-1"
-                />
-              </div>
-            </div>
 
-            <div className="my-3">
-              <div className="select__wrapper px-5">
-                <p className="text-xs uppercase mb-2 mt-1">last name</p>
-                <input
-                  type="text"
-                  placeholder="Enter your last name"
-                  className="border-none pl-0 block w-full py-1"
-                />
-              </div>
-            </div>
+          <div className="bg-white rounded-lg my-14 border-2 border-[#9E9BBF33]">
+            <div className="mx-2 p-4 lg:p-8">
+              <p className="text-primary-main font-bold text-base">
+                Enter flight details to view your booking
+              </p>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                <div className="my-3">
+                  <div className="select__wrapper px-5">
+                    <p className="text-xs uppercase mb-1 mt-1">
+                      Booking Reference
+                    </p>
+                    <input
+                      type="text"
+                      placeholder="Enter Booking Reference"
+                      className="border-none pl-0 block w-full py-1"
+                    />
+                  </div>
+                </div>
 
-            <div className="my-3 lg:col-start-5">
-              <button
-                type="submit"
-                className="btn btn-primary font-title h-full block w-full"
-              >
-                Confirm
-              </button>
+                <div className="my-3">
+                  <div className="select__wrapper px-5">
+                    <p className="text-xs uppercase mb-1 mt-1">last name</p>
+                    <input
+                      type="text"
+                      placeholder="Enter your last name"
+                      className="border-none pl-0 block w-full py-1"
+                    />
+                  </div>
+                </div>
+
+                <div className="my-3 lg:ml-auto">
+                  <button
+                    type="submit"
+                    className="btn btn-primary font-bold h-full block w-full"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

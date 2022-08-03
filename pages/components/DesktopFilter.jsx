@@ -7,6 +7,8 @@ import Book from "./tabs/Book";
 
 const DesktopFilter = () => {
   const [activeTab, setActiveTab] = useState(1);
+  const [promocode, setPromocode] = useState(null);
+  const [showPromo, setShowPromo] = useState(true);
 
   return (
     <section className="ga__desktop__filter w-full bg-green min-h-[168px] flex flex-col">
@@ -63,6 +65,12 @@ const DesktopFilter = () => {
             Flight Schedule
           </a> */}
         </div>
+        {/* <div>
+          <input type="text" />
+          <button className="btn btn-outline font-title text-primary-main">
+            Apply
+          </button>
+        </div> */}
         <button className="flex items-center hidden md:flex">
           <figure className="mr-2">
             <PromoIcon />

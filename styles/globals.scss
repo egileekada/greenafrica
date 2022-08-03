@@ -60,8 +60,8 @@
     }
 
     &.btn-outline {
-      @apply bg-transparent text-white border-[2px] border-primary-main
-       hover:bg-primary-main hover:border-primary-main hover:text-white;
+      @apply bg-transparent border-[2px] border-primary-main
+       hover:bg-primary-main hover:border-primary-main hover:text-white font-bold;
     }
   }
   // Button
@@ -464,7 +464,7 @@ textarea {
 
 .select__wrapper {
   border: 1px solid #d8d7e2;
-  @apply rounded-lg py-2;
+  @apply rounded-lg py-1;
 }
 
 .blog__post {

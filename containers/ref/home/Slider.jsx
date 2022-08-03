@@ -12,17 +12,17 @@ const HeroSlider = () => {
   var timer = useRef();
   const [width] = useDeviceSize();
   const [desktopBanners, setDesktopBanners] = useState([
-    {
-      id: 13,
-      slug: "banners/July2022/HE0ArV5tMW5oR38ti6Go.jpg",
-      type: "desktop",
-      alt_text: "Happy Eid Kabir",
-      title: "Happy Eid Kabir",
-      show: 1,
-      created_at: "2022-07-09T07:21:00.000000Z",
-      updated_at: "2022-07-09T07:32:36.000000Z",
-      url: "https://static.greenafrica.com/media/1013/eidkabir_lg_new.gif",
-    },
+    // {
+    //   id: 13,
+    //   slug: "banners/July2022/HE0ArV5tMW5oR38ti6Go.jpg",
+    //   type: "desktop",
+    //   alt_text: "Happy Eid Kabir",
+    //   title: "Happy Eid Kabir",
+    //   show: 1,
+    //   created_at: "2022-07-09T07:21:00.000000Z",
+    //   updated_at: "2022-07-09T07:32:36.000000Z",
+    //   url: "https://static.greenafrica.com/media/1013/eidkabir_lg_new.gif",
+    // },
     {
       id: 11,
       slug: "banners/May2022/PRk7s7lxyewDbFVlvG64.jpg",
@@ -34,17 +34,17 @@ const HeroSlider = () => {
       updated_at: "2022-05-27T07:37:37.000000Z",
       url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
     },
-    {
-      id: 7,
-      slug: "banners/April2022/a1kEQpvvqm6uV43v0rkK.png",
-      type: "desktop",
-      alt_text: null,
-      title: "Corper's FlyMax",
-      show: 1,
-      created_at: "2022-04-24T12:10:31.000000Z",
-      updated_at: "2022-04-24T12:10:31.000000Z",
-      url: "https://static.greenafrica.com/media/1013/eidkabir_lg_new.gif",
-    },
+    // {
+    //   id: 7,
+    //   slug: "banners/April2022/a1kEQpvvqm6uV43v0rkK.png",
+    //   type: "desktop",
+    //   alt_text: null,
+    //   title: "Corper's FlyMax",
+    //   show: 1,
+    //   created_at: "2022-04-24T12:10:31.000000Z",
+    //   updated_at: "2022-04-24T12:10:31.000000Z",
+    //   url: "https://static.greenafrica.com/media/1013/eidkabir_lg_new.gif",
+    // },
   ]);
   const [mobileBanners, setMobileBanners] = useState([
     {

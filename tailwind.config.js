@@ -7,9 +7,9 @@ module.exports = {
     "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    borderWidth: {
-      DEFAULT: "1px",
-    },
+    // borderWidth: {
+    //   DEFAULT: "1px",
+    // },
     fontFamily: {
       body: ["Plus Jakarta Sans"],
       title: ["Plus Jakarta Sans"],

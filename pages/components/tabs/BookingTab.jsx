@@ -5,7 +5,7 @@ const BookingTab = () => {
     <section className="flex  items-center justify-between">
       <div className=" basis-[80%] form">
         <div className="form-row-half form-group">
-          <label>PNR</label>
+          <label>Booking Reference</label>
           <input
             type="text"
             id="firstname"

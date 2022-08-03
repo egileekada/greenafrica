@@ -19,6 +19,7 @@ const BookingTab = ({ type }) => {
   const [child, setChild] = useState(0);
   const [show, setShow] = useState(false);
 
+
   const options = [
     { value: "chocolate", label: "Chocolate" },
     { value: "strawberry", label: "Strawberry" },
