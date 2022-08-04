@@ -48,7 +48,7 @@ const TripInfo = () => {
         <div className="flex flex-col">
           <div className="ibe__sidebar__row bordered">
             <div className="flex items-center">
-              <figure>
+              <figure className="mr-2">
                 <FlightIcon />
               </figure>
               <h6>Flight :</h6>
@@ -59,7 +59,7 @@ const TripInfo = () => {
           </div>
           <div className="ibe__sidebar__row bordered">
             <div className="flex items-center">
-              <figure>
+              <figure className="mr-2">
                 <CostIcon />
               </figure>
               <h6>Flight :</h6>
@@ -70,7 +70,7 @@ const TripInfo = () => {
           </div>
           <div className="ibe__sidebar__row bordered">
             <div className="flex items-center">
-              <figure>
+              <figure className="mr-2">
                 <DiscountIcon />
               </figure>
               <h6>Discount: :</h6>

@@ -1,15 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
 @import url('../assets/fonts/Cosmical/fonts.css');
+@import url('../assets/fonts/plus-jakarta-sans-v3-latin/font.css');
 @import 'antd/dist/antd.css';
 @import './loader.scss';
-
-// @import './carousel.scss';
-// @import './abstract.scss';
-// @import './nav.scss';
-// @import './form.scss';
-
-//  width="61"
-//   height="61"
 
 @tailwind base;
 @tailwind components;
@@ -17,11 +10,17 @@
 
 @media (min-width: 1200px) {
   html {
-    // font-size: 80%;
+    font-size: 80%;
   }
 }
 
 // Tailwind Styles
+@layer base {
+  html {
+    font-family: Plus Jakarta Sans, system-ui, sans-serif;
+  }
+}
+
 @layer components {
   button {
     @apply focus:outline-none;
@@ -435,7 +434,8 @@
       }
 
       button {
-        @apply text-primary-main;
+        // @apply text-primary-main;
+        @apply text-white;
       }
     }
 
@@ -531,7 +531,7 @@
       }
 
       figure {
-        @apply mr-2 w-6 h-6 flex items-center justify-center;
+        @apply mr-2  w-8 h-6 flex items-center justify-center;
       }
 
       h6 {
@@ -823,7 +823,7 @@
   }
 
   .cabin__legend {
-    @apply hidden xxl:absolute z-[9] top-[25px] right-5;
+    @apply hidden xxl:block xxl:absolute z-[9] top-[25px] right-5;
     p {
       @apply text-xs;
     }
@@ -961,7 +961,14 @@
     }
 
     &__item {
-      @apply basis-[25%] flex-shrink-0 flex flex-col py-7 px-8;
+      @apply basis-[25%] flex-shrink-0 flex flex-col py-4 px-8;
+
+      &:first-child {
+        align-items: flex-start !important;
+        h5 {
+          text-align: left;
+        }
+      }
 
       &:not(:last-child) {
         @apply border-r border-b;
@@ -975,6 +982,11 @@
 
       &.cta-row {
         border: none;
+        @apply px-2;
+
+        button {
+          @apply text-sm;
+        }
       }
 
       h3 {

@@ -22,7 +22,7 @@ const DetailsAccordion = ({ children, title }) => {
   return (
     <section className="basis-full md:basis-[45%] flex flex-col mb-4 py-5">
       <button
-        className={`py-7 flex items-center justify-between  mx-5 px-5 border rounded-[14px]  border-[#D8D7E2]`}
+        className={`py-4 flex items-center justify-between mx-5 px-5 border rounded-[14px]  border-[#D8D7E2]`}
         onClick={toggleAccordion}
       >
         <p

@@ -10,10 +10,10 @@ module.exports = {
       DEFAULT: "1px",
     },
     fontFamily: {
-      body: ["Cosmica"],
-      title: ["Cosmica Semi-bold"],
-      header: ["Cosmica Bold"],
-      display: ["Cosmica Extra-bold"],
+      body: ["Plus Jakarta Sans"],
+      title: ["Plus Jakarta Sans"],
+      header: ["Plus Jakarta Sans"],
+      display: ["Plus Jakarta Sans"],
     },
     extend: {
       fontSize: {
