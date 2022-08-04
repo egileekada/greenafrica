@@ -8,7 +8,7 @@ import Book from "./tabs/Book";
 const DesktopFilter = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [promocode, setPromocode] = useState(null);
-  const [showPromo, setShowPromo] = useState(true);
+  const [showPromo, setShowPromo] = useState(false);
 
   return (
     <section className="ga__desktop__filter w-full bg-green min-h-[168px] flex flex-col">
@@ -65,18 +65,34 @@ const DesktopFilter = () => {
             Flight Schedule
           </a> */}
         </div>
-        {/* <div>
-          <input type="text" />
-          <button className="btn btn-outline font-title text-primary-main">
-            Apply
-          </button>
-        </div> */}
-        <button className="flex items-center hidden md:flex">
-          <figure className="mr-2">
-            <PromoIcon />
-          </figure>
-          <span className="text-primary text-sm">Use promo code</span>
-        </button>
+
+        <div className="flex">
+          {showPromo ? (
+            <>
+              <div className="relative">
+                <PromoIcon className="absolute top-3 left-2" />
+                <input
+                  type="text"
+                  className="rounded h-10 pl-8 border border-[#EFEFEF]"
+                  placeholder="Enter Promo Code"
+                />
+              </div>
+              <button className="btn btn-outline font-title text-primary-main py-2 rounded-lg mx-2">
+                Apply
+              </button>
+            </>
+          ) : (
+            <button
+              className="flex items-center hidden md:flex"
+              onClick={() => setShowPromo(true)}
+            >
+              <figure className="mr-2">
+                <PromoIcon />
+              </figure>
+              <span className="text-primary text-sm">Use promo code</span>
+            </button>
+          )}
+        </div>
       </div>
       <section className="ga__desktop__filter__content px-5 py-[18px]">
         {activeTab === 1 && <Book />}

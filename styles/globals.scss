@@ -52,7 +52,7 @@
     }
 
     &.btn-white {
-      @apply bg-white  text-primary-main border-[2px] border-primary-main hover:bg-primary-main hover:text-white;
+      @apply bg-white  text-primary-main border border-primary-main hover:bg-primary-main hover:text-white;
 
       &.white {
         @apply border-white;
@@ -60,7 +60,7 @@
     }
 
     &.btn-outline {
-      @apply bg-transparent border-[2px] border-primary-main
+      @apply bg-transparent border border-primary-main
        hover:bg-primary-main hover:border-primary-main hover:text-white font-bold;
     }
   }
