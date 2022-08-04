@@ -84,13 +84,18 @@ const BookingTab = ({ type }) => {
       width: "100%",
       left: "0",
     }),
+    option: (styles, { isFocused, isSelected }) => ({
+      ...styles,
+      backgroundColor: isSelected && "#EAEBF3",
+      color: isSelected && "#000",
+    }),
   };
 
   function hasContent({ date }) {
     for (const key in data) {
       if (key === format(date, "yyyy-MM-dd")) {
         return (
-          <p className="text-[10px] font-light my-0 text-[#9E9BBF]">
+          <p className="text-[8px] font-light leading-tight my-1 text-[#9E9BBF]">
             ₦{Math.round(data[key])}K
           </p>
         );
@@ -128,10 +133,9 @@ const BookingTab = ({ type }) => {
   const formatOptionLabel = ({ value, label, customAbbreviation }) => (
     <div class="flex items-center">
       <div>
-        <p class="font-bold mb-0">{label}</p>
-      </div>
-      <div class="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
-        {customAbbreviation}
+        <p class="font-bold mb-0">
+          {label} ({customAbbreviation})
+        </p>
       </div>
     </div>
   );
@@ -186,7 +190,7 @@ const BookingTab = ({ type }) => {
                 id="from"
                 instanceId="from"
                 defaultValue={selectedOption}
-                // formatOptionLabel={formatOptionLabel}
+                formatOptionLabel={formatOptionLabel}
                 components={{ Option }}
                 value={selectedOption}
                 onChange={setSelectedOption}
@@ -218,7 +222,7 @@ const BookingTab = ({ type }) => {
                 defaultValue={selectedOption2}
                 value={selectedOption2}
                 onChange={setSelectedOption2}
-                // formatOptionLabel={formatOptionLabel}
+                formatOptionLabel={formatOptionLabel}
                 components={{ Option }}
                 options={options}
                 className="border-0"
