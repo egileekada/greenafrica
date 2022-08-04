@@ -30,7 +30,6 @@ const SeatSelection = () => {
                 {/* TripHeader */}
                 <section className="ibe__flight__info__destination">
                   <p>Booking Code: 9J78BG</p>
-                  {/* <figure className="absolute -left-6"> */}
                   <figure className="flightCircle">
                     <FlightIcon />
                   </figure>
@@ -39,9 +38,9 @@ const SeatSelection = () => {
                 <div className="flex flex-wrap xlg:flex-nowrap">
                   <div className="basis-full xlg:basis-[30%]">
                     {/* Seat Info */}
-                    <div className="mx-6 mt-12 flex flex-col">
+                    <div className="ml-12 mt-12 xlg:mt-36 flex flex-col">
                       <div className="flex flex-col mb-6">
-                        <h2 className="text-black font-header text-xl">
+                        <h2 className="text-black font-header font-bold text-xl">
                           Select your seat(s)
                         </h2>
                         <p className="text-sm text-black">
@@ -78,18 +77,24 @@ const SeatSelection = () => {
                           </span>
                         </span>
                       </button>
+                      <div className="hidden lg:flex pr-3">
+                        <button className="btn btn-outline mr-4">
+                          Go Back
+                        </button>
+                        <button className="btn btn-primary">Check In</button>
+                      </div>
                     </div>
                     {/* Seat Info */}
                   </div>
-                  <div className="basis-full xlg:basis-[70%] pt-4">
+                  <div className="basis-full xlg:basis-[70%] pt-4 h-[600px]  scrollable overflow-y-scroll mt-12 xlg:mt-0">
                     <PlaneSeats />
                   </div>
                 </div>
 
-                <div className="hidden lg:flex mx-6">
+                {/* <div className="hidden lg:flex mx-6">
                   <button className="btn btn-outline mr-4">Go Back</button>
                   <button className="btn btn-primary">Check In</button>
-                </div>
+                </div> */}
               </section>
             </div>
             <div className="ga__section__side">
