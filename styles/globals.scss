@@ -394,7 +394,7 @@ textarea {
 .booking__wrapper {
   // border: 1px solid #d8d7e2;
   box-shadow: 0 0 5px 0 rgb(195 198 205 / 50%);
-  @apply rounded-lg px-2 py-2;
+  @apply rounded-lg px-2 py-2 relative;
 }
 
 .react-calendar {
@@ -465,6 +465,9 @@ textarea {
 .select__wrapper {
   border: 1px solid #d8d7e2;
   @apply rounded-lg py-1;
+  p {
+    color: #979797;
+  }
 }
 
 .blog__post {

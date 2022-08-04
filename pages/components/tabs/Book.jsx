@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "flowbite-react";
-import Select from "react-select";
+import Select, { components, createFilter } from "react-select";
 import { format } from "date-fns";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import "react-calendar/dist/Calendar.css";
@@ -20,10 +20,30 @@ const BookingTab = ({ type }) => {
   const [show, setShow] = useState(false);
 
   const options = [
-    { value: "Abuja", label: "Abuja", customAbbreviation: "ABV" },
-    { value: "Akure", label: "Akure", customAbbreviation: "AKR" },
-    { value: "Benin", label: "Benin", customAbbreviation: "BNI" },
-    { value: "Enugu", label: "Enugu", customAbbreviation: "ENU" },
+    {
+      value: "Abuja",
+      label: "Abuja",
+      customAbbreviation: "ABV",
+      country: "Nigeria",
+    },
+    {
+      value: "Akure",
+      label: "Akure",
+      customAbbreviation: "AKR",
+      country: "Nigeria",
+    },
+    {
+      value: "Benin",
+      label: "Benin",
+      customAbbreviation: "BNI",
+      country: "Nigeria",
+    },
+    {
+      value: "Enugu",
+      label: "Enugu",
+      customAbbreviation: "ENU",
+      country: "Nigeria",
+    },
   ];
 
   const colourStyles = {
@@ -35,7 +55,14 @@ const BookingTab = ({ type }) => {
       border: "0px",
       boxShadow: "none",
     }),
-    valueContainer: (styles) => ({ ...styles, padding: "0px" }),
+    container: (styles) => ({
+      ...styles,
+      position: "initial",
+    }),
+    valueContainer: (styles) => ({
+      ...styles,
+      padding: "0px",
+    }),
     dropdownIndicator: (styles) => ({ ...styles, padding: "0px" }),
     indicatorSeparator: (styles) => ({ ...styles, display: "none" }),
     placeholder: (styles) => ({ ...styles, marginLeft: "0px" }),
@@ -50,6 +77,12 @@ const BookingTab = ({ type }) => {
           "box-shadow": "none",
         },
       },
+    }),
+    menu: (styles) => ({
+      ...styles,
+      position: "absolute",
+      width: "100%",
+      left: "0",
     }),
   };
 
@@ -93,15 +126,45 @@ const BookingTab = ({ type }) => {
   };
 
   const formatOptionLabel = ({ value, label, customAbbreviation }) => (
-    <div className="flex items-center">
+    <div class="flex items-center">
       <div>
-        <p className="font-bold mb-0">{label}</p>
+        <p class="font-bold mb-0">{label}</p>
       </div>
-      <div className="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
+      <div class="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
         {customAbbreviation}
       </div>
     </div>
   );
+
+  const Option = (props) => {
+    console.log(props);
+    return (
+      <components.Option {...props}>
+        <div class="flex items-center">
+          <div>
+            <p class="font-bold mb-0">{props.label}</p>
+            <p class="small mb-0">{props.data.country}</p>
+          </div>
+          <div class="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
+            {props.data.customAbbreviation}
+          </div>
+        </div>
+      </components.Option>
+    );
+  };
+
+  const menuHeaderStyle = {
+    padding: "8px 12px",
+  };
+
+  const Menu = (props) => {
+    return (
+      <>
+        <div style={menuHeaderStyle}>Custom Menu with options</div>
+        <components.Menu {...props}>{props.children}</components.Menu>
+      </>
+    );
+  };
 
   useEffect(() => {
     setPassengers(child + adult + infant);
@@ -111,7 +174,7 @@ const BookingTab = ({ type }) => {
     <>
       <div className="grid grid-cols-1 lg:grid-flex-col xl:grid-cols-4 sm:grid-flex-col items-center gap-2">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:col-span-2">
-          <div className="flex items-end booking__wrapper relative">
+          <div className="flex items-end booking__wrapper">
             <img
               src="/images/widget_from.svg"
               alt=""
@@ -123,7 +186,8 @@ const BookingTab = ({ type }) => {
                 id="from"
                 instanceId="from"
                 defaultValue={selectedOption}
-                formatOptionLabel={formatOptionLabel}
+                // formatOptionLabel={formatOptionLabel}
+                components={{ Option }}
                 value={selectedOption}
                 onChange={setSelectedOption}
                 options={options}
@@ -154,7 +218,8 @@ const BookingTab = ({ type }) => {
                 defaultValue={selectedOption2}
                 value={selectedOption2}
                 onChange={setSelectedOption2}
-                formatOptionLabel={formatOptionLabel}
+                // formatOptionLabel={formatOptionLabel}
+                components={{ Option }}
                 options={options}
                 className="border-0"
                 styles={colourStyles}
