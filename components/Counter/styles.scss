@@ -1,0 +1,87 @@
+.form-input {
+  .btn-quantity {
+    height: 45px;
+    span {
+      height: 45px;
+    }
+    button {
+      height: 45px;
+      width: auto;
+    }
+  }
+}
+
+.counter-input {
+  .ant-input.value {
+    // background-color: red;
+    background: #eceff4;
+    border: none;
+    color: #314362;
+    flex-basis: 55%;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    &:focus,
+    &:hover {
+      border: none;
+      background: transparent !important;
+      box-shadow: none;
+    }
+  }
+}
+
+.btn-quantity {
+  background: #ebecf3;
+  border-radius: 8px;
+  width: fit-content;
+  align-items: center;
+  height: 30px;
+  span {
+    background: #edeff5;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    box-shadow: none;
+    border-radius: 0px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Averta' sans-serif;
+    border: none;
+    text-align: center;
+    padding: 0px 10px;
+    &::placeholder {
+      color: #314362;
+    }
+    &:focus,
+    &:hover {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+  button {
+    color: #476fee;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    font-weight: 700;
+    font-size: 20px;
+    height: 30px;
+    line-height: 0px;
+    background: #ebecf3;
+    &:focus,
+    &:hover {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+input[type='number'] {
+  -webkit-appearance: textfield !important;
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+}

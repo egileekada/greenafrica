@@ -6,7 +6,7 @@ const BaseLayout = ({ children }) => {
     <>
       <section className="w-full bg-white relative">
         <Header />
-        <div>{children}</div>
+        {children}
         <Footer />
       </section>
     </>

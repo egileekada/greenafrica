@@ -22,7 +22,7 @@ const Accordion = ({ item: { question, answer } }) => {
   };
 
   return (
-    <div className="basis-full md:basis-[45%] flex flex-col border-b-[1px] border-b-faqss md:mb-16 py-5">
+    <section className="basis-full md:basis-[45%] flex flex-col border-b-[1px] border-b-faqss md:mb-16 py-5">
       <button
         className={`py-7 box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between w-full px-4 md:px-10 transition-all  ${
           active ? "bg-primary-main rounded-xl" : ""
@@ -41,14 +41,14 @@ const Accordion = ({ item: { question, answer } }) => {
       <div
         ref={contentSpace}
         style={{ maxHeight: `${height}` }}
-        className="overflow-auto transition-max-height duration-700 ease-in-out"
+        className="overflow-auto transition-max-height duration-700 ease-in-out scrollable"
       >
         <div className="px-4 md:px-10 pt-4 md:pt-10">
           {" "}
           <p className="text-[#4B4F63] font-body text-sm">{answer}</p>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

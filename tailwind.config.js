@@ -10,10 +10,10 @@ module.exports = {
       DEFAULT: "1px",
     },
     fontFamily: {
-      body: ["Cosmica"],
-      title: ["Cosmica Semi-bold"],
-      header: ["Cosmica Bold"],
-      display: ["Cosmica Extra-bold"],
+      body: ["Plus Jakarta Sans"],
+      title: ["Plus Jakarta Sans"],
+      header: ["Plus Jakarta Sans"],
+      display: ["Plus Jakarta Sans"],
     },
     extend: {
       fontSize: {
@@ -53,6 +53,7 @@ module.exports = {
         contact__cards: "repeat(auto-fit, minmax(381px, 1fr))",
       },
       screens: {
+        xxl: "1200px",
         xlg: "1080px",
         tab: "900px",
       },

@@ -8,13 +8,14 @@ const Popup = ({
   closeModal,
   canClose = true,
   top = false,
+  width,
 }) => {
   const activeClass = display ? "active" : "inactive";
 
   return display ? (
-    <div className={`ga__popup ${activeClass} ${top ? "top" : ""} `}>
+    <div className={`ga__popup ${activeClass} ${top ? "top" : ""}   `}>
       <div
-        className={`ga__popup__container`}
+        className={`ga__popup__container ${width ? width : "w-[825px]"} `}
         onClick={(e) => {
           e.stopPropagation();
           e.nativeEvent.stopImmediatePropagation();
@@ -30,7 +31,9 @@ const Popup = ({
           </span>
         </span>
 
-        <section className={`ga__popup__main overflow-hidden ${activeClass}`}>
+        <section
+          className={`ga__popup__main overflow-x-hidden overflow-y-scroll h-[600px] scrollable ${activeClass}`}
+        >
           {children}
         </section>
       </div>
