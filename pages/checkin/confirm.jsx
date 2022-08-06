@@ -12,7 +12,9 @@ const CheckInDetails = () => {
   return (
     <BaseLayout>
       <section className="flex items-center justify-center bg-green px-3 py-3 pt-24 lg:pt-3">
-        <p className="text-center">Boarding pass has been emailed to test@greenafrica.net</p>
+        <p className="text-center">
+          Boarding pass has been emailed to test@greenafrica.net
+        </p>
       </section>
       <section className="w-full checkin">
         <section className="ga__section">
@@ -26,19 +28,6 @@ const CheckInDetails = () => {
                 checking in
               </p>
             </div>
-
-            <section className="bg-white py-11 px-8 flex-col mb-8 rounded-md">
-              <h3 className="title-text mb-[6px]">PASSENGER DETAILS</h3>
-              <p className="font-body text-black text-xs mb-7">
-                Kindly confirm that the information below is correct before
-                checking in
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <CheckInCard />
-                <CheckInCard />
-                <CheckInCard />
-              </div>
-            </section>
 
             <section className="flex flex-col bg-white pb-24">
               {/* TripHeader */}
@@ -75,7 +64,7 @@ const CheckInDetails = () => {
               </div>
 
               <section className="ibe__trip__item checkinView bordered mx-6 my-3">
-                <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3 lg:top-[18px]">
+                <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3">
                   gSaver
                 </p>
                 <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">

@@ -52,7 +52,7 @@ const TripConfirm = () => {
               {/* Flight Summary */}
 
               {/* Trip Itenary */}
-              <section className="ibe__trip__item summaryView bordered mx-6 lg:mx-12 mb-9 bg-rose-700">
+              <section className="ibe__trip__item summaryView bordered mx-6 lg:mx-12 mb-9">
                 <div className="basis-full flex  flex-col min-h-[54px] ">
                   <p className="tripType self-center">Direct Flight</p>
                   <div className="flex justify-between">

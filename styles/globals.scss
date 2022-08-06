@@ -358,7 +358,7 @@
 
           h5,
           h5 span {
-            @apply font-display text-sm text-primary-main;
+            @apply font-display font-bold text-sm text-primary-main;
 
             button.btn-outline {
               min-width: 48px;
@@ -371,7 +371,7 @@
             }
           }
           h6 {
-            @apply font-title text-xxs text-primary-main mb-[10px];
+            @apply font-title font-medium text-xxs text-primary-main mb-[10px];
           }
         }
       }
@@ -775,7 +775,7 @@ border-radius: 6px;
     }
 
     &__row {
-      @apply flex justify-between items-center py-4 pl-4;
+      @apply flex justify-between items-center py-3 pl-4;
       border-bottom: 1px solid rgba(158, 155, 191, 0.15);
 
       h6 {

@@ -56,7 +56,7 @@ const ManageBookings = () => {
               </div>
 
               <section className="ibe__trip__item checkinView bordered mx-6 my-3">
-                <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3 lg:top-[18px]">
+                <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3">
                   gSaver
                 </p>
                 <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
@@ -95,7 +95,9 @@ const ManageBookings = () => {
                     <h6>BAGGAGES</h6>
                     <h5 className="flex items-center">
                       <span>0</span>
-                      <button className="btn btn-outline">View Selection</button>
+                      <button className="btn btn-outline">
+                        View Selection
+                      </button>
                       <button className="btn btn-outline ml-4">Add</button>
                     </h5>
                   </div>
@@ -127,12 +129,12 @@ const ManageBookings = () => {
               <div className="flex flex-col mx-6 mt-10">
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center">
-                    <h6 className="font-display text-xs text-primary-main">
+                    <h6 className="font-display font-bold text-xs text-primary-main">
                       Round Trip ABV - LOS
                     </h6>
                   </div>
                   <div>
-                    <h6 className="font-header text-base text-primary-main">
+                    <h6 className="font-header font-bold text-base text-primary-main">
                       {" "}
                       ₦26,501
                     </h6>
