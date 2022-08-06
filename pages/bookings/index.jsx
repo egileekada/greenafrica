@@ -13,8 +13,8 @@ const ManageBookings = () => {
         <section className="ga__section">
           <div className="ga__section__main">
             <div className="mb-8 mt-16 xlg:mt-0">
-              <h2 className="text-black font-extrabold text-2xl mb-2">
-                Check In
+              <h2 className="text-black font-bold text-2xl mb-2">
+               Booking
               </h2>
               <p>
                 Kindly confirm that the information below is correct before
@@ -93,6 +93,16 @@ const ManageBookings = () => {
                   </div>
                   <div className="trip-details-item">
                     <h6>BAGGAGES</h6>
+                    <h5 className="flex items-center">
+                      <span>0</span>
+                      <button className="btn btn-outline">
+                        View Selection
+                      </button>
+                      <button className="btn btn-outline ml-4">Add</button>
+                    </h5>
+                  </div>
+                  <div className="trip-details-item">
+                    <h6>MEALS</h6>
                     <h5 className="flex items-center">
                       <span>0</span>
                       <button className="btn btn-outline">

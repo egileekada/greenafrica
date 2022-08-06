@@ -17,7 +17,7 @@ const TripPayment = () => {
         <section className="ga__section">
           <div className="ga__section__main payment-section">
             <div className="mb-8">
-              <h2 className="text-black font-extrabold text-2xl mb-4">
+              <h2 className="text-black font-bold text-2xl mb-4">
                 Payment
               </h2>
               <p>Please choose your preferred payment method</p>

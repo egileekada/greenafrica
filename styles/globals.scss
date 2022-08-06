@@ -548,7 +548,7 @@ border-radius: 6px;
     @apply flex flex-col;
 
     h1 {
-      @apply text-[#101010] text-sm font-header mb-5;
+      @apply text-[#101010] text-sm font-header font-bold mb-5;
     }
 
     figure.adImage {
@@ -790,11 +790,11 @@ border-radius: 6px;
         @apply border-none;
 
         h5 {
-          @apply font-title text-xs text-primary-main;
+          @apply font-title font-bold text-xs text-primary-main;
         }
 
         h6 {
-          @apply font-display text-primary-main text-base;
+          @apply font-display font-bold text-primary-main text-base;
         }
       }
     }

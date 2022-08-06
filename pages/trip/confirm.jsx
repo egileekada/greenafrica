@@ -17,7 +17,7 @@ const TripConfirm = () => {
         <section className="ga__section">
           <div className="ga__section__main">
             <div className="mb-8 mt-16 xlg:mt-0">
-              <h2 className="text-black font-extrabold text-2xl mb-4">
+              <h2 className="text-black font-bold text-2xl mb-4">
                 Booking Confirmed
               </h2>
               <p>

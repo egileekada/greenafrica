@@ -21,7 +21,7 @@ const SeatSelection = () => {
           <section className="ga__section bg-normal">
             <div className="ga__section__main standalone">
               <div className="mb-8">
-                <h2 className="text-black font-extrabold text-2xl mb-2">
+                <h2 className="text-black font-bold text-2xl mb-2">
                   Change Seat Selection
                 </h2>
               </div>
