@@ -77,7 +77,7 @@ const IbeTripVariant = ({ variant }) => {
               onClick={() => setShow(true)}
               className="btn btn-primary w-full"
             >
-              Continue For ₦16,501
+              ₦15,500
             </button>
           )}
           {variant === "classic" && (
@@ -85,7 +85,7 @@ const IbeTripVariant = ({ variant }) => {
               onClick={() => setShow(true)}
               className="btn btn-primary  w-full"
             >
-              Continue For ₦16,501
+              ₦30,000
             </button>
           )}
           {variant === "gflex" && (
@@ -93,7 +93,7 @@ const IbeTripVariant = ({ variant }) => {
               onClick={() => setShow(true)}
               className="btn btn-primary  w-full"
             >
-              Continue For ₦16,501
+              ₦40,000
             </button>
           )}
         </div>

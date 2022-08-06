@@ -7,7 +7,7 @@ const Fare = () => {
       <div className="flex flex-col ">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center">
-            <h6 className="font-header text-sm text-primary-main">
+            <h6 className="font-header font-bold text-sm text-primary-main">
               Round Trip ABV - LOS
             </h6>
           </div>

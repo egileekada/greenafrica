@@ -26,7 +26,7 @@ const DetailsAccordion = ({ children, title }) => {
         onClick={toggleAccordion}
       >
         <p
-          className={`inline-block text-[#26205E] text-base font-body text-left`}
+          className={`inline-block text-[#26205E] text-base font-body font-bold text-left`}
         >
           {title}
         </p>

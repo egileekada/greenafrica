@@ -29,7 +29,7 @@ const SeatSelection = () => {
               <section className="flex flex-col bg-white pb-24">
                 {/* TripHeader */}
                 <section className="ibe__flight__info__destination">
-                  <p>Booking Code: 9J78BG</p>
+                  <p>Seat Selection</p>
                   <figure className="flightCircle">
                     <FlightIcon />
                   </figure>
@@ -81,7 +81,7 @@ const SeatSelection = () => {
                         <button className="btn btn-outline mr-4">
                           Go Back
                         </button>
-                        <button className="btn btn-primary">Check In</button>
+                        <button className="btn btn-primary">Continue</button>
                       </div>
                     </div>
                     {/* Seat Info */}

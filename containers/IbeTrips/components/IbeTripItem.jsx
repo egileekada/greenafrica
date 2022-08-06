@@ -50,7 +50,7 @@ const IbeTripItem = () => {
         </div>
       </section>
       <section
-        className={`bg-white w-full min-h-[96px] pb-10 transition-all ${
+        className={`variant-bg w-full min-h-[96px] pb-10 transition-all rounded-b-md ${
           isVisible ? "flex flex-col" : "hidden"
         }`}
       >

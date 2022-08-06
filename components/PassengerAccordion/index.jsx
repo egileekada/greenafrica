@@ -31,7 +31,9 @@ const PassengerAccordion = ({ children}) => {
       >
         <div className="flex flex-col">
           <p className={`inline-block title-text mb-2`}>ADULT 1:</p>
-          <p className={`inline-block text-black font-display text-base `}>
+          <p
+            className={`inline-block text-black font-display text-base font-bold `}
+          >
             Michael Johnson
           </p>
         </div>

@@ -45,7 +45,7 @@ const TripPayment = () => {
                   <p>You will be redirected to our secure payment checkout.</p>
                 </div>
                 <div className="flex flex-col items-end pointer-events-none">
-                  <h6>AMOUNT DUE</h6>
+                  <h6 className="mb-[10px]">AMOUNT DUE</h6>
                   <h5> ₦26,501</h5>
                 </div>
               </div>
@@ -70,7 +70,7 @@ const TripPayment = () => {
                   <p>You will be redirected to our secure payment checkout.</p>
                 </div>
                 <div className="flex flex-col items-end pointer-events-none">
-                  <h6>AMOUNT DUE</h6>
+                  <h6 className="mb-[10px]">AMOUNT DUE</h6>
                   <h5> ₦26,501</h5>
                 </div>
               </div>

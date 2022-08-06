@@ -46,9 +46,9 @@ const IbeHeader = () => {
                       i === arr.length - 1 ? "b-r-none" : ""
                     }`}
                   >
-                    <button className={`${i === 2 ? 'active' : ''}`}>
+                    <button className={`${i === 3 ? "active" : ""}`}>
                       <h6>Sun, Jun 19</h6>
-                      <p>No Flights</p>
+                      <p>{i === 3 ? "N16,501" : "No Flights"}</p>
                     </button>
                   </div>
                 );

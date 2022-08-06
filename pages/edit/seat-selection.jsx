@@ -29,7 +29,7 @@ const SeatSelection = () => {
               <section className="flex flex-col bg-white pb-24">
                 {/* TripHeader */}
                 <section className="ibe__flight__info__destination">
-                  <p>Booking Code: 9J78BG</p>
+                  <p>Seat Selection</p>
                   {/* <figure className="absolute -left-6"> */}
                   <figure className="flightCircle">
                     <FlightIcon />
@@ -78,18 +78,24 @@ const SeatSelection = () => {
                           </span>
                         </span>
                       </button>
+                      <div className="hidden lg:flex pr-3">
+                        <button className="btn btn-outline mr-4">
+                          Go Back
+                        </button>
+                        <button className="btn btn-primary">Continue</button>
+                      </div>
                     </div>
                     {/* Seat Info */}
                   </div>
-                  <div className="basis-full xlg:basis-[70%] pt-4">
+                  <div className="basis-full xlg:basis-[70%] pt-4 h-[650px]  scrollable overflow-y-scroll mt-12 xlg:mt-0">
                     <PlaneSeats />
                   </div>
                 </div>
 
-                <div className="hidden lg:flex mx-6">
+                {/* <div className="hidden lg:flex mx-6">
                   <button className="btn btn-outline mr-4">Go Back</button>
                   <button className="btn btn-primary">Check In</button>
-                </div>
+                </div> */}
               </section>
             </div>
           </section>

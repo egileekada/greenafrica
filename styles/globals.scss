@@ -259,14 +259,14 @@
         }
 
         button {
-          @apply flex flex-col items-start px-4 sm:px-6 py-[20px] transition-all;
+          @apply flex flex-col items-center justify-center px-4 sm:px-6 py-[20px] transition-all;
 
           h6 {
-            @apply text-primary-main font-extrabold text-xxs md:text-[11px] leading-[14px] font-body mb-2;
+            @apply text-primary-main font-medium text-xxs md:text-[11px] leading-[14px] font-body mb-2 text-center;
           }
 
           p {
-            @apply text-primary-main font-bold text-xs md:text-base;
+            @apply text-primary-main font-bold text-xs md:text-base text-center;
           }
 
           &:hover {
@@ -281,7 +281,7 @@
             }
 
             p {
-              @apply text-green;
+              @apply text-green ;
             }
           }
         }
@@ -300,11 +300,15 @@
     }
 
     p.tripCity {
-      @apply font-semibold font-body text-xs lg:text-sm text-black text-left;
+      @apply font-medium font-body text-xs lg:text-sm text-black text-left;
 
       &.right-text {
         @apply text-right;
       }
+    }
+
+    h5.tripType {
+      @apply text-sm lg:text-[25px] leading-8 font-header font-bold text-primary-main mb-2;
     }
 
     .tripIconPath {
@@ -329,7 +333,7 @@
     }
 
     &.summaryView {
-      @apply px-6;
+      @apply px-6 lg:px-20;
 
       &.bordered {
         border: 0.5px solid #cfceda;
@@ -375,7 +379,7 @@
 
     p.tripType,
     p.tripTime {
-      @apply font-extrabold text-primary-main text-xxs lg:text-sm font-body;
+      @apply text-primary-main text-xxs lg:text-sm font-body;
     }
   }
 
@@ -383,11 +387,11 @@
     @apply bg-white px-7 lg:px-24 py-6;
 
     h5 {
-      @apply text-xxs lg:text-xs text-black font-header mb-2;
+      @apply text-xxs lg:text-xs text-black font-header font-bold mb-2;
     }
 
     h6 {
-      @apply text-xl lg:text-[25px] leading-[32px] text-primary-main font-display;
+      @apply text-xl lg:text-[25px] leading-[32px] text-primary-main font-display font-bold;
     }
   }
 
@@ -398,7 +402,7 @@
       @apply px-7 lg:px-24 py-[30px];
 
       h4 {
-        @apply mb-0 font-body text-xs lg:text-sm;
+        @apply mb-0 font-body font-normal text-xs lg:text-sm;
       }
     }
 
@@ -407,7 +411,7 @@
     }
 
     p {
-      @apply font-extrabold font-header text-xs text-primary-main;
+      @apply font-extrabold font-header text-sm text-primary-main;
     }
 
     button.btn-outline {
@@ -416,9 +420,9 @@
   }
 
   .ibe__trip__variant {
-    @apply flex flex-col w-full pb-6;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-    border-radius: 6px 6px 0px 0px;
+    @apply flex flex-col w-full pb-6 bg-white;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+border-radius: 6px;
 
     //
 
@@ -583,23 +587,35 @@
         background-color: #3ddc97 !important;
       }
 
-      .ant-checkbox-checked .ant-checkbox-inner {
-        background-color: #3ddc97 !important;
-        border-color: #3ddc97;
-      }
+      // .ant-checkbox-checked .ant-checkbox-inner {
+      //   background-color: #3ddc97 !important;
+      //   border-color: #3ddc97;
+      // }
 
-      .checkbox-copy {
-        .ant-checkbox-checked .ant-checkbox-inner {
-          background-color: #26205e !important;
-          border-color: #26205e;
-        }
-      }
+      // .checkbox-copy {
+      //   .ant-checkbox-checked .ant-checkbox-inner {
+      //     background-color: #26205e !important;
+      //     border-color: #26205e;
+      //   }
+      // }
     }
     button.cta {
       @apply w-[195px];
       &.btn-outline {
         @apply text-primary-main;
       }
+    }
+  }
+
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #3ddc97 !important;
+    border-color: #3ddc97;
+  }
+
+  .checkbox-copy {
+    .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: #26205e !important;
+      border-color: #26205e;
     }
   }
 
@@ -641,7 +657,7 @@
 
   .payment-section {
     h2 {
-      @apply font-display text-base  text-black;
+      @apply font-display font-bold text-base  text-black;
     }
 
     p {
@@ -649,11 +665,11 @@
     }
 
     h6 {
-      @apply text-primary-main font-body text-[8px] leading-[9px] lg:text-xxs;
+      @apply text-primary-main font-body font-bold  text-[8px] leading-[9px] lg:text-xxs;
     }
 
     h5 {
-      @apply text-primary-main font-display text-sm lg:text-[28px] leading-[36px];
+      @apply text-primary-main font-display font-bold text-sm lg:text-[28px] leading-[36px];
     }
 
     .payment-card {
@@ -675,7 +691,7 @@
 
   .trip__summary {
     h2.trip-title {
-      @apply text-primary-main text-sm font-display;
+      @apply text-primary-main text-sm font-display font-bold;
     }
 
     p.trip-body {
@@ -688,7 +704,7 @@
     }
 
     &__row {
-      @apply flex justify-between items-center py-4 pl-4;
+      @apply flex justify-between items-center py-3 pl-4;
       border-bottom: 1px solid rgba(158, 155, 191, 0.15);
 
       &.subrow {
@@ -699,16 +715,16 @@
         @apply border-none;
 
         h5 {
-          @apply text-primary-main text-xs font-title;
+          @apply text-primary-main text-xs font-title font-bold;
         }
 
         h6 {
-          @apply text-primary-main text-base font-display;
+          @apply text-primary-main text-base font-display font-bold;
         }
       }
 
       h6 {
-        @apply text-primary-main text-xs font-body;
+        @apply text-primary-main text-xs font-body font-normal;
       }
     }
 
@@ -719,11 +735,11 @@
         @apply basis-1/2;
 
         h5 {
-          @apply text-primary-main text-xs font-body;
+          @apply text-primary-main text-xs font-body font-medium;
         }
 
         h6 {
-          @apply text-primary-main text-xs font-header;
+          @apply text-primary-main text-xs font-header font-bold;
         }
       }
     }
@@ -1056,6 +1072,10 @@
   background-size: 35%;
   background-repeat: no-repeat;
   background-position-x: 50%;
+}
+
+.variant-bg {
+  background-color: rgba(107, 97, 205, 0.1);
 }
 
 // Clean up Styles

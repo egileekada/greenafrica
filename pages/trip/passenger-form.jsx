@@ -132,7 +132,7 @@ const PassengerForm = () => {
 
               {/* Contact Details */}
               <div className="flex flex-wrap md:flex-nowrap items-center">
-                <button className="btn btn-outline mr-2 md:mr-0 mb-2 md:mb-0 cta basis-full md:basis-auto">
+                <button className="btn btn-outline mr-0 md:mr-2 mb-0 md:mb-2 cta basis-full md:basis-auto">
                   Go Back
                 </button>
                 <button className="btn btn-primary cta basis-full md:basis-auto">

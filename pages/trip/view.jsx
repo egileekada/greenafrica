@@ -4,12 +4,17 @@ import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import FlightIcon from "assets/svgs/flightcircle.svg";
 import ArrowTo from "assets/svgs/arrowto.svg";
+import { Checkbox } from "antd";
 
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
 
 const TripView = () => {
+  const onChange = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+
   return (
     <BaseLayout>
       <section className="w-full">
@@ -49,7 +54,7 @@ const TripView = () => {
                       <DottedLine className="dotted-svg" />
                     </div>
                     <div className="flex flex-col items-end">
-                      <h5 className="tripType right-text">19:00</h5>
+                      <h5 className="tripType right-text font-bold">19:00</h5>
                       <p className="tripCity right-text">Abuja (ABJ)</p>
                     </div>
                   </div>
@@ -91,6 +96,12 @@ const TripView = () => {
               {/* Terms */}
               <div className="flex flex-col my-6">
                 <div className="flex mb-6">
+                  <div className="flex items-center checkbox-copy mb-6">
+                    <Checkbox onChange={onChange}>
+                      <label className="check-label"></label>
+                    </Checkbox>
+                  </div>
+
                   <p>
                     I have read and accept the airline’s &nbsp;
                     <Link href="/terms">
