@@ -1,6 +1,6 @@
 import FlightInfo from "./components/FlightInfo";
 import TripInfo from "./components/TripInfo";
-import PassengerInfo from "./components/PassengerInfo";
+import PassengerInfo from "./components/Passenger";
 import SeatInfo from "./components/SeatInfo";
 import PaymentInfo from "./components/PaymentInfo";
 

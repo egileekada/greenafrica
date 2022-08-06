@@ -2,8 +2,7 @@
 import Link from "next/link";
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
-import FlightIcon from "assets/svgs/flightcircle.svg";
-
+import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 

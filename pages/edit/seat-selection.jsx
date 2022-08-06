@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import BaseLayout from "layouts/Base";
-import FlightIcon from "assets/svgs/flightcircle.svg";
+import FlightIcon from "assets/svgs/FlightTwo.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
-import IbeSidebar from "containers/IbeSidebar";
 import { Fragment, useState } from "react";
 import Popup from "components/Popup";
 import Seatslegend from "containers/Seats/SeatPopUp";

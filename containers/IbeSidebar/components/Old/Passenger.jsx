@@ -1,10 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
+
 import TwoIcon from "assets/svgs/two.svg";
 import FlightIcon from "assets/svgs/aero-2.svg";
 import BagIcon from "assets/svgs/bag.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
+import CaretLeft from "assets/svgs/sidebar/caretleft.svg";
+
 
 const PassengerInfo = () => {
+  const [showContent, setShow] = useState(false);
+
   return (
     <section className="ibe__sidebar__item mb-10">
       <div className="ibe__sidebar__content">

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import BaseLayout from "layouts/Base";
-import FlightIcon from "assets/svgs/flightcircle.svg";
+import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import ProfileIcon from "assets/svgs/profile.svg";

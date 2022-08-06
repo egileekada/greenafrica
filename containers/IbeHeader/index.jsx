@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import ArrowTo from "assets/svgs/arrowto.svg";
-import FlightIcon from "assets/svgs/flightcircle.svg";
 import CaretLeft from "assets/svgs/caretleft.svg";
 import CaretRight from "assets/svgs/caretright.svg";
 import Spinner from "components/Spinner";
 import useDeviceSize from "hooks/useWindowSize";
+import FlightIcon from "assets/svgs/FlightTwo.svg";
 
 const IbeHeader = () => {
   const [width] = useDeviceSize();
