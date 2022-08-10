@@ -371,7 +371,12 @@ textarea {
 
 .react-date-picker__calendar-button,
 .react-date-picker__clear-button {
-  @apply hidden;
+  // @apply hidden;
+}
+
+.react-date-picker__inputGroup__input {
+  min-width: 1.24em !important;
+  text-align: center;
 }
 
 .react-date-picker__wrapper {

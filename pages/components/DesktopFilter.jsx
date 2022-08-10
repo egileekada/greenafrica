@@ -75,6 +75,7 @@ const DesktopFilter = () => {
                   type="text"
                   className="rounded h-10 pl-8 border border-[#EFEFEF]"
                   placeholder="Enter Promo Code"
+                  onChange={(e) => setPromocode(e.target.value)}
                 />
               </div>
               <button className="btn btn-outline font-title text-primary-main py-2 rounded-lg mx-2">
@@ -95,10 +96,10 @@ const DesktopFilter = () => {
         </div>
       </div>
       <section className="ga__desktop__filter__content px-5 py-[18px]">
-        {activeTab === 1 && <Book />}
-        {activeTab === 2 && <Book type={"round_trip"} />}
+        {activeTab === 1 && <Book promocode={promocode} />}
+        {activeTab === 2 && <Book type={"round_trip"} promocode={promocode} />}
         {activeTab === 3 && <CheckInTab />}
-        {activeTab === 4 && <CheckInTab />}
+        {activeTab === 4 && <BookingTab />}
       </section>
     </section>
   );
