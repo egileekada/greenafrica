@@ -25,7 +25,7 @@ const HomePopup = ({ show, setShow }) => {
               <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <div className="select__wrapper px-5">
-                    <p className="text-xs mb-1 mt-1">First Name</p>
+                    <p className="text-xs my-2">First Name</p>
                     <input
                       type="text"
                       placeholder=""
@@ -35,7 +35,7 @@ const HomePopup = ({ show, setShow }) => {
                 </div>
                 <div class="w-full md:w-1/2 px-3">
                   <div className="select__wrapper px-5">
-                    <p className="text-xs mb-1 mt-1">Last Name</p>
+                    <p className="text-xs my-2">Last Name</p>
                     <input
                       type="text"
                       placeholder=""
@@ -48,7 +48,7 @@ const HomePopup = ({ show, setShow }) => {
               <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <div className="select__wrapper px-5">
-                    <p className="text-xs mb-1 mt-1">Email Address</p>
+                    <p className="text-xs my-2">Email Address</p>
                     <input
                       type="text"
                       placeholder=""
@@ -58,7 +58,7 @@ const HomePopup = ({ show, setShow }) => {
                 </div>
                 <div class="w-full md:w-1/2 px-3">
                   <div className="select__wrapper px-5">
-                    <p className="text-xs mb-1 mt-1">Phone Number</p>
+                    <p className="text-xs my-2">Phone Number</p>
                     <input
                       type="text"
                       placeholder=""
@@ -71,7 +71,7 @@ const HomePopup = ({ show, setShow }) => {
               <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <div className="select__wrapper px-5">
-                    <p className="text-xs text-uppercase mb-2">Country</p>
+                    <p className="text-xs text-uppercase my-2">Country</p>
                     <select
                       name=""
                       id=""
@@ -83,7 +83,7 @@ const HomePopup = ({ show, setShow }) => {
                 </div>
                 <div class="w-full md:w-1/2 px-3">
                   <div className="select__wrapper px-5">
-                    <p className="text-xs text-uppercase mb-2">State</p>
+                    <p className="text-xs text-uppercase my-2">State</p>
                     <select
                       name=""
                       id=""
