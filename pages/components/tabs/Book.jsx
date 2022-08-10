@@ -124,6 +124,19 @@ const BookingTab = ({ type, promocode }) => {
     if (adult >= 0) {
       setAdult(Math.min(adult + value, 9));
     }
+
+    if (infant > 0) {
+    }
+  };
+
+  const decreaseAdult = (value) => {
+    if (adult >= 0) {
+      setAdult(Math.min(adult + value, 9));
+    }
+
+    if (infant == adult) {
+      setInfant(Math.min(infant + value, 9));
+    }
   };
 
   const updateChild = (value) => {
@@ -167,7 +180,7 @@ const BookingTab = ({ type, promocode }) => {
       origin: "",
       destination: "",
       departure: add(new Date(), { weeks: 1 }),
-      return: "",
+      return: new Date(),
       promocode,
     },
     validationSchema,
@@ -216,9 +229,9 @@ const BookingTab = ({ type, promocode }) => {
               <img
                 src="/images/widget_from.svg"
                 alt=""
-                className="block mx-2 pb-2"
+                className="mx-2 pb-2 hidden md:block"
               />
-              <div className="w-full mx-2">
+              <div className="w-full mx-2 px-2 md:px-0">
                 <p className="mb-1 text-xs mb-0 text-[#979797]">FROM</p>
                 <Select
                   id="from"
@@ -249,14 +262,14 @@ const BookingTab = ({ type, promocode }) => {
                 formik.touched.destination && formik.errors.destination
                   ? "border border-[#de0150]"
                   : ""
-              } flex items-end booking__wrapper `}
+              } flex items-end booking__wrapper`}
             >
               <img
                 src="/images/widget_to.svg"
                 alt=""
-                className="block mx-2 pb-2"
+                className="hidden md:block mx-2 pb-2"
               />
-              <div className="w-full mx-2">
+              <div className="w-full mx-2 px-2 md:px-0">
                 <p className="mb-1 text-xs mb-0 text-[#979797]">TO</p>
                 <Select
                   id="to"
@@ -284,7 +297,7 @@ const BookingTab = ({ type, promocode }) => {
             } grid grid-cols-1 gap-2 md:col-auto`}
           >
             <div className="booking__wrapper flex items-end">
-              <span className="mr-2 ml-1 pb-1">
+              <span className="mr-2 ml-1 pb-1 hidden md:block">
                 <svg
                   width="26"
                   height="22"
@@ -302,7 +315,7 @@ const BookingTab = ({ type, promocode }) => {
                   />
                 </svg>
               </span>
-              <div className="flex-auto">
+              <div className="flex-auto px-4 md:px-0">
                 <p className="mb-1 text-xs text-[#979797]">DEPARTING</p>
                 <DatePicker
                   id="departure"
@@ -313,7 +326,7 @@ const BookingTab = ({ type, promocode }) => {
                   name="departure"
                   onChange={(value) => formik.setFieldValue("departure", value)}
                   value={formik.values.departure}
-                  // className="datepicker border-0 w-full font-body"
+                  onKeyDown={(e) => e.preventDefault()}
                   minDate={add(new Date(), { weeks: 1 })}
                 />
               </div>
@@ -321,7 +334,7 @@ const BookingTab = ({ type, promocode }) => {
 
             {type && (
               <div className="booking__wrapper flex items-end">
-                <span className="mr-2 ml-1 pb-1">
+                <span className="mr-2 ml-1 pb-1 hidden md:block">
                   <svg
                     width="26"
                     height="22"
@@ -340,7 +353,7 @@ const BookingTab = ({ type, promocode }) => {
                   </svg>
                 </span>
 
-                <div className="flex-auto">
+                <div className="flex-auto px-4 md:px-0">
                   <p className="mb-1 text-xs text-[#979797]">RETURNING</p>
                   <DatePicker
                     id="return"
@@ -348,7 +361,9 @@ const BookingTab = ({ type, promocode }) => {
                     calendarIcon={null}
                     tileContent={hasContent}
                     className="datepicker border-0 w-full font-body"
-                    minDate={formik.values.departure}
+                    minDate={add(new Date(formik.values.departure), {
+                      weeks: 1,
+                    })}
                     name="return"
                     onChange={(value) => formik.setFieldValue("return", value)}
                     value={formik.values.return}
@@ -363,160 +378,164 @@ const BookingTab = ({ type, promocode }) => {
               className="booking__wrapper flex-auto relative"
               data-modal-toggle="defaultModal"
             >
-              <p className="mb-1 text-xs mx-4 text-[#979797]">PASSENGERS</p>
-              <div
-                className="flex items-center relative"
-                onClick={() => setShow(!show)}
-                role="button"
-              >
-                <span className="ml-4 mr-0 pb-1">
-                  <svg
-                    width="18"
-                    height="17"
-                    viewBox="0 0 18 17"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9 0.5C7.63608 0.5 6.32799 0.991931 5.36341 1.86753C4.39898 2.74327 3.85714 3.93087 3.85714 5.16917C3.85714 6.40747 4.39898 7.59508 5.36341 8.47081C6.32799 9.34642 7.63608 9.83835 9 9.83835C10.3639 9.83835 11.672 9.34642 12.6366 8.47081C13.601 7.59508 14.1429 6.40747 14.1429 5.16917C14.1429 3.93087 13.601 2.74327 12.6366 1.86753C11.672 0.991931 10.3639 0.5 9 0.5ZM4.83649 9.60255C1.96343 10.9672 0 13.6944 0 16.8421H18C18 13.6943 16.0366 10.967 13.1635 9.60255C12.0394 10.4748 10.5855 11.0058 9 11.0058C7.41453 11.0058 5.96064 10.4748 4.83649 9.60255Z"
-                      fill="#261F5E"
-                    />
-                  </svg>
-                </span>
+              <div className="px-4 md:px-0">
+                <p className="mb-1 text-xs md:mx-4 text-[#979797]">
+                  PASSENGERS
+                </p>
+                <div
+                  className="flex items-center relative"
+                  onClick={() => setShow(!show)}
+                  role="button"
+                >
+                  <span className="ml-4 mr-0 pb-1 hidden md:block">
+                    <svg
+                      width="18"
+                      height="17"
+                      viewBox="0 0 18 17"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9 0.5C7.63608 0.5 6.32799 0.991931 5.36341 1.86753C4.39898 2.74327 3.85714 3.93087 3.85714 5.16917C3.85714 6.40747 4.39898 7.59508 5.36341 8.47081C6.32799 9.34642 7.63608 9.83835 9 9.83835C10.3639 9.83835 11.672 9.34642 12.6366 8.47081C13.601 7.59508 14.1429 6.40747 14.1429 5.16917C14.1429 3.93087 13.601 2.74327 12.6366 1.86753C11.672 0.991931 10.3639 0.5 9 0.5ZM4.83649 9.60255C1.96343 10.9672 0 13.6944 0 16.8421H18C18 13.6943 16.0366 10.967 13.1635 9.60255C12.0394 10.4748 10.5855 11.0058 9 11.0058C7.41453 11.0058 5.96064 10.4748 4.83649 9.60255Z"
+                        fill="#261F5E"
+                      />
+                    </svg>
+                  </span>
 
-                <div className="w-1/6 text-center">
-                  <span>{passengers}</span>
+                  <div className="w-1/6 text-center">
+                    <span>{passengers}</span>
+                  </div>
+
+                  <div>
+                    <svg
+                      width="25"
+                      height="24"
+                      viewBox="0 0 19 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6.70135 7.84741L9.42857 10.3341L12.1558 7.84741"
+                        stroke="#261F5E"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
                 </div>
-
-                <div>
-                  <svg
-                    width="25"
-                    height="24"
-                    viewBox="0 0 19 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6.70135 7.84741L9.42857 10.3341L12.1558 7.84741"
-                      stroke="#261F5E"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div
-                className={`${
-                  !show && "hidden"
-                } bg-gray-900 bg-opacity-0 dark:bg-opacity-80 fixed inset-0 z-40`}
-                onClick={() => setShow(false)}
-              ></div>
-
-              <div
-                id="defaultModal"
-                className="absolute top-20 left-0 right-0 z-50 w-full h-modal h-auto w-[250px]"
-              >
                 <div
                   className={`${
                     !show && "hidden"
-                  } relative w-full h-full max-w-lg md:h-auto widget-border rounded-lg shadow dark:bg-gray-700 bg-white`}
+                  } bg-gray-900 bg-opacity-0 dark:bg-opacity-80 fixed inset-0 z-40`}
+                  onClick={() => setShow(false)}
+                ></div>
+
+                <div
+                  id="defaultModal"
+                  className="absolute top-20 left-0 right-0 z-50 w-full h-modal h-auto w-[250px]"
                 >
-                  <div className="relative">
-                    <div className="p-4 space-y-6">
-                      <div className="grid grid-cols-2 mb-3">
-                        <div className="">
-                          <p className="text-base mb-1">Adults</p>
-                          <p className="mb-0 text-xs text-grey-nine">
-                            12 + years
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          <div
-                            className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
-                            role="button"
-                            disabled={passengers === 1}
-                            onClick={() => updateAdult(-1)}
-                          >
-                            <img src="/images/subtract.svg" alt="" />
+                  <div
+                    className={`${
+                      !show && "hidden"
+                    } relative w-full h-full max-w-lg md:h-auto widget-border rounded-lg shadow dark:bg-gray-700 bg-white`}
+                  >
+                    <div className="relative">
+                      <div className="p-4 space-y-6">
+                        <div className="grid grid-cols-2 mb-3">
+                          <div className="">
+                            <p className="text-base mb-1">Adults</p>
+                            <p className="mb-0 text-xs text-grey-nine">
+                              12 + years
+                            </p>
                           </div>
-                          <input
-                            type="tel"
-                            className="w-10 mx-2 rounded-lg text-center"
-                            value={adult}
-                            readOnly
-                          />
-                          <div
-                            className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
-                            role="button"
-                            disabled={passengers === 9}
-                            onClick={() => updateAdult(1)}
-                          >
-                            <img src="/images/_add.svg" alt="" className="" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 mb-3">
-                        <div className="">
-                          <p className="text-base mb-1">Child</p>
-                          <p className="mb-0 text-xs text-grey-nine">
-                            2 - 12 years
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          <div
-                            className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
-                            role="button"
-                            disabled={child === 0}
-                            onClick={() => updateChild(-1)}
-                          >
-                            <img src="/images/subtract.svg" alt="subtract" />
-                          </div>
-                          <input
-                            type="tel"
-                            className="w-10 mx-2 rounded-lg text-center"
-                            value={child}
-                            readOnly
-                          />
-                          <div
-                            className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
-                            role="button"
-                            disabled={passengers === 9}
-                            onClick={() => updateChild(1)}
-                          >
-                            <img src="/images/_add.svg" alt="" />
+                          <div className="flex items-center">
+                            <div
+                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                              role="button"
+                              disabled={passengers === 1}
+                              onClick={() => decreaseAdult(-1)}
+                            >
+                              <img src="/images/subtract.svg" alt="" />
+                            </div>
+                            <input
+                              type="tel"
+                              className="w-10 mx-2 rounded-lg text-center"
+                              value={adult}
+                              readOnly
+                            />
+                            <div
+                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                              role="button"
+                              disabled={passengers === 9}
+                              onClick={() => updateAdult(1)}
+                            >
+                              <img src="/images/_add.svg" alt="" className="" />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="grid grid-cols-2 mb-3">
-                        <div className="">
-                          <p className="text-base mb-1">Infant</p>
-                          <p className="mb-0 text-xs text-grey-nine">
-                            0 - 2 years
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          <div
-                            className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
-                            role="button"
-                            disabled={infant === 0}
-                            onClick={() => updateInfant(-1)}
-                          >
-                            <img src="/images/subtract.svg" alt="" />
+                        <div className="grid grid-cols-2 mb-3">
+                          <div className="">
+                            <p className="text-base mb-1">Child</p>
+                            <p className="mb-0 text-xs text-grey-nine">
+                              2 - 12 years
+                            </p>
                           </div>
-                          <input
-                            type="tel"
-                            className="w-10 mx-2 rounded-lg text-center"
-                            value={infant}
-                            readOnly
-                          />
-                          <div
-                            className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
-                            role="button"
-                            disabled={infant == adult}
-                            onClick={() => updateInfant(1)}
-                          >
-                            <img src="/images/_add.svg" alt="" />
+                          <div className="flex items-center">
+                            <div
+                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                              role="button"
+                              disabled={child === 0}
+                              onClick={() => updateChild(-1)}
+                            >
+                              <img src="/images/subtract.svg" alt="subtract" />
+                            </div>
+                            <input
+                              type="tel"
+                              className="w-10 mx-2 rounded-lg text-center"
+                              value={child}
+                              readOnly
+                            />
+                            <div
+                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                              role="button"
+                              disabled={passengers === 9}
+                              onClick={() => updateChild(1)}
+                            >
+                              <img src="/images/_add.svg" alt="" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 mb-3">
+                          <div className="">
+                            <p className="text-base mb-1">Infant</p>
+                            <p className="mb-0 text-xs text-grey-nine">
+                              0 - 2 years
+                            </p>
+                          </div>
+                          <div className="flex items-center">
+                            <div
+                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                              role="button"
+                              disabled={infant === 0}
+                              onClick={() => updateInfant(-1)}
+                            >
+                              <img src="/images/subtract.svg" alt="" />
+                            </div>
+                            <input
+                              type="tel"
+                              className="w-10 mx-2 rounded-lg text-center"
+                              value={infant}
+                              readOnly
+                            />
+                            <div
+                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                              role="button"
+                              disabled={adult == infant}
+                              onClick={() => updateInfant(1)}
+                            >
+                              <img src="/images/_add.svg" alt="" />
+                            </div>
                           </div>
                         </div>
                       </div>
