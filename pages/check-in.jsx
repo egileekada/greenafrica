@@ -65,26 +65,26 @@ const CheckIn = () => {
               <p className="text-primary-main font-bold text-base">
                 Enter flight details to view your booking
               </p>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                <div className="my-3">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
+                <div className="my-3 col-span-2">
                   <div className="select__wrapper px-5">
                     <p className="text-xs uppercase mb-1 mt-1">
                       Booking Reference
                     </p>
                     <input
                       type="text"
-                      placeholder="Enter Booking Reference"
+                      placeholder=""
                       className="border-none pl-0 block w-full py-1"
                     />
                   </div>
                 </div>
 
-                <div className="my-3">
+                <div className="my-3 col-span-2">
                   <div className="select__wrapper px-5">
                     <p className="text-xs uppercase mb-1 mt-1">last name</p>
                     <input
                       type="text"
-                      placeholder="Enter your last name"
+                      placeholder=""
                       className="border-none pl-0 block w-full py-1"
                     />
                   </div>
