@@ -377,6 +377,7 @@ textarea {
 .react-date-picker__inputGroup__input {
   min-width: 1.24em !important;
   text-align: center;
+  pointer-events: none;
 }
 
 .react-date-picker__wrapper {
@@ -392,6 +393,7 @@ textarea {
 .react-date-picker__inputGroup {
   padding: 0px !important;
 }
+
 .react-date-picker__button {
   padding: 0px 6px !important;
 }
