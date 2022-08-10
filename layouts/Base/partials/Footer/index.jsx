@@ -91,10 +91,13 @@ const Footer = () => {
       </section>
       <div className="line"></div>
       <div className="flex items-center justify-center fit-x-bleed">
-        <p className="text-center text-sm text-white">
+        <p className="text-center text-sm text-white mb-20 md:mb-2">
           &copy; {new Date().getFullYear()} Green Africa Airways Limited. All
-          rights reserved. Usage of this website states your compliance with our
-          Terms and Conditions of Carriage.
+          rights reserved. Usage of this website states your compliance with our{" "}
+          <Link href="/terms-and-condition">
+            Terms and Conditions of Carriage
+          </Link>
+          .
         </p>
       </div>
     </section>

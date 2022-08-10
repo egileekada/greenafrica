@@ -77,7 +77,7 @@ const Destinations = () => {
           <select
             name=""
             id=""
-            className="border-none font-semibold text-2xl pl-0 pb-0"
+            className="border-none font-semibold text-2xl pl-0"
             style={{ borderBottom: "1px solid #26205E" }}
           >
             <option value="Lagos">Lagos</option>

@@ -27,8 +27,8 @@ const HomePopup = () => {
   return (
     <Popup display={showPopUp} closeModal={() => hidePopup()}>
       <section className="w-full">
-        <section className="flex flex-col lg:flex-row items-center justify-between h-full rounded-xl">
-          <div className="md:basis-80 rounded-xl md:rounded-l-xl h-full px-7 py-5 lg:pt-10 lg:px-10 flex items-center bg-white md:bg-[#26205E]">
+        <section className="flex flex-col lg:flex-row items-center justify-between h-full rounded-xl lg:bg-[#26205E]">
+          <div className="md:basis-80 rounded-xl md:rounded-l-xl px-7 py-5 lg:pt-10 lg:px-10 flex items-center bg-white md:bg-[#26205E]">
             <div className="">
               <h2 className="text-primary-main md:text-white font-semibold font-body text-3xl mb-[18px]">
                 Welcome to the future

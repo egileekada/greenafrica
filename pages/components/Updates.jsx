@@ -4,7 +4,7 @@ import { Fragment } from "react";
 const Updates = () => {
   return (
     <Fragment>
-      <div className="container mx-auto gid sm:grid-flow-col gap-x-24 mb-20">
+      <div className="container mx-auto gid sm:grid-flow-col gap-x-24 my-5">
         <h1 className="text-primary-main font-semibold text-2xl mb-4">
           Important Updates
         </h1>

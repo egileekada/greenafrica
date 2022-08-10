@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <BaseLayout>
       <HomeHero />
-      <section className="w-full px-3.5 py-24 lg:fit-x-bleed">
+      <section className="w-full px-3.5 pb-24 lg:fit-x-bleed">
         <Destinations />
         <Updates />
         <Newsletter />
