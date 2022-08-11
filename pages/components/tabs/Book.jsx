@@ -180,7 +180,7 @@ const BookingTab = ({ type, promocode }) => {
       origin: "",
       destination: "",
       departure: add(new Date(), { weeks: 1 }),
-      return: new Date(),
+      return: add(new Date(), { days: 10 }),
       promocode,
     },
     validationSchema,
@@ -327,7 +327,7 @@ const BookingTab = ({ type, promocode }) => {
                   onChange={(value) => formik.setFieldValue("departure", value)}
                   value={formik.values.departure}
                   onKeyDown={(e) => e.preventDefault()}
-                  minDate={add(new Date(), { weeks: 1 })}
+                  minDate={new Date()}
                 />
               </div>
             </div>
@@ -361,12 +361,11 @@ const BookingTab = ({ type, promocode }) => {
                     calendarIcon={null}
                     tileContent={hasContent}
                     className="datepicker border-0 w-full font-body"
-                    minDate={add(new Date(formik.values.departure), {
-                      weeks: 1,
-                    })}
+                    minDate={new Date()}
                     name="return"
                     onChange={(value) => formik.setFieldValue("return", value)}
                     value={formik.values.return}
+                    onKeyDown={(e) => e.preventDefault()}
                   />
                 </div>
               </div>
