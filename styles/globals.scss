@@ -235,7 +235,7 @@
     position: relative;
     background-color: transparent;
     width: 825px;
-    overflow-y: scroll;
+    @apply overflow-auto md:overflow-hidden;
 
     @media (max-width: 900px) {
       width: 90%;
