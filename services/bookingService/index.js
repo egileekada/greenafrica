@@ -52,7 +52,7 @@ export const BookingCommit = async (payload) => {
 
 
 export const BookingSell = async (payload) => {
-  let request = axios.post(`${BOOKING}Booking/Sell`, payload);
+  let request = axios.post(`${BOOKING}Sell`, payload);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

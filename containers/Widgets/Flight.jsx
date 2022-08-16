@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { generalSelector, hideWidget } from "redux/reducers/general";
 
 const FlightWidget = () => {
-  const { widgetVisible } = useSelector(generalSelector);
+  const { widgetVisible, sign } = useSelector(generalSelector);
   const dispatch = useDispatch();
 
   return (
@@ -17,7 +17,7 @@ const FlightWidget = () => {
       <section className="w-full bg-white rounded-xl ">
         <div className="flex flex-col items-center justify-center p-[50px]">
           <h6 className="font-display text-xl mb-5">
-            This is the new flight widget?
+            This is the new flight widget? {sign}
           </h6>
 
           <p className="text-center font-body text-sm mb-6">

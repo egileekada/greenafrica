@@ -5,25 +5,7 @@ import axios from "services/axiosConfig";
 const SESSION = `Session/`;
 
 export const Logon = async (payload) => {
-  console.log("recieved seee", `${SESSION}Logon`);
-  // let request = axios.post(`${SESSION}Logon`, { ...payload });
-  let request = axios.post(
-    // "https://dev-mid.gadevenv.com/api/Session/WhoAmI",
-    // "https://dev-mid.gadevenv.com/api/Session/Logon",
-    // "https://cors-anywhere.herokuapp.com/https://dev-mid.gadevenv.com/api/Session/Logon",
-    "https://dev-mid.gadevenv.com/api/Session/Logon",
-    {
-      logonRequestData: {
-        domainCode: "",
-        agentName: "",
-        password: "",
-        locationCode: "",
-        roleCode: "",
-        terminalInfo: "",
-        clientName: "",
-      },
-    }
-  );
+  let request = axios.post(`${SESSION}Logon`, { ...payload });
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

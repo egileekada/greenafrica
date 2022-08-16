@@ -1,26 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
 import ArrowTo from "assets/svgs/arrowto.svg";
 import CaretLeft from "assets/svgs/caretleft.svg";
 import CaretRight from "assets/svgs/caretright.svg";
 import Spinner from "components/Spinner";
 import useDeviceSize from "hooks/useWindowSize";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
+import { useSelector } from "react-redux";
+import { sessionSelector } from "redux/reducers/session";
 
 const IbeHeader = () => {
   const [width] = useDeviceSize();
-  const [loading] = useState(false);
+  const { lowFareAvailabilityLoading, lowFareAvailabilityResponse } =
+    useSelector(sessionSelector);
+
+  const { flightParams } = useSelector(sessionSelector);
   const arr = width > 1200 ? new Array(7).fill(0) : new Array(3).fill(0);
 
   return (
     <section className="ibe__flight__info">
       <section className="ibe__flight__info__destination">
-        <p className="mx-4">Lagos (LOS)</p>
+        <p className="mx-4">{flightParams?.departureStation}</p>
         <figure>
           <ArrowTo />
         </figure>
         <p p className="mx-4">
-          Abuja (ABV)
+          {flightParams?.arrivalStation}
         </p>
 
         <figure className="flightCircle">
@@ -28,7 +32,7 @@ const IbeHeader = () => {
         </figure>
       </section>
       <section className="ibe__flight__info__dates">
-        {loading ? (
+        {lowFareAvailabilityLoading ? (
           <section className="flex items-center w-full">
             <Spinner />
           </section>

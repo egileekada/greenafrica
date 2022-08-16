@@ -1,12 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import CaretDown from "assets/svgs/caretdown.svg";
 import IbeTripVariant from "./IbeTripVaraint";
+import { compareAsc, format } from "date-fns";
 
-const IbeTripItem = () => {
+const IbeTripItem = ({ flightSchedule }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [flightTime, setFlightTime] = useState(null);
+
+  useEffect(() => {
+    if (flightSchedule) {
+      let _times = {};
+      flightSchedule[0].Journeys.map((_journeys) => {
+        _journeys.Segments.map((_segment) => {
+          _times = {
+            STA: _segment?.STA,
+            STD: _segment?.STD,
+          };
+        });
+      });
+      setFlightTime({
+        ..._times,
+      });
+    }
+  }, [flightSchedule]);
 
   return (
     <section className="flex flex-col">
@@ -15,8 +34,10 @@ const IbeTripItem = () => {
           <p className="tripType self-center">Direct Flight</p>
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <h5 className="tripType">18:00</h5>
-              <p className="tripCity">Lagos (LOS)</p>
+              <h5 className="tripType">
+                {flightTime && format(new Date(flightTime?.STD), "HH:mm")}
+              </h5>
+              <p className="tripCity">{flightSchedule[0]?.DepartureStation}</p>
             </div>
             <div className="tripIconPath">
               <DottedLine className="dotted-svg" />
@@ -24,8 +45,12 @@ const IbeTripItem = () => {
               <DottedLine className="dotted-svg" />
             </div>
             <div className="flex flex-col items-end">
-              <h5 className="tripType right-text">19:00</h5>
-              <p className="tripCity right-text">Abuja (ABJ)</p>
+              <h5 className="tripType right-text">
+                {flightTime && format(new Date(flightTime?.STA), "HH:mm")}
+              </h5>
+              <p className="tripCity right-text">
+                {flightSchedule[0]?.ArrivalStation}
+              </p>
             </div>
           </div>
           <p className="tripTime self-center">1h 35mins</p>
@@ -56,25 +81,49 @@ const IbeTripItem = () => {
       >
         <div className="border-t border-t-black border-opacity-20 mx-6 mb-7"></div>
         <div className="flex flex-wrap lg:flex-nowrap justify-between px-6 lg:px-12">
-          <div className="basis-full lg:basis-[29%] mb-7">
-            <IbeTripVariant variant="saver" />
-          </div>
-          <div className="basis-full lg:basis-[29%] mb-7">
-            <IbeTripVariant variant="classic" />
-          </div>
-          <div className="basis-full lg:basis-[29%] mb-7">
-            <IbeTripVariant variant="gflex" />
-          </div>
+          {flightSchedule[0].Journeys.map((_journeys) => {
+            return _journeys.Segments.map((_segment) => {
+              return _segment.Fares.map((_fare) => {
+                return (
+                  <div className="basis-full lg:basis-[29%] mb-7">
+                    <IbeTripVariant
+                      fare={_fare}
+                      sellKey={_journeys?.JourneySellKey}
+                    />
+                  </div>
+                );
+              });
+            });
+          })}
         </div>
       </section>
       {!isVisible && (
-        <div className="ibe__trip__number">
-          <h4>FLIGHT NUMBER</h4>
-          <p>Q9 301</p>
-        </div>
+        <>
+          {flightSchedule[0].Journeys.map((_journeys) => {
+            return _journeys.Segments.map((_segment) => {
+              {
+                /* console.log("_segment", _segment); */
+              }
+              return (
+                <div className="ibe__trip__number">
+                  <h4>FLIGHT NUMBER</h4>
+                  <p>
+                    {_segment?.FlightDesignator?.CarrierCode}
+                    &nbsp;
+                    {_segment?.FlightDesignator?.FlightNumber}
+                  </p>
+                </div>
+              );
+            });
+          })}
+        </>
       )}
     </section>
   );
+};
+
+IbeTripItem.defaultProps = {
+  flightSchedule: {},
 };
 
 export default IbeTripItem;

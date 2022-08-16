@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   widgetVisible: false,
+  sign: "ghh",
 };
 
 export const generalSlice = createSlice({

@@ -6,9 +6,13 @@ import FlightIcon from "assets/svgs/plane-oultine.svg";
 import CostIcon from "assets/svgs/cost.svg";
 import DiscountIcon from "assets/svgs/discount.svg";
 import CaretLeft from "assets/svgs/sidebar/caretleft.svg";
+import { useSelector } from "react-redux";
+import { sessionSelector } from "redux/reducers/session";
 
 const TripInfo = () => {
   const [showContent, setShow] = useState(false);
+  const { flightParams } = useSelector(sessionSelector);
+
   return (
     <section className="ibe__sidebar__item mb-10">
       <h1 className="mb-4">PLAN YOUR TRIP</h1>
@@ -50,7 +54,8 @@ const TripInfo = () => {
             </div>
             <div className="flex flex-col">
               <h5 className="text-sm font-extrabold text-primary-main font-display mb-2">
-                Lagos - Abuja
+                {flightParams?.departureStation} -{" "}
+                {flightParams?.arrivalStation}
               </h5>
               <h6 className="text-[12px] font-normal text-[#9692B8] font-title">
                 18:00 - 19:35

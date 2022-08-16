@@ -1,30 +1,87 @@
 /* eslint-disable @next/next/no-img-element */
+import { Fragment, useState, useEffect } from "react";
 import BaseLayout from "layouts/Base";
 import IbeHeader from "containers/IbeHeader";
 import IbeTrips from "containers/IbeTrips";
 import IbeSidebar from "containers/IbeSidebar";
-import { Fragment, useState } from "react";
 import Popup from "components/Popup";
 import FlightWidget from "containers/Widgets/Flight";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  sessionSelector,
+  startSession,
+  setFlightRequest,
+  fetchLowFareAvailability,
+} from "redux/reducers/session";
+import { showWidget } from "redux/reducers/general";
+import Spinner from "components/Spinner";
+
+// ?origin=ABV&destination=LOS&departure=2022-08-18&adt=1&chd=0&inf=0&promocode=3hy74h
 
 const Home = () => {
   const [showPopUp, setShow] = useState(false);
+  const dispatch = useDispatch();
+  const { signature, sessionLoading } = useSelector(sessionSelector);
+
+  useEffect(() => {
+    async function checkParams() {
+      const ibeQuery = new URLSearchParams(window.location.search);
+      const flightOrigin = ibeQuery.get("origin");
+      if (flightOrigin) {
+        dispatch(startSession());
+      } else {
+        dispatch(showWidget());
+      }
+    }
+    checkParams();
+  }, []);
+
+  useEffect(() => {
+    async function checkSigInit() {
+      const ibeQuery = new URLSearchParams(window.location.search);
+
+      if (signature) {
+        const flightRequest = {
+          departureStation: ibeQuery.get("origin"),
+          arrivalStation: ibeQuery.get("destination"),
+          beginDate: ibeQuery.get("departure"),
+          endDate: ibeQuery.get("departure"),
+          promocode: ibeQuery.get("promocode"),
+          ADT: parseInt(ibeQuery.get("adt")),
+          CHD: parseInt(ibeQuery.get("chd")),
+          INF: parseInt(ibeQuery.get("inf")),
+          signature,
+        };
+        dispatch(setFlightRequest(flightRequest));
+        dispatch(fetchLowFareAvailability(flightRequest));
+      }
+    }
+    checkSigInit();
+  }, [signature]);
 
   return (
     <Fragment>
       <BaseLayout>
-        <section className="ga__section">
-          <div className="ga__section__main">
-            <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
-              SELECT FLIGHT {process.env.NEXT_PUBLIC_BASE_URL}
-            </h2>
-            <IbeHeader />
-            <IbeTrips />
-          </div>
-          <div className="ga__section__side">
-            <IbeSidebar />
-          </div>
-        </section>
+        {sessionLoading ? (
+          <section className="py-16 px-16">
+            <Spinner />
+          </section>
+        ) : (
+          <Fragment>
+            <section className="ga__section">
+              <div className="ga__section__main">
+                <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
+                  SELECT FLIGHT
+                </h2>
+                <IbeHeader />
+                <IbeTrips />
+              </div>
+              <div className="ga__section__side">
+                <IbeSidebar />
+              </div>
+            </section>
+          </Fragment>
+        )}
       </BaseLayout>
       <Popup
         display={showPopUp}
@@ -57,3 +114,10 @@ const Home = () => {
 };
 
 export default Home;
+
+// ?origin=ABV
+//&destination=LOS
+// & departure=2022 - 08 - 18
+// & adt=1
+// & chd=0
+// & inf=0
