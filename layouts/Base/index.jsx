@@ -4,7 +4,6 @@ import { useEffect } from "react";
 // import { useRouter } from "next/router";
 
 const BaseLayout = ({ children }) => {
-
   // useEffect(() => {
   //   async function checkParams() {
   //     const clientSignature = localStorage.getItem("clientSignature");

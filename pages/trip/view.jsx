@@ -5,7 +5,8 @@ import IbeSidebar from "containers/IbeSidebar";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import ArrowTo from "assets/svgs/arrowto.svg";
 import { Checkbox } from "antd";
-
+import BackIcon from "assets/svgs/seats/arrowleft.svg";
+import ToTop from "assets/svgs/toTop.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
@@ -17,6 +18,12 @@ const TripView = () => {
 
   return (
     <BaseLayout>
+      <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
+        <button className="flex items-center">
+          <BackIcon />
+          <span className="ml-6 text-white text-xs">TRIP DETAILS</span>
+        </button>
+      </nav>
       <section className="w-full">
         <section className="ga__section">
           <div className="ga__section__main">
@@ -125,6 +132,12 @@ const TripView = () => {
           </div>
         </section>
       </section>
+      {/* <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50 bottom-0">
+        <button className="flex items-center ">
+          <ToTop />
+        </button>
+        <button className="btn btn-green">Continue</button>
+      </nav> */}
     </BaseLayout>
   );
 };

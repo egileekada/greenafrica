@@ -15,6 +15,8 @@ import {
 } from "redux/reducers/session";
 import { showWidget } from "redux/reducers/general";
 import Spinner from "components/Spinner";
+import BackIcon from "assets/svgs/seats/arrowleft.svg";
+import ToTop from "assets/svgs/toTop.svg";
 
 // ?origin=ABV&destination=LOS&departure=2022-08-18&adt=1&chd=0&inf=0&promocode=3hy74h
 
@@ -59,16 +61,31 @@ const Home = () => {
     checkSigInit();
   }, [signature]);
 
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <Fragment>
       <BaseLayout>
+        <nav className="top__bar">
+          <button>
+            <figure>
+              <BackIcon />
+            </figure>
+            <span>SELECT FLIGHT</span>
+          </button>
+        </nav>
         {sessionLoading ? (
-          <section className="py-16 px-16">
+          <section className="spinner__container">
             <Spinner />
           </section>
         ) : (
           <Fragment>
-            <section className="ga__section">
+            <section className="ga__section fit-y">
               <div className="ga__section__main">
                 <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
                   SELECT FLIGHT
@@ -82,6 +99,12 @@ const Home = () => {
             </section>
           </Fragment>
         )}
+        <nav className="bottom__bar">
+          <button className="toTop" onClick={ScrollToTop}>
+            <ToTop />
+          </button>
+          <button className="btn btn-green">Continue</button>
+        </nav>
       </BaseLayout>
       <Popup
         display={showPopUp}

@@ -27,9 +27,6 @@ const FlightWidget = () => {
             <button className="btn btn-primary basis-full lg:basis-[48%] lg:mr-2">
               Yes, I need more time
             </button>
-            <button className="btn btn-outline basis-full lg:basis-[48%]">
-              I don’t need it
-            </button>
           </div>
         </div>
       </section>

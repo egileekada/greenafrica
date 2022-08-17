@@ -35,12 +35,12 @@ const Navbar = () => {
           </li>
         </ul>
       </nav>
-      <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
+      {/* <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
         <button className="flex items-center">
           <BackIcon />
           <span className="ml-6 text-white text-xs">ADDITIONAL SERVICES</span>
         </button>
-      </nav>
+      </nav> */}
     </Fragment>
   );
 };
