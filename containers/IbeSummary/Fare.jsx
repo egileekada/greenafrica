@@ -1,6 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
+import { useSelector } from "react-redux";
+import { sessionSelector } from "redux/reducers/session";
 
 const Fare = () => {
+  const { bookingResponse } = useSelector(sessionSelector);
+
   return (
     <div className="trip__summary__item">
       <h2 className="trip-title mb-3">FARE BREAKDOWN</h2>
@@ -55,7 +59,11 @@ const Fare = () => {
             <h5>TOTAL</h5>
           </div>
           <div>
-            <h6> ₦26,501</h6>
+            <h6>
+              {" "}
+              ₦
+              {bookingResponse?.Booking?.Payments[0]?.PaymentAmount.toLocaleString()}
+            </h6>
           </div>
         </div>
       </div>

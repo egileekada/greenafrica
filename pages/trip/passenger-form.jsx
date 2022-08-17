@@ -328,7 +328,7 @@ const PassengerForm = () => {
 
               {/* Contact Details */}
               <div className="flex flex-wrap md:flex-nowrap items-center">
-                <button className="btn btn-outline mr-0 md:mr-2 mb-0 md:mb-2 cta basis-full md:basis-auto">
+                <button className="btn btn-outline mr-0 md:mr-2 mb-2 md:mb-0 cta basis-full md:basis-auto">
                   Go Back
                 </button>
                 <button
@@ -364,8 +364,11 @@ const PassengerDetailsSchema = Yup.object().shape({
   c_title: Yup.string().required("Title is Required"),
   c_firstName: Yup.string().required("Firstname is Required"),
   c_lastName: Yup.string().required("Lastname is Required"),
-  c_email: Yup.string().required("Email is Required"),
+  c_email: Yup.string()
+    .email("Invalid email format")
+    .required("Email is Required"),
   cc_email: Yup.string()
+    .email("Invalid email format")
     .oneOf([Yup.ref("c_email"), null], "Emails must match")
     .required("Confirm Email is Required"),
   c_phone: Yup.number()

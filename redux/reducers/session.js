@@ -527,7 +527,7 @@ export const updatePassengersDetails =
                   },
                 ],
                 infant: {
-                  dob: "2022-08-07",
+                  dob: "2021-08-07",
                   dobSpecified: true,
                   gender: 0,
                   genderSpecified: true,
@@ -535,9 +535,9 @@ export const updatePassengersDetails =
                   residentCountry: "",
                   names: [
                     {
-                      firstName: "",
-                      middleName: "",
-                      lastName: "",
+                      firstName: "green",
+                      middleName: "green",
+                      lastName: "green",
                       suffix: "",
                       title: "",
                       state: 0,
@@ -620,7 +620,6 @@ export const updatePassengersDetails =
     try {
       const Response = await UpdatePassengers(requestPayload);
       await dispatch(setUpdatePassengersResponse(Response.data));
-      console.log("Passenger Response.data", Response.data);
     } catch (err) {
       console.log("Update passenger Request error", err.response);
     }
@@ -884,14 +883,16 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
         getBookingBy: 0,
         getBookingBySpecified: true,
         getByRecordLocator: {
-          recordLocator: currentState?.bookingCommitResponse?.recordLocator,
+          recordLocator:
+            currentState?.bookingCommitResponse?.BookingUpdateResponseData
+              ?.Success?.RecordLocator,
         },
       },
     },
   };
   try {
     const Response = await GetBooking(requestPayload);
-    await dispatch(setBookingResponseResponse.data);
+    await dispatch(setBookingResponse(Response.data));
   } catch (err) {
     console.log("Update passenger Request error", err.response);
   }

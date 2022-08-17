@@ -4,7 +4,7 @@ import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import CaretDown from "assets/svgs/caretdown.svg";
 import IbeTripVariant from "./IbeTripVaraint";
-import { compareAsc, format } from "date-fns";
+import { format } from "date-fns";
 
 const IbeTripItem = ({ flightSchedule }) => {
   const [isVisible, setIsVisible] = useState(false);
