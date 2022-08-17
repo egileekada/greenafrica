@@ -1,40 +1,46 @@
 /* eslint-disable @next/next/no-img-element */
+import React, { useState, useMemo } from "react";
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import BaseLayout from "layouts/Base";
 import Newsletter from "components/Newsletter";
 import Accordion from "components/Accordion";
 import SearchIcon from "assets/svgs/search.svg";
+import { getFAQs, getFAQsCategory } from "../services";
+
+export async function getServerSideProps() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(["all_faqs"], getFAQs);
+  await queryClient.prefetchQuery(["faq_category"], getFAQsCategory);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 const FaPage = () => {
-  const FAQS = [
-    {
-      question: "How can I book with Green Africa?",
-      answer: `Book your next flight or Getaway with Green Africa - online at greenafrica.com.
-      You may also contact our gCare center on 0700-GREEN-AFRICA (0700-47336-237422) we would be happy to help. Please note that a fee of 2,000NGN will be applied.
-      Don't see a flight you need? The flights may have been sold out or cancelled for operational reasons. We keep releasing our upcoming flight schedules periodically. All current times and routes are up to date and looking great!`,
-      category: "booking",
-    },
-    {
-      question: "How can I book a return trip with Green Africa?",
-      answer: `Book your next flight or Getaway with Green Africa - online at greenafrica.com.
-      You may also contact our gCare center on 0700-GREEN-AFRICA (0700-47336-237422) we would be happy to help. Please note that a fee of 2,000NGN will be applied.
-      Don't see a flight you need? The flights may have been sold out or cancelled for operational reasons. We keep releasing our upcoming flight schedules periodically. All current times and routes are up to date and looking great!`,
-      category: "booking",
-    },
-    {
-      question: "45 How can I book with Green Africa?",
-      answer: `3 Book your next flight or Getaway with Green Africa - online at greenafrica.com.
-      You may also contact our gCare center on 0700-GREEN-AFRICA (0700-47336-237422) we would be happy to help. Please note that a fee of 2,000NGN will be applied.
-      Don't see a flight you need? The flights may have been sold out or cancelled for operational reasons. We keep releasing our upcoming flight schedules periodically. All current times and routes are up to date and looking great!`,
-      category: "booking",
-    },
-    {
-      question: "3 How can I book a return trip with Green Africa?",
-      answer: `4 Book your next flight or Getaway with Green Africa - online at greenafrica.com.
-      You may also contact our gCare center on 0700-GREEN-AFRICA (0700-47336-237422) we would be happy to help. Please note that a fee of 2,000NGN will be applied.
-      Don't see a flight you need? The flights may have been sold out or cancelled for operational reasons. We keep releasing our upcoming flight schedules periodically. All current times and routes are up to date and looking great!`,
-      category: "booking",
-    },
-  ];
+  const [filter, setFilter] = useState("");
+  const [category, setCategory] = useState(null);
+
+  const { data: all_faqs } = useQuery(["all_faqs"], getFAQs, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const { data: faq_category } = useQuery(["faq_category"], getFAQsCategory);
+
+  const sortData = (faq, filter, category) => {
+    return category === null
+      ? faq.question.toLowerCase().includes(filter.toLowerCase())
+      : faq.question.toLowerCase().includes(filter.toLowerCase()) &&
+          faq.category_id === category;
+  };
+
+  const filteredData = useMemo(
+    () => all_faqs?.data.items.filter((faq) => sortData(faq, filter, category)),
+    [filter, all_faqs, category]
+  );
 
   return (
     <BaseLayout>
@@ -43,21 +49,34 @@ const FaPage = () => {
 
         <section className="flex flex-col mb-8 md:mb-5">
           <section className="faqs__tabs my-6">
-            <button className="btn btn-primary active mr-4">
-              Booking A Flight
+            <button
+              className={`btn mr-4 ${
+                category === null ? "btn-primary active" : "btn-outline"
+              }`}
+              onClick={() => setCategory(null)}
+            >
+              All
             </button>
-            <button className="btn btn-outline mr-4">Baggage</button>
-            <button className="btn btn-outline ">
-              Flight changes and cancellations
-            </button>
+            {faq_category?.data?.items.map((cat) => (
+              <button
+                className={`btn mr-4 ${
+                  category === cat.id ? "btn-primary active" : "btn-outline"
+                }`}
+                key={cat.id}
+                onClick={() => setCategory(cat.id)}
+              >
+                {cat.name}
+              </button>
+            ))}
           </section>
 
           <div className="faq__input">
             <input
               type="text"
-              id="firstname"
-              name="firstname"
+              id="search"
+              name="search"
               placeholder="Search"
+              onChange={(e) => setFilter(e.target.value)}
             ></input>
             <figure>
               <SearchIcon />
@@ -65,12 +84,18 @@ const FaPage = () => {
           </div>
 
           <>
-            {FAQS.length > 0 ? (
-              FAQS.map((item) => {
+            {filteredData.length > 0 ? (
+              filteredData.map((item) => {
                 return <Accordion key={item?.question} item={item} />;
               })
             ) : (
-              <p>No faqs yet</p>
+              <div className="mx-auto text-center my-20">
+                <h1 className="text-3xl font-bold my-4">No results found</h1>
+                <p className="text-base text-primary-main">
+                  We could’t find any results relating to your search. try
+                  searching for something else
+                </p>
+              </div>
             )}
           </>
         </section>

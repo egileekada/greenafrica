@@ -1,13 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
+import React, { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getDestinations, getLocations } from "../../services";
 import FlightIcon from "assets/svgs/flight_icon.svg";
 import Slider from "react-slick";
 import Arrow from "components/TestimonialArrow";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-const Destinations = () => {
+const Destinations = (props) => {
+  const [value, setValue] = useState("LOS");
+
+  const { data: destinations } = useQuery(["destination_matrices", value], () =>
+    getDestinations(value)
+  );
+  const { data: locations } = useQuery(["locations"], getLocations);
+
   const settings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
@@ -57,6 +65,9 @@ const Destinations = () => {
     prevArrow: <Arrow image="/images/slick_left.svg" alt="Previous Arrow" />,
   };
 
+  useEffect(() => {
+    setValue(props.query);
+  }, [props.query]);
   return (
     <>
       {" "}
@@ -72,126 +83,71 @@ const Destinations = () => {
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
       />
       <section className="container mx-auto mb-10">
-        <h1 className="text-primary-main font-semibold text-2xl my-2">
-          Explore Our Destinations from{" "}
-          <select
-            name=""
-            id=""
-            className="border-none font-semibold text-2xl"
-            style={{ borderBottom: "1px solid #26205E" }}
-          >
-            <option value="Lagos">Lagos</option>
-            <option value="Lagos">Abuja</option>
-          </select>
+        <h1 className="text-primary-main font-semibold text-2xl my-2 text-center lg:text-left">
+          Explore Our Destinations{" "}
+          <span className="hidden md:inline-block">
+            from{" "}
+            <select
+              name=""
+              id=""
+              className="border-none font-semibold text-2xl"
+              style={{ borderBottom: "1px solid #26205E" }}
+              onChange={(e) => setValue(e.target.value)}
+              value={value}
+            >
+              {locations?.data?.items?.map((location, index) => (
+                <option value={location.code} key={index}>
+                  {location.name}
+                </option>
+              ))}
+            </select>
+          </span>
         </h1>
-        <p className="text-lg text-primary-main font-light mb-10">
+        <p className="text-center lg:text-left text-primary-main font-light">
           You are one flight closer to your dreams and destinations.
         </p>
 
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-x-12 md:gap-x-5 xl:gap-x-12"> */}
-        <div>
+        <div className="select__wrapper px-5 mx-5 visible md:invisible">
+          <p className="text-xs text-uppercase my-2">FROM</p>
+          <select
+            name=""
+            id=""
+            className="border-none pl-0 py-0 block w-full mb-2"
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+          >
+            {locations?.data?.items?.map((location, index) => (
+              <option value={location.code} key={index}>
+                {location.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mt-10">
           <Slider {...settings}>
-            <a className="my-4" href="/destination/abuja">
-              <div className="relative">
-                <FlightIcon className="inline-block absolute" />
-                <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
-                  Abuja
-                </h1>
-              </div>
-              <p className="text-base text-primary-main font-light ml-8">
-                Starting at ₦27,500
-              </p>
-              <img
-                src="https://static.greenafrica.com/media/1005/900x600-fa-01.png"
-                alt=""
-                className="object-cover w-full rounded-lg"
-              />
-            </a>
-
-            <a className="my-4" href="/destination/abuja">
-              <div className="relative">
-                <FlightIcon className="inline-block absolute" />
-                <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
-                  Abuja
-                </h1>
-              </div>
-              <p className="text-base text-primary-main font-light ml-8">
-                Starting at ₦27,500
-              </p>
-              <img
-                src="https://static.greenafrica.com/media/1005/900x600-fa-01.png"
-                alt=""
-                className="object-cover w-full rounded-lg"
-              />
-            </a>
-
-            <a className="my-4" href="/destination/abuja">
-              <div className="relative">
-                <FlightIcon className="inline-block absolute" />
-                <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
-                  Abuja
-                </h1>
-              </div>
-              <p className="text-base text-primary-main font-light ml-8">
-                Starting at ₦27,500
-              </p>
-              <img
-                src="https://static.greenafrica.com/media/1005/900x600-fa-01.png"
-                alt=""
-                className="object-cover w-full rounded-lg"
-              />
-            </a>
-
-            <a className="my-4" href="/destination/abuja">
-              <div className="relative">
-                <FlightIcon className="inline-block absolute" />
-                <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
-                  Abuja
-                </h1>
-              </div>
-              <p className="text-base text-primary-main font-light ml-8">
-                Starting at ₦27,500
-              </p>
-              <img
-                src="https://static.greenafrica.com/media/1005/900x600-fa-01.png"
-                alt=""
-                className="object-cover w-full rounded-lg"
-              />
-            </a>
-
-            <a className="my-4" href="/destination/abuja">
-              <div className="relative">
-                <FlightIcon className="inline-block absolute" />
-                <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
-                  Abuja
-                </h1>
-              </div>
-              <p className="text-base text-primary-main font-light ml-8">
-                Starting at ₦27,500
-              </p>
-              <img
-                src="https://static.greenafrica.com/media/1005/900x600-fa-01.png"
-                alt=""
-                className="object-cover w-full rounded-lg"
-              />
-            </a>
-
-            <a className="my-4" href="/destination/abuja">
-              <div className="relative">
-                <FlightIcon className="inline-block absolute" />
-                <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
-                  Abuja
-                </h1>
-              </div>
-              <p className="text-base text-primary-main font-light ml-8">
-                Starting at ₦27,500
-              </p>
-              <img
-                src="https://static.greenafrica.com/media/1005/900x600-fa-01.png"
-                alt=""
-                className="object-cover w-full rounded-lg"
-              />
-            </a>
+            {destinations?.data?.item?.map((destination, index) => (
+              <a
+                className="my-4"
+                href={`/destination/${destination.destination}?origin=${destination.origin}`}
+                key={index}
+              >
+                <div className="relative">
+                  <FlightIcon className="inline-block absolute" />
+                  <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
+                    {destination.destination}
+                  </h1>
+                </div>
+                <p className="text-base text-primary-main font-light ml-8">
+                  Starting at ₦{destination.lowest_fare}
+                </p>
+                <img
+                  src={`${destination.image_url}`}
+                  alt={destination.destination}
+                  className="object-cover w-full rounded-lg"
+                />
+              </a>
+            ))}
           </Slider>
         </div>
       </section>

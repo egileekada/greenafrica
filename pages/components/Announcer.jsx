@@ -1,12 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getPopup } from "../../services";
+
 import { Cookies } from "react-cookie-consent";
 import Popup from "components/Popup";
 
 const in1Hour = 1 / 24;
 
 const HomePopup = () => {
+  const { data } = useQuery(["popups"], getPopup);
   const [showPopUp, setShow] = useState(false);
   var popupShown = Cookies.get("ad_anouncement_popup");
 

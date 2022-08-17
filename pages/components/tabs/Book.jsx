@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select, { components } from "react-select";
 import { format, add } from "date-fns";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
+import { getWidgetData } from "../../../services";
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
 import { data } from "../../../utils/calendar";
@@ -14,40 +16,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const BookingTab = ({ type, promocode }) => {
+  const { data } = useQuery(["destination"], getWidgetData);
   const [departing, setDeparting] = useState(add(new Date(), { weeks: 1 }));
-  const [returning, setReturning] = useState(new Date());
+  const [arrivals, setArrivals] = useState([]);
   const [passengers, setPassengers] = useState(0);
   const [infant, setInfant] = useState(0);
   const [adult, setAdult] = useState(1);
   const [child, setChild] = useState(0);
   const [show, setShow] = useState(false);
-
-  const options = [
-    {
-      value: "Abuja",
-      label: "Abuja",
-      customAbbreviation: "ABV",
-      country: "Nigeria",
-    },
-    {
-      value: "Akure",
-      label: "Akure",
-      customAbbreviation: "AKR",
-      country: "Nigeria",
-    },
-    {
-      value: "Benin",
-      label: "Benin",
-      customAbbreviation: "BNI",
-      country: "Nigeria",
-    },
-    {
-      value: "Enugu",
-      label: "Enugu",
-      customAbbreviation: "ENU",
-      country: "Nigeria",
-    },
-  ];
 
   const colourStyles = {
     control: (styles, { isFocused, isSelected }) => ({
@@ -75,6 +51,7 @@ const BookingTab = ({ type, promocode }) => {
       outline: isSelected && "0px",
       border: isSelected && "5px solid green",
       boxShadow: "none !important",
+      fontSize: "16px",
       "& input": {
         "&:focus": {
           boxShadow: "none",
@@ -145,11 +122,11 @@ const BookingTab = ({ type, promocode }) => {
     }
   };
 
-  const formatOptionLabel = ({ value, label, customAbbreviation }) => (
+  const formatOptionLabel = ({ value, cityName, code }) => (
     <div class="flex items-center">
       <div>
         <p class="font-bold mb-0">
-          {label} ({customAbbreviation})
+          {cityName} ({value})
         </p>
       </div>
     </div>
@@ -160,11 +137,11 @@ const BookingTab = ({ type, promocode }) => {
       <components.Option {...props}>
         <div class="flex items-center">
           <div>
-            <p class="font-bold mb-0">{props.label}</p>
+            <p class="font-bold mb-0">{props.data.cityName}</p>
             <p class="small mb-0">{props.data.country}</p>
           </div>
           <div class="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
-            {props.data.customAbbreviation}
+            {props.data.value}
           </div>
         </div>
       </components.Option>
@@ -201,8 +178,8 @@ const BookingTab = ({ type, promocode }) => {
         return "";
       };
 
-      let test = `?origin=${values.origin.customAbbreviation}&destination=${
-        values.destination.customAbbreviation
+      let test = `?origin=${values.origin.value}&destination=${
+        values.destination.value
       }&departure=${format(
         new Date(values.departure),
         "yyyy-MM-dd"
@@ -213,6 +190,14 @@ const BookingTab = ({ type, promocode }) => {
       window.location.replace(`https://dev-ibe.gadevenv.com${test}`);
     },
   });
+
+  useEffect(() => {
+    console.log("I just got triggered");
+
+    // return () => {
+    //   second
+    // }
+  }, [formik.values.origin]);
 
   return (
     <>
@@ -242,8 +227,12 @@ const BookingTab = ({ type, promocode }) => {
                   name="origin"
                   defaultValue={formik.values.origin}
                   value={formik.values.origin}
-                  onChange={(value) => formik.setFieldValue("origin", value)}
-                  options={options}
+                  onChange={(value) => (
+                    formik.setFieldValue("origin", value),
+                    formik.setFieldValue("destination", " "),
+                    setArrivals(value.arrivals)
+                  )}
+                  options={data?.data?.values}
                   className="border-0"
                   styles={colourStyles}
                 />
@@ -253,7 +242,7 @@ const BookingTab = ({ type, promocode }) => {
                 role="button"
                 src="/images/to_from.svg"
                 alt=""
-                className="absolute -right-6 bottom-2.5 invisible lg:visible"
+                className="absolute -right-6 bottom-2.5 invisible lg:visible z-10"
               />
             </div>
 
@@ -277,15 +266,15 @@ const BookingTab = ({ type, promocode }) => {
                   placeholder="Destination"
                   formatOptionLabel={formatOptionLabel}
                   components={{ Option }}
-                  options={options}
+                  options={arrivals}
                   className="border-0 invalid:border-pink-500 invalid:text-pink-600"
                   styles={colourStyles}
                   name="destination"
                   defaultValue={formik.values.destination}
                   value={formik.values.destination}
-                  onChange={(value) =>
-                    formik.setFieldValue("destination", value)
-                  }
+                  onChange={(value) => {
+                    formik.setFieldValue("destination", value);
+                  }}
                 />
               </div>
             </div>
@@ -363,6 +352,7 @@ const BookingTab = ({ type, promocode }) => {
                     className="datepicker border-0 w-full font-body"
                     minDate={new Date()}
                     name="return"
+                    format={"d/M/y"}
                     onChange={(value) => formik.setFieldValue("return", value)}
                     value={formik.values.return}
                     onKeyDown={(e) => e.preventDefault()}

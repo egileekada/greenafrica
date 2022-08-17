@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import useDeviceSize from "hooks/useWindowSize";
 import Image from "next/image";
 import Destinations from "../components/Destinations";
@@ -8,6 +9,8 @@ import BaseLayout from "layouts/Base";
 // import Abuja from "/images/abuja.jpg";
 
 const Destination = () => {
+  const router = useRouter();
+  const { destination, origin } = router.query;
   const [width] = useDeviceSize();
   return (
     <BaseLayout>
@@ -65,7 +68,7 @@ const Destination = () => {
           </p>
         </section>
 
-        <Destinations />
+        <Destinations query={origin} />
       </section>
     </BaseLayout>
   );

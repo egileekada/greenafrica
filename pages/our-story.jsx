@@ -1,4 +1,18 @@
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import BaseLayout from "layouts/Base";
+
+import { getPageBySlug } from "../services";
+
+export async function getServerSideProps() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(["our_story", "our-story"], getPageBySlug);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 const Index = () => {
   return (

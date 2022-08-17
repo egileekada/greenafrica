@@ -1,14 +1,36 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import NProgress from "nprogress";
+import Router from "next/router";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import "../styles/globals.scss";
 import "../styles/loader.scss";
+import "nprogress/nprogress.css";
 
 import Preloader from "components/Preloader";
 
 const MyApp = ({ Component, pageProps }) => {
+  NProgress.configure({ showSpinner: false });
+  useEffect(() => {
+    Router.events.on("routeChangeStart", NProgress.start);
+    Router.events.on("routeChangeComplete", NProgress.done);
+    Router.events.on("routeChangeError", NProgress.done);
+    return () => {
+      Router.events.off("routeChangeStart", NProgress.start);
+      Router.events.off("routeChangeComplete", NProgress.done);
+      Router.events.off("routeChangeError", NProgress.done);
+    };
+  }, []);
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
-    <Fragment>
+    <>
       <Head>
         <link rel="icon" type="image/x-icon" href="/favicon.ico"></link>
 
@@ -82,10 +104,15 @@ const MyApp = ({ Component, pageProps }) => {
         <main className="main">
           <Preloader />
           <Toaster />
-          <Component {...pageProps} />
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydratedState}>
+              <Component {...pageProps} />
+            </Hydrate>
+            <ReactQueryDevtools />
+          </QueryClientProvider>
         </main>
       </Fragment>
-    </Fragment>
+    </>
   );
 };
 

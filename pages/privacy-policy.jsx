@@ -1,7 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 import Head from "next/head";
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import BaseLayout from "layouts/Base";
+import { getPageBySlug } from "../services";
 
+export async function getServerSideProps() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(
+    ["privacy_policy", "privacy-policy"],
+    getPageBySlug
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 const Home = () => {
   return (
     <>

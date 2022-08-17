@@ -21,6 +21,10 @@
   html {
     font-family: Plus Jakarta Sans, system-ui, sans-serif;
   }
+
+  body {
+    font-family: Plus Jakarta Sans, system-ui, sans-serif;
+  }
 }
 
 @layer components {
@@ -198,7 +202,7 @@
 .faq__input {
   border: 1px solid #d8d7e2;
   border-radius: 6px;
-  @apply w-full flex justify-between items-center px-9 py-5;
+  @apply w-full flex justify-between items-center px-6 py-3;
 
   input {
     @apply basis-[80%] bg-transparent border-[2px] border-none outline-none text-[#4B4F63] text-opacity-60 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#4B4F63] placeholder-opacity-60;
@@ -609,4 +613,8 @@ textarea:focus,
 select:focus {
   box-shadow: none;
   border-color: none;
+}
+
+#nprogress .bar {
+  background: #1eff5a !important;
 }
