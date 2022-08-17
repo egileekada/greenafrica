@@ -6,7 +6,18 @@ import NullIcon from "assets/svgs/null.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { saveSellRequest, sessionSelector } from "redux/reducers/session";
 import { useRouter } from "next/router";
-import Spinner from "components/Spinner";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+
+const antIcon = (
+  <LoadingOutlined
+    style={{
+      fontSize: 24,
+      color: "white",
+    }}
+    spin
+  />
+);
 
 const IbeTripPopup = ({ selected, showPopUp, closePopUp, sellKey }) => {
   const dispatch = useDispatch();
@@ -49,7 +60,7 @@ const IbeTripPopup = ({ selected, showPopUp, closePopUp, sellKey }) => {
     <Fragment>
       <Popup display={showPopUp} closeModal={closePopUp} top={true}>
         {sellFlightLoading ? (
-          <Spinner />
+          <Spin indicator={antIcon} />
         ) : (
           <>
             <section className="w-full bg-white rounded-xl hidden lg:flex flex-col">

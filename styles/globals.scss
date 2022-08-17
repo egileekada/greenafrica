@@ -164,7 +164,7 @@
     }
 
     .select-icon {
-      @apply absolute right-[10%] bottom-[50%] z-[2];
+      @apply absolute right-[10%] bottom-[30%] z-[2];
       transform: translateY(50%);
     }
   }
@@ -1127,6 +1127,10 @@
 
 .variant-bg {
   background-color: rgba(107, 97, 205, 0.1);
+}
+
+.grey__out {
+  @apply opacity-50 pointer-events-none;
 }
 
 // Clean up Styles

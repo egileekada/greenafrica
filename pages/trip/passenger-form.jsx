@@ -38,6 +38,14 @@ const PassengerForm = () => {
     setSpecialNeed(checked);
   };
 
+  const onCopyChange = (e) => {
+    if (e.target.checked) {
+      formik.setFieldValue("c_title", formik.values.title);
+      formik.setFieldValue("c_firstName", formik.values.firstName);
+      formik.setFieldValue("c_lastName", formik.values.lastName);
+    }
+  };
+
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log("formik values", values);
     const passengerDetails = {
@@ -79,6 +87,11 @@ const PassengerForm = () => {
     enableReinitialize: true,
   });
 
+  const enableCopy =
+    formik.values.title.length > 0 &&
+    formik.values.firstName.length > 0 &&
+    formik.values.lastName.length > 0;
+
   return (
     <BaseLayout>
       <section className="w-full">
@@ -96,7 +109,9 @@ const PassengerForm = () => {
             >
               {/* Passenger Details */}
               <div className="passenger__form__box">
-                <h3 className="font font-header  text-xxs mb-4">ADULT</h3>
+                <h3 className="font font-header font-bold text-xxs mb-4">
+                  ADULT
+                </h3>
 
                 <div className="mb-6 flex flex-wrap">
                   <div className="form-group select-group mr-0 md:mr-4">
@@ -106,7 +121,7 @@ const PassengerForm = () => {
                       name="title"
                       {...formik.getFieldProps("title")}
                     >
-                      <option>Select</option>
+                      <option value="">Select</option>
                       <option value="Mrs">Mrs</option>
                       <option value="Mr">Mr</option>
                     </select>
@@ -211,22 +226,26 @@ const PassengerForm = () => {
               {/* Contact Details */}
               <div className="passenger__form__box">
                 <h3 className="text-[#8F8CA4] font-header text-xxs mb-6">
-                  CONTACT INFORMATION
+                  CONTACT INFORMATION {enableCopy ? "copy" : "can't copy"}
                 </h3>
 
-                {/* <div className="flex items-center checkbox-copy mb-6">
-                  <Checkbox onChange={onChange}>
+                <div
+                  className={`flex items-center checkbox-copy mb-6  ${
+                    enableCopy ? "" : "grey__out"
+                  }`}
+                >
+                  <Checkbox onChange={onCopyChange}>
                     <label className="check-label">
                       Copy Passenger Information
                     </label>
                   </Checkbox>
-                </div> */}
+                </div>
 
                 <div className="mb-6 flex flex-wrap">
                   <div className="form-group select-group mr-0 md:mr-4">
                     <label>TITLE</label>
                     <select name="c_title" {...formik.getFieldProps("c_title")}>
-                      <option>Select</option>
+                      <option value="">Select</option>
                       <option value="Mr">Mr</option>
                       <option value="Mrs">Mrs</option>
                     </select>
