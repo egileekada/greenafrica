@@ -15,9 +15,10 @@ import { timeConvert } from "utils/common";
 
 const TripConfirm = () => {
   const dispatch = useDispatch();
+  const [segmentInfo, setSegmentInfo] = useState(null);
+
   const { bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
-  const [segmentInfo, setsegmentInfo] = useState(null);
 
   useEffect(() => {
     async function fetchBookingDetails() {
@@ -44,7 +45,7 @@ const TripConfirm = () => {
           };
         });
       });
-      setsegmentInfo({
+      setSegmentInfo({
         ..._times,
       });
     }
@@ -89,12 +90,12 @@ const TripConfirm = () => {
                         <h2 className="trip-title mb-3">FLIGHT SUMMARY</h2>
                         <p className="text-primary-main text-sm font-body font-normal">
                           Departing on &nbsp;
-                          {format(
+                          {/* {format(
                             new Date(
                               bookingResponse?.Booking?.BookingInfo?.BookingDate
                             ),
                             "MMM dd, yyyy"
-                          )}
+                          )} */}
                         </p>
                       </div>
                       <button className="basis-full md:basis-auto btn btn-outline">
@@ -110,8 +111,8 @@ const TripConfirm = () => {
                         <div className="flex justify-between">
                           <div className="flex flex-col">
                             <h5 className="font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left">
-                              {segmentInfo &&
-                                format(new Date(segmentInfo?.STD), "HH:mm")}
+                              {/* {segmentInfo &&
+                                format(new Date(segmentInfo?.STD), "HH:mm")} */}
                             </h5>
 
                             <p className="font-semibold font-body text-xs lg:text-sm text-black text-left">
@@ -125,8 +126,8 @@ const TripConfirm = () => {
                           </div>
                           <div className="flex flex-col  items-end">
                             <h5 className="font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left">
-                              {segmentInfo &&
-                                format(new Date(segmentInfo?.STA), "HH:mm")}
+                              {/* {segmentInfo &&
+                                format(new Date(segmentInfo?.STA), "HH:mm")} */}
                             </h5>
                             <p className="tripCity right-text">
                               {segmentInfo && segmentInfo?.ArrivalStation}
@@ -134,8 +135,8 @@ const TripConfirm = () => {
                           </div>
                         </div>
                         <p className="tripTime self-center">
-                          {segmentInfo &&
-                            timeConvert(segmentInfo?.FlightDuration)}
+                          {/* {segmentInfo &&
+                            timeConvert(segmentInfo?.FlightDuration)} */}
                         </p>
                       </div>
                     </section>

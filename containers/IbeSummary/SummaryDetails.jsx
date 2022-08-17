@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { useSelector, useState, useEffect } from "react-redux";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import ProfileIcon from "assets/svgs/profile.svg";
 
