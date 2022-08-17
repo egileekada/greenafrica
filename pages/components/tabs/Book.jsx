@@ -190,14 +190,14 @@ const BookingTab = ({ type, promocode }) => {
       window.location.replace(`https://dev-ibe.gadevenv.com${test}`);
     },
   });
+//TODO - come back to this guy
+  // useEffect(() => {
+  //   console.log("I just got triggered");
 
-  useEffect(() => {
-    console.log("I just got triggered");
-
-    // return () => {
-    //   second
-    // }
-  }, [formik.values.origin]);
+  //   // return () => {
+  //   //   second
+  //   // }
+  // }, [formik.values.origin]);
 
   return (
     <>

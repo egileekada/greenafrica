@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useDeviceSize from "hooks/useWindowSize";
-import { getBanners, getMobileBanners } from "../../../services";
+import { getBanner, getMobileBanner } from "../../../services";
 import { Spin } from "antd";
 
 const HeroSlider = () => {
@@ -11,11 +11,11 @@ const HeroSlider = () => {
     data: webBanners,
     isLoading,
     status,
-  } = useQuery(["banners"], getBanners);
+  } = useQuery(["banners"], getBanner);
 
   const { data: mobileBanner, status: mobileStatus } = useQuery(
     ["mobileBanner"],
-    getMobileBanners
+    getMobileBanner
   );
   const [currIndex, setCurrIndex] = useState(0);
   const item = useRef();

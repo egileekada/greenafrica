@@ -2,14 +2,10 @@
 import { Fragment } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { getPosts, getPostsByCategory } from "../../services";
+import { getPosts } from "../../services";
 
 const Updates = () => {
   const { data: posts } = useQuery(["posts"], getPosts);
-  const { data: fetchPostsByCategory } = useQuery(
-    ["postsByCategory"],
-    getPostsByCategory("important-updates")
-  );
 
   return (
     <Fragment>
@@ -17,7 +13,7 @@ const Updates = () => {
         <h1 className="text-primary-main font-semibold text-2xl mb-4">
           Important Updates
         </h1>
-        {posts.data.items.map((post, index) => {
+        {posts?.data?.items.map((post, index) => {
           return (
             post.category_id === 2 && (
               <div className="relative my-5 h-96" key={index}>
@@ -41,7 +37,7 @@ const Updates = () => {
       </div>
 
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-x-24 xl:gap-x-24 md:gap-x-5 mb-10">
-        {posts.data.items.map((post, index) => {
+        {posts?.data?.items.map((post) => {
           return (
             post.category_id !== 2 && (
               <div className="my-5" key={post.id}>

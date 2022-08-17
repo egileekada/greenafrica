@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 
 const ContactCard = ({ info, Component }) => {
-  console.log(Component);
   return (
     <Fragment>
       <section className="contact__card">

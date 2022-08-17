@@ -11,7 +11,7 @@ import {
   getWidgetData,
   getDestinations,
   getPosts,
-  getPopups,
+  getPopup,
   getPostsByCategory,
 } from "../services";
 
@@ -22,7 +22,7 @@ export async function getServerSideProps() {
   await queryClient.prefetchQuery(["banners"], getBanner);
   await queryClient.prefetchQuery(["destination_matrices"], getDestinations);
   await queryClient.prefetchQuery(["posts"], getPosts);
-  await queryClient.prefetchQuery(["popups"], getPopups);
+  await queryClient.prefetchQuery(["popups"], getPopup);
   await queryClient.prefetchQuery(
     ["postsByCategory"],
     getPostsByCategory("important-updates")
@@ -35,14 +35,7 @@ export async function getServerSideProps() {
   };
 }
 
-const Home = (props) => {
-  // const { data, isLoading, isFetching } = useQuery(["banners"], getBanner, {
-  //   refetchOnMount: false,
-  //   refetchOnWindowFocus: false,
-  // });
-
-  // if (!isLoading) console.log(props);
-
+const Home = () => {
   return (
     <BaseLayout>
       <HomeHero />

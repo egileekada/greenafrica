@@ -19,17 +19,10 @@ export async function getServerSideProps() {
 }
 
 const ContactPage = () => {
-  const { data, isLoading, isFetching } = useQuery(["contacts"], getContacts, {
+  const { data } = useQuery(["contacts"], getContacts, {
     refetchOnWindowFocus: false,
   });
 
-  const info = {
-    title: "gCare Contact Center",
-    handle: "0700-GREEN-AFRICA",
-    number: "(0700-47336-237422)",
-    Component: CallIcon,
-  };
-  console.log(data);
   return (
     <BaseLayout>
       <section className="w-full fit-x-bleed py-14">
@@ -39,9 +32,6 @@ const ContactPage = () => {
           {data?.data?.items.map((contact) => (
             <ContactCard info={contact} Component={CallIcon} />
           ))}
-          {/* <ContactCard info={info} />
-          <ContactCard info={info} />
-          <ContactCard info={info} /> */}
         </section>
         <Newsletter />
       </section>

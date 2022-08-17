@@ -34,10 +34,10 @@ const HomePopup = () => {
           <div className="md:basis-80 rounded-xl md:rounded-l-xl px-7 py-5 lg:pt-10 lg:px-10 flex items-center bg-white md:bg-[#26205E]">
             <div className="">
               <h2 className="text-primary-main md:text-white font-semibold font-body text-3xl mb-[18px]">
-                Welcome to the future
+                {data?.data.item.subject}
               </h2>
               <p className="text-sm leading-[29px] font-light text-primary-main md:text-white mb-6">
-                You are one flight closer to your dreams and destinations.
+                {data?.data.item.body}
               </p>
               <button
                 className="btn btn-primary md:white border border-white w-[133px] py-4 px-6"
@@ -50,8 +50,8 @@ const HomePopup = () => {
           <div className="h-full rounded-r-xl md:w-auto">
             <figure className="h-[483px]">
               <img
-                src="https://static.greenafrica.com/media/1003/green-africa_atr_mountain_final.jpeg?cropmode=percentaje&width=1200"
-                alt=""
+                src={data?.data.item.image_url}
+                alt={data?.data.item.subject}
                 className="w-full h-full object-cover rounded-r-xl invisible lg:visible"
               />
             </figure>

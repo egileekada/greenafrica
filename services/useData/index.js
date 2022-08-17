@@ -25,7 +25,7 @@ const getLocations = async () => {
   return data;
 };
 
-const getPopups = async () => {
+const getPopup = async () => {
   const { data } = await axios.get("/popups");
   return data;
 };
@@ -86,7 +86,7 @@ export {
   getWidgetData,
   getDestinations,
   getLocations,
-  getPopups,
+  getPopup,
   getPosts,
   getPostsBySlug,
   getPostsByCategory,
