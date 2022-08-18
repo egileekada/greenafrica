@@ -7,7 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "build:dev": "env-cmd -f .env.dev yarn build",
-    "build:staging": "env-cmd -f .env.staging yarn build",
+    "build:staging": "env-cmd -f .env.staging yarn build"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
