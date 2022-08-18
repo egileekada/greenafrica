@@ -7,9 +7,8 @@ import { getPageBySlug } from "../services";
 
 export async function getServerSideProps() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(
-    ["terms", "terms-and-condition"],
-    getPageBySlug
+  await queryClient.prefetchQuery(["terms", "terms-and-condition"], () =>
+    getPageBySlug("terms-and-condition")
   );
 
   return {
@@ -20,6 +19,10 @@ export async function getServerSideProps() {
 }
 
 const Home = () => {
+  const { data } = useQuery(["terms", "terms-and-condition"], () =>
+    getPageBySlug("terms-and-condition")
+  );
+
   return (
     <>
       <Head>
@@ -46,8 +49,18 @@ const Home = () => {
 
       <BaseLayout>
         <section className="w-full px-3.5 py-14 lg:fit-x-bleed support-docs">
-          <h1>Terms and conditions</h1>
-          <div className="">
+          <div>
+            <div
+              className="blog_post"
+              dangerouslySetInnerHTML={{
+                __html: `${data?.data?.item.body}`,
+              }}
+            ></div>
+          </div>
+
+          <div className="hidden">
+            <h1>Terms and conditions</h1>
+
             <h5>
               <a name="_Toc72506819"></a>
               <strong>ARTICLE 1 – DEFINITIONS</strong>
