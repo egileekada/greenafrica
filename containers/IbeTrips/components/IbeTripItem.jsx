@@ -80,7 +80,7 @@ const IbeTripItem = ({ flightSchedule }) => {
         }`}
       >
         <div className="border-t border-t-black border-opacity-20 mx-6 mb-7"></div>
-        <div className="flex flex-wrap lg:flex-nowrap justify-between px-6 lg:px-12">
+        <div className="flex flex-wrap lg:flex-nowrap justify-between px-6 lg:px-12 items-stretch">
           {flightSchedule[0].Journeys.map((_journeys) => {
             return _journeys.Segments.map((_segment) => {
               return _segment.Fares.map((_fare) => {

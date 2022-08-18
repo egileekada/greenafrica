@@ -43,10 +43,10 @@ const IbeTripVariant = ({ fare, sellKey }) => {
       <section className={`ibe__trip__variant ${fare_variant}`}>
         <div className="flex flex-col">
           <div className="type-header">
-            <h2 className="text-center font-display font-extrabold text-xl text-white">
+            <h2 className="text-center font-display font-extrabold text-3xl text-white my-2">
               g{fare_name}
             </h2>
-            <p className="text-white font-medium text-xs text-center">
+            <p className="text-white font-normal text-center mb-1">
               {fare?.RuleNumber.toLowerCase() === "savr" ? (
                 <span>&nbsp;</span>
               ) : fare?.RuleNumber.toLowerCase() === "flex" ? (
@@ -61,7 +61,7 @@ const IbeTripVariant = ({ fare, sellKey }) => {
               <figure className="w-[44px] h-[44px] bg-transparent rounded-full flex items-center justify-center">
                 <BriefcaseIcon />
               </figure>
-              <p className="text-black font-medium text-sm ml-4">
+              <p className="text-black font-normal ml-4">
                 7kg hand luggage: 55 x40 x 24cm
               </p>
             </li>
@@ -73,7 +73,7 @@ const IbeTripVariant = ({ fare, sellKey }) => {
                 <figure className="w-[44px] h-[44px] bg-transparent  rounded-full flex items-center justify-center">
                   <PackageIcon />
                 </figure>
-                <p className="text-black font-medium text-sm ml-4">
+                <p className="text-black font-normal ml-4">
                   15 kg checked package {fare_variant}
                 </p>
               </li>
@@ -86,18 +86,18 @@ const IbeTripVariant = ({ fare, sellKey }) => {
                 <figure className="w-[44px] h-[44px] bg-transparent  rounded-full flex items-center justify-center">
                   <SeatIcon />
                 </figure>
-                <p className="text-black font-medium text-sm ml-4">
+                <p className="text-black font-normal ml-4">
                   Free Standard Seat{fare_variant}
                 </p>
               </li>
             )}
           </ul>
         </div>
-        <div className="px-3 lg:px-[14px] mt-auto">
+        <div className="px-3 lg:px-[14px] mt-auto text-center">
           {fare_variant === "savr" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className="btn btn-primary w-full"
+              className="btn btn-primary w-full text-center"
             >
               ₦{totalServiceCharge.toLocaleString("NGN")}
             </button>
