@@ -12,7 +12,6 @@ import {
   getDestinations,
   getPosts,
   getPopup,
-  getPostsByCategory,
 } from "../services";
 
 export async function getServerSideProps() {
@@ -20,13 +19,11 @@ export async function getServerSideProps() {
 
   await queryClient.prefetchQuery(["destination"], getWidgetData);
   await queryClient.prefetchQuery(["banners"], getBanner);
-  await queryClient.prefetchQuery(["destination_matrices"], getDestinations);
+  await queryClient.prefetchQuery(["destination_matrices", "LOS"], () =>
+    getDestinations("LOS")
+  );
   await queryClient.prefetchQuery(["posts"], getPosts);
   await queryClient.prefetchQuery(["popups"], getPopup);
-  await queryClient.prefetchQuery(
-    ["postsByCategory"],
-    getPostsByCategory("important-updates")
-  );
 
   return {
     props: {

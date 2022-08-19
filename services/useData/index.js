@@ -40,7 +40,7 @@ const getPostsBySlug = async (slug) => {
   return data;
 };
 
-const getPostsByCategory = async (category) => {
+const getPostsByCategory = async () => {
   const { data } = await axios.get(`/posts/category`);
   return data;
 };
