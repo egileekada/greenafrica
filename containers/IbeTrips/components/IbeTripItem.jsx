@@ -28,7 +28,7 @@ const IbeTripItem = ({ flightSchedule }) => {
   }, [flightSchedule]);
 
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col mb-6">
       <section className="ibe__trip__item">
         <div className="basis-full lg:basis-[60%] flex flex-col min-h-[54px] ">
           <p className="tripType self-center">Direct Flight</p>

@@ -225,7 +225,7 @@
   }
 
   figure.flightCircle {
-    @apply absolute left-3 md:-left-6 w-[40px] h-[40px] md:w-[61px] md:h-[61px] bg-green rounded-full flex items-center justify-center;
+    @apply absolute left-3 md:-left-6 w-[40px] h-[40px] md:w-[61px] md:h-[61px] bg-green rounded-full flex items-center justify-center z-10;
   }
 
   .ga__counter {

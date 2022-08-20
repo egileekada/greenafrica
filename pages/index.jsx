@@ -23,7 +23,12 @@ import ToTop from "assets/svgs/toTop.svg";
 const Home = () => {
   const [showPopUp, setShow] = useState(false);
   const dispatch = useDispatch();
-  const { signature, sessionLoading } = useSelector(sessionSelector);
+  const {
+    signature,
+    sessionLoading,
+    availabilityResponse,
+    flightAvailabilityLoading,
+  } = useSelector(sessionSelector);
 
   useEffect(() => {
     async function checkParams() {
@@ -43,15 +48,18 @@ const Home = () => {
       const ibeQuery = new URLSearchParams(window.location.search);
 
       if (signature) {
+        const isRoundTrip = parseInt(ibeQuery.get("round"));
         const flightRequest = {
           departureStation: ibeQuery.get("origin"),
           arrivalStation: ibeQuery.get("destination"),
           beginDate: ibeQuery.get("departure"),
           endDate: ibeQuery.get("departure"),
-          promocode: ibeQuery.get("promocode"),
+          returnDate: isRoundTrip === 1 ? ibeQuery.get("return") : null,
+          promoCode: ibeQuery.get("promocode") ? ibeQuery.get("promocode") : "",
           ADT: parseInt(ibeQuery.get("adt")),
           CHD: parseInt(ibeQuery.get("chd")),
           INF: parseInt(ibeQuery.get("inf")),
+          isRoundTrip,
           signature,
         };
         dispatch(setFlightRequest(flightRequest));
@@ -90,8 +98,33 @@ const Home = () => {
                 <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
                   SELECT FLIGHT
                 </h2>
-                <IbeHeader />
-                <IbeTrips />
+                <section className="flex flex-col scrollable">
+                  {flightAvailabilityLoading ? (
+                    <Spinner />
+                  ) : availabilityResponse ? (
+                    availabilityResponse?.GetTripAvailabilityResponse.Schedules
+                      .length > 0 ? (
+                      availabilityResponse.GetTripAvailabilityResponse.Schedules.map(
+                        (_schedule, _i) => {
+                          return (
+                            <div className="flex flex-col mb-10">
+                              <IbeHeader />
+                              <IbeTrips flightSchedule={_schedule} _i={_i} />
+                            </div>
+                          );
+                        }
+                      )
+                    ) : (
+                      <h2 className=" text-red-600 font-normal text-sm mb-8">
+                        No Flight Schedules
+                      </h2>
+                    )
+                  ) : (
+                    <h2 className="text-red-600 font-normal text-sm mb-8">
+                      Error fetching flight availability
+                    </h2>
+                  )}
+                </section>
               </div>
               <div className="ga__section__side">
                 <IbeSidebar />

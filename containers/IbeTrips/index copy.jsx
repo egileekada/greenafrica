@@ -5,13 +5,14 @@ import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
-const IbeTrips = ({ flightSchedule, _i }) => {
-  const { flightAvailabilityLoading } = useSelector(sessionSelector);
+const IbeTrips = () => {
+  const { flightAvailabilityLoading, availabilityResponse } =
+    useSelector(sessionSelector);
 
   return (
     <section className="ibe__flight__trips">
       <h2 className="text-primary-main font-extrabold text-sm mb-8">
-        {parseInt(_i) === 0 ? "DEPARTURE" : "RETURN"}
+        DEPARTURE
       </h2>
 
       <Fragment>
@@ -19,11 +20,14 @@ const IbeTrips = ({ flightSchedule, _i }) => {
           <Spinner />
         ) : (
           <section className="flex flex-col">
-            {flightSchedule ? (
-              flightSchedule.length > 0 ? (
-                flightSchedule.map((_schedule) => {
-                  return <IbeTripItem flightSchedule={flightSchedule} />;
-                })
+            {availabilityResponse ? (
+              availabilityResponse.GetTripAvailabilityResponse.Schedules
+                .length > 0 ? (
+                availabilityResponse.GetTripAvailabilityResponse.Schedules.map(
+                  (_schedule) => {
+                    return <IbeTripItem flightSchedule={_schedule} />;
+                  }
+                )
               ) : (
                 <h2 className=" text-red-600 font-normal text-sm mb-8">
                   Error occured fetching flights
@@ -39,11 +43,6 @@ const IbeTrips = ({ flightSchedule, _i }) => {
       </Fragment>
     </section>
   );
-};
-
-IbeTrips.defaultProps = {
-  flightSchedule: {},
-  _i: "",
 };
 
 export default IbeTrips;

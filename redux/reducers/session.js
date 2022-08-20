@@ -154,9 +154,6 @@ export const startSession = () => async (dispatch) => {
     window.localStorage.setItem("clientSignature", clientSignature);
     dispatch(saveClientSignature(clientSignature));
   } catch (err) {
-    console.log("err", err);
-    console.log("err.response", err.response);
-
     notification.error({
       message: "Error",
       description: "Signature creation failed",
@@ -201,8 +198,14 @@ export const setFlightRequest = (payload) => async (dispatch) => {
 export const fetchLowFareAvailability = (payload) => async (dispatch) => {
   dispatch(setLowFareAvailabilityLoading(true));
 
-  const { departureStation, arrivalStation, beginDate, endDate, signature } =
-    payload;
+  const {
+    departureStation,
+    arrivalStation,
+    beginDate,
+    endDate,
+    signature,
+    promoCode,
+  } = payload;
 
   const requestPayload = {
     signature: signature,
@@ -227,7 +230,7 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
       currencyCode: "string",
       displayCurrencyCode: "string",
       discountCode: "string",
-      promotionCode: "string",
+      promotionCode: promoCode,
       availabilityType: 0,
       availabilityTypeSpecified: true,
       sourceOrganization: "string",
@@ -319,8 +322,166 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
 export const fetchFlightAvailability = (payload) => async (dispatch) => {
   dispatch(setFlightAvailabilityLoading(true));
 
-  const { departureStation, arrivalStation, beginDate, endDate, signature } =
-    payload;
+  const {
+    departureStation,
+    arrivalStation,
+    beginDate,
+    endDate,
+    returnDate,
+    signature,
+    ADT,
+    CHD,
+    isRoundTrip,
+  } = payload;
+
+  const totalPaxCount = parseInt(ADT) + parseInt(CHD);
+
+  const availabilityRequest = [];
+
+  if (isRoundTrip === 1) {
+    let _departureRequest = {
+      departureStation: departureStation,
+      arrivalStation: arrivalStation,
+      beginDate: beginDate,
+      beginDateSpecified: true,
+      endDate: endDate,
+      endDateSpecified: true,
+      carrierCode: "Q9",
+      flightNumber: "",
+      flightType: 5,
+      flightTypeSpecified: true,
+      paxCount: totalPaxCount,
+      paxCountSpecified: true,
+      dow: 10,
+      dowSpecified: true,
+      currencyCode: "NGN",
+      displayCurrencyCode: "NGN",
+      discountCode: "",
+      promotionCode: "",
+      availabilityType: 0,
+      availabilityTypeSpecified: true,
+      sourceOrganization: "",
+      maximumConnectingFlights: 0,
+      maximumConnectingFlightsSpecified: true,
+      availabilityFilter: 0,
+      availabilityFilterSpecified: true,
+      fareClassControl: 1,
+      fareClassControlSpecified: true,
+      minimumFarePrice: 0,
+      minimumFarePriceSpecified: true,
+      maximumFarePrice: 0,
+      maximumFarePriceSpecified: true,
+      productClassCode: "",
+      ssrCollectionsMode: 0,
+      ssrCollectionsModeSpecified: true,
+      inboundOutbound: 0,
+      inboundOutboundSpecified: true,
+      nightsStay: 0,
+      nightsStaySpecified: true,
+      includeAllotments: true,
+      includeAllotmentsSpecified: true,
+      includeTaxesAndFees: true,
+      includeTaxesAndFeesSpecified: true,
+      paxResidentCountry: "",
+      baggagePricingSystemCode: "",
+    };
+    let _returnRequest = {
+      departureStation: arrivalStation,
+      arrivalStation: departureStation,
+      beginDate: returnDate,
+      beginDateSpecified: true,
+      endDate: returnDate,
+      endDateSpecified: true,
+      carrierCode: "Q9",
+      flightNumber: "",
+      flightType: 5,
+      flightTypeSpecified: true,
+      paxCount: totalPaxCount,
+      paxCountSpecified: true,
+      dow: 10,
+      dowSpecified: true,
+      currencyCode: "NGN",
+      displayCurrencyCode: "NGN",
+      discountCode: "",
+      promotionCode: "",
+      availabilityType: 0,
+      availabilityTypeSpecified: true,
+      sourceOrganization: "",
+      maximumConnectingFlights: 0,
+      maximumConnectingFlightsSpecified: true,
+      availabilityFilter: 0,
+      availabilityFilterSpecified: true,
+      fareClassControl: 1,
+      fareClassControlSpecified: true,
+      minimumFarePrice: 0,
+      minimumFarePriceSpecified: true,
+      maximumFarePrice: 0,
+      maximumFarePriceSpecified: true,
+      productClassCode: "",
+      ssrCollectionsMode: 0,
+      ssrCollectionsModeSpecified: true,
+      inboundOutbound: 0,
+      inboundOutboundSpecified: true,
+      nightsStay: 0,
+      nightsStaySpecified: true,
+      includeAllotments: true,
+      includeAllotmentsSpecified: true,
+      includeTaxesAndFees: true,
+      includeTaxesAndFeesSpecified: true,
+      paxResidentCountry: "",
+      baggagePricingSystemCode: "",
+    };
+    availabilityRequest.push(_departureRequest);
+    availabilityRequest.push(_returnRequest);
+  } else {
+    let _singleAvailabilityRequest = {
+      departureStation: departureStation,
+      arrivalStation: arrivalStation,
+      beginDate: beginDate,
+      beginDateSpecified: true,
+      endDate: endDate,
+      endDateSpecified: true,
+      carrierCode: "Q9",
+      flightNumber: "",
+      flightType: 5,
+      flightTypeSpecified: true,
+      paxCount: totalPaxCount,
+      paxCountSpecified: true,
+      dow: 10,
+      dowSpecified: true,
+      currencyCode: "NGN",
+      displayCurrencyCode: "NGN",
+      discountCode: "",
+      promotionCode: "",
+      availabilityType: 0,
+      availabilityTypeSpecified: true,
+      sourceOrganization: "",
+      maximumConnectingFlights: 0,
+      maximumConnectingFlightsSpecified: true,
+      availabilityFilter: 0,
+      availabilityFilterSpecified: true,
+      fareClassControl: 1,
+      fareClassControlSpecified: true,
+      minimumFarePrice: 0,
+      minimumFarePriceSpecified: true,
+      maximumFarePrice: 0,
+      maximumFarePriceSpecified: true,
+      productClassCode: "",
+      ssrCollectionsMode: 0,
+      ssrCollectionsModeSpecified: true,
+      inboundOutbound: 0,
+      inboundOutboundSpecified: true,
+      nightsStay: 0,
+      nightsStaySpecified: true,
+      includeAllotments: true,
+      includeAllotmentsSpecified: true,
+      includeTaxesAndFees: true,
+      includeTaxesAndFeesSpecified: true,
+      paxResidentCountry: "",
+      baggagePricingSystemCode: "",
+    };
+    availabilityRequest.push(_singleAvailabilityRequest);
+  }
 
   const requestPayload = {
     header: {
@@ -331,67 +492,7 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
     },
     getAvailabilityRequest: {
       tripAvailabilityRequest: {
-        availabilityRequests: [
-          {
-            departureStation: departureStation,
-            arrivalStation: arrivalStation,
-            beginDate: beginDate,
-            beginDateSpecified: true,
-            endDate: endDate,
-            endDateSpecified: true,
-            carrierCode: "Q9",
-            flightNumber: "",
-            flightType: 5,
-            flightTypeSpecified: true,
-            paxCount: 1,
-            paxCountSpecified: true,
-            dow: 10,
-            dowSpecified: true,
-            currencyCode: "NGN",
-            displayCurrencyCode: "NGN",
-            discountCode: "",
-            promotionCode: "",
-            availabilityType: 0,
-            availabilityTypeSpecified: true,
-            sourceOrganization: "",
-            maximumConnectingFlights: 0,
-            maximumConnectingFlightsSpecified: true,
-            availabilityFilter: 0,
-            availabilityFilterSpecified: true,
-            fareClassControl: 1,
-            fareClassControlSpecified: true,
-            minimumFarePrice: 0,
-            minimumFarePriceSpecified: true,
-            maximumFarePrice: 0,
-            maximumFarePriceSpecified: true,
-            productClassCode: "",
-            ssrCollectionsMode: 0,
-            ssrCollectionsModeSpecified: true,
-            inboundOutbound: 0,
-            inboundOutboundSpecified: true,
-            nightsStay: 0,
-            nightsStaySpecified: true,
-            includeAllotments: true,
-            includeAllotmentsSpecified: true,
-            departureStations: ["LOS"],
-            arrivalStations: ["ABV"],
-
-            paxPriceTypes: [
-              {
-                paxType: "ADT",
-                paxDiscountCode: "",
-                paxCount: 1,
-                paxCountSpecified: true,
-              },
-            ],
-
-            includeTaxesAndFees: true,
-            includeTaxesAndFeesSpecified: true,
-
-            paxResidentCountry: "",
-            baggagePricingSystemCode: "",
-          },
-        ],
+        availabilityRequests: [...availabilityRequest],
       },
     },
   };
@@ -407,6 +508,32 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
 export const saveSellRequest = (payload) => async (dispatch, getState) => {
   dispatch(setSellFlightLoading(true));
   const currentState = getState().session;
+
+  const paxPriceTypes = [];
+  const flightParams = currentState.flightParams;
+  const ADULT_COUNT = parseInt(flightParams?.ADT);
+  const CHILD_COUNT = parseInt(flightParams?.CHD);
+  const totalPaxCount = ADULT_COUNT + CHILD_COUNT;
+
+  if (ADULT_COUNT > 0) {
+    const _newPType = {
+      paxType: "ADT",
+      paxDiscountCode: "",
+      paxCount: ADULT_COUNT,
+      paxCountSpecified: true,
+    };
+    paxPriceTypes.push(_newPType);
+  }
+
+  if (CHILD_COUNT > 0) {
+    const _newPType = {
+      paxType: "CHD",
+      paxDiscountCode: "",
+      paxCount: CHILD_COUNT,
+      paxCountSpecified: true,
+    };
+    paxPriceTypes.push(_newPType);
+  }
 
   const requestPayload = {
     header: {
@@ -431,24 +558,9 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
                   packageIndicator: "",
                 },
               ],
-              paxPriceType: [
-                {
-                  paxType: "ADT",
-                  paxDiscountCode: "",
-                  paxCount: currentState.flightParams?.ADT,
-                  paxCountSpecified: true,
-                },
-              ],
+              paxPriceType: [...paxPriceTypes],
               currencyCode: "NGN",
-              sourcePOS: {
-                state: 0,
-                stateSpecified: true,
-                agentCode: "",
-                organizationCode: "",
-                domainCode: "",
-                locationCode: "",
-              },
-              paxCount: 1,
+              paxCount: totalPaxCount,
               paxCountSpecified: true,
               loyaltyFilter: 0,
               loyaltyFilterSpecified: true,
@@ -461,18 +573,6 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
               serviceBundleList: [""],
               applyServiceBundle: 0,
               applyServiceBundleSpecified: true,
-              paxPriceDetailList: [
-                {
-                  paxType: "ADT",
-                  paxDiscountCode: "",
-                  dateOfBirth: "1998-07-12T11:35:24.417Z",
-                  dateOfBirthSpecified: true,
-                  nationality: "",
-                  residentCountry: "",
-                  programCode: "",
-                  programLevel: "",
-                },
-              ],
             },
           },
         },
@@ -490,7 +590,7 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
   dispatch(setSellFlightLoading(false));
 };
 
-export const updatePassengersDetails =
+export const updateSinglePassenger =
   (payload) => async (dispatch, getState) => {
     dispatch(setUpdatePassengersLoading(true));
     const currentState = getState().session;
@@ -618,6 +718,152 @@ export const updatePassengersDetails =
     };
 
     try {
+      const Response = await UpdatePassengers(requestPayload);
+      await dispatch(setUpdatePassengersResponse(Response.data));
+    } catch (err) {
+      console.log("Update passenger Request error", err.response);
+    }
+    dispatch(setUpdatePassengersLoading(false));
+  };
+
+export const updatePassengersDetails =
+  (payload) => async (dispatch, getState) => {
+    dispatch(setUpdatePassengersLoading(true));
+    const currentState = getState().session;
+    let requestPayload = {};
+
+    if (parseInt(currentState.flightParams.INF) > 0) {
+      const _Main = [];
+      const _Infants = [];
+      payload.map((item) => {
+        if (item?.type === "INF") {
+          _Infants.push(item);
+        } else {
+          _Main.push(item);
+        }
+      });
+      let _passengers = [];
+      let updatedPassengers = [];
+      _Main.map((_passenger, _i) => {
+        let passengerObj = {
+          state: 0,
+          customerNumber: "",
+          passengerNumber: parseInt(_i),
+          passengerNumberSpecified: true,
+          familyNumber: 0,
+          paxDiscountCode: "",
+          names: [
+            {
+              firstName: _passenger.firstName,
+              middleName: _passenger.firstName,
+              lastName: _passenger.lastName,
+              suffix: "",
+              title: _passenger.title,
+              state: 0,
+            },
+          ],
+          passengerID: 0,
+          pseudoPassenger: false,
+        };
+        _passengers.push(passengerObj);
+      });
+      _passengers.map((item) => {
+        if (_Infants.length > 0) {
+          const INFANT_TO_BE_ATTACHED = _Infants.shift();
+          const infantObj = {
+            dob: INFANT_TO_BE_ATTACHED?.dob,
+            dobSpecified: true,
+            gender: 0,
+            nationality: "",
+            residentCountry: "",
+            names: [
+              {
+                firstName: INFANT_TO_BE_ATTACHED.firstName,
+                middleName: INFANT_TO_BE_ATTACHED.firstName,
+                lastName: INFANT_TO_BE_ATTACHED.lastName,
+                suffix: "",
+                title: INFANT_TO_BE_ATTACHED.title,
+                state: 0,
+              },
+            ],
+            paxType: "INFT",
+            state: 0,
+          };
+          const newPassengerObj = {
+            ...item,
+            infant: {
+              ...infantObj,
+            },
+          };
+          console.log("newPassengerObj", newPassengerObj);
+          updatedPassengers.push(newPassengerObj);
+        } else {
+          updatedPassengers.push(item);
+        }
+      });
+      console.log("_passengers", _passengers);
+      console.log("updatedPassengers", updatedPassengers);
+      requestPayload = {
+        header: {
+          signature: currentState.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: false,
+          contractVersion: 0,
+        },
+        updatePassengersRequestDto: {
+          updatePassengerRequest: {
+            updatePassengersRequestData: {
+              passengers: [...updatedPassengers],
+              waiveNameChangeFee: false,
+            },
+          },
+        },
+      };
+    } else {
+      let _passengers = [];
+      payload.map((_passenger, _i) => {
+        let passengerObj = {
+          state: 0,
+          customerNumber: "",
+          passengerNumber: parseInt(_i),
+          passengerNumberSpecified: true,
+          familyNumber: 0,
+          paxDiscountCode: "",
+          names: [
+            {
+              firstName: _passenger.firstName,
+              middleName: _passenger.firstName,
+              lastName: _passenger.firstName,
+              suffix: "",
+              title: _passenger.title,
+              state: 0,
+            },
+          ],
+          passengerID: 0,
+          pseudoPassenger: false,
+        };
+        _passengers.push(passengerObj);
+      });
+      requestPayload = {
+        header: {
+          signature: currentState.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: false,
+          contractVersion: 0,
+        },
+        updatePassengersRequestDto: {
+          updatePassengerRequest: {
+            updatePassengersRequestData: {
+              passengers: [..._passengers],
+              waiveNameChangeFee: false,
+            },
+          },
+        },
+      };
+    }
+
+    try {
+      console.log("Update Passengers Payload", requestPayload);
       const Response = await UpdatePassengers(requestPayload);
       await dispatch(setUpdatePassengersResponse(Response.data));
     } catch (err) {
