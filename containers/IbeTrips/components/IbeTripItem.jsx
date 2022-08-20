@@ -89,6 +89,10 @@ const IbeTripItem = ({ flightSchedule }) => {
                     <IbeTripVariant
                       fare={_fare}
                       sellKey={_journeys?.JourneySellKey}
+                      segmentStd={_segment.STD}
+                      segmentFlightNumber={
+                        _segment?.FlightDesignator?.FlightNumber
+                      }
                     />
                   </div>
                 );

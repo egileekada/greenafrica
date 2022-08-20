@@ -19,7 +19,14 @@ const antIcon = (
   />
 );
 
-const IbeTripPopup = ({ selected, showPopUp, closePopUp, sellKey }) => {
+const IbeTripPopup = ({
+  selected,
+  showPopUp,
+  closePopUp,
+  sellKey,
+  segmentStd,
+  segmentFlightNumber,
+}) => {
   const dispatch = useDispatch();
   const { sellFlightLoading, sellResponse } = useSelector(sessionSelector);
   const router = useRouter();
@@ -51,6 +58,8 @@ const IbeTripPopup = ({ selected, showPopUp, closePopUp, sellKey }) => {
     dispatch(
       saveSellRequest({
         sellKey,
+        segmentStd,
+        segmentFlightNumber,
         fareKey: selected?.FareSellKey,
       })
     );
@@ -354,6 +363,8 @@ const IbeTripPopup = ({ selected, showPopUp, closePopUp, sellKey }) => {
 IbeTripPopup.defaultProps = {
   selected: {},
   sellKey: "",
+  segmentStd: "",
+  segmentFlightNumber: "",
   //  showPopUp={showPopUp},
   //  closePopUp={closePopUp},
 };

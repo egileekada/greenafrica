@@ -22,6 +22,8 @@ const initialState = {
   availabilityResponse: null,
   sellFlightLoading: false,
   sellResponse: null,
+  sellInfantLoading: false,
+  sellInfantResponse: null,
   updatePassengersLoading: false,
   passengersResponse: null,
   updateContactsLoading: false,
@@ -68,6 +70,14 @@ export const sessionSlice = createSlice({
     },
     setSellResponse: (state, { payload }) => {
       state.sellResponse = {
+        ...payload,
+      };
+    },
+    setSellInfantLoading: (state, { payload }) => {
+      state.sellInfantLoading = payload;
+    },
+    setSellInfantResponse: (state, { payload }) => {
+      state.sellInfantResponse = {
         ...payload,
       };
     },
@@ -118,6 +128,8 @@ export const {
   setAvailabilityResponse,
   setSellFlightLoading,
   setSellResponse,
+  setSellInfantLoading,
+  setSellInfantResponse,
   setUpdatePassengersLoading,
   setUpdatePassengersResponse,
   setUpdateContactsLoading,
@@ -219,8 +231,8 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
       beginDateSpecified: true,
       endDate: endDate,
       endDateSpecified: true,
-      carrierCode: "string",
-      flightNumber: "string",
+      carrierCode: "Q9",
+      flightNumber: "",
       flightType: 0,
       flightTypeSpecified: true,
       paxCount: 0,
@@ -513,7 +525,9 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
   const flightParams = currentState.flightParams;
   const ADULT_COUNT = parseInt(flightParams?.ADT);
   const CHILD_COUNT = parseInt(flightParams?.CHD);
+  const INFANT_COUNT = parseInt(flightParams?.INF);
   const totalPaxCount = ADULT_COUNT + CHILD_COUNT;
+  let infantPayload = {};
 
   if (ADULT_COUNT > 0) {
     const _newPType = {
@@ -533,6 +547,77 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
       paxCountSpecified: true,
     };
     paxPriceTypes.push(_newPType);
+  }
+
+  if (INFANT_COUNT > 0) {
+    let paxSSRs = [];
+    new Array(INFANT_COUNT).fill(0).map((i, index) => {
+      let paxObj = {
+        state: 0,
+        stateSpecified: true,
+        actionStatusCode: "NN",
+        arrivalStation: flightParams?.arrivalStation,
+        departureStation: flightParams?.departureStation,
+        passengerNumber: index,
+        passengerNumberSpecified: true,
+        ssrCode: "INFT",
+        ssrNumberSpecified: true,
+        ssrNumber: 0,
+        ssrDetail: "",
+        feeCode: "",
+        note: "",
+        ssrValue: 0,
+        ssrValueSpecified: true,
+        isInServiceBundle: false,
+        isInServiceBundleSpecified: true,
+      };
+      paxSSRs.push(paxObj);
+    });
+    console.log("paxSSR", paxSSRs);
+    infantPayload = {
+      header: {
+        signature: currentState.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: false,
+        contractVersion: 0,
+      },
+      sellRequestDto: {
+        sellRequest: {
+          sellRequestData: {
+            sellBy: 2,
+            sellBySpecified: true,
+            sellSSR: {
+              ssrRequest: {
+                segmentSSRRequests: [
+                  {
+                    flightDesignator: {
+                      carrierCode: "Q9",
+                      flightNumber: payload.segmentFlightNumber,
+                      opSuffix: "",
+                    },
+                    std: payload.segmentStd,
+                    stdSpecified: true,
+                    departureStation: flightParams?.departureStation,
+                    arrivalStation: flightParams?.arrivalStation,
+                    paxSSRs: [...paxSSRs],
+                  },
+                ],
+                currencyCode: "NGN",
+                cancelFirstSSR: false,
+                cancelFirstSSRSpecified: true,
+                ssrFeeForceWaiveOnSell: false,
+                ssrFeeForceWaiveOnSellSpecified: true,
+                sellSSRMode: 0,
+                sellSSRModeSpecified: true,
+                feePricingMode: 0,
+                feePricingModeSpecified: true,
+              },
+            },
+          },
+        },
+      },
+    };
+    console.log("infantPayload", infantPayload);
   }
 
   const requestPayload = {
@@ -583,6 +668,16 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
   try {
     const sellResponse = await BookingSell(requestPayload);
     await dispatch(setSellResponse(sellResponse.data));
+    if (INFANT_COUNT > 0) {
+      dispatch(setSellInfantLoading(true));
+      try {
+        const sellInfantResponse = await BookingSell(infantPayload);
+        await dispatch(setSellInfantResponse(sellInfantResponse.data));
+      } catch (err) {
+        console.log("Sell Infant Request error", err.response);
+      }
+      dispatch(setSellInfantLoading(false));
+    }
   } catch (err) {
     console.log("Sell Request error", err.response);
   }

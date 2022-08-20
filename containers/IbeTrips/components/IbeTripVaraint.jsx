@@ -5,7 +5,7 @@ import SeatIcon from "assets/svgs/seat.svg";
 import { Fragment, useState } from "react";
 import IbeTripPopup from "./IbeTripPopup";
 
-const IbeTripVariant = ({ fare, sellKey }) => {
+const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
   const [showPopUp, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -126,6 +126,8 @@ const IbeTripVariant = ({ fare, sellKey }) => {
         showPopUp={showPopUp}
         closePopUp={closePopUp}
         sellKey={sellKey}
+        segmentStd={segmentStd}
+        segmentFlightNumber={segmentFlightNumber}
       />
     </Fragment>
   );
@@ -134,6 +136,8 @@ const IbeTripVariant = ({ fare, sellKey }) => {
 IbeTripVariant.defaultProps = {
   fare: {},
   sellKey: "",
+  segmentStd: "",
+  segmentFlightNumber: "",
 };
 
 export default IbeTripVariant;
