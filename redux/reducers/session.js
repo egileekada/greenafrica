@@ -191,7 +191,6 @@ export const killSession = (payload) => async (dispatch) => {
       },
     };
     const sessionCredentials = await Logon(payload);
-    console.log(sessionCredentials);
   } catch (err) {
     notification.error({
       message: "Error",
@@ -573,7 +572,6 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
       };
       paxSSRs.push(paxObj);
     });
-    console.log("paxSSR", paxSSRs);
     infantPayload = {
       header: {
         signature: currentState.signature,
@@ -617,7 +615,6 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
         },
       },
     };
-    console.log("infantPayload", infantPayload);
   }
 
   const requestPayload = {
@@ -890,14 +887,11 @@ export const updatePassengersDetails =
               ...infantObj,
             },
           };
-          console.log("newPassengerObj", newPassengerObj);
           updatedPassengers.push(newPassengerObj);
         } else {
           updatedPassengers.push(item);
         }
       });
-      console.log("_passengers", _passengers);
-      console.log("updatedPassengers", updatedPassengers);
       requestPayload = {
         header: {
           signature: currentState.signature,
@@ -958,7 +952,6 @@ export const updatePassengersDetails =
     }
 
     try {
-      console.log("Update Passengers Payload", requestPayload);
       const Response = await UpdatePassengers(requestPayload);
       await dispatch(setUpdatePassengersResponse(Response.data));
     } catch (err) {
