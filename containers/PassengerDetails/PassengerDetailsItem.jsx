@@ -41,7 +41,7 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
       {SSRAvailabilityResponse ? (
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
-            {/* <p>{JSON.stringify(selectedSSRs)}</p> */}
+            <p>{JSON.stringify(selectedSSRs)}</p>
             <h2 className="title-text mb-2">INSURANCE</h2>
             <div className="flex items-center primary-checkbox">
               <Checkbox onChange={onChange}>
@@ -77,7 +77,7 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
                       </label>
                     </Checkbox>
                   </div>
-                  <div className="flex items-center mb-5">
+                  {/* <div className="flex items-center mb-5">
                     <Checkbox onChange={onChange}>
                       <label className="check-label">
                         <span>Visually Impaired</span> - Customer requires full
@@ -92,7 +92,7 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
                         assistance to aircraft and escort inflight
                       </label>
                     </Checkbox>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </section>

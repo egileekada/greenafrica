@@ -29,10 +29,10 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
       const existingSSRs = [...selectedSSRs];
       const cleanedSSRs = existingSSRs.filter((_ssr) => {
         const ruleBasis =
-          _ssr.ssrCode === SSRItem?.SSRCode &&
+          _ssr.ssrCode !== SSRItem?.SSRCode &&
           parseInt(_ssr.passengerNumber) === parseInt(passenger?.id);
         return sessionPassengers.length > 1
-          ? !ruleBasis
+          ? ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
       const SSRItemObj = new Array(value).fill({
@@ -62,7 +62,7 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
       notification.error({
         message: "Error",
         description: "Maximum Value is 2",
-      });
+      });X
       setValue(2);
     } else if (_val < 0) {
       notification.error({

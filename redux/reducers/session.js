@@ -27,6 +27,7 @@ const initialState = {
   sellInfantResponse: null,
   sessionPassengers: null,
   sessionInfants: null,
+  sessionContact: null,
   sessionSegmentDetails: null,
   updatePassengersLoading: false,
   passengersResponse: null,
@@ -149,6 +150,9 @@ export const sessionSlice = createSlice({
     setSSRResponse: (state, { payload }) => {
       state.sellSSRResponse = payload;
     },
+    setSessionContact: (state, { payload }) => {
+      state.sessionContact = payload;
+    },
   },
 });
 
@@ -164,6 +168,7 @@ export const {
   setSellInfantResponse,
   setSessionPassengers,
   setSessionInfants,
+  setSessionContact,
   setSessionSegmentDetails,
   setUpdatePassengersLoading,
   setUpdatePassengersResponse,
@@ -1027,6 +1032,7 @@ export const updatePassengersDetails =
 export const updateContactsDetails =
   (payload) => async (dispatch, getState) => {
     dispatch(setUpdateContactsLoading(true));
+    dispatch(setSessionContact(payload));
     const currentState = getState().session;
 
     const requestPayload = {
