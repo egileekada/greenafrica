@@ -20,9 +20,9 @@ const DetailsAccordion = ({ children, title }) => {
   };
 
   return (
-    <section className="basis-full md:basis-[45%] flex flex-col mb-4 py-5">
+    <section className="basis-full md:basis-[45%] flex flex-col mb-4 pt-5 pb-4">
       <button
-        className={`py-4 flex items-center justify-between mx-5 px-5 border rounded-[14px]  border-[#D8D7E2]`}
+        className={`py-4 flex items-center justify-between px-5 border rounded-[14px]  border-[#D8D7E2]`}
         onClick={toggleAccordion}
       >
         <p
@@ -34,7 +34,7 @@ const DetailsAccordion = ({ children, title }) => {
       </button>
       <div
         ref={contentSpace}
-        style={{ maxHeight: `${height}` }}
+        // style={{ maxHeight: `${height}` }}
         className="overflow-auto transition-max-height duration-700 ease-in-out scrollable"
       >
         <div className="px-4 md:px-10 pt-4 md:pt-10">

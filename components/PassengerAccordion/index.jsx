@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import ArrowIcon from "assets/svgs/cad.svg";
 
-const PassengerAccordion = ({ children}) => {
+const PassengerAccordion = ({ children, passenger }) => {
   const [active, setActive] = useState(false);
   const [height, setHeight] = useState("0px");
   const [rotate, setRotate] = useState("transform duration-700 ease");
@@ -23,18 +23,29 @@ const PassengerAccordion = ({ children}) => {
     );
   };
 
+  const _passengerName = `${passenger?.firstName}  ${passenger?.lastName} `;
+
+  const _passengerType =
+    passenger?.type === "ADT"
+      ? "ADULT"
+      : passenger?.type === "CHD"
+      ? "CHILD"
+      : "INFANT";
+
   return (
-    <section className="basis-full md:basis-[45%] flex flex-col mb-4 py-5">
+    <section className="basis-full md:basis-[45%] flex flex-col">
       <button
         className={`py-7 flex items-center justify-between w-full px-10 border-b-[1px] border-b-faqss`}
         onClick={toggleAccordion}
       >
         <div className="flex flex-col">
-          <p className={`inline-block title-text mb-2`}>ADULT 1:</p>
+          <p className={`inline-block title-text mb-2`}>
+            {_passengerType} {passenger?.typeCount}
+          </p>
           <p
             className={`inline-block text-black font-display text-base font-bold `}
           >
-            Michael Johnson
+            {_passengerName}
           </p>
         </div>
 
@@ -52,6 +63,10 @@ const PassengerAccordion = ({ children}) => {
       </div>
     </section>
   );
+};
+
+PassengerAccordion.defaultProps = {
+  passenger: {},
 };
 
 export default PassengerAccordion;

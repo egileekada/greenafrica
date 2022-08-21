@@ -9,6 +9,7 @@ import {
   AddPaymentToBooking,
   BookingCommit,
   GetBooking,
+  GetSSRAvailabilityForBooking,
 } from "services/bookingService";
 import { notification } from "antd";
 
@@ -24,6 +25,9 @@ const initialState = {
   sellResponse: null,
   sellInfantLoading: false,
   sellInfantResponse: null,
+  sessionPassengers: null,
+  sessionInfants: null,
+  sessionSegmentDetails: null,
   updatePassengersLoading: false,
   passengersResponse: null,
   updateContactsLoading: false,
@@ -34,6 +38,10 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   bookingResponse: null,
+  SSRAvailabilityLoading: false,
+  SSRAvailabilityResponse: null,
+  sellSSRLoading: false,
+  sellSSRResponse: null,
 };
 
 export const sessionSlice = createSlice({
@@ -81,6 +89,18 @@ export const sessionSlice = createSlice({
         ...payload,
       };
     },
+
+    setSessionPassengers: (state, { payload }) => {
+      state.sessionPassengers = [...payload];
+    },
+
+    setSessionInfants: (state, { payload }) => {
+      state.sessionInfants = [...payload];
+    },
+    setSessionSegmentDetails: (state, { payload }) => {
+      state.sessionSegmentDetails = payload;
+    },
+
     setUpdatePassengersLoading: (state, { payload }) => {
       state.updatePassengersLoading = payload;
     },
@@ -117,6 +137,18 @@ export const sessionSlice = createSlice({
     setBookingResponse: (state, { payload }) => {
       state.bookingResponse = payload;
     },
+    setSSRAvailabilityLoading: (state, { payload }) => {
+      state.SSRAvailabilityLoading = payload;
+    },
+    setSSRAvailabilityResponse: (state, { payload }) => {
+      state.SSRAvailabilityResponse = payload;
+    },
+    setSSRLoading: (state, { payload }) => {
+      state.sellSSRLoading = payload;
+    },
+    setSSRResponse: (state, { payload }) => {
+      state.sellSSRResponse = payload;
+    },
   },
 });
 
@@ -130,6 +162,9 @@ export const {
   setSellResponse,
   setSellInfantLoading,
   setSellInfantResponse,
+  setSessionPassengers,
+  setSessionInfants,
+  setSessionSegmentDetails,
   setUpdatePassengersLoading,
   setUpdatePassengersResponse,
   setUpdateContactsLoading,
@@ -142,6 +177,10 @@ export const {
   setBookingResponse,
   setLowFareAvailabilityLoading,
   setLowFareAvailabilityResponse,
+  setSSRAvailabilityLoading,
+  setSSRAvailabilityResponse,
+  setSSRLoading,
+  setSSRResponse,
 } = sessionSlice.actions;
 export const sessionSelector = (state) => state.session;
 export default sessionSlice.reducer;
@@ -326,7 +365,12 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
   try {
     const Response = await GetLowFareAvailability(requestPayload);
     await dispatch(setLowFareAvailabilityResponse(Response.data));
-  } catch (err) {}
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Fetch Low Fares failed",
+    });
+  }
   dispatch(setLowFareAvailabilityLoading(false));
 };
 
@@ -512,7 +556,12 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
     const flightAvalaibilty = await GetAvailabilityRequest(requestPayload);
     const availabilityResponse = flightAvalaibilty.data;
     await dispatch(setAvailabilityResponse(availabilityResponse));
-  } catch (err) {}
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Fetch Flights failed",
+    });
+  }
   dispatch(setFlightAvailabilityLoading(false));
 };
 
@@ -527,6 +576,18 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
   const INFANT_COUNT = parseInt(flightParams?.INF);
   const totalPaxCount = ADULT_COUNT + CHILD_COUNT;
   let infantPayload = {};
+
+  const _segmentDetails = {
+    flightDesignator: {
+      carrierCode: "Q9",
+      flightNumber: payload.segmentFlightNumber,
+    },
+    std: payload.segmentStd,
+    departureStation: flightParams?.departureStation,
+    arrivalStation: flightParams?.arrivalStation,
+  };
+
+  dispatch(setSessionSegmentDetails(_segmentDetails));
 
   if (ADULT_COUNT > 0) {
     const _newPType = {
@@ -834,6 +895,8 @@ export const updatePassengersDetails =
           _Main.push(item);
         }
       });
+      dispatch(setSessionPassengers(_Main));
+      dispatch(setSessionInfants(_Main));
       let _passengers = [];
       let updatedPassengers = [];
       _Main.map((_passenger, _i) => {
@@ -909,6 +972,7 @@ export const updatePassengersDetails =
         },
       };
     } else {
+      dispatch(setSessionPassengers(payload));
       let _passengers = [];
       payload.map((_passenger, _i) => {
         let passengerObj = {
@@ -1229,6 +1293,160 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
     await dispatch(setBookingResponse(Response.data));
   } catch (err) {
     console.log("Update passenger Request error", err.response);
+    notification.error({
+      message: "Error",
+      description: "Get Booking Details failed",
+    });
   }
   dispatch(setBookingResponseLoading(false));
+};
+
+export const FetchSSRAvailabilityForBooking =
+  () => async (dispatch, getState) => {
+    dispatch(setSSRAvailabilityLoading(true));
+    const currentState = getState().session;
+    const flightParams = currentState.flightParams;
+
+    let requestPayload = {
+      header: {
+        signature: currentState.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: true,
+        contractVersion: 0,
+      },
+      getSsrAvailabilityForBookingRequestDto: {
+        getSsrAvailabilityForBookingRequest: {
+          ssrAvailabilityForBookingRequest: {
+            segmentKeyList: [
+              {
+                carrierCode: "Q9",
+                flightNumber:
+                  currentState?.sessionSegmentDetails?.flightDesignator
+                    .flightNumber,
+                opSuffix: "",
+                departureDate: flightParams?.beginDate,
+                departureDateSpecified: true,
+                departureStation: flightParams?.departureStation,
+                arrivalStation: flightParams?.arrivalStation,
+              },
+            ],
+            PassengerNumberList: [0],
+            inventoryControlled: true,
+            inventoryControlledSpecified: true,
+            nonInventoryControlled: true,
+            nonInventoryControlledSpecified: true,
+            seatDependent: true,
+            seatDependentSpecified: true,
+            nonSeatDependent: true,
+            nonSeatDependentSpecified: true,
+            currencyCode: "NGN",
+            ssrAvailabilityMode: 0,
+            ssrAvailabilityModeSpecified: true,
+            feePricingMode: 0,
+            feePricingModeSpecified: true,
+          },
+        },
+      },
+    };
+
+    try {
+      const SSRAvailabilityResponse = await GetSSRAvailabilityForBooking(
+        requestPayload
+      );
+      await dispatch(setSSRAvailabilityResponse(SSRAvailabilityResponse.data));
+    } catch (err) {
+      console.log("SSRAvailability Request error", err.response);
+      notification.error({
+        message: "Error",
+        description: "Fetch SSR  failed",
+      });
+    }
+
+    dispatch(setSSRAvailabilityLoading(false));
+  };
+
+export const SellSSROption = () => async (dispatch, getState) => {
+  dispatch(setSSRLoading(true));
+  const currentState = getState().session;
+
+  const _paxSSRs = [];
+  //  {
+  //                       state: 0,
+  //                       stateSpecified: true,
+  //                       actionStatusCode: "NN",
+  //                       arrivalStation: "ABV",
+  //                       departureStation: "LOS",
+  //                       passengerNumber: 0,
+  //                       passengerNumberSpecified: true,
+  //                       ssrCode: "X20",
+  //                       ssrNumberSpecified: true,
+  //                       ssrNumber: 0,
+  //                       ssrDetail: "",
+  //                       feeCode: "",
+  //                       note: "",
+  //                       ssrValue: 0,
+  //                       ssrValueSpecified: true,
+  //                       isInServiceBundle: false,
+  //                       isInServiceBundleSpecified: true,
+  //                     },
+
+  let requestPayload = {
+    header: {
+      signature: currentState.signature,
+      messageContractVersion: "",
+      enableExceptionStackTrace: false,
+      contractVersion: 0,
+    },
+    sellRequestDto: {
+      sellRequest: {
+        sellRequestData: {
+          sellBy: 2,
+          sellBySpecified: true,
+          sellSSR: {
+            ssrRequest: {
+              segmentSSRRequests: [
+                {
+                  flightDesignator: {
+                    carrierCode: "Q9",
+                    flightNumber:
+                      currentState?.sessionSegmentDetails?.flightDesignator
+                        .flightNumber,
+                    opSuffix: "",
+                  },
+                  std: currentState?.sessionSegmentDetails?.std,
+                  stdSpecified: true,
+                  departureStation:
+                    currentState?.sessionSegmentDetails?.departureStation,
+                  arrivalStation:
+                    currentState?.sessionSegmentDetails?.arrivalStation,
+                  paxSSRs: [..._paxSSRs],
+                },
+              ],
+              currencyCode: "NGN",
+              cancelFirstSSR: false,
+              cancelFirstSSRSpecified: true,
+              ssrFeeForceWaiveOnSell: false,
+              ssrFeeForceWaiveOnSellSpecified: true,
+              sellSSRMode: 0,
+              sellSSRModeSpecified: true,
+              feePricingMode: 0,
+              feePricingModeSpecified: true,
+            },
+          },
+        },
+      },
+    },
+  };
+
+  try {
+    const SSRResponse = await BookingSell(requestPayload);
+    await dispatch(setSSRResponse(SSRResponse.data));
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Sell SSR failed",
+    });
+  }
+
+  dispatch(setSSRLoading(false));
 };

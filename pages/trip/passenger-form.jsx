@@ -12,7 +12,6 @@ import {
 } from "redux/reducers/session";
 import { useRouter } from "next/router";
 import { Checkbox } from "antd";
-import SinglePassengerForm from "containers/PassengerForm/Single";
 import SelectIcon from "assets/svgs/select.svg";
 import PassengerFormItem from "containers/PassengerForm/PassengerFormItem";
 
@@ -20,8 +19,12 @@ const PassengerForm = () => {
   const dispatch = useDispatch();
   const [totalPassengerCount, setCount] = useState(0);
   const [passengers, setPassengers] = useState([]);
-  const { passengersResponse, contactsResponse, flightParams } =
-    useSelector(sessionSelector);
+  const {
+    passengersResponse,
+    contactsResponse,
+    updatePassengersLoading,
+    flightParams,
+  } = useSelector(sessionSelector);
   const router = useRouter();
 
   useEffect(() => {
@@ -79,13 +82,22 @@ const PassengerForm = () => {
     sumPassengerCount();
   }, []);
 
+  // useEffect(() => {
+  //   async function redirectToPayment() {
+  //     if (passengersResponse && contactsResponse) {
+  //       router.push("/trip/payment");
+  //     }
+  //   }
+  //   redirectToPayment();
+  // }, [passengersResponse, contactsResponse]);
+
   useEffect(() => {
-    async function redirectToPayment() {
+    async function redirectToSSR() {
       if (passengersResponse && contactsResponse) {
-        router.push("/trip/payment");
+        router.push("/trip/passenger-details");
       }
     }
-    redirectToPayment();
+    redirectToSSR();
   }, [passengersResponse, contactsResponse]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -96,7 +108,6 @@ const PassengerForm = () => {
       phone: String(values.c_phone),
       email: values.c_email,
     };
-    console.log("pasengers", passengers);
     dispatch(updatePassengersDetails(passengers));
     dispatch(updateContactsDetails(contactInfo));
   };
@@ -138,7 +149,7 @@ const PassengerForm = () => {
   };
 
   const enableCopy =
-    passengers.length > 1 && checkPassInfo(passengers[0]) ? true : false;
+    passengers.length > 0 && checkPassInfo(passengers[0]) ? true : false;
 
   return (
     <BaseLayout>
@@ -148,9 +159,9 @@ const PassengerForm = () => {
             <h2 className="text-primary-main font-extrabold text-2xl mb-8">
               Passenger Details
             </h2>
-            {totalPassengerCount > 1 ? (
+            {totalPassengerCount > 0 ? (
               <form className="passenger__form" onSubmit={formik.handleSubmit}>
-                {/* <p>{JSON.stringify(passengers)}</p> */}
+                <p>{JSON.stringify(passengers)}</p>
                 {passengers
                   .sort((a, b) => {
                     return a.id - b.id;
@@ -311,15 +322,12 @@ const PassengerForm = () => {
                     type="submit"
                     className="btn btn-primary cta basis-full md:basis-auto"
                   >
-                    {/* {updatePassengersLoading ? "Saving....." : "Continue"} */}
-                    Continue
+                    {updatePassengersLoading ? "Saving....." : "Continue"}
                   </button>
                 </div>
                 {/* CTA */}
               </form>
-            ) : (
-              <SinglePassengerForm />
-            )}
+            ) : null}
           </div>
           <div className="ga__section__side">
             <IbeSidebar />
