@@ -1,9 +1,11 @@
 import { Fragment, useEffect, useState } from "react";
 import BaggageIcon from "assets/svgs/baggage.svg";
 import Counter from "components/Counter";
+import { notification } from "antd";
 
 const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
   const [totalFare, setFare] = useState(0);
+  const [value, setValue] = useState(1);
   const KG = SSRItem?.SSRCode.substring(1);
 
   useEffect(() => {
@@ -19,6 +21,51 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
     });
   }, []);
 
+  const onValueChange = (e) => {
+    let _val = parseInt(e.target.value);
+    if (_val > 2) {
+      notification.error({
+        message: "Error",
+        description: "Maximum Value is 2",
+      });
+      setValue(2);
+    } else if (_val < 0) {
+      notification.error({
+        message: "Error",
+        description: "Minimum Value is 0",
+      });
+      setValue(0);
+    } else {
+      setValue(parseInt(_val));
+    }
+  };
+  const onValueIncrement = () => {
+    setValue((prevVal) => {
+      if (prevVal + 1 > 2) {
+        notification.error({
+          message: "Error",
+          description: "Maximum Value is 2",
+        });
+        return 2;
+      } else {
+        return prevVal + 1;
+      }
+    });
+  };
+  const onValueDecrement = () => {
+    setValue((prevVal) => {
+      if (prevVal - 1 < 0) {
+        notification.error({
+          message: "Error",
+          description: "Minimum Value is 0",
+        });
+        return 0;
+      } else {
+        return prevVal - 1;
+      }
+    });
+  };
+
   return (
     <Fragment>
       <section className="baggage__card">
@@ -30,7 +77,12 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
           {" "}
           ₦{totalFare.toLocaleString()}
         </p>
-        <Counter />
+        <Counter
+          value={value}
+          onValueChange={onValueChange}
+          onValueDecrement={onValueDecrement}
+          onValueIncrement={onValueIncrement}
+        />
       </section>
     </Fragment>
   );

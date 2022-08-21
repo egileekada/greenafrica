@@ -1,38 +1,38 @@
 /* eslint-disable eqeqeq */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import MinusIcon from "assets/svgs/minus.svg";
 import AddIcon from "assets/svgs/plus.svg";
 import { Input } from "antd";
 
-const Counter = ({ index, type, valueProps, onChange }) => {
-  const [value, setValue] = useState(0);
-
-  const decrementValue = () => {};
-
-  const incrementValue = () => {};
-
+const Counter = ({
+  value,
+  onValueChange,
+  onValueDecrement,
+  onValueIncrement,
+}) => {
   return (
     <div className="flex items-center ga__counter">
       <button
         type="button"
         className="w-7 h-7 rounded-full flex items-center justify-center bg-primary-main hover:bg-opacity-80"
-        onClick={decrementValue}
+        onClick={onValueDecrement}
       >
         <MinusIcon />
       </button>
       <Input
         type="number"
         min="1"
+        disabled
         value={value}
         className="text-center  max-w-[68px] min-w-[56px] text-primary-main mx-2"
         name="value"
-        onChange={(e) => handleValue(e)}
+        onChange={(e) => onValueChange(e)}
       />
 
       <button
         type="button"
         className="w-7 h-7 rounded-full flex items-center justify-center bg-primary-main hover:bg-opacity-80"
-        onClick={incrementValue}
+        onClick={onValueIncrement}
       >
         <AddIcon />
       </button>
