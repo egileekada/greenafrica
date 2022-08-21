@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "code": 0,
+  "locale": "en",
+  "message": "OK",
+  "data": {
+    "payment_url": "https://checkout.paystack.com/2h9ceih2d13qbk8",
+    "reference": "pVxWZmC6LKAdVQhEBEeR"
+  }
+}

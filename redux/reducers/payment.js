@@ -73,6 +73,7 @@ export const InitializeGatewayPayment = (payload) => async (dispatch) => {
   try {
     const Response = await InitializePayment(payload);
     await dispatch(setPaymentResponse(Response.data));
+    window.location.assign(Response?.data?.data?.payment_url);
   } catch (err) {
     notification.error({
       message: "Error",

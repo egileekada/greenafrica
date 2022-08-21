@@ -5,44 +5,59 @@ import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  PaymentToBooking,
-  GetBookingCommit,
-  sessionSelector,
-} from "redux/reducers/session";
+import { GetBookingCommit, sessionSelector } from "redux/reducers/session";
 import {
   paymentSelector,
   FetchPaymentGateways,
   InitializeGatewayPayment,
 } from "redux/reducers/payment";
-import { useRouter } from "next/router";
 import Spinner from "components/Spinner";
+import { notification } from "antd";
 
 const TripPayment = () => {
   const dispatch = useDispatch();
   const [totalFare, setTotalFare] = useState();
   const [selected, setSelected] = useState(1);
   const {
-    paymentBookingLoading,
-    paymentBookingResponse,
     bookingCommitLoading,
     bookingCommitResponse,
     sessionContact,
     contactsResponse,
     sellSSRResponse,
   } = useSelector(sessionSelector);
-  const { gatewaysLoading, gatewaysResponse } = useSelector(paymentSelector);
-  const router = useRouter();
+  const {
+    gatewaysLoading,
+    gatewaysResponse,
+    paymentLoading,
+    verifyPaymentLoading,
+    verifyPaymentResponse,
+  } = useSelector(paymentSelector);
 
-  // useEffect(() => {
-  //   async function redirectFromGateway() {
-  //     const payload = {
-  //       ref: "BLJK136H9B5IYTAROAA",
-  //     };
-  //     dispatch(PaymentToBooking(payload));
-  //   }
-  //   redirectFromGateway();
-  // }, []);
+  useEffect(() => {
+    async function redirectFromGateway() {
+      const paymentQuery = new URLSearchParams(window.location.search);
+
+      const paystackRef = paymentQuery.get("reference");
+      if (paystackRef && paystackRef.length > 0) {
+        const payload = {
+          ref: paystackRef,
+        };
+        dispatch(VerifyGatewayPayment(payload));
+      }
+    }
+    redirectFromGateway();
+  }, []);
+
+  useEffect(() => {
+    async function _checkVerifyPayment() {
+      if (verifyPaymentResponse) {
+        // Extract Data PNR
+        // Regenerate Signature
+        // GetBooking WIth Signature
+      }
+    }
+    _checkVerifyPayment();
+  }, [verifyPaymentResponse]);
 
   useEffect(() => {
     async function _getBookingCommit() {
@@ -85,7 +100,7 @@ const TripPayment = () => {
       }
     }
     computeTotalFare();
-  }, []);
+  }, [sellSSRResponse, contactsResponse]);
 
   useEffect(() => {
     async function _redirectForComfirmation() {
@@ -106,7 +121,8 @@ const TripPayment = () => {
         customer_name: sessionContact?.firstName,
         customer_email: sessionContact?.email,
         amount: totalFare * 100,
-        pnr: "",
+        pnr: bookingCommitResponse?.BookingUpdateResponseData?.Success
+          ?.RecordLocator,
         gateway_type_id: selected,
       };
       dispatch(InitializeGatewayPayment(payload));
@@ -122,7 +138,6 @@ const TripPayment = () => {
     <BaseLayout>
       <section className="w-full">
         {bookingCommitLoading && <p>Saving booking details...</p>}
-        {/* {paymentBookingLoading ? ( */}
         {gatewaysLoading ? (
           <section className="py-10 pl-12">
             <Spinner />
@@ -170,8 +185,7 @@ const TripPayment = () => {
                             </div>
                             <div className="flex flex-col items-end pointer-events-none">
                               <h6 className="mb-[10px]">AMOUNT DUE</h6>
-                              <h5> ₦26,501</h5>
-                              <h5> ₦26,501</h5>
+                              <h5> {totalFare?.toLocaleString()}</h5>
                             </div>
                           </div>
                         );
@@ -179,77 +193,20 @@ const TripPayment = () => {
                     ) : (
                       <p>No Gateways</p>
                     )}
-                    {/* <div
-                      className={`payment-card ${
-                        selected === 1 ? "active" : ""
-                      } `}
-                      onClick={() => setSelected(1)}
-                    >
-                      {selected === 1 ? (
-                        <figure className="check-payment">
-                          <PaymentMark />
-                        </figure>
-                      ) : (
-                        <figure className="check-payment">
-                          <PaymentOutline />
-                        </figure>
-                      )}
-                      <div className="flex flex-col pointer-events-none">
-                        <figure className="mb-2">
-                          <PaystackIcon />
-                        </figure>
-                        <h2 className="mb-3">Paystack</h2>
-                        <p>
-                          You will be redirected to our secure payment checkout.
-                        </p>
-                      </div>
-                      <div className="flex flex-col items-end pointer-events-none">
-                        <h6 className="mb-[10px]">AMOUNT DUE</h6>
-                        <h5> ₦26,501</h5>
-                      </div>
-                    </div>
-                    <div
-                      className={`payment-card ${
-                        selected === 2 ? "active" : ""
-                      } `}
-                      onClick={() => setSelected(2)}
-                    >
-                      {selected === 2 ? (
-                        <figure className="check-payment">
-                          <PaymentMark />
-                        </figure>
-                      ) : (
-                        <figure className="check-payment">
-                          <PaymentOutline />
-                        </figure>
-                      )}
-                      <div className="flex flex-col pointer-events-none">
-                        <figure className="mb-2">
-                          <FlutterwaveIcon />
-                        </figure>
-                        <h2 className="mb-3">Flutterwave</h2>
-                        <p>
-                          You will be redirected to our secure payment checkout.
-                        </p>
-                      </div>
-                      <div className="flex flex-col items-end pointer-events-none">
-                        <h6 className="mb-[10px]">AMOUNT DUE</h6>
-                        <h5> ₦26,501</h5>
-                      </div>
-                    </div> */}
+
                     <div className="flex justify-end">
                       <button
                         type="button"
                         onClick={handlePayment}
                         className="btn btn-primary"
                       >
-                        Pay
+                        {paymentLoading ? "Paying" : "Pay"}
                       </button>
                     </div>
                   </section>
                 </>
               ) : (
-                <p>NO response from gateway</p>
+                <p>No response from gateway</p>
               )}
             </div>
             <div className="ga__section__side">
