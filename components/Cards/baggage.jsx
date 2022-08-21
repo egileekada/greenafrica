@@ -21,6 +21,23 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (value >= 0 || value <= 2) {
+      const _ssrObj = {
+        passengerNumber: passenger?.id,
+        ssrCode: "WCHC",
+        count: value,
+      };
+      setSSRs((prevState) => [...prevState, _ssrObj]);
+    } else {
+      notification.error({
+        message: "Error",
+        description: "Error setting Baggage Count",
+      });
+      setValue(0);
+    }
+  }, [value]);
+
   const onValueChange = (e) => {
     let _val = parseInt(e.target.value);
     if (_val > 2) {
