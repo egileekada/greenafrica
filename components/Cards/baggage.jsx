@@ -5,7 +5,7 @@ import { notification } from "antd";
 
 const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
   const [totalFare, setFare] = useState(0);
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(0);
   const KG = SSRItem?.SSRCode.substring(1);
 
   useEffect(() => {
@@ -22,18 +22,17 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
   }, []);
 
   useEffect(() => {
-    if (value >= 0 || value <= 2) {
-      const _ssrObj = {
+    if (value >= 1 && value <= 2) {
+      const existingSSRs = [...selectedSSRs];
+      const cleanedSSRs = existingSSRs.filter(
+        (_ssr) => _ssr.ssrCode !== SSRItem?.SSRCode
+      );
+      const SSRItemObj = new Array(value).fill({
         passengerNumber: passenger?.id,
-        ssrCode: "WCHC",
-        count: value,
-      };
-      setSSRs((prevState) => [...prevState, _ssrObj]);
-    } else {
-      notification.error({
-        message: "Error",
-        description: "Error setting Baggage Count",
+        ssrCode: SSRItem.SSRCode,
       });
+      setSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+    } else {
       setValue(0);
     }
   }, [value]);

@@ -12,13 +12,10 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
   const { SSRAvailabilityResponse } = useSelector(sessionSelector);
 
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-
     if (e.target.checked) {
       const _ssrObj = {
         passengerNumber: passenger?.id,
         ssrCode: "WCHC",
-        count: 1,
       };
       setSSRs((prevState) => [...prevState, _ssrObj]);
     } else {
@@ -26,21 +23,16 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
       setSSRs((prevState) =>
         prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
       );
-
-      //   setSSRs((prevState) => {
-      //     const newState = prevState.map((_ssr) => {
-      //       if (_ssr.ssrCode === "X20") {
-      //         return { ..._ssr, country: "Denmark" };
-      //       }
-      //       return obj;
-      //     });
-
-      //     return newState;
-      //   });
     }
   };
 
   const specialChanged = (checked) => {
+    if (!checked) {
+      let codeToBeRemoved = "WCHC";
+      setSSRs((prevState) =>
+        prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+      );
+    }
     setSpecialNeed(checked);
   };
 
@@ -49,7 +41,7 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
       {SSRAvailabilityResponse ? (
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
-            <p>{JSON.stringify(selectedSSRs)}</p>
+            {/* <p>{JSON.stringify(selectedSSRs)}</p> */}
             <h2 className="title-text mb-2">INSURANCE</h2>
             <div className="flex items-center primary-checkbox">
               <Checkbox onChange={onChange}>

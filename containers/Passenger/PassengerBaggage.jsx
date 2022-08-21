@@ -7,7 +7,7 @@ import BaggageIcon from "assets/svgs/baggage.svg";
 import { Fragment, useState } from "react";
 import Popup from "components/Popup";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
 const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
@@ -24,7 +24,8 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
   };
 
   const proceedToSeatSelection = () => {
-    // router.push("/trip/passenger-form");
+    // this is suposed to go to seat-Selection,payment is an hotfix
+    router.push("/trip/payment");
   };
 
   const ALLOWED__SSRS = ["X20", "X15", "X10"];
@@ -107,7 +108,7 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
                 Select Baggage
               </button>
               <button
-                onClick={() => proceedToSeatSelection}
+                onClick={proceedToSeatSelection}
                 className="btn btn-outline basis-full lg:basis-[48%]"
               >
                 I don’t need it

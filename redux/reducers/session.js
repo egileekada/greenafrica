@@ -1365,30 +1365,33 @@ export const FetchSSRAvailabilityForBooking =
     dispatch(setSSRAvailabilityLoading(false));
   };
 
-export const SellSSROption = () => async (dispatch, getState) => {
+export const SellSSROption = (payload) => async (dispatch, getState) => {
   dispatch(setSSRLoading(true));
   const currentState = getState().session;
 
   const _paxSSRs = [];
-  //  {
-  //                       state: 0,
-  //                       stateSpecified: true,
-  //                       actionStatusCode: "NN",
-  //                       arrivalStation: "ABV",
-  //                       departureStation: "LOS",
-  //                       passengerNumber: 0,
-  //                       passengerNumberSpecified: true,
-  //                       ssrCode: "X20",
-  //                       ssrNumberSpecified: true,
-  //                       ssrNumber: 0,
-  //                       ssrDetail: "",
-  //                       feeCode: "",
-  //                       note: "",
-  //                       ssrValue: 0,
-  //                       ssrValueSpecified: true,
-  //                       isInServiceBundle: false,
-  //                       isInServiceBundleSpecified: true,
-  //                     },
+  payload.map((_item) => {
+    const newObj = {
+      state: 0,
+      stateSpecified: true,
+      actionStatusCode: "NN",
+      arrivalStation: currentState?.sessionSegmentDetails?.arrivalStation,
+      departureStation: currentState?.sessionSegmentDetails?.departureStation,
+      passengerNumber: _item?.passengerNumber,
+      passengerNumberSpecified: true,
+      ssrCode: _item?.ssrCode,
+      ssrNumberSpecified: true,
+      ssrNumber: 0,
+      ssrDetail: "",
+      feeCode: "",
+      note: "",
+      ssrValue: 0,
+      ssrValueSpecified: true,
+      isInServiceBundle: false,
+      isInServiceBundleSpecified: true,
+    };
+    _paxSSRs.push(newObj);
+  });
 
   let requestPayload = {
     header: {

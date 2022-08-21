@@ -82,15 +82,6 @@ const PassengerForm = () => {
     sumPassengerCount();
   }, []);
 
-  // useEffect(() => {
-  //   async function redirectToPayment() {
-  //     if (passengersResponse && contactsResponse) {
-  //       router.push("/trip/payment");
-  //     }
-  //   }
-  //   redirectToPayment();
-  // }, [passengersResponse, contactsResponse]);
-
   useEffect(() => {
     async function redirectToSSR() {
       if (passengersResponse && contactsResponse) {
@@ -161,7 +152,7 @@ const PassengerForm = () => {
             </h2>
             {totalPassengerCount > 0 ? (
               <form className="passenger__form" onSubmit={formik.handleSubmit}>
-                <p>{JSON.stringify(passengers)}</p>
+                {/* <p>{JSON.stringify(passengers)}</p> */}
                 {passengers
                   .sort((a, b) => {
                     return a.id - b.id;
