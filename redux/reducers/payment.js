@@ -35,7 +35,7 @@ export const paymentSlice = createSlice({
       state.verifyPaymentLoading = payload;
     },
     setVerifyPaymentResponse: (state, { payload }) => {
-      state.verifyPaymentRespons = payload;
+      state.verifyPaymentResponse = payload;
     },
   },
 });
@@ -88,8 +88,9 @@ export const VerifyGatewayPayment = (payload) => async (dispatch) => {
   dispatch(setVerifyPaymentLoading(true));
 
   try {
-    const Response = await VerifyPayment(payload);
+    const Response = await VerifyPayment(payload.ref);
     await dispatch(setPaymentResponse(Response.data));
+    console.log("verify payment", Response.data);
   } catch (err) {
     notification.error({
       message: "Error",
