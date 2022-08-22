@@ -1,0 +1,181 @@
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin fontNormal($fs, $lh, $color) {
+  font-size: $fs;
+  line-height: $lh;
+  color: $color;
+  font-style: normal;
+  font-weight: normal;
+}
+
+@mixin fontBold($fs, $lh, $color) {
+  font-size: $fs;
+  line-height: $lh;
+  color: $color;
+  font-style: normal;
+  font-weight: bold;
+}
+$primary: #e2698d;
+$secondary: #e2698d;
+$white: #ffffff;
+$grey: #f1f1f1;
+$grey1: #fafafa;
+$black: #000000;
+$black2: #333333;
+$misc1: #666666;
+$misc2: #999999;
+$cream: #fff6f6;
+
+@mixin respond($breakpoint) {
+  @if$breakpoint == xm-phone {
+    @media only screen and (max-width: 17em) {
+      @content;
+    } //270px
+  }
+
+  @if$breakpoint == misc2 {
+    @media only screen and (max-width: 25em) {
+      @content;
+    } //400px
+  }
+
+  @if$breakpoint == phone {
+    @media only screen and (max-width: 37.5em) {
+      @content;
+    } //600px
+  }
+
+  @if$breakpoint == misc3 {
+    @media only screen and (max-width: 43.75em) {
+      @content;
+    } //700px
+  }
+
+  @if$breakpoint == misc1 {
+    @media only screen and (max-width: 50em) {
+      @content;
+    } //800
+  }
+
+  @if$breakpoint == tab-port {
+    @media only screen and (max-width: 56.25em) {
+      @content;
+    } //900
+  }
+
+  @if$breakpoint == lg {
+    @media only screen and (max-width: 64em) {
+      @content;
+    } //1024
+  }
+
+  @if$breakpoint == tab-land {
+    @media only screen and (max-width: 75em) {
+      @content;
+    } //1200
+  }
+
+  @if$breakpoint == big-desktop {
+    @media only screen and (min-width: 112.5em) {
+      @content;
+    } //1800
+  }
+}
+
+.carousel {
+  height: 380px;
+  height: 31.25rem;
+  //TODO fix this height thingy
+  height: 28rem;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  position: relative;
+  width: auto;
+  @include flexCenter;
+  justify-content: flex-start;
+  overflow: hidden;
+
+  &__mobile {
+    height: 100%;
+    width: 100%;
+
+    figure {
+      height: 100%;
+      width: 100%;
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  &__content {
+    display: flex;
+    height: 100%;
+    min-width: 100%;
+
+    &::-webkit-scrollbar,
+    &::-moz-scollbar {
+      display: none;
+    }
+
+    &-item {
+      min-width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-direction: column;
+      padding-left: 15rem;
+      height: 79.2rem;
+      background-repeat: no-repeat;
+      background-size: contain;
+
+      @include respond(tab-land) {
+        background-size: 100% 100%;
+      }
+      @include respond(phone) {
+        padding-left: 5rem;
+      }
+    }
+  }
+
+  .dots {
+    position: absolute;
+    @include flexCenter;
+    bottom: 15%;
+    right: 50%;
+    cursor: pointer;
+
+    @include respond(lg) {
+      display: none;
+    }
+
+    @include respond(phone) {
+      // left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &-item {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.3;
+      transform: scale(0.8);
+      transition: all 0.2s;
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+}

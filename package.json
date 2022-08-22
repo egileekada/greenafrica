@@ -1,42 +1,55 @@
 {
-  "name": "aero",
+  "name": "greenafrica",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:dev": "env-cmd -f .env.dev yarn build",
+    "build:staging": "env-cmd -f .env.staging yarn build"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@svgr/webpack": "^6.2.0",
+    "@tanstack/react-query": "^4.1.3",
+    "@tanstack/react-query-devtools": "^4.0.10",
     "antd": "^4.18.3",
+    "autoprefixer": "^10.4.2",
     "axios": "^0.25.0",
     "classnames": "^2.3.1",
+    "date-fns": "^2.29.1",
+    "env-cmd": "^10.1.0",
+    "flowbite": "^1.4.7",
+    "flowbite-react": "^0.1.3",
     "formik": "^2.2.9",
     "framer-motion": "^6.2.6",
     "moment": "^2.29.1",
     "next": "12.0.8",
     "next-seo": "^5.2.0",
+    "nprogress": "^0.2.0",
     "rc-slider": "^9.7.5",
     "react": "17.0.2",
+    "react-cookie-consent": "^7.5.0",
+    "react-date-picker": "^8.4.0",
     "react-datepicker": "^4.7.0",
     "react-dom": "17.0.2",
     "react-hot-toast": "^2.2.0",
     "react-moment": "^1.1.1",
     "react-outside-click-handler": "^1.3.0",
     "react-router-dom": "^6.2.1",
+    "react-select": "^5.4.0",
+    "react-slick": "^0.29.0",
     "react-transition-group": "^4.4.2",
     "sass": "^1.48.0",
+    "tailwind-scrollbar": "^1.3.1",
+    "tailwindcss": "^3.0.13",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.2",
     "eslint": "8.6.0",
     "eslint-config-next": "12.0.8",
-    "postcss": "^8.4.5",
-    "tailwind-scrollbar": "^1.3.1",
-    "tailwindcss": "^3.0.13"
+    "postcss": "^8.4.5"
   }
 }

@@ -1,34 +1,60 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
 import useDeviceSize from "hooks/useWindowSize";
-import { getDesktopBanners, getMobileBanners } from "services/general";
+import { getBanner, getMobileBanner } from "../../../services";
 import { Spin } from "antd";
-import toast from "react-hot-toast";
 
 const HeroSlider = () => {
+  const {
+    data: webBanners,
+    isLoading,
+    status,
+  } = useQuery(["banners"], getBanner);
+
+  const { data: mobileBanner, status: mobileStatus } = useQuery(
+    ["mobileBanner"],
+    getMobileBanner
+  );
   const [currIndex, setCurrIndex] = useState(0);
   const item = useRef();
   const slide = useRef();
   var timer = useRef();
   const [width] = useDeviceSize();
-  const [desktopBanners, setDesktopBanners] = useState([]);
-  const [mobileBanners, setMobileBanners] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [desktopBanners, setDesktopBanners] = useState([
+    // {
+    //   id: 11,
+    //   slug: "banners/May2022/PRk7s7lxyewDbFVlvG64.jpg",
+    //   type: "desktop",
+    //   alt_text: null,
+    //   title: "Happy Children's Day",
+    //   show: 1,
+    //   created_at: "2022-05-27T07:37:37.000000Z",
+    //   updated_at: "2022-05-27T07:37:37.000000Z",
+    //   url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
+    // },
+  ]);
+  const [mobileBanners, setMobileBanners] = useState([
+    {
+      id: 12,
+      slug: "banners/May2022/uYtvFKsmpEocAPCO1VIy.png",
+      type: "mobile",
+      alt_text: null,
+      title: "Children's Day",
+      show: 1,
+      created_at: "2022-05-27T07:48:47.000000Z",
+      updated_at: "2022-05-27T07:48:47.000000Z",
+      url: "https://static.greenafrica.com/media/1002/banner-home.png",
+    },
+  ]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const requests = Promise.all([getDesktopBanners(), getMobileBanners()]);
-        const responses = await requests;
-        setDesktopBanners(responses[0].items);
-        setMobileBanners(responses[1].items);
-      } catch (err) {
-        toast.error("Error occured");
-      }
-      setLoading(false);
-    })();
-  }, []);
+    if (status === "success") {
+      setDesktopBanners(webBanners?.data?.items);
+      setMobileBanners(mobileBanner?.data?.items);
+    }
+  }, [status, webBanners, mobileBanner]);
 
   useEffect(() => {
     if (width > 899) {
@@ -53,7 +79,7 @@ const HeroSlider = () => {
 
   return (
     <section className="carousel">
-      {loading ? (
+      {isLoading ? (
         <div className="white-loader">
           <Spin />
         </div>
@@ -65,11 +91,12 @@ const HeroSlider = () => {
                 {desktopBanners.map((bg, index) => {
                   return (
                     <div
-                      key={index}
+                      data-key={index}
+                      key={bg.id}
                       ref={slide}
                       className="carousel__content-item"
                       style={{
-                        backgroundImage: `url(${bg.url})`,
+                        backgroundImage: `url(${bg.image_url})`,
                       }}
                     ></div>
                   );
@@ -77,10 +104,11 @@ const HeroSlider = () => {
               </div>
 
               <div className="dots">
-                {desktopBanners.map((index) => {
+                {desktopBanners.map((bg, index) => {
                   return (
                     <div
-                      key={index}
+                      key={bg.id + 1}
+                      data-key={bg.id + 1}
                       className={`dots-item ${
                         index === currIndex ? "active" : ""
                       }`}
@@ -95,11 +123,12 @@ const HeroSlider = () => {
                 <figure>
                   <img
                     src={
-                      mobileBanners.length > 0
+                      mobileBanners?.length > 0
                         ? mobileBanners[0].url
                         : "/images/mobile-hero.png"
                     }
                     alt="imagesd"
+                    className="object-cover w-full"
                   />
                 </figure>
               </div>
