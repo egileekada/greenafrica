@@ -76,18 +76,6 @@ const TripPayment = () => {
     computeTotalFare();
   }, [sellSSRResponse, contactsResponse]);
 
-  // useEffect(() => {
-  //   async function _redirectForComfirmation() {
-  //     if (!bookingCommitResponse) {
-  //       notification.error({
-  //         message: "Error",
-  //         description: "Unable to fetch PNR code",
-  //       });
-  //     }
-  //   }
-  //   _redirectForComfirmation();
-  // }, [bookingCommitResponse]);
-
   const handlePayment = async () => {
     if (bookingCommitResponse) {
       const payload = {
