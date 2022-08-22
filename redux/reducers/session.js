@@ -392,6 +392,7 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
     ADT,
     CHD,
     isRoundTrip,
+    promoCode,
   } = payload;
 
   const totalPaxCount = parseInt(ADT) + parseInt(CHD);
@@ -417,7 +418,7 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
       currencyCode: "NGN",
       displayCurrencyCode: "NGN",
       discountCode: "",
-      promotionCode: "",
+      promotionCode: promoCode && promoCode.length > 0 ? promoCode : "",
       availabilityType: 0,
       availabilityTypeSpecified: true,
       sourceOrganization: "",
@@ -463,7 +464,7 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
       currencyCode: "NGN",
       displayCurrencyCode: "NGN",
       discountCode: "",
-      promotionCode: "",
+      promotionCode: promoCode && promoCode.length > 0 ? promoCode : "",
       availabilityType: 0,
       availabilityTypeSpecified: true,
       sourceOrganization: "",
@@ -512,7 +513,7 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
       currencyCode: "NGN",
       displayCurrencyCode: "NGN",
       discountCode: "",
-      promotionCode: "",
+      promotionCode: promoCode && promoCode.length > 0 ? promoCode : "",
       availabilityType: 0,
       availabilityTypeSpecified: true,
       sourceOrganization: "",

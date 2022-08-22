@@ -6,6 +6,7 @@ import IbeTrips from "containers/IbeTrips";
 import IbeSidebar from "containers/IbeSidebar";
 import Popup from "components/Popup";
 import FlightWidget from "containers/Widgets/Flight";
+import PromoErrorWidget from "containers/Widgets/PromoError";
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
@@ -164,6 +165,7 @@ const Home = () => {
           </div>
         </section>
       </Popup>
+      <PromoErrorWidget />
       <FlightWidget />
     </Fragment>
   );
