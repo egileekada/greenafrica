@@ -91,7 +91,7 @@ const PassengerForm = () => {
     redirectToSSR();
   }, [passengersResponse, contactsResponse]);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values) => {
     const contactInfo = {
       title: values.c_title,
       firstName: values.c_firstName,
@@ -152,7 +152,7 @@ const PassengerForm = () => {
             </h2>
             {totalPassengerCount > 0 ? (
               <form className="passenger__form" onSubmit={formik.handleSubmit}>
-                <p>{JSON.stringify(passengers)}</p>
+                {/* <p>{JSON.stringify(passengers)}</p> */}
                 {passengers
                   .sort((a, b) => {
                     return a.id - b.id;

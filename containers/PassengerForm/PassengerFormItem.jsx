@@ -1,33 +1,82 @@
 /* eslint-disable @next/next/no-img-element */
+import { useState } from "react";
 import SelectIcon from "assets/svgs/select.svg";
+import { isInThePast } from "lib/utils";
 
 const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
+  const [error, setErr] = useState({
+    title: "",
+    firstName: "",
+    lastName: "",
+    dob: "",
+  });
+
   const handleFieldChange = (e) => {
     let indexedPassenger = passengers.find(function (element) {
       return parseInt(element.id) === parseInt(passenger.id);
     });
 
     if (indexedPassenger) {
-      const modifiedPassenger = {
-        ...indexedPassenger,
-        [e.target.name]: e.target.value,
-      };
+      if (e.target.value.length > 0) {
+        if (e.target.name === "dob" && !isInThePast(e.target.value)) {
+          setErr({
+            ...error,
+            [e.target.name]: "The date is invalid",
+          });
+        } else {
+          const modifiedPassenger = {
+            ...indexedPassenger,
+            [e.target.name]: e.target.value,
+          };
 
-      let foundIndex = passengers
-        .map(function (item) {
-          return parseInt(item.id);
-        })
-        .indexOf(parseInt(modifiedPassenger.id));
+          setErr({
+            ...error,
+            [e.target.name]: "",
+          });
 
-      if (foundIndex > -1) {
-        let oldPassengers = passengers;
-        oldPassengers.splice(foundIndex, 1);
-        const newPassArr = [...oldPassengers, modifiedPassenger].sort(
-          (a, b) => {
-            return a.id - b.id;
+          let foundIndex = passengers
+            .map(function (item) {
+              return parseInt(item.id);
+            })
+            .indexOf(parseInt(modifiedPassenger.id));
+
+          if (foundIndex > -1) {
+            let oldPassengers = passengers;
+            oldPassengers.splice(foundIndex, 1);
+            const newPassArr = [...oldPassengers, modifiedPassenger].sort(
+              (a, b) => {
+                return a.id - b.id;
+              }
+            );
+            setPassengers(newPassArr);
           }
-        );
-        setPassengers(newPassArr);
+        }
+      } else {
+        setErr({
+          ...error,
+          [e.target.name]: "Field is required",
+        });
+      }
+    }
+  };
+
+  const handleFieldBlur = (e) => {
+    if (e.target.name === "dob" && !isInThePast(e.target.value)) {
+      setErr({
+        ...error,
+        [e.target.name]: "The date is invalid",
+      });
+    } else {
+      if (e.target.value?.length < 1) {
+        setErr({
+          ...error,
+          [e.target.name]: "Field is required",
+        });
+      } else {
+        setErr({
+          ...error,
+          [e.target.name]: "",
+        });
       }
     }
   };
@@ -45,7 +94,13 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
       <div className="mb-6 flex flex-wrap">
         <div className="form-group select-group mr-0 md:mr-4">
           <label>TITLE</label>
-          <select id="title" name="title" onChange={handleFieldChange} required>
+          <select
+            id="title"
+            name="title"
+            onBlur={handleFieldBlur}
+            onChange={handleFieldChange}
+            required
+          >
             <option value="">Select</option>
             <option value="Mrs">Mrs</option>
             <option value="Mr">Mr</option>
@@ -53,6 +108,9 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
           <div className="select-icon">
             <SelectIcon />
           </div>
+          {error?.title && error?.title.length > 1 ? (
+            <p className="errorText mt-2">{error?.title}</p>
+          ) : null}
         </div>
 
         <div className="form-group mr-0 md:mr-4">
@@ -63,8 +121,12 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
             id="firstName"
             name="firstName"
             onChange={handleFieldChange}
+            onBlur={handleFieldBlur}
             required
           />
+          {error?.firstName && error?.firstName.length > 1 ? (
+            <p className="errorText mt-2">{error?.firstName}</p>
+          ) : null}
         </div>
         <div className="form-group mr-0 md:mr-4">
           <label>LAST NAME</label>
@@ -74,8 +136,12 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
             id="lastName"
             name="lastName"
             onChange={handleFieldChange}
+            onBlur={handleFieldBlur}
             required
           />
+          {error?.lastName && error?.lastName.length > 1 ? (
+            <p className="errorText mt-2">{error?.lastName}</p>
+          ) : null}
         </div>
         <div className="form-group">
           <label>DATE OF BIRTH</label>
@@ -85,8 +151,12 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
             id="dob"
             name="dob"
             onChange={handleFieldChange}
+            onBlur={handleFieldBlur}
             required
           />
+          {error?.dob && error?.dob.length > 1 ? (
+            <p className="errorText mt-2">{error?.dob}</p>
+          ) : null}
         </div>
       </div>
     </div>
