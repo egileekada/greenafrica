@@ -89,8 +89,7 @@ export const VerifyGatewayPayment = (payload) => async (dispatch) => {
 
   try {
     const Response = await VerifyPayment(payload.ref);
-    await dispatch(setPaymentResponse(Response.data));
-    console.log("verify payment", Response.data);
+    await dispatch(setVerifyPaymentResponse(Response.data));
   } catch (err) {
     notification.error({
       message: "Error",

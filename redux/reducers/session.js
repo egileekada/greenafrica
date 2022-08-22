@@ -1274,6 +1274,7 @@ export const GetBookingCommit = () => async (dispatch, getState) => {
 export const GetBookingDetails = () => async (dispatch, getState) => {
   dispatch(setBookingResponseLoading(true));
   const currentState = getState().session;
+  const currentPaymentState = getState().payment;
 
   const requestPayload = {
     header: {
@@ -1287,9 +1288,10 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
         getBookingBy: 0,
         getBookingBySpecified: true,
         getByRecordLocator: {
-          recordLocator:
-            currentState?.bookingCommitResponse?.BookingUpdateResponseData
-              ?.Success?.RecordLocator,
+          // recordLocator:
+          //   currentState?.bookingCommitResponse?.BookingUpdateResponseData
+          //     ?.Success?.RecordLocator,
+          recordLocator: currentPaymentState?.verifyPaymentResponse?.data?.pnr,
         },
       },
     },
