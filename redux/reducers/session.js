@@ -13,6 +13,8 @@ import {
 } from "services/bookingService";
 import { notification } from "antd";
 
+import { bookingResponse } from "./data";
+
 const initialState = {
   signature: null,
   sessionLoading: false,
@@ -38,7 +40,7 @@ const initialState = {
   bookingCommitLoading: false,
   bookingCommitResponse: null,
   bookingResponseLoading: false,
-  bookingResponse: null,
+  bookingResponse: bookingResponse,
   SSRAvailabilityLoading: false,
   SSRAvailabilityResponse: null,
   sellSSRLoading: false,
