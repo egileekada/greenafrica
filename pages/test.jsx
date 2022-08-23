@@ -1,13 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import BaseLayout from "layouts/Base";
-import FlightIcon from "assets/svgs/FlightTwo.svg";
-import AeroIcon from "assets/svgs/aero.svg";
-import DottedLine from "assets/svgs/dotted-line.svg";
-import ProfileIcon from "assets/svgs/profile.svg";
-import CheckInCard from "components/Cards/checkin";
 import IbeAdbar from "containers/IbeAdbar";
 
-const CheckInDetails = () => {
+const TestPage = () => {
   return (
     <BaseLayout>
       <section className="w-full checkin">
