@@ -10,7 +10,7 @@ const TestPage = () => {
           <div className="ga__section__main">
             <div className="mb-8 mt-16 xlg:mt-0">
               <h2 className="text-black font-bold text-2xl mb-2">
-                Check In test page now
+                Check In test page now passion
               </h2>
               <p>
                 Kindly confirm that the information below is correct before
@@ -27,4 +27,4 @@ const TestPage = () => {
   );
 };
 
-export default CheckInDetails;
+export default TestPage;
