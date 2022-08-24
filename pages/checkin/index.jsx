@@ -4,19 +4,19 @@ import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
-import CheckInCard from "components/Cards/checkin";
+// import CheckInCard from "components/Cards/checkin";
 import IbeAdbar from "containers/IbeAdbar";
+import { useRouter } from "next/router";
 
 const CheckInDetails = () => {
+  const router = useRouter();
   return (
     <BaseLayout>
       <section className="w-full checkin">
         <section className="ga__section">
           <div className="ga__section__main">
             <div className="mb-8 mt-16 xlg:mt-0">
-              <h2 className="text-black font-bold text-2xl mb-2">
-                Check In
-              </h2>
+              <h2 className="text-black font-bold text-2xl mb-2">Check In</h2>
               <p>
                 Kindly confirm that the information below is correct before
                 checking in
@@ -128,7 +128,12 @@ const CheckInDetails = () => {
               </section>
               {/* Checkin Info*/}
               <div className="flex mx-6">
-                <button className="btn btn-primary">Check In</button>
+                <button
+                  onClick={() => router.push("/checkin/confirm")}
+                  className="btn btn-primary"
+                >
+                  Check In
+                </button>
               </div>
             </section>
           </div>

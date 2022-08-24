@@ -1,26 +1,11 @@
-const value = 2;
+const _SSRCount = { INFT: 2, XBAG15: 4, XBAG20: 4, SEAT: 2 };
+const _SSRSum = { INFT: 10000, XBAG15: 4725, XBAG20: 5250, SEAT: 2000 };
 
-const ss = [
-  { passengerNumber: 1, ssrCode: "X10" },
-  { passengerNumber: 1, ssrCode: "X10" },
-];
+// const sum = [];
 
-const cleanedSSRs = ss.filter((_ssr) => {
-  const ruleBasis =
-    _ssr.ssrCode === "X15" && parseInt(_ssr.passengerNumber) === parseInt(1);
-  return !ruleBasis;
-});
-
-const SSRItemObj = new Array(value).fill({
-  passengerNumber: 1,
-  ssrCode: "X15",
-});
-
-const newSS = [...cleanedSSRs, ...SSRItemObj];
-
-console.log("new SSRs", newSS);
-
-
-  // const ruleBasis =
-  //   _ssr.ssrCode !== SSRItem?.SSRCode &&
-  //   parseInt(_ssr.passengerNumber) === parseInt(passenger?.id);
+// for (const property in _SSRCount) {
+//   console.log(`${property}: ${_SSRCount[property]}`);
+//   const _newOnj = {
+//      : 
+//   }
+// }

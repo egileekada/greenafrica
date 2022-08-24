@@ -13,6 +13,34 @@ const Fare = ({ isRoundTrip }) => {
           return (
             <>
               {_journey.Segments.map((_segment) => {
+                const _SSRCount = {};
+                const tempSum = {};
+                const _SSRSum = {};
+
+                bookingResponse?.Booking?.Passengers.map((_pax) => {
+                  return _pax.PassengerFees.map((_paxFee) => {
+                    _SSRCount[_paxFee?.FeeCode] = _pax.PassengerFees.filter(
+                      (_fee) => {
+                        return _fee?.FeeCode === _paxFee?.FeeCode;
+                      }
+                    ).length;
+                  });
+                });
+
+                bookingResponse?.Booking?.Passengers.map((_pax) => {
+                  return _pax.PassengerFees.map((_paxFee) => {
+                    tempSum[_paxFee?.FeeCode] = _paxFee.ServiceCharges;
+                    const totalServiceCharge = tempSum[_paxFee?.FeeCode].reduce(
+                      (accumulator, object) => {
+                        return accumulator + object.Amount;
+                      },
+                      0
+                    );
+                    _SSRSum[_paxFee?.FeeCode] = totalServiceCharge;
+                    console.log("totalServiceCharge", totalServiceCharge);
+                  });
+                });
+
                 return (
                   <>
                     <div className="flex items-center justify-between my-5">
@@ -23,17 +51,7 @@ const Fare = ({ isRoundTrip }) => {
                           {_segment?.ArrivalStation}
                         </h6>
                       </div>
-                      <div className="font-header text-xs text-primary-main">
-                        {/* {_segment?.Fares?.map((_fare) => {
-                        return _fare.PaxFares.map(() => {
-                          return <p>gggggg</p>;
-                        });
-                      })} */}
-                        {/* <h6 className="text-primary-main text-base font-display">
-                        {" "}
-                        ₦26,501
-                      </h6> */}
-                      </div>
+                      <div className="font-header text-xs text-primary-main"></div>
                     </div>
 
                     {_segment.Fares.map((_fare) => {
@@ -88,7 +106,11 @@ const Fare = ({ isRoundTrip }) => {
                           </div>
                           <div className="trip__summary__row subrow">
                             <div className="flex items-center">
-                              <h6>Service Charge:</h6>
+                              <h6>
+                                {" "}
+                                {bookingResponse?.Booking?.Passengers.length}x
+                                Service Charge:
+                              </h6>
                             </div>
                             <div>
                               <h6>₦{TotalTax.toLocaleString()}</h6>
@@ -96,7 +118,11 @@ const Fare = ({ isRoundTrip }) => {
                           </div>
                           <div className="trip__summary__row subrow">
                             <div className="flex items-center">
-                              <h6>Airport Tax:</h6>
+                              <h6>
+                                {" "}
+                                {bookingResponse?.Booking?.Passengers.length}x
+                                Airport Tax:
+                              </h6>
                             </div>
                             <div>
                               <h6>
@@ -110,7 +136,11 @@ const Fare = ({ isRoundTrip }) => {
                           </div>
                           <div className="trip__summary__row subrow">
                             <div className="flex items-center">
-                              <h6>Fuel Subcharge:</h6>
+                              <h6>
+                                {" "}
+                                {bookingResponse?.Booking?.Passengers.length}x
+                                Fuel Subcharge:
+                              </h6>
                             </div>
                             <div>
                               <h6>
@@ -122,6 +152,71 @@ const Fare = ({ isRoundTrip }) => {
                               </h6>
                             </div>
                           </div>
+                          {_SSRCount?.INFT && (
+                            <div className="trip__summary__row subrow">
+                              <div className="flex items-center">
+                                <h6>
+                                  {_SSRCount?.INFT}x&nbsp;Infant
+                                  {_SSRCount?.INFT > 1 ? "s" : ""}
+                                </h6>
+                              </div>
+                              <div>
+                                <h6> ₦{_SSRSum?.INFT.toLocaleString()}</h6>
+                              </div>
+                            </div>
+                          )}
+                          {_SSRCount?.XBAG20 && (
+                            <div className="trip__summary__row subrow">
+                              <div className="flex items-center">
+                                <h6>
+                                  {_SSRCount?.XBAG20}x&nbsp;20KG Baggage
+                                  {_SSRCount?.XBAG20 > 1 ? "s" : ""}
+                                </h6>
+                              </div>
+                              <div>
+                                <h6> ₦{_SSRSum?.XBAG20.toLocaleString()}</h6>
+                              </div>
+                            </div>
+                          )}
+                          {_SSRCount?.XBAG15 && (
+                            <div className="trip__summary__row subrow">
+                              <div className="flex items-center">
+                                <h6>
+                                  {_SSRCount?.XBAG15}x&nbsp;15KG Baggage
+                                  {_SSRCount?.XBAG15 > 1 ? "s" : ""}
+                                </h6>
+                              </div>
+                              <div>
+                                <h6> ₦{_SSRSum?.XBAG15.toLocaleString()}</h6>
+                              </div>
+                            </div>
+                          )}
+                          {_SSRCount?.XBAG10 && (
+                            <div className="trip__summary__row subrow">
+                              <div className="flex items-center">
+                                <h6>
+                                  {_SSRCount?.XBAG10}x&nbsp;10KG Baggage
+                                  {_SSRCount?.XBAG10 > 1 ? "s" : ""}
+                                </h6>
+                              </div>
+                              <div>
+                                <h6> ₦{_SSRSum?.XBAG10.toLocaleString()}</h6>
+                              </div>
+                            </div>
+                          )}
+                          {_SSRCount?.SEAT && (
+                            <div className="trip__summary__row">
+                              <div className="flex items-center">
+                                <h6>
+                                  {_SSRCount?.SEAT}x&nbsp;Seat
+                                  {_SSRCount?.SEAT > 1 ? "s" : ""}
+                                </h6>
+                              </div>
+                              <div>
+                                <h6> ₦{_SSRSum?.SEAT.toLocaleString()}</h6>
+                              </div>
+                            </div>
+                          )}
                         </>
                       );
                     })}

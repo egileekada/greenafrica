@@ -5,10 +5,11 @@ import AeroIcon from "assets/svgs/aero.svg";
 import GreenCheck from "assets/svgs/green.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
-import CheckInCard from "components/Cards/checkin";
+// import CheckInCard from "components/Cards/checkin";
 import IbeAdbar from "containers/IbeAdbar";
 
 const CheckInDetails = () => {
+ 
   return (
     <BaseLayout>
       <section className="flex items-center justify-center bg-green px-3 py-3 pt-24 lg:pt-3">
@@ -20,9 +21,7 @@ const CheckInDetails = () => {
         <section className="ga__section">
           <div className="ga__section__main">
             <div className="mb-8 mt-16 xlg:mt-0">
-              <h2 className="text-black font-bold text-2xl mb-2">
-                Check In
-              </h2>
+              <h2 className="text-black font-bold text-2xl mb-2">Check In</h2>
               <p>
                 Kindly confirm that the information below is correct before
                 checking in
