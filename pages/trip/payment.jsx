@@ -31,18 +31,16 @@ const TripPayment = () => {
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
     useSelector(paymentSelector);
 
-  // useEffect(() => {
-  //   async function _getBookingCommit() {
-  //     if (sellSSRResponse || contactsResponse) {
-  //       dispatch(GetBookingCommit());
-  //     }
-  //   }
-  //   _getBookingCommit();
-  // }, [sellSSRResponse, contactsResponse]);
   useEffect(() => {
     async function _getBookingCommit() {
       if (sellSSRResponse) {
-        dispatch(GetBookingCommit());
+        const _recordLocator =
+          bookingCommitResponse?.BookingUpdateResponseData?.Success
+            ?.RecordLocator;
+        console.log('record locator',_recordLocator)
+        if (!_recordLocator || _recordLocator?.length < 1) {
+          dispatch(GetBookingCommit());
+        }
       }
     }
     _getBookingCommit();
@@ -76,9 +74,9 @@ const TripPayment = () => {
           message: "Error",
           description: "Unable to fetch total flight cost, Redirecting in 3s",
         });
-        setTimeout(() => {
-          router.push("/");
-        }, 3000);
+        // setTimeout(() => {
+        //   router.push("/");
+        // }, 3000);
       }
     }
     computeTotalFare();

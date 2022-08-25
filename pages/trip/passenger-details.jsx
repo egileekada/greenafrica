@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import {
   sessionSelector,
   SellSSROption,
+  setSSRResponse,
+  setSessionSSRs,
   FetchSSRAvailabilityForBooking,
 } from "redux/reducers/session";
 import Spinner from "components/Spinner";
@@ -25,11 +27,12 @@ const PassengerDetails = () => {
     SSRAvailabilityResponse,
     sellSSRLoading,
     sessionSSRs,
+    contactsResponse,
   } = useSelector(sessionSelector);
 
   useEffect(() => {
     async function checkSSRAvailability() {
-      dispatch(FetchSSRAvailabilityForBooking());
+      if (!SSRAvailabilityResponse) dispatch(FetchSSRAvailabilityForBooking());
     }
     checkSSRAvailability();
   }, []);
@@ -37,23 +40,27 @@ const PassengerDetails = () => {
   useEffect(() => {
     async function checkSessionSSRs() {
       if (sessionSSRs && sessionSSRs.length > 0) {
-        // checkArray and prefill
-        // console.log("we have es=xisting SSRS", sessionSSRs);
         setSSRs(sessionSSRs);
       }
     }
     checkSessionSSRs();
   }, []);
 
-  const proceedToSeatSelection = async () => {
-    // this is suposed to go to seat-Selection,payment is an hotfix
-    // call SellSSR endpoint
+  const proceedToSeatSelectionWithSSR = async () => {
     dispatch(SellSSROption(selectedSSRs));
     router.push("/trip/payment");
   };
 
+  const proceedToSeatSelectionWithoutSSR = async () => {
+    // this is suposed to go to seat-Selection,payment is an hotfix
+    console.log("caaling this guy");
+    dispatch(setSessionSSRs([]));
+    dispatch(setSSRResponse(contactsResponse));
+    router.push("/trip/payment");
+  };
+
   const checkSSRContent = () => {
-    selectedSSRs.length > 0 ? proceedToSeatSelection() : setShow(true);
+    selectedSSRs.length > 0 ? proceedToSeatSelectionWithSSR() : setShow(true);
   };
 
   return (
@@ -140,7 +147,7 @@ const PassengerDetails = () => {
                 Select Service
               </button>
               <button
-                onClick={proceedToSeatSelection}
+                onClick={proceedToSeatSelectionWithoutSSR}
                 className="btn btn-outline basis-full lg:basis-[48%]"
               >
                 I don’t need it

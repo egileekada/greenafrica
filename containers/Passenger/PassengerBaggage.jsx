@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
+
 const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
   const router = useRouter();
   const [showPopUp, setShow] = useState(false);
@@ -17,7 +18,6 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
     useSelector(sessionSelector);
 
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
     if (e.target.checked) {
       setShow(true);
     }
@@ -77,7 +77,7 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
             }
           )}
         </section>
-        <div className="flex items-center primary-checkbox mb-4">
+        <div className="flex items-center primary-checkbox mb-">
           <Checkbox onChange={onChange}>
             <label className="check-label">
               <p className="ml-2">I don’t need extra baggage</p>

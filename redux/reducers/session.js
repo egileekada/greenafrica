@@ -14,12 +14,12 @@ import {
 import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
 
-// import {
-//   bookingResponse,
-//   SSRAvailabilityResponse,
-//   sessionSSRs,
-//   sessionPassengers,
-// } from "./data";
+import {
+  bookingResponse,
+  SSRAvailabilityResponse,
+  sessionSSRs,
+  sessionPassengers,
+} from "./data";
 
 const initialState = {
   signature: null,
@@ -49,8 +49,8 @@ const initialState = {
   bookingCommitLoading: false,
   bookingCommitResponse: null,
   bookingResponseLoading: false,
-  // bookingResponse: bookingResponse,
   bookingResponse: null,
+  // bookingResponse: bookingResponse,
   SSRAvailabilityLoading: false,
   SSRAvailabilityResponse: null,
   // SSRAvailabilityResponse: SSRAvailabilityResponse,
@@ -799,7 +799,7 @@ export const updateSinglePassenger =
                 names: [
                   {
                     firstName: payload.firstName,
-                    middleName: payload.firstName,
+                    middleName: "",
                     lastName: payload.lastName,
                     suffix: "",
                     title: payload.title,
@@ -938,7 +938,7 @@ export const updatePassengersDetails =
           names: [
             {
               firstName: _passenger.firstName,
-              middleName: _passenger.firstName,
+              middleName: _passenger.lastName,
               lastName: _passenger.lastName,
               suffix: "",
               title: _passenger.title,
@@ -962,7 +962,7 @@ export const updatePassengersDetails =
             names: [
               {
                 firstName: INFANT_TO_BE_ATTACHED.firstName,
-                middleName: INFANT_TO_BE_ATTACHED.firstName,
+                middleName: INFANT_TO_BE_ATTACHED.lastName,
                 lastName: INFANT_TO_BE_ATTACHED.lastName,
                 suffix: "",
                 title: INFANT_TO_BE_ATTACHED.title,
@@ -1013,8 +1013,8 @@ export const updatePassengersDetails =
           names: [
             {
               firstName: _passenger.firstName,
-              middleName: _passenger.firstName,
-              lastName: _passenger.firstName,
+              middleName: _passenger.lastName,
+              lastName: _passenger.lastName,
               suffix: "",
               title: _passenger.title,
               state: 0,
@@ -1485,3 +1485,5 @@ export const SellSSROption = (payload) => async (dispatch, getState) => {
 
   dispatch(setSSRLoading(false));
 };
+
+export const FetchStateFromServer = () => {};
