@@ -31,14 +31,22 @@ const TripPayment = () => {
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
     useSelector(paymentSelector);
 
+  // useEffect(() => {
+  //   async function _getBookingCommit() {
+  //     if (sellSSRResponse || contactsResponse) {
+  //       dispatch(GetBookingCommit());
+  //     }
+  //   }
+  //   _getBookingCommit();
+  // }, [sellSSRResponse, contactsResponse]);
   useEffect(() => {
     async function _getBookingCommit() {
-      if (sellSSRResponse || contactsResponse) {
+      if (sellSSRResponse) {
         dispatch(GetBookingCommit());
       }
     }
     _getBookingCommit();
-  }, [sellSSRResponse, contactsResponse]);
+  }, [sellSSRResponse]);
 
   useEffect(() => {
     async function fetchGateways() {
@@ -85,6 +93,7 @@ const TripPayment = () => {
         pnr: bookingCommitResponse?.BookingUpdateResponseData?.Success
           ?.RecordLocator,
         gateway_type_id: selected,
+        payment_origin: "booking",
       };
       dispatch(InitializeGatewayPayment(payload));
     } else {

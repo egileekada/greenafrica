@@ -13,7 +13,7 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
 
   useEffect(() => {
     async function mapSessionSSRs() {
-      if (sessionSSRs.length > 0) {
+      if (sessionSSRs && sessionSSRs.length > 0) {
         const passengerSSRs = sessionSSRs.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.id) &&
