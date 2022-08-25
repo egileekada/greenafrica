@@ -14,7 +14,12 @@ import {
 import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
 
-import { bookingResponse, SSRAvailabilityResponse } from "./data";
+// import {
+//   bookingResponse,
+//   SSRAvailabilityResponse,
+//   sessionSSRs,
+//   sessionPassengers,
+// } from "./data";
 
 const initialState = {
   signature: null,
@@ -29,10 +34,12 @@ const initialState = {
   sellInfantLoading: false,
   sellInfantResponse: null,
   sessionPassengers: null,
+  // sessionPassengers: sessionPassengers,
   sessionInfants: null,
   sessionContact: null,
   sessionSegmentDetails: null,
   sessionSSRs: null,
+  // sessionSSRs: sessionSSRs,
   updatePassengersLoading: false,
   passengersResponse: null,
   updateContactsLoading: false,
@@ -45,8 +52,8 @@ const initialState = {
   // bookingResponse: bookingResponse,
   bookingResponse: null,
   SSRAvailabilityLoading: false,
-  // SSRAvailabilityResponse: null,
-  SSRAvailabilityResponse: SSRAvailabilityResponse,
+  SSRAvailabilityResponse: null,
+  // SSRAvailabilityResponse: SSRAvailabilityResponse,
   sellSSRLoading: false,
   sellSSRResponse: null,
 };

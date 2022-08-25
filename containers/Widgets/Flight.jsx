@@ -7,25 +7,30 @@ const FlightWidget = () => {
   const { widgetVisible, sign } = useSelector(generalSelector);
   const dispatch = useDispatch();
 
+  const handleUser = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   return (
     <Popup
       display={widgetVisible}
-      closeModal={() => dispatch(hideWidget())}
+      // closeModal={() => dispatch(hideWidget())}
+      closeModal={handleUser}
       top={true}
       width="w-[600px]"
     >
       <section className="w-full bg-white rounded-xl ">
         <div className="flex flex-col items-center justify-center p-[50px]">
-          <h6 className="font-display text-xl mb-5">
-            This is the new flight widget? {sign}
+          <h6 className="font-display text-xl mb-5 text-red-400">
+            Flight Search Error
           </h6>
 
           <p className="text-center font-body text-sm mb-6">
-            THis will hold the new flight widget
+            Please check search terms and try again
           </p>
           <div className="flex flex-wrap lg:flex-nowrap items-center justify-between w-full">
-            <button className="btn btn-primary basis-full lg:basis-[48%] lg:mr-2">
-              Yes, I need more time
+            <button onClick={handleUser} className="btn btn-primary basis-full">
+              Go Back
             </button>
           </div>
         </div>

@@ -1,11 +1,23 @@
-const _SSRCount = { INFT: 2, XBAG15: 4, XBAG20: 4, SEAT: 2 };
-const _SSRSum = { INFT: 10000, XBAG15: 4725, XBAG20: 5250, SEAT: 2000 };
+const capitalizeName = function (name) {
+  let result = "";
+  if (name) {
+    const names = name.split(" ");
+    const nameUpper = [];
 
-// const sum = [];
+    for (const word of names) {
+      const wordDone = word.replace(word[0], word[0].toUpperCase());
+      nameUpper.push(wordDone);
+    }
+    result = nameUpper.join(" ");
+  } else {
+    result = "";
+  }
 
-// for (const property in _SSRCount) {
-//   console.log(`${property}: ${_SSRCount[property]}`);
-//   const _newOnj = {
-//      : 
-//   }
-// }
+  return result;
+};
+
+const r = capitalizeName("paul ifeoluwa fadayo");
+const r2 = capitalizeName("olabamipe Taiwo");
+
+console.log(r);
+console.log(r2);

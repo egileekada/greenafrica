@@ -24,6 +24,7 @@ const PassengerDetails = () => {
     SSRAvailabilityLoading,
     SSRAvailabilityResponse,
     sellSSRLoading,
+    sessionSSRs,
   } = useSelector(sessionSelector);
 
   useEffect(() => {
@@ -31,6 +32,17 @@ const PassengerDetails = () => {
       dispatch(FetchSSRAvailabilityForBooking());
     }
     checkSSRAvailability();
+  }, []);
+
+  useEffect(() => {
+    async function checkSessionSSRs() {
+      if (sessionSSRs && sessionSSRs.length > 0) {
+        // checkArray and prefill
+        // console.log("we have es=xisting SSRS", sessionSSRs);
+        setSSRs(sessionSSRs);
+      }
+    }
+    checkSessionSSRs();
   }, []);
 
   const proceedToSeatSelection = async () => {

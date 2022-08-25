@@ -4721,3 +4721,24 @@ export const SSRAvailabilityResponse = {
     OtherServiceInfoList: [],
   },
 };
+
+export const sessionPassengers = [
+  {
+    id: 0,
+    firstName: "olabamipe",
+    lastName: "tee",
+    title: "Mrs",
+    dob: "2022-07-25",
+    type: "ADT",
+    typeCount: 1,
+  },
+];
+
+export const sessionSSRs = [
+  { passengerNumber: 0, ssrCode: "X20" },
+  { passengerNumber: 0, ssrCode: "X20" },
+  { passengerNumber: 0, ssrCode: "X15" },
+  { passengerNumber: 0, ssrCode: "X10" },
+  { passengerNumber: 0, ssrCode: "X10" },
+  { passengerNumber: 0, ssrCode: "WCHC" },
+];

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useRef, useEffect } from "react";
 import ArrowIcon from "assets/svgs/cad.svg";
+import { capitalizeName, capitalizeWord } from "lib/utils";
 
 const PassengerAccordion = ({ children, passenger }) => {
   const [active, setActive] = useState(false);
@@ -45,7 +46,7 @@ const PassengerAccordion = ({ children, passenger }) => {
           <p
             className={`inline-block text-black font-display text-base font-bold `}
           >
-            {_passengerName}
+            {_passengerName && capitalizeName(_passengerName)}
           </p>
         </div>
 

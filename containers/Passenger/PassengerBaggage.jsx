@@ -77,7 +77,7 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
             }
           )}
         </section>
-        <div className="flex items-center primary-checkbox">
+        <div className="flex items-center primary-checkbox mb-4">
           <Checkbox onChange={onChange}>
             <label className="check-label">
               <p className="ml-2">I don’t need extra baggage</p>

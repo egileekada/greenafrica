@@ -8,8 +8,23 @@ import { sessionSelector } from "redux/reducers/session";
 const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
   const [totalFare, setFare] = useState(0);
   const [value, setValue] = useState(0);
-  const { sessionPassengers } = useSelector(sessionSelector);
+  const { sessionSSRs, sessionPassengers } = useSelector(sessionSelector);
   const KG = SSRItem?.SSRCode.substring(1);
+
+  useEffect(() => {
+    async function mapSessionSSRs() {
+      if (sessionSSRs.length > 0) {
+        const passengerSSRs = sessionSSRs.filter((_ssr) => {
+          return (
+            _ssr?.passengerNumber === parseInt(passenger?.id) &&
+            _ssr?.ssrCode === SSRItem.SSRCode
+          );
+        });
+        setValue(passengerSSRs.length);
+      }
+    }
+    mapSessionSSRs();
+  }, []);
 
   useEffect(() => {
     SSRItem.PaxSSRPriceList.map((_priceList) => {
@@ -74,6 +89,7 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
       setValue(parseInt(_val));
     }
   };
+
   const onValueIncrement = () => {
     setValue((prevVal) => {
       if (prevVal + 1 > 2) {
@@ -87,6 +103,7 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
       }
     });
   };
+
   const onValueDecrement = () => {
     setValue((prevVal) => {
       if (prevVal - 1 < 0) {
