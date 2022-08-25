@@ -12,8 +12,9 @@ import {
   GetSSRAvailabilityForBooking,
 } from "services/bookingService";
 import { notification } from "antd";
+import { setPromoWidgetVisible } from "./general";
 
-import { bookingResponse } from "./data";
+import { bookingResponse, SSRAvailabilityResponse } from "./data";
 
 const initialState = {
   signature: null,
@@ -31,6 +32,7 @@ const initialState = {
   sessionInfants: null,
   sessionContact: null,
   sessionSegmentDetails: null,
+  sessionSSRs: null,
   updatePassengersLoading: false,
   passengersResponse: null,
   updateContactsLoading: false,
@@ -43,7 +45,8 @@ const initialState = {
   // bookingResponse: bookingResponse,
   bookingResponse: null,
   SSRAvailabilityLoading: false,
-  SSRAvailabilityResponse: null,
+  // SSRAvailabilityResponse: null,
+  SSRAvailabilityResponse: SSRAvailabilityResponse,
   sellSSRLoading: false,
   sellSSRResponse: null,
 };
@@ -97,12 +100,14 @@ export const sessionSlice = createSlice({
     setSessionPassengers: (state, { payload }) => {
       state.sessionPassengers = [...payload];
     },
-
     setSessionInfants: (state, { payload }) => {
       state.sessionInfants = [...payload];
     },
     setSessionSegmentDetails: (state, { payload }) => {
       state.sessionSegmentDetails = payload;
+    },
+    setSessionSSRs: (state, { payload }) => {
+      state.sessionSSRs = payload;
     },
 
     setUpdatePassengersLoading: (state, { payload }) => {
@@ -173,6 +178,7 @@ export const {
   setSessionInfants,
   setSessionContact,
   setSessionSegmentDetails,
+  setSessionSSRs,
   setUpdatePassengersLoading,
   setUpdatePassengersResponse,
   setUpdateContactsLoading,
@@ -566,10 +572,16 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
     const availabilityResponse = flightAvalaibilty.data;
     await dispatch(setAvailabilityResponse(availabilityResponse));
   } catch (err) {
+    const errMsg = err?.response?.data?.Error?.ErrorText;
+    const PROMO_ERROR = "PssPromoCodeNotFoundException";
+    errMsg &&
+      errMsg.toLowerCase() === PROMO_ERROR.toLowerCase() &&
+      dispatch(setPromoWidgetVisible(true));
     notification.error({
       message: "Error",
       description: "Fetch Flights failed",
     });
+    console.log("er", err.response);
   }
   dispatch(setFlightAvailabilityLoading(false));
 };
@@ -1379,6 +1391,7 @@ export const FetchSSRAvailabilityForBooking =
 
 export const SellSSROption = (payload) => async (dispatch, getState) => {
   dispatch(setSSRLoading(true));
+  dispatch(setSessionSSRs(payload));
   const currentState = getState().session;
 
   const _paxSSRs = [];

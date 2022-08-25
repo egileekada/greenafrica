@@ -22,7 +22,9 @@ const IbeTrips = ({ flightSchedule, _i }) => {
             {flightSchedule ? (
               flightSchedule.length > 0 ? (
                 flightSchedule.map((_schedule) => {
-                  return <IbeTripItem flightSchedule={flightSchedule} />;
+                  return _schedule.Journeys.map((_journey) => {
+                    return <IbeTripItem journey={_journey} />;
+                  });
                 })
               ) : (
                 <h2 className=" text-red-600 font-normal text-sm mb-8">

@@ -120,6 +120,19 @@ const SummaryDetails = ({ isRoundTrip }) => {
                       ? "CHILD"
                       : "INFANT"}
                   </h6>
+
+                  {/* {_passenger?.PassengerInfants.length
+                    ? _passenger?.PassengerInfants.map((_paxInfant) => {
+                        return _paxInfant.Names.map((_infName) => {
+                          return (
+                            <h6 className="text-[10px] font-normal text-[#5F5B82] font-title">
+                              {_infName?.FirstName}&nbsp;
+                              {_infName?.LastName}
+                            </h6>
+                          );
+                        });
+                      })
+                    : null} */}
                 </div>
               </div>
               {_Infants.length > 0 ? (
@@ -128,7 +141,19 @@ const SummaryDetails = ({ isRoundTrip }) => {
                     <h5>Infant{_Infants.length > 1 ? "s" : ""}:</h5>
                   </div>
                   <div className="f-1">
-                    <h6>{_Infants.length}</h6>
+                    {/* <h6>{_Infants.length}</h6> */}
+                    {_passenger?.PassengerInfants.length
+                      ? _passenger?.PassengerInfants.map((_paxInfant) => {
+                          return _paxInfant.Names.map((_infName) => {
+                            return (
+                              <h6>
+                                {_infName?.FirstName}&nbsp;
+                                {_infName?.LastName}
+                              </h6>
+                            );
+                          });
+                        })
+                      : null}
                   </div>
                 </div>
               ) : null}
@@ -139,23 +164,36 @@ const SummaryDetails = ({ isRoundTrip }) => {
                 <div className="f-1">
                   <h6>
                     {_Baggages.length > 1
-                      ? `${_Baggages.length} Baggages`
+                      ? `${_Baggages.length} Bag${_Baggages.length > 1 && "s"}`
                       : _Baggages.length === 1
-                      ? `${_Baggages.length} Baggage`
+                      ? `${_Baggages.length} Bag`
                       : "No Baggage"}
                   </h6>
                 </div>
               </div>
-              {_Seats.length > 0 ? (
-                <div className="trip__summary__details">
-                  <div className="f-1">
-                    <h5>Seat{_Seats.length > 1 ? "s" : ""}:</h5>
-                  </div>
-                  <div className="f-1">
-                    <h6>{_Seats.length}</h6>
-                  </div>
-                </div>
-              ) : null}
+              {_Seats.length > 0
+                ? bookingResponse?.Booking?.Journeys.map((_journey) => {
+                    return _journey?.Segments.map((_segment) => {
+                      return (
+                        <div className="trip__summary__details">
+                          <div className="f-1">
+                            <h5>
+                              Seat{_Seats.length > 1 ? "s" : ""}
+                              &nbsp;&nbsp;&nbsp;
+                              {`${_segment?.PaxSeats[paxIndex]?.DepartureStation} -  ${_segment?.PaxSeats[paxIndex]?.ArrivalStation}`}
+                              :
+                            </h5>
+                          </div>
+                          <div className="f-1">
+                            <h6>
+                              {_segment?.PaxSeats[paxIndex]?.UnitDesignator}
+                            </h6>
+                          </div>
+                        </div>
+                      );
+                    });
+                  })
+                : null}
             </section>
           );
           {

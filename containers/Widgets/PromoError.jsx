@@ -13,12 +13,13 @@ const PromoErrorWidget = () => {
 
   const handleUser = () => {
     dispatch(setPromoWidgetVisible(false));
-    dispatch(showWidget(true));
+    // dispatch(showWidget(true));
+    window.location.assign("https://dev-website.gadevenv.com/");
   };
   return (
     <Popup
       display={promoWidgetVisible}
-      closeModal={() => dispatch(hideWidget())}
+      closeModal={handleUser}
       top={true}
       width="w-[600px]"
     >

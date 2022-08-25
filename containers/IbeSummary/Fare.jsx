@@ -37,7 +37,6 @@ const Fare = ({ isRoundTrip }) => {
                       0
                     );
                     _SSRSum[_paxFee?.FeeCode] = totalServiceCharge;
-                    console.log("totalServiceCharge", totalServiceCharge);
                   });
                 });
 
@@ -84,11 +83,26 @@ const Fare = ({ isRoundTrip }) => {
 
                       return (
                         <>
-                          <div className="trip__summary__row">
+                          <div className="trip__summary__row ">
                             <div className="flex items-center">
                               <h6>
                                 {bookingResponse?.Booking?.Passengers.length}x
                                 Passenger
+                                {bookingResponse?.Booking?.Passengers.length > 1
+                                  ? "s"
+                                  : ""}
+                                :
+                              </h6>
+                            </div>
+                            <div>
+                              <h6></h6>
+                            </div>
+                          </div>
+                          <div className="trip__summary__row subrow">
+                            <div className="flex items-center">
+                              <h6>
+                                {bookingResponse?.Booking?.Passengers.length}x
+                                Fare
                                 {bookingResponse?.Booking?.Passengers.length > 1
                                   ? "s"
                                   : ""}
@@ -109,7 +123,7 @@ const Fare = ({ isRoundTrip }) => {
                               <h6>
                                 {" "}
                                 {bookingResponse?.Booking?.Passengers.length}x
-                                Service Charge:
+                                Passenget Service Charge:
                               </h6>
                             </div>
                             <div>
@@ -166,7 +180,7 @@ const Fare = ({ isRoundTrip }) => {
                             </div>
                           )}
                           {_SSRCount?.XBAG20 && (
-                            <div className="trip__summary__row subrow">
+                            <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
                                   {_SSRCount?.XBAG20}x&nbsp;20KG Baggage
@@ -179,7 +193,7 @@ const Fare = ({ isRoundTrip }) => {
                             </div>
                           )}
                           {_SSRCount?.XBAG15 && (
-                            <div className="trip__summary__row subrow">
+                            <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
                                   {_SSRCount?.XBAG15}x&nbsp;15KG Baggage
@@ -192,7 +206,7 @@ const Fare = ({ isRoundTrip }) => {
                             </div>
                           )}
                           {_SSRCount?.XBAG10 && (
-                            <div className="trip__summary__row subrow">
+                            <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
                                   {_SSRCount?.XBAG10}x&nbsp;10KG Baggage

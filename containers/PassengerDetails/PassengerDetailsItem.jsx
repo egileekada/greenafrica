@@ -43,7 +43,7 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
       {SSRAvailabilityResponse ? (
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
-            {/* <p>{JSON.stringify(selectedSSRs)}</p> */}
+            <p>{JSON.stringify(selectedSSRs)}</p>
             <h2 className="title-text mb-2">INSURANCE</h2>
             <div className="flex items-center primary-checkbox">
               <Checkbox onChange={onInsuranceChange}>

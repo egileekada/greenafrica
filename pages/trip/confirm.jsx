@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import BaseLayout from "layouts/Base";
-import IbeSidebar from "containers/IbeSidebar";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
@@ -12,8 +11,11 @@ import { GetBookingDetails, sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
+import IbeAdbar from "containers/IbeAdbar";
+import ReactToPrint from "react-to-print";
 
 const TripConfirm = () => {
+  let componentRef = useRef();
   const dispatch = useDispatch();
   const [segmentInfo, setSegmentInfo] = useState(null);
   const [isRoundTrip, setIsRoundTrip] = useState(false);
@@ -79,9 +81,24 @@ const TripConfirm = () => {
         <div className="basis-full md:basis-auto mb-4 md:mb-0 flex flex-col">
           <h2 className="trip-title mb-3">FLIGHT SUMMARY</h2>
         </div>
-        <button className="basis-full md:basis-auto btn btn-outline">
+
+        <ReactToPrint
+          trigger={() => (
+            <button
+              className="basis-full md:basis-auto btn btn-outline"
+              onClick={() => print()}
+            >
+              Download Ticket
+            </button>
+          )}
+          content={() => componentRef}
+        />
+        {/* <button
+          className="basis-full md:basis-auto btn btn-outline"
+          onClick={() => print()}
+        >
           Download Ticket
-        </button>
+        </button> */}
       </div>
     );
   };
@@ -192,7 +209,10 @@ const TripConfirm = () => {
                 <div className="ga__section__main">
                   <WelcomeNote />
 
-                  <section className="flex flex-col bg-white pb-20 trip__summary">
+                  <section
+                    className="flex flex-col bg-white pb-20 trip__summary"
+                    ref={(el) => (componentRef = el)}
+                  >
                     <TripHeader />
                     <TicketCTA />
                     <Journeys />
@@ -211,7 +231,7 @@ const TripConfirm = () => {
                   </section>
                 </div>
                 <div className="ga__section__side">
-                  <IbeSidebar />
+                  <IbeAdbar />
                 </div>
               </>
             ) : (

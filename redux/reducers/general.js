@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { tuple } from "antd/lib/_util/type";
-
 const initialState = {
   widgetVisible: false,
   promoWidgetVisible: false,
