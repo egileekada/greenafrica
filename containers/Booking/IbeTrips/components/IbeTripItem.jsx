@@ -4,8 +4,7 @@ import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import CaretDown from "assets/svgs/caretdown.svg";
 import IbeTripVariant from "./IbeTripVaraint";
-import { format, differenceInMinutes } from "date-fns";
-import { timeConvert } from "utils/common";
+import { format } from "date-fns";
 
 const IbeTripItem = ({ journey }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -28,14 +27,6 @@ const IbeTripItem = ({ journey }) => {
       });
     }
   }, [journey]);
-
-  const leastFare =
-    journey?.Segments[0].Fares[0].PaxFares[0].ServiceCharges.reduce(
-      (accumulator, object) => {
-        return accumulator + object.Amount;
-      },
-      0
-    );
 
   return (
     <section className="flex flex-col mb-6">
@@ -65,15 +56,7 @@ const IbeTripItem = ({ journey }) => {
               </p>
             </div>
           </div>
-          <p className="tripTime self-center">
-            {flightTime &&
-              timeConvert(
-                differenceInMinutes(
-                  new Date(flightTime?.STA),
-                  new Date(flightTime?.STD)
-                )
-              )}
-          </p>
+          <p className="tripTime self-center">1h 35mins</p>
         </div>
         <div className="basis-full lg:basis-[40%] mt-4 lg:mt-0 flex justify-end items-center">
           {!isVisible ? (
@@ -81,10 +64,7 @@ const IbeTripItem = ({ journey }) => {
               className="btn btn-primary w-full lg:w-[200px] flex items-center justify-center text-center group lg:ml-4"
               onClick={() => setIsVisible(!isVisible)}
             >
-              {/* <span className="text-white mr-3">From ₦16,501</span> */}
-              <span className="text-white mr-3">
-                {leastFare ? `From ${leastFare.toLocaleString()}` : "Proceed"}
-              </span>
+              <span className="text-white mr-3">From ₦16,501</span>
               <CaretDown />
             </button>
           ) : (

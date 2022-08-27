@@ -31,6 +31,16 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+             function disableBack() { window.history.forward(); }
+              setTimeout("disableBack()", 0);
+              window.onunload = function () { null };
+            `,
+            }}
+          />
         </body>
       </Html>
     );

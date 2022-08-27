@@ -91,6 +91,10 @@
 
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;
+
+      &.disabled {
+        @apply opacity-50 pointer-events-none cursor-none;
+      }
     }
 
     &.btn-green {
@@ -281,6 +285,18 @@
       figure {
         @apply absolute left-0;
       }
+
+      span {
+        @apply ml-6 text-white text-xs;
+      }
+    }
+  }
+
+  .manage-booking-bar {
+    @apply bg-white fit-x-bleed items-center justify-between py-10 flex fixed bottom-0 w-full z-50;
+
+    button {
+      @apply flex items-center justify-center  relative w-[200px];
 
       span {
         @apply ml-6 text-white text-xs;
@@ -674,6 +690,49 @@
       @apply w-[195px];
       &.btn-outline {
         @apply text-primary-main;
+      }
+    }
+  }
+
+  .tabs__container {
+    button {
+      @apply flex items-center mb-4 mr-12 h-full;
+
+      p {
+        @apply font-header font-bold text-[#9E9BBF] text-sm;
+      }
+
+      svg {
+        path {
+          fill: #9e9bbf;
+        }
+      }
+
+      &:hover {
+        p {
+          @apply text-primary-main opacity-70;
+        }
+
+        svg {
+          path {
+            fill: #26205e;
+            opacity: 0.7;
+          }
+        }
+      }
+
+      &.active-tab {
+        @apply border-b-[3px] border-b-primary-main;
+
+        p {
+          @apply text-primary-main;
+        }
+
+        svg {
+          path {
+            fill: #26205e;
+          }
+        }
       }
     }
   }

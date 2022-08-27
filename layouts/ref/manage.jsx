@@ -1,40 +1,55 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
-import GreenCheck from "assets/svgs/green.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
-// import CheckInCard from "components/Cards/checkin";
 import IbeAdbar from "containers/IbeAdbar";
-import { useRouter } from "next/router";
 
-const CheckInDetails = () => {
+import { useSelector, useDispatch } from "react-redux";
+import {
+  sessionSelector,
+  startSession,
+  retrieveBooking,
+} from "redux/reducers/session";
+
+const ManageBookings = () => {
   const router = useRouter();
+  const { id } = router.query;
+  const dispatch = useDispatch();
+  const { signature, sessionLoading } = useSelector(sessionSelector);
 
   useEffect(() => {
-    // console.log("router is:", router);
-    console.log("router is:", router.asPath);
-    // if (router.asPath === "/checkin/confirm") {
-    //   window.onpopstate = () => {
-    //     history.go(1);
-    //   };
-    // }
-  }, [router]);
+    if (router.isReady) {
+      async function initSession() {
+        if (id) {
+          dispatch(startSession());
+        } else {
+          console.log("Something went wrong");
+        }
+      }
+      initSession();
+    }
+  }, [router.isReady]);
+
+  useEffect(() => {
+    async function getBooking() {
+      if (signature) {
+        dispatch(retrieveBooking({ id }));
+      }
+    }
+    getBooking();
+  }, [signature]);
 
   return (
     <BaseLayout>
-      <section className="flex items-center justify-center bg-green px-3 py-3 pt-24 lg:pt-3">
-        <p className="text-center">
-          Boarding pass has been emailed to test@greenafrica.net
-        </p>
-      </section>
       <section className="w-full checkin">
         <section className="ga__section">
           <div className="ga__section__main">
             <div className="mb-8 mt-16 xlg:mt-0">
-              <h2 className="text-black font-bold text-2xl mb-2">Check In</h2>
+              <h2 className="text-black font-bold text-2xl mb-2">Booking</h2>
               <p>
                 Kindly confirm that the information below is correct before
                 checking in
@@ -45,7 +60,6 @@ const CheckInDetails = () => {
               {/* TripHeader */}
               <section className="ibe__flight__info__destination">
                 <p>Booking Code: 9J78BG</p>
-                {/* <figure className="absolute -left-6"> */}
                 <figure className="flightCircle">
                   <FlightIcon />
                 </figure>
@@ -108,39 +122,110 @@ const CheckInDetails = () => {
                     <h6>SEAT NUMBER</h6>
                     <h5 className="flex items-center">
                       <span>2A</span>
+                      <button className="btn btn-outline">Edit</button>
                     </h5>
                   </div>
                   <div className="trip-details-item">
                     <h6>BAGGAGES</h6>
                     <h5 className="flex items-center">
                       <span>0</span>
+                      <button className="btn btn-outline">
+                        View Selection
+                      </button>
+                      <button className="btn btn-outline ml-4">Add</button>
                     </h5>
                   </div>
                   <div className="trip-details-item">
                     <h6>MEALS</h6>
                     <h5 className="flex items-center">
                       <span>0</span>
+                      <button className="btn btn-outline">
+                        View Selection
+                      </button>
+                      <button className="btn btn-outline ml-4">Add</button>
                     </h5>
-                  </div>
-                  <div className="flex flex-wrap md:flex-nowrap items-center justify-between ml-auto">
-                    <button className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0">
-                      Download Boarding Pass
-                    </button>
-                    <button className="btn btn-outline  basis-full md:basis-auto">
-                      Email Boarding Pass
-                    </button>
                   </div>
                 </div>
               </section>
               {/* Trip Itenary */}
               {/* Checkin Info*/}
-              <section className="flex items-center mx-6 my-3">
-                <figure className="mr-1">
-                  <GreenCheck />
-                </figure>
-                <p>You have been checked in successfully</p>
+              <section className="checkin__info mx-6 my-3">
+                <p>
+                  You added some new services so your fare has been updated with
+                  additional fees
+                </p>
               </section>
               {/* Checkin Info*/}
+              {/* CTA */}
+              <div className="flex flex-wrap md:flex-nowrap mx-6">
+                <button className="basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3">
+                  Update Itinerary
+                </button>
+                <button className="basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3">
+                  Manage Services
+                </button>
+                <button className="basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3">
+                  Seat Management
+                </button>
+              </div>
+              {/* CTA */}
+              {/* Summary */}
+              <div className="flex flex-col mx-6 mt-10">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center">
+                    <h6 className="font-display font-bold text-xs text-primary-main">
+                      Round Trip ABV - LOS
+                    </h6>
+                  </div>
+                  <div>
+                    <h6 className="font-header font-bold text-base text-primary-main">
+                      {" "}
+                      ₦26,501
+                    </h6>
+                  </div>
+                </div>
+                <div className="checkin__row">
+                  <div className="flex items-center">
+                    <h6>2 x 10 kg baggage:</h6>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+                <div className="checkin__row subrow">
+                  <div className="flex items-center">
+                    <h6>1x Seat Selected</h6>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+                <div className="checkin__row subrow">
+                  <div className="flex items-center">
+                    <h6>1x Seat Selected</h6>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+                <div className="checkin__row mb-10">
+                  <div className="flex items-center">
+                    <h6>1x Seat Selected</h6>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+                <div className="checkin__row totalRow">
+                  <div className="flex items-center">
+                    <h5>Amount Due</h5>
+                  </div>
+                  <div>
+                    <h6> ₦26,501</h6>
+                  </div>
+                </div>
+              </div>
+              {/* Summary */}
             </section>
           </div>
           <div className="ga__section__side">
@@ -152,4 +237,4 @@ const CheckInDetails = () => {
   );
 };
 
-export default CheckInDetails;
+export default ManageBookings;

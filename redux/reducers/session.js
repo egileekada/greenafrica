@@ -10,16 +10,26 @@ import {
   BookingCommit,
   GetBooking,
   GetSSRAvailabilityForBooking,
+  GetBookingFromState,
 } from "services/bookingService";
 import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
+import format from "date-fns/format";
+import addDays from "date-fns/addDays";
 
 import {
+  bookingResponseMultiple,
   bookingResponse,
   SSRAvailabilityResponse,
   sessionSSRs,
   sessionPassengers,
+  manageRequest,
+  _sessionState,
+  bookingNew,
 } from "./data";
+
+const _sig =
+  "nRSa/Cwg6w4=|NttRfUEqg4qb8UHS1X6n4zk1comLiMt7VKH5zvkXCODJgwsclsU5TU0btW7b94JYr5RY0ADcXLcSEZLPW1z8NkW7Bl81o/Wuznmd3ex4yWrrQ9fckFW5QDzVx3IF6P6nCyatSCqsUug=";
 
 const initialState = {
   signature: null,
@@ -49,13 +59,14 @@ const initialState = {
   bookingCommitLoading: false,
   bookingCommitResponse: null,
   bookingResponseLoading: false,
+  // bookingResponse: bookingNew,
   bookingResponse: null,
-  // bookingResponse: bookingResponse,
   SSRAvailabilityLoading: false,
   SSRAvailabilityResponse: null,
-  // SSRAvailabilityResponse: SSRAvailabilityResponse,
   sellSSRLoading: false,
   sellSSRResponse: null,
+  sessionStateLoading: false,
+  sessionStateResponse: null,
 };
 
 export const sessionSlice = createSlice({
@@ -168,6 +179,19 @@ export const sessionSlice = createSlice({
     setSessionContact: (state, { payload }) => {
       state.sessionContact = payload;
     },
+    setSSRResponse: (state, { payload }) => {
+      state.sellSSRResponse = payload;
+    },
+    setSessionContact: (state, { payload }) => {
+      state.sessionContact = payload;
+    },
+
+    setSessionStateLoading: (state, { payload }) => {
+      state.sessionStateLoading = payload;
+    },
+    setSessionStateResponse: (state, { payload }) => {
+      state.sessionStateResponse = payload;
+    },
   },
 });
 
@@ -202,6 +226,8 @@ export const {
   setSSRAvailabilityResponse,
   setSSRLoading,
   setSSRResponse,
+  setSessionStateLoading,
+  setSessionStateResponse,
 } = sessionSlice.actions;
 export const sessionSelector = (state) => state.session;
 export default sessionSlice.reducer;
@@ -269,14 +295,10 @@ export const setFlightRequest = (payload) => async (dispatch) => {
 export const fetchLowFareAvailability = (payload) => async (dispatch) => {
   dispatch(setLowFareAvailabilityLoading(true));
 
-  const {
-    departureStation,
-    arrivalStation,
-    beginDate,
-    endDate,
-    signature,
-    promoCode,
-  } = payload;
+  const { departureStation, arrivalStation, endDate, signature } = payload;
+
+  const date = new Date();
+  date.setDate(date.getDate() + 179);
 
   const requestPayload = {
     signature: signature,
@@ -284,104 +306,41 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
     enableExceptionStackTrace: true,
     contractVersion: 0,
     availabilityRequest: {
-      departureStation: departureStation,
-      arrivalStation: arrivalStation,
-      beginDate: beginDate,
+      DepartureStation: departureStation,
+      ArrivalStation: arrivalStation,
+      beginDate: format(new Date(), "yyyy-MM-dd"),
       beginDateSpecified: true,
-      endDate: endDate,
+      endDate: format(addDays(new Date(), 179), "yyyy-MM-dd"),
       endDateSpecified: true,
-      carrierCode: "Q9",
-      flightNumber: "",
-      flightType: 0,
-      flightTypeSpecified: true,
-      paxCount: 0,
-      paxCountSpecified: true,
-      dow: 0,
-      dowSpecified: true,
-      currencyCode: "string",
-      displayCurrencyCode: "string",
-      discountCode: "string",
-      promotionCode: promoCode,
-      availabilityType: 0,
-      availabilityTypeSpecified: true,
-      sourceOrganization: "string",
-      maximumConnectingFlights: 0,
-      maximumConnectingFlightsSpecified: true,
-      availabilityFilter: 0,
-      availabilityFilterSpecified: true,
-      fareClassControl: 0,
-      fareClassControlSpecified: true,
-      minimumFarePrice: 0,
-      minimumFarePriceSpecified: true,
-      maximumFarePrice: 0,
-      maximumFarePriceSpecified: true,
-      productClassCode: "string",
-      ssrCollectionsMode: 0,
-      ssrCollectionsModeSpecified: true,
-      inboundOutbound: 0,
-      inboundOutboundSpecified: true,
-      nightsStay: 0,
-      nightsStaySpecified: true,
-      includeAllotments: true,
-      includeAllotmentsSpecified: true,
-      beginTime: {
-        totalMinutes: 0,
-        totalMinutesSpecified: true,
-      },
-      endTime: {
-        totalMinutes: 0,
-        totalMinutesSpecified: true,
-      },
-      departureStations: ["string"],
-      arrivalStations: ["string"],
-      fareTypes: ["string"],
-      productClasses: ["string"],
-      fareClasses: ["string"],
-      paxPriceTypes: [
-        {
-          paxType: "",
-          paxDiscountCode: "",
-          paxCount: 0,
-          paxCountSpecified: true,
-        },
-      ],
-      journeySortKeys: [0],
-      travelClassCodes: [0],
-      includeTaxesAndFees: true,
-      includeTaxesAndFeesSpecified: true,
-      fareRuleFilter: 0,
-      fareRuleFilterSpecified: true,
-      loyaltyFilter: 0,
-      loyaltyFilterSpecified: true,
-      paxResidentCountry: "string",
-      travelClassCodeList: ["string"],
-      systemCode: "string",
-      currentSourceOrganization: "string",
-      paxPriceDetailList: [
-        {
-          paxType: "string",
-          paxDiscountCode: "string",
-          dateOfBirth: "2022-08-16T03:50:30.607Z",
-          dateOfBirthSpecified: true,
-          nationality: "string",
-          residentCountry: "string",
-          programCode: "string",
-          programLevel: "string",
-        },
-      ],
-      serviceBundleControl: 0,
-      serviceBundleControlSpecified: true,
-      bookingStatus: 0,
-      bookingStatusSpecified: true,
-      baggagePricingSystemCode: "string",
-      optimizationInputParameterList: [
-        {
-          code: "string",
-          value: "string",
-        },
-      ],
+      CarrierCode: "Q9",
+      FlightNumber: "",
+      FlightType: 5,
+      PaxCount: 1,
+      Dow: 10,
+      CurrencyCode: "NGN",
+      DisplayCurrencyCode: "NGN",
+      AvailabilityType: 0,
+      SourceOrganization: "",
+      MaximumConnectingFlights: 0,
+      AvailabilityFilter: 0,
+      FareClassControl: 0,
+      MinimumFarePrice: 0,
+      MaximumFarePrice: 0,
+      ProductClassCode: "GC",
+      SSRCollectionsMode: 0,
+      InboundOutbound: 0,
+      NightsStay: 0,
+      IncludeAllotments: false,
+      fareClasses: ["Y"],
+      IncludeTaxesAndFees: false,
+      FareRuleFilter: 0,
+      LoyaltyFilter: 0,
+      ServiceBundleControl: 0,
+      BookingStatus: 0,
     },
   };
+
+  console.log("requestPayload ", requestPayload?.availabilityRequest);
 
   try {
     const Response = await GetLowFareAvailability(requestPayload);
@@ -759,6 +718,7 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
       try {
         const sellInfantResponse = await BookingSell(infantPayload);
         await dispatch(setSellInfantResponse(sellInfantResponse.data));
+        await dispatch(FetchStateFromServer());
       } catch (err) {
         console.log("Sell Infant Request error", err.response);
       }
@@ -1047,7 +1007,7 @@ export const updatePassengersDetails =
       const Response = await UpdatePassengers(requestPayload);
       await dispatch(setUpdatePassengersResponse(Response.data));
     } catch (err) {
-      console.log("Update passenger Request error", err.response);
+      console.log("Update passengers Request error", err.response);
     }
     dispatch(setUpdatePassengersLoading(false));
   };
@@ -1115,7 +1075,7 @@ export const updateContactsDetails =
       const Response = await UpdateContacts(requestPayload);
       await dispatch(setUpdateContactsResponse(Response.data));
     } catch (err) {
-      console.log("Update passenger Request error", err.response);
+      console.log("Update Contacts Request error", err.response);
     }
     dispatch(setUpdateContactsLoading(false));
   };
@@ -1238,6 +1198,7 @@ export const PaymentToBooking = (payload) => async (dispatch, getState) => {
   try {
     const Response = await AddPaymentToBooking(requestPayload);
     await dispatch(setPaymentBookingResponse(Response.data));
+    await dispatch(FetchStateFromServer());
   } catch (err) {
     console.log("Payment Request error", err.response);
   }
@@ -1288,8 +1249,9 @@ export const GetBookingCommit = () => async (dispatch, getState) => {
   try {
     const Response = await BookingCommit(requestPayload);
     await dispatch(setBookingCommitResponse(Response.data));
+    await dispatch(FetchStateFromServer());
   } catch (err) {
-    console.log("Update passenger Request error", err.response);
+    console.log("BookingCommit Request error", err.response);
   }
   dispatch(setBookingCommitLoading(false));
 };
@@ -1311,9 +1273,6 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
         getBookingBy: 0,
         getBookingBySpecified: true,
         getByRecordLocator: {
-          // recordLocator:
-          //   currentState?.bookingCommitResponse?.BookingUpdateResponseData
-          //     ?.Success?.RecordLocator,
           recordLocator: currentPaymentState?.verifyPaymentResponse?.data?.pnr,
         },
       },
@@ -1323,7 +1282,7 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
     const Response = await GetBooking(requestPayload);
     await dispatch(setBookingResponse(Response.data));
   } catch (err) {
-    console.log("Update passenger Request error", err.response);
+    console.log("GetBooking Request error", err.response);
     notification.error({
       message: "Error",
       description: "Get Booking Details failed",
@@ -1331,6 +1290,40 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
   }
   dispatch(setBookingResponseLoading(false));
 };
+
+export const GetBookingDetailsWithPNR =
+  (payload) => async (dispatch, getState) => {
+    dispatch(setBookingResponseLoading(true));
+
+    const requestPayload = {
+      header: {
+        signature: payload.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: false,
+        contractVersion: 0,
+      },
+      getBookingRequestDto: {
+        getBookingRequestData: {
+          getBookingBy: 0,
+          getBookingBySpecified: true,
+          getByRecordLocator: {
+            recordLocator: payload.pnr,
+          },
+        },
+      },
+    };
+    try {
+      const Response = await GetBooking(requestPayload);
+      await dispatch(setBookingResponse(Response.data));
+    } catch (err) {
+      console.log("GetBooking Request error", err.response);
+      notification.error({
+        message: "Error",
+        description: "Get Booking Details failed",
+      });
+    }
+    dispatch(setBookingResponseLoading(false));
+  };
 
 export const FetchSSRAvailabilityForBooking =
   () => async (dispatch, getState) => {
@@ -1476,6 +1469,7 @@ export const SellSSROption = (payload) => async (dispatch, getState) => {
   try {
     const SSRResponse = await BookingSell(requestPayload);
     await dispatch(setSSRResponse(SSRResponse.data));
+    await dispatch(FetchStateFromServer());
   } catch (err) {
     notification.error({
       message: "Error",
@@ -1486,4 +1480,28 @@ export const SellSSROption = (payload) => async (dispatch, getState) => {
   dispatch(setSSRLoading(false));
 };
 
-export const FetchStateFromServer = () => {};
+export const FetchStateFromServer = () => async (dispatch, getState) => {
+  const currentState = getState().session;
+  dispatch(setSessionStateLoading(true));
+
+  try {
+    const payload = {
+      header: {
+        signature: currentState.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: false,
+        contractVersion: 0,
+      },
+    };
+
+    const stateBooking = await GetBookingFromState(payload);
+    await dispatch(setSessionStateResponse(stateBooking.data));
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Fetching session states failed",
+    });
+  }
+
+  dispatch(setSessionStateLoading(false));
+};

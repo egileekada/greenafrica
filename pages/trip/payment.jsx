@@ -74,9 +74,9 @@ const TripPayment = () => {
           message: "Error",
           description: "Unable to fetch total flight cost, Redirecting in 3s",
         });
-        // setTimeout(() => {
-        //   router.push("/");
-        // }, 3000);
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
       }
     }
     computeTotalFare();

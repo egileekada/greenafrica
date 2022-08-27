@@ -13,14 +13,16 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
 import ReactToPrint from "react-to-print";
+import { useRouter } from "next/router";
 
 const TripConfirm = () => {
+  const router = useRouter();
   let componentRef = useRef();
   const dispatch = useDispatch();
   const [segmentInfo, setSegmentInfo] = useState(null);
   const [isRoundTrip, setIsRoundTrip] = useState(false);
 
-  const { bookingResponseLoading, bookingResponse } =
+  const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
 
   useEffect(() => {
@@ -220,7 +222,14 @@ const TripConfirm = () => {
 
                     {/* CTA */}
                     <section className="flex  flex-wrap md:flex-nowrap items-center px-6 lg:px-12">
-                      <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-0 md:mr-2 mb-4 md:mb-0">
+                      <button
+                        className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-0 md:mr-2 mb-4 md:mb-0"
+                        onClick={() =>
+                          router.push(
+                            `/bookings?pnr=${bookingResponse?.Booking?.RecordLocator}&signature=${signature}`
+                          )
+                        }
+                      >
                         Manage Booking
                       </button>
                       <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2">
@@ -249,3 +258,5 @@ const TripConfirm = () => {
 };
 
 export default TripConfirm;
+
+// http://localhost:4200/bookings?pnr=T3T9FF&signature=nRSa/Cwg6w4=|NttRfUEqg4qb8UHS1X6n4zk1comLiMt7VKH5zvkXCODJgwsclsU5TU0btW7b94JYr5RY0ADcXLcSEZLPW1z8NkW7Bl81o/Wuznmd3ex4yWrrQ9fckFW5QDzVx3IF6P6nCyatSCqsUug=

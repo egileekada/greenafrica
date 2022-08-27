@@ -8,14 +8,13 @@ import FlightIcon from "assets/svgs/FlightTwo.svg";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
-const IbeHeader = () => {
+const BookingsIbeHeader = () => {
   const [width] = useDeviceSize();
   const { lowFareAvailabilityLoading, lowFareAvailabilityResponse } =
     useSelector(sessionSelector);
 
   const { flightParams } = useSelector(sessionSelector);
   const arr = width > 1200 ? new Array(7).fill(0) : new Array(3).fill(0);
-  
 
   return (
     <section className="ibe__flight__info">
@@ -69,4 +68,4 @@ const IbeHeader = () => {
   );
 };
 
-export default IbeHeader;
+export default BookingsIbeHeader;

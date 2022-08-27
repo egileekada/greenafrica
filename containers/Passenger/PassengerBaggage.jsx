@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
-
 const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
   const router = useRouter();
   const [showPopUp, setShow] = useState(false);

@@ -97,9 +97,7 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
           {fare_variant === "savr" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn btn-primary w-full text-center ${
-                parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
-              }`}
+              className="btn btn-primary w-full text-center"
             >
               ₦{totalServiceCharge.toLocaleString("NGN")}
             </button>
@@ -107,9 +105,7 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
           {fare_variant === "clsc" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn btn-primary w-full ${
-                parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
-              }`}
+              className="btn btn-primary  w-full"
             >
               ₦{totalServiceCharge.toLocaleString("NGN")}
             </button>
@@ -117,9 +113,7 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
           {fare_variant === "flexi" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn btn-primary w-full  ${
-                parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
-              }`}
+              className="btn btn-primary  w-full"
             >
               ₦{totalServiceCharge.toLocaleString("NGN")}
             </button>

@@ -47,9 +47,6 @@ const SummaryDetails = ({ isRoundTrip }) => {
                   );
                 })}
 
-                {/* <h6 className="text-[12px] font-normal text-[#5F5B82] font-title">
-                  Seat Number: 2AER
-                </h6> */}
                 <h6 className="text-[12px] font-normal text-[#5F5B82] font-title">
                   {capitalizeFirstLetter(_contact?.EmailAddress)}
                 </h6>

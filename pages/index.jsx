@@ -18,6 +18,8 @@ import { showWidget } from "redux/reducers/general";
 import Spinner from "components/Spinner";
 import BackIcon from "assets/svgs/seats/arrowleft.svg";
 import ToTop from "assets/svgs/toTop.svg";
+import LogoIcon from "assets/svgs/logo.svg";
+import Link from "next/link";
 
 // ?origin=ABV&destination=LOS&departure=2022-08-18&adt=1&chd=0&inf=0&promocode=3hy74h
 
@@ -81,12 +83,17 @@ const Home = () => {
     <Fragment>
       <BaseLayout>
         <nav className="top__bar">
-          <button>
+          {/* <button>
             <figure>
               <BackIcon />
             </figure>
             <span>SELECT FLIGHT</span>
-          </button>
+          </button> */}
+          <Link href="/">
+            <figure className="cursor-pointer">
+              <LogoIcon />
+            </figure>
+          </Link>
         </nav>
         {sessionLoading ? (
           <section className="spinner__container">
