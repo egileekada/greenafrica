@@ -31,7 +31,7 @@ export const GetItineraryPrice = async (payload) => {
 };
 
 export const GetLowFareAvailability = async (payload) => {
-  let request = axios.post(`${BOOKING}GetLowFareAvailability`, payload);
+  let request = axios.post(`${BOOKING}GetLowFareTripAvailability`, payload);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

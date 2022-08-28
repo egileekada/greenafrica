@@ -1,23 +1,12 @@
-const capitalizeName = function (name) {
-  let result = "";
-  if (name) {
-    const names = name.split(" ");
-    const nameUpper = [];
+const arr = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
 
-    for (const word of names) {
-      const wordDone = word.replace(word[0], word[0].toUpperCase());
-      nameUpper.push(wordDone);
-    }
-    result = nameUpper.join(" ");
-  } else {
-    result = "";
-  }
+function getBeforeAfter(arr, index, count) {
+  let start = index - count - 1;
+  if (start < 0) start = 0;
 
-  return result;
-};
+  let end = index + count;
 
-const r = capitalizeName("paul ifeoluwa fadayo");
-const r2 = capitalizeName("olabamipe Taiwo");
+  return arr.slice(start, end);
+}
 
-console.log(r);
-console.log(r2);
+console.log(getBeforeAfter(arr, 17, 3));

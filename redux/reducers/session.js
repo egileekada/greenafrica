@@ -60,7 +60,7 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   // bookingResponse: bookingNew,
-  bookingResponse: null,
+  // bookingResponse: null,
   SSRAvailabilityLoading: false,
   SSRAvailabilityResponse: null,
   sellSSRLoading: false,
@@ -305,42 +305,46 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
     messageContractVersion: "",
     enableExceptionStackTrace: true,
     contractVersion: 0,
-    availabilityRequest: {
-      DepartureStation: departureStation,
-      ArrivalStation: arrivalStation,
-      beginDate: format(new Date(), "yyyy-MM-dd"),
-      beginDateSpecified: true,
-      endDate: format(addDays(new Date(), 179), "yyyy-MM-dd"),
-      endDateSpecified: true,
-      CarrierCode: "Q9",
-      FlightNumber: "",
-      FlightType: 5,
-      PaxCount: 1,
-      Dow: 10,
-      CurrencyCode: "NGN",
-      DisplayCurrencyCode: "NGN",
-      AvailabilityType: 0,
-      SourceOrganization: "",
-      MaximumConnectingFlights: 0,
-      AvailabilityFilter: 0,
-      FareClassControl: 0,
-      MinimumFarePrice: 0,
-      MaximumFarePrice: 0,
-      ProductClassCode: "GC",
-      SSRCollectionsMode: 0,
-      InboundOutbound: 0,
-      NightsStay: 0,
-      IncludeAllotments: false,
-      fareClasses: ["Y"],
-      IncludeTaxesAndFees: false,
-      FareRuleFilter: 0,
-      LoyaltyFilter: 0,
-      ServiceBundleControl: 0,
-      BookingStatus: 0,
+    lowFareTripAvailabilityRequest: {
+      bypassCache: false,
+      bypassCacheSpecified: true,
+      includeTaxesAndFees: true,
+      includeTaxesAndFeesSpecified: true,
+      groupBydate: false,
+      groupBydateSpecified: true,
+      parameterSetID: 0,
+      parameterSetIDSpecified: true,
+      currencyCode: "NGN",
+      lowFareAvailabilityRequestList: [
+        {
+          departureStationList: [departureStation],
+          arrivalStationList: [arrivalStation],
+          beginDate: format(new Date(), "yyyy-MM-dd"),
+          beginDateSpecified: true,
+          endDate: format(addDays(new Date(), 179), "yyyy-MM-dd"),
+          endDateSpecified: true,
+        },
+      ],
+      productClassList: [],
+      loyaltyFilter: 0,
+      loyaltyFilterSpecified: true,
+      flightFilter: 0,
+      flightFilterSpecified: true,
+      getAllDetails: false,
+      getAllDetailsSpecified: true,
+      paxCount: 1,
+      paxCountSpecified: true,
+      paxPriceTypeList: [
+        {
+          paxType: "ADT",
+          paxCount: 1,
+          paxCountSpecified: true,
+        },
+      ],
+      maximumConnectingFlights: 20,
+      maximumConnectingFlightsSpecified: true,
     },
   };
-
-  console.log("requestPayload ", requestPayload?.availabilityRequest);
 
   try {
     const Response = await GetLowFareAvailability(requestPayload);
@@ -1006,6 +1010,7 @@ export const updatePassengersDetails =
     try {
       const Response = await UpdatePassengers(requestPayload);
       await dispatch(setUpdatePassengersResponse(Response.data));
+      await dispatch(FetchStateFromServer());
     } catch (err) {
       console.log("Update passengers Request error", err.response);
     }
@@ -1074,6 +1079,7 @@ export const updateContactsDetails =
     try {
       const Response = await UpdateContacts(requestPayload);
       await dispatch(setUpdateContactsResponse(Response.data));
+      await dispatch(FetchStateFromServer());
     } catch (err) {
       console.log("Update Contacts Request error", err.response);
     }
@@ -1281,6 +1287,7 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
   try {
     const Response = await GetBooking(requestPayload);
     await dispatch(setBookingResponse(Response.data));
+    await dispatch(FetchStateFromServer());
   } catch (err) {
     console.log("GetBooking Request error", err.response);
     notification.error({
