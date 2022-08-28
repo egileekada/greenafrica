@@ -107,31 +107,31 @@ const Home = () => {
                   SELECT FLIGHT
                 </h2>
                 <section className="flex flex-col scrollable">
-                  <div className="flex flex-col mb-10">
-                    <IbeHeader />
-                    {flightAvailabilityLoading ? (
-                      <Spinner />
-                    ) : availabilityResponse ? (
-                      availabilityResponse?.GetTripAvailabilityResponse
-                        .Schedules.length > 0 ? (
-                        availabilityResponse.GetTripAvailabilityResponse.Schedules.map(
-                          (_schedule, _i) => {
-                            return (
+                  {flightAvailabilityLoading ? (
+                    <Spinner />
+                  ) : availabilityResponse ? (
+                    availabilityResponse?.GetTripAvailabilityResponse.Schedules
+                      .length > 0 ? (
+                      availabilityResponse.GetTripAvailabilityResponse.Schedules.map(
+                        (_schedule, _i) => {
+                          return (
+                            <div className="flex flex-col mb-10">
+                              <IbeHeader />
                               <IbeTrips flightSchedule={_schedule} _i={_i} />
-                            );
-                          }
-                        )
-                      ) : (
-                        <h2 className=" text-red-600 font-normal text-sm mb-8">
-                          No Flight Schedules
-                        </h2>
+                            </div>
+                          );
+                        }
                       )
                     ) : (
-                      <h2 className="text-red-600 font-normal text-sm mb-8">
-                        Error fetching flight availability
+                      <h2 className=" text-red-600 font-normal text-sm mb-8">
+                        No Flight Schedules
                       </h2>
-                    )}
-                  </div>
+                    )
+                  ) : (
+                    <h2 className="text-red-600 font-normal text-sm mb-8">
+                      Error fetching flight availability
+                    </h2>
+                  )}
                 </section>
               </div>
               <div className="ga__section__side">

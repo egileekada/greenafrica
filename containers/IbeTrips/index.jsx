@@ -6,12 +6,14 @@ import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
 const IbeTrips = ({ flightSchedule, _i }) => {
-  const { flightAvailabilityLoading } = useSelector(sessionSelector);
+  const { flightAvailabilityLoading, flightParams } =
+    useSelector(sessionSelector);
 
   return (
     <section className="ibe__flight__trips">
       <h2 className="text-primary-main font-extrabold text-sm mb-8">
-        {parseInt(_i) === 0 ? "DEPARTURE" : "RETURN"}
+        {parseInt(_i) === 0 ? "DEPARTURE ON" : "RETURN ON "}&nbsp;{" "}
+        {flightParams?.beginDate}
       </h2>
 
       <Fragment>

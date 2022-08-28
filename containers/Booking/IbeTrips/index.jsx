@@ -6,7 +6,8 @@ import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
 const BookingIbeTrips = ({ flightSchedule, _i }) => {
-  const { flightAvailabilityLoading } = useSelector(sessionSelector);
+  const { flightAvailabilityLoading } =
+    useSelector(sessionSelector);
 
   return (
     <section className="ibe__flight__trips">

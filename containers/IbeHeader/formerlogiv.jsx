@@ -6,19 +6,15 @@ import CaretRight from "assets/svgs/caretright.svg";
 import Spinner from "components/Spinner";
 import useDeviceSize from "hooks/useWindowSize";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
-import { useSelector, useDispatch } from "react-redux";
-import { sessionSelector, setFlightRequest } from "redux/reducers/session";
+import { useSelector } from "react-redux";
+import { sessionSelector } from "redux/reducers/session";
 import { format } from "date-fns";
 import addDays from "date-fns/addDays";
 import subDays from "date-fns/subDays";
 
 const IbeHeader = () => {
-  const dispatch = useDispatch();
-
+  const [cleanedArray, setCleanArr] = useState([]);
   const [dateList, setDateList] = useState([]);
-  const [fareDateList, setFareDateList] = useState([]);
-  const [nextIndex, setNextIndex] = useState(null);
-  const [prev, setPrev] = useState(null);
   const [width] = useDeviceSize();
 
   const {
@@ -54,7 +50,6 @@ const IbeHeader = () => {
       const _fareDateList =
         lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
           ?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList;
-      setFareDateList([..._fareDateList]);
 
       _dateList.map((_dateListItem, _dl) => {
         _fareDateList.map((_fareDateItem, _fd) => {
@@ -64,7 +59,6 @@ const IbeHeader = () => {
           ) {
             _dateList[_dl].cost =
               _fareDateItem?.FareAmount + _fareDateItem?.TaxesAndFeesAmount;
-            setNextIndex(_fd);
           }
         });
       });
@@ -74,42 +68,6 @@ const IbeHeader = () => {
 
   const arr = width > 1200 ? new Array(7).fill(0) : new Array(3).fill(0);
 
-  const onNext = () => {
-    setPrev([...dateList]);
-    const nextDates = [...fareDateList.slice(nextIndex + 1)];
-    const nextFares = [];
-    if (nextDates.length > 0) {
-      nextDates.slice(0, 7).map((_fareDateItem, _fd) => {
-        const newObj = {};
-        newObj.id = _fareDateItem?.DepartureDate;
-        newObj.date = _fareDateItem?.DepartureDate;
-        newObj.cost =
-          _fareDateItem?.FareAmount + _fareDateItem?.TaxesAndFeesAmount;
-        nextFares.push(newObj);
-      });
-      setNextIndex(nextIndex + 7);
-      setDateList([...nextFares]);
-    }
-  };
-
-  const onPrev = () => {
-    setDateList(prev);
-    // setPrev(nextIndex - 7);
-    // const prevDates = [...fareDateList.slice(0,nextIndex - 7)];
-    // console.log("prevDates", prevDates);
-  };
-
-  const FetchNewTrips = (_dateItem) => {
-    const flightRequest = {
-      ...flightParams,
-      beginDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
-      endDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
-    };
-    console.log("flightRequest,", flightRequest);
-
-    dispatch(setFlightRequest(flightRequest));
-  };
-
   return (
     <section className="ibe__flight__info">
       <section className="ibe__flight__info__destination">
@@ -117,8 +75,9 @@ const IbeHeader = () => {
         <figure>
           <ArrowTo />
         </figure>
-        <p className="mx-4">{flightParams?.arrivalStation}</p>
-        {/* {nextIndex && <p> nextIndex:: {nextIndex}</p>} */}
+        <p p className="mx-4">
+          {flightParams?.arrivalStation}
+        </p>
 
         <figure className="flightCircle">
           <FlightIcon />
@@ -131,12 +90,7 @@ const IbeHeader = () => {
           </section>
         ) : (
           <section className="flex items-center w-full">
-            <button
-              className={`pl-4 sm:pl-0 hover:bg-gray-400 flex h-4 w-4 items-center justify-center ${
-                prev ? "" : "pointer-events-none cursor-none"
-              }`}
-              onClick={onPrev}
-            >
+            <button className="pl-4 sm:pl-0">
               <CaretLeft />
             </button>
             <section className="flex items-center w-full mx-4 ">
@@ -149,18 +103,7 @@ const IbeHeader = () => {
                         i === dateList.length - 1 ? "b-r-none" : ""
                       }`}
                     >
-                      <button
-                        className={`${
-                          format(new Date(_dateItem?.date), "yyyy-MM-dd") ===
-                          format(
-                            new Date(flightParams?.beginDate),
-                            "yyyy-MM-dd"
-                          )
-                            ? "active"
-                            : ""
-                        }`}
-                        onClick={FetchNewTrips.bind(this, _dateItem)}
-                      >
+                      <button className={`${i === 3 ? "active" : ""}`}>
                         <h6>
                           {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                         </h6>
@@ -177,12 +120,7 @@ const IbeHeader = () => {
                 <p className="errorText text-lg">No date available</p>
               )}
             </section>
-            <button
-              className={`pr-4 sm:pr-0 hover:bg-gray-400 flex h-4 w-4 items-center justify-center ${
-                nextIndex ? "" : "pointer-events-none cursor-none"
-              }`}
-              onClick={onNext}
-            >
+            <button className="pr-4 sm:pr-0">
               <CaretRight />
             </button>
           </section>
@@ -193,3 +131,69 @@ const IbeHeader = () => {
 };
 
 export default IbeHeader;
+
+{
+  /* {cleanedArray?.length > 0 &&
+                cleanedArray.map((_dateItem, i) => {
+                  const datesArr =
+                    lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
+                      ?.LowFareAvailabilityResponseList[0]
+                      ?.DateMarketLowFareList;
+
+                  const totalFee =
+                    parseInt(_dateItem?.FareAmount) +
+                    parseInt(_dateItem?.TaxesAndFeesAmount);
+
+                  return (
+                    <div
+                      key={i}
+                      className={`ibe__date__item ${
+                        i === datesArr.length - 1 ? "b-r-none" : ""
+                      }`}
+                    >
+                      <button className={`${i === 3 ? "active" : ""}`}>
+                        <h6>
+                          {format(
+                            new Date(_dateItem?.DepartureDate),
+                            "ccc, MMM yy"
+                          )}
+                        </h6>
+                        <p>#{totalFee.toLocaleString()}</p>
+                      </button>
+                    </div>
+                  );
+                })} */
+}
+{
+  /* {lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList.slice(
+                0,
+                7
+              ).map((_dateItem, i) => {
+                const datesArr =
+                  lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
+                    ?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList;
+
+                const totalFee =
+                  parseInt(_dateItem?.FareAmount) +
+                  parseInt(_dateItem?.TaxesAndFeesAmount);
+
+                return (
+                  <div
+                    key={i}
+                    className={`ibe__date__item ${
+                      i === datesArr.length - 1 ? "b-r-none" : ""
+                    }`}
+                  >
+                    <button className={`${i === 3 ? "active" : ""}`}>
+                      <h6>
+                        {format(
+                          new Date(_dateItem?.DepartureDate),
+                          "ccc, MMM yy"
+                        )}
+                      </h6>
+                      <p>#{totalFee.toLocaleString()}</p>
+                    </button>
+                  </div>
+                );
+              })} */
+}
