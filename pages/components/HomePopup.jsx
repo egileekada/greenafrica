@@ -21,7 +21,12 @@ const HomePopup = ({ show, setShow }) => {
           </div>
 
           <div className="h-full">
-            <form class="w-full max-w-lg px-6 py-5 lg:py-20">
+            <form
+              class="w-full max-w-lg px-6 py-5 lg:py-20"
+              method="POST"
+              action="https://greenafrica.us18.list-manage.com/subscribe/post?u=4d7476e759863fa778ec626a2&id=201d65e8c7"
+              target="_blank"
+            >
               <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <div className="select__wrapper px-5">
@@ -29,6 +34,8 @@ const HomePopup = ({ show, setShow }) => {
                     <input
                       type="text"
                       placeholder=""
+                      name="MERGE1"
+                      id="MERGE1"
                       className="border-none pl-0 block w-full py-1"
                     />
                   </div>
@@ -39,6 +46,8 @@ const HomePopup = ({ show, setShow }) => {
                     <input
                       type="text"
                       placeholder=""
+                      name="MERGE2"
+                      id="MERGE2"
                       className="border-none pl-0 block w-full py-1"
                     />
                   </div>
@@ -52,6 +61,8 @@ const HomePopup = ({ show, setShow }) => {
                     <input
                       type="text"
                       placeholder=""
+                      name="MERGE0"
+                      id="MERGE0"
                       className="border-none pl-0 block w-full py-1"
                     />
                   </div>
@@ -62,6 +73,8 @@ const HomePopup = ({ show, setShow }) => {
                     <input
                       type="text"
                       placeholder=""
+                      name="MERGE4"
+                      id="MERGE4"
                       className="border-none pl-0 block w-full py-1"
                     />
                   </div>
@@ -73,11 +86,11 @@ const HomePopup = ({ show, setShow }) => {
                   <div className="select__wrapper px-5">
                     <p className="text-xs text-uppercase my-2">Country</p>
                     <select
-                      name=""
-                      id=""
+                      name="MERGE8"
+                      id="MERGE8"
                       className="border-none pl-0 block w-full"
                     >
-                      <option value="">Nigeria</option>
+                      <option value="Nigeria">Nigeria</option>
                     </select>
                   </div>
                 </div>
@@ -85,12 +98,12 @@ const HomePopup = ({ show, setShow }) => {
                   <div className="select__wrapper px-5">
                     <p className="text-xs text-uppercase my-2">State</p>
                     <select
-                      name=""
-                      id=""
+                      name="MERGE9"
+                      id="MERGE9"
                       className="border-none pl-0 block w-full"
                     >
-                      <option value="">Lagos</option>
-                      <option value="">Abuja</option>
+                      <option value="Lagos">Lagos</option>
+                      <option value="Abuja">Abuja</option>
                     </select>
                   </div>
                 </div>
@@ -99,7 +112,12 @@ const HomePopup = ({ show, setShow }) => {
               <div class="flex flex-wrap -mx-3 mb-2">
                 <div class="w-full px-3 mb-6">
                   <label class="block">
-                    <input class="mr-2 leading-tight" type="checkbox" />
+                    <input
+                      class="mr-2 leading-tight"
+                      type="checkbox"
+                      name="group[38698][1]"
+                      id="group_1"
+                    />
                     <span class="text-sm font-light text-primary-main">
                       I agree to join the gFlyer Community by submitting my
                       details.
@@ -110,7 +128,10 @@ const HomePopup = ({ show, setShow }) => {
 
               <div class="flex flex-wrap -mx-3 mb-2">
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                  <button className="btn btn-primary w-[133px] font-semibold py-4 px-6">
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-[133px] font-semibold py-4 px-6"
+                  >
                     Get Started
                   </button>
                 </div>

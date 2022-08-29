@@ -23,17 +23,17 @@ const HeroSlider = () => {
   var timer = useRef();
   const [width] = useDeviceSize();
   const [desktopBanners, setDesktopBanners] = useState([
-    // {
-    //   id: 11,
-    //   slug: "banners/May2022/PRk7s7lxyewDbFVlvG64.jpg",
-    //   type: "desktop",
-    //   alt_text: null,
-    //   title: "Happy Children's Day",
-    //   show: 1,
-    //   created_at: "2022-05-27T07:37:37.000000Z",
-    //   updated_at: "2022-05-27T07:37:37.000000Z",
-    //   url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
-    // },
+    {
+      id: 11,
+      slug: "banners/May2022/PRk7s7lxyewDbFVlvG64.jpg",
+      type: "desktop",
+      alt_text: null,
+      title: "Happy Children's Day",
+      show: 1,
+      created_at: "2022-05-27T07:37:37.000000Z",
+      updated_at: "2022-05-27T07:37:37.000000Z",
+      url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
+    },
   ]);
   const [mobileBanners, setMobileBanners] = useState([
     {
@@ -49,12 +49,12 @@ const HeroSlider = () => {
     },
   ]);
 
-  useEffect(() => {
-    if (status === "success") {
-      setDesktopBanners(webBanners?.data?.items);
-      setMobileBanners(mobileBanner?.data?.items);
-    }
-  }, [status, webBanners, mobileBanner]);
+  // useEffect(() => {
+  //   if (status === "success") {
+  //     setDesktopBanners(webBanners?.data?.item);
+  //     setMobileBanners(mobileBanner?.data?.item);
+  //   }
+  // }, [status, webBanners, mobileBanner]);
 
   useEffect(() => {
     if (width > 899) {
