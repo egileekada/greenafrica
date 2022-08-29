@@ -16,8 +16,8 @@ import {
 } from "redux/reducers/session";
 import { showWidget } from "redux/reducers/general";
 import Spinner from "components/Spinner";
-import BackIcon from "assets/svgs/seats/arrowleft.svg";
-import ToTop from "assets/svgs/toTop.svg";
+// import BackIcon from "assets/svgs/seats/arrowleft.svg";
+// import ToTop from "assets/svgs/toTop.svg";
 import LogoIcon from "assets/svgs/logo.svg";
 import Link from "next/link";
 
@@ -140,12 +140,12 @@ const Home = () => {
             </section>
           </Fragment>
         )}
-        <nav className="bottom__bar">
+        {/* <nav className="bottom__bar">
           <button className="toTop" onClick={ScrollToTop}>
             <ToTop />
           </button>
           <button className="btn btn-green">Continue</button>
-        </nav>
+        </nav> */}
       </BaseLayout>
       <Popup
         display={showPopUp}

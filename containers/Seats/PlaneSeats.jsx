@@ -154,7 +154,6 @@ const PlaneSeats = forwardRef(
     ) => {
       return (
         <div>
-          {/* {JSON.stringify(propertylist)} */}
           <p>{SeatDesignator} Front Seat</p>
 
           <p> {mapSeatGroup(seatGroup)}</p>
