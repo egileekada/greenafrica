@@ -57,6 +57,15 @@ export const BookingSell = async (payload) => {
   });
 };
 
+export const BookingCancel = async (payload) => {
+  let request = axios.post(`${BOOKING}Cancel`, payload);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
 export const GetSSRAvailability = async (payload) => {
   let request = axios.post(`${BOOKING}GetSSRAvailability`, payload);
   return request.then((response) => {

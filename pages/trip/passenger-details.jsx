@@ -12,6 +12,7 @@ import {
   SellSSROption,
   setSSRResponse,
   setSessionSSRs,
+  CancelSSRs,
   FetchSSRAvailabilityForBooking,
 } from "redux/reducers/session";
 import Spinner from "components/Spinner";
@@ -32,7 +33,9 @@ const PassengerDetails = () => {
 
   useEffect(() => {
     async function checkSSRAvailability() {
-      if (!SSRAvailabilityResponse) dispatch(FetchSSRAvailabilityForBooking());
+      if (!SSRAvailabilityResponse) {
+        dispatch(FetchSSRAvailabilityForBooking());
+      }
     }
     checkSSRAvailability();
   }, []);
@@ -40,6 +43,7 @@ const PassengerDetails = () => {
   useEffect(() => {
     async function checkSessionSSRs() {
       if (sessionSSRs && sessionSSRs.length > 0) {
+        dispatch(CancelSSRs(sessionSSRs));
         setSSRs(sessionSSRs);
       }
     }

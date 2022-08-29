@@ -1228,8 +1228,8 @@ export const PaymentToBooking = (payload) => async (dispatch, getState) => {
 
   try {
     const Response = await AddPaymentToBooking(requestPayload);
-    await dispatch(setPaymentBookingResponse(Response.data));
     await dispatch(FetchStateFromServer());
+    await dispatch(setPaymentBookingResponse(Response.data));
   } catch (err) {
     notification.error({
       message: "Error",
@@ -1542,4 +1542,106 @@ export const FetchStateFromServer = () => async (dispatch, getState) => {
   }
 
   dispatch(setSessionStateLoading(false));
+};
+
+export const CancelSSRs = (payload) => async (dispatch, getState) => {
+  dispatch(setSSRLoading(true));
+  dispatch(setSessionSSRs(payload));
+  const currentState = getState().session;
+
+  const _paxSSRs = [];
+  const typeArr = [];
+
+  payload.map((_item) => {
+    let typeCount = 0;
+    if (typeArr.includes(_item?.ssrCode)) {
+      typeArr.push(_item?.ssrCode);
+      typeCount = typeArr.filter((_type) => _type === _item?.ssrCode).length;
+    } else {
+      typeCount = 1;
+      typeArr.push(_item.ssrCode);
+    }
+
+    const newObj = {
+      state: 0,
+      stateSpecified: true,
+      actionStatusCode: "NN",
+      arrivalStation: currentState?.sessionSegmentDetails?.arrivalStation,
+      departureStation: currentState?.sessionSegmentDetails?.departureStation,
+      passengerNumber: _item?.passengerNumber,
+      passengerNumberSpecified: true,
+      ssrCode: _item?.ssrCode,
+      ssrNumberSpecified: true,
+      ssrNumber: typeCount,
+      ssrDetail: "",
+      feeCode: "",
+      note: "",
+      ssrValue: 0,
+      ssrValueSpecified: true,
+      isInServiceBundle: false,
+      isInServiceBundleSpecified: true,
+    };
+    _paxSSRs.push(newObj);
+  });
+
+  let requestPayload = {
+    header: {
+      signature: currentState.signature,
+      messageContractVersion: "",
+      enableExceptionStackTrace: false,
+      contractVersion: 0,
+    },
+    sellRequestDto: {
+      sellRequest: {
+        sellRequestData: {
+          sellBy: 2,
+          sellBySpecified: true,
+          sellSSR: {
+            ssrRequest: {
+              segmentSSRRequests: [
+                {
+                  flightDesignator: {
+                    carrierCode: "Q9",
+                    flightNumber:
+                      currentState?.sessionSegmentDetails?.flightDesignator
+                        .flightNumber,
+                    opSuffix: "",
+                  },
+                  std: currentState?.sessionSegmentDetails?.std,
+                  stdSpecified: true,
+                  departureStation:
+                    currentState?.sessionSegmentDetails?.departureStation,
+                  arrivalStation:
+                    currentState?.sessionSegmentDetails?.arrivalStation,
+                  paxSSRs: [..._paxSSRs],
+                },
+              ],
+              currencyCode: "NGN",
+              cancelFirstSSR: false,
+              cancelFirstSSRSpecified: true,
+              ssrFeeForceWaiveOnSell: false,
+              ssrFeeForceWaiveOnSellSpecified: true,
+              sellSSRMode: 0,
+              sellSSRModeSpecified: true,
+              feePricingMode: 0,
+              feePricingModeSpecified: true,
+            },
+          },
+        },
+      },
+    },
+  };
+
+  try {
+    const SSRResponse = await BookingSell(requestPayload);
+    await dispatch(setSSRResponse(SSRResponse.data));
+    await dispatch(FetchStateFromServer());
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Cancel SSRs failed",
+    });
+  }
+
+  dispatch(setSSRLoading(false));
 };
