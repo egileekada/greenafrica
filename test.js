@@ -12,11 +12,23 @@ const arr = [
     ssrCode: "X20",
   },
   {
+    passengerNumber: 1,
+    ssrCode: "X20",
+  },
+  {
     passengerNumber: 0,
     ssrCode: "X10",
   },
   {
     passengerNumber: 0,
+    ssrCode: "X10",
+  },
+  {
+    passengerNumber: 1,
+    ssrCode: "X10",
+  },
+  {
+    passengerNumber: 1,
     ssrCode: "X10",
   },
 ];
@@ -26,12 +38,13 @@ const typeArr = [];
 
 arr.map((_ar) => {
   let typeCount = 0;
-  if (typeArr.includes(_ar.ssrCode)) {
-    typeArr.push(_ar.ssrCode);
-    typeCount = typeArr.filter((_type) => _type === _ar.ssrCode).length;
+  let _id = _ar.ssrCode + _ar.passengerNumber;
+  if (typeArr.includes(_id)) {
+    typeArr.push(_id);
+    typeCount = typeArr.filter((_type) => _type === _id).length;
   } else {
     typeCount = 1;
-    typeArr.push(_ar.ssrCode);
+    typeArr.push(_id);
   }
 
   let newObj = {
