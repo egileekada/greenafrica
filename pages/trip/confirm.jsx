@@ -25,12 +25,12 @@ const TripConfirm = () => {
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
 
-  useEffect(() => {
-    async function fetchBookingDetails() {
-      dispatch(GetBookingDetails());
-    }
-    fetchBookingDetails();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchBookingDetails() {
+  //     dispatch(GetBookingDetails());
+  //   }
+  //   fetchBookingDetails();
+  // }, []);
 
   useEffect(() => {
     if (bookingResponse) {
@@ -258,5 +258,3 @@ const TripConfirm = () => {
 };
 
 export default TripConfirm;
-
-// http://localhost:4200/bookings?pnr=T3T9FF&signature=nRSa/Cwg6w4=|NttRfUEqg4qb8UHS1X6n4zk1comLiMt7VKH5zvkXCODJgwsclsU5TU0btW7b94JYr5RY0ADcXLcSEZLPW1z8NkW7Bl81o/Wuznmd3ex4yWrrQ9fckFW5QDzVx3IF6P6nCyatSCqsUug=

@@ -24,10 +24,9 @@ import {
   bookingFromState,
   _sessionState,
   bookingFromStateMultiple,
+  bookingResponse,
 } from "./data";
 
-const _sig =
-  "nRSa/Cwg6w4=|NttRfUEqg4qb8UHS1X6n4zk1comLiMt7VKH5zvkXCODJgwsclsU5TU0btW7b94JYr5RY0ADcXLcSEZLPW1z8NkW7Bl81o/Wuznmd3ex4yWrrQ9fckFW5QDzVx3IF6P6nCyatSCqsUug=";
 
 const initialState = {
   isLoading: false,
@@ -62,6 +61,7 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   bookingResponse: null,
+  bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,

@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { Checkbox } from "antd";
 import SelectIcon from "assets/svgs/select.svg";
 import PassengerFormItem from "containers/PassengerForm/PassengerFormItem";
+import LogoIcon from "assets/svgs/logo.svg";
 
 const PassengerForm = () => {
   const dispatch = useDispatch();
@@ -147,186 +148,211 @@ const PassengerForm = () => {
     );
   };
 
+  const goBackToHome = async () => {
+    const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
+    router.push(query);
+  };
+
   const enableCopy =
     passengers.length > 0 && checkPassInfo(passengers[0]) ? true : false;
 
   return (
     <BaseLayout>
+      <nav className="top__bar logo-holder">
+        {/* <button>
+            <figure>
+              <BackIcon />
+            </figure>
+            <span>SELECT FLIGHT</span>
+          </button> */}
+        <button onClick={goBackToHome}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
       <section className="w-full">
         <section className="ga__section">
           <div className="ga__section__main">
-            <h2 className="text-primary-main font-extrabold text-2xl mb-8">
-              Passenger Details
-            </h2>
-            {totalPassengerCount > 0 ? (
-              <form className="passenger__form" onSubmit={formik.handleSubmit}>
-                {/* <p>{JSON.stringify(passengers)}</p> */}
-                {passengers
-                  .sort((a, b) => {
-                    return a.id - b.id;
-                  })
-                  .map((_pass, _i) => {
-                    return (
-                      <PassengerFormItem
-                        passenger={_pass}
-                        passengers={passengers}
-                        setPassengers={setPassengers}
-                      />
-                    );
-                  })}
+            <section className="pt-16 lg:pt-0">
+              <h2 className="text-primary-main font-extrabold text-2xl mb-8">
+                Passenger Details
+              </h2>
+              {totalPassengerCount > 0 ? (
+                <form
+                  className="passenger__form"
+                  onSubmit={formik.handleSubmit}
+                >
+                  {/* <p>{JSON.stringify(passengers)}</p> */}
+                  {passengers
+                    .sort((a, b) => {
+                      return a.id - b.id;
+                    })
+                    .map((_pass, _i) => {
+                      return (
+                        <PassengerFormItem
+                          passenger={_pass}
+                          passengers={passengers}
+                          setPassengers={setPassengers}
+                        />
+                      );
+                    })}
 
-                {/* Contact Details */}
-                <div className="passenger__form__box">
-                  <h3 className="text-[#8F8CA4] font-header text-xxs mb-6">
-                    CONTACT INFORMATION
-                  </h3>
+                  {/* Contact Details */}
+                  <div className="passenger__form__box">
+                    <h3 className="text-[#8F8CA4] font-header text-xxs mb-6">
+                      CONTACT INFORMATION
+                    </h3>
 
-                  <div
-                    className={`flex items-center checkbox-copy mb-6  ${
-                      enableCopy ? "" : "grey__out"
-                    }`}
-                  >
-                    <Checkbox onChange={onCopyChange}>
-                      <label className="check-label">
-                        Copy Passenger Information
-                      </label>
-                    </Checkbox>
-                  </div>
+                    <div
+                      className={`flex items-center checkbox-copy mb-6  ${
+                        enableCopy ? "" : "grey__out"
+                      }`}
+                    >
+                      <Checkbox onChange={onCopyChange}>
+                        <label className="check-label">
+                          Copy Passenger Information
+                        </label>
+                      </Checkbox>
+                    </div>
 
-                  <div className="mb-6 flex flex-wrap">
-                    <div className="form-group select-group mr-0 md:mr-4">
-                      <label>TITLE</label>
-                      <select
-                        name="c_title"
-                        {...formik.getFieldProps("c_title")}
-                      >
-                        <option value="">Select</option>
-                        <option value="Mr">Mr</option>
-                        <option value="Mrs">Mrs</option>
-                      </select>
-                      <div className="select-icon">
-                        <SelectIcon />
+                    <div className="mb-6 flex flex-wrap">
+                      <div className="form-group select-group mr-0 md:mr-4">
+                        <label>TITLE</label>
+                        <select
+                          name="c_title"
+                          {...formik.getFieldProps("c_title")}
+                        >
+                          <option value="">Select</option>
+                          <option value="Mr">Mr</option>
+                          <option value="Mrs">Mrs</option>
+                        </select>
+                        <div className="select-icon">
+                          <SelectIcon />
+                        </div>
+                        {formik.touched.c_title && formik.errors.c_title ? (
+                          <p className="errorText mt-2">
+                            {formik.errors.c_title}
+                          </p>
+                        ) : null}
                       </div>
-                      {formik.touched.c_title && formik.errors.c_title ? (
-                        <p className="errorText mt-2">
-                          {formik.errors.c_title}
-                        </p>
-                      ) : null}
-                    </div>
 
-                    <div className="form-group md:mr-4">
-                      <label>FIRST NAME</label>
-                      <input
-                        type="text"
-                        placeholder="Enter first name"
-                        id="c_firstName"
-                        name="c_firstName"
-                        {...formik.getFieldProps("c_firstName")}
-                      />
-                      {formik.touched.c_firstName &&
-                      formik.errors.c_firstName ? (
-                        <p className="errorText mt-2">
-                          {formik.errors.c_firstName}
-                        </p>
-                      ) : null}
-                    </div>
-                    <div className="form-group md:mr-4">
-                      <label>LAST NAME</label>
-                      <input
-                        type="text"
-                        placeholder="Enter last name"
-                        id="c_lastName"
-                        name="c_lastName"
-                        {...formik.getFieldProps("c_lastName")}
-                      />
-                      {formik.touched.c_lastName && formik.errors.c_lastName ? (
-                        <p className="errorText mt-2">
-                          {formik.errors.c_lastName}
-                        </p>
-                      ) : null}
-                    </div>
-                    <div className="form-group md:mr-4">
-                      <label>EMAIL</label>
-                      <input
-                        type="email"
-                        placeholder="Enter your email"
-                        id="c_email"
-                        name="c_email"
-                        {...formik.getFieldProps("c_email")}
-                      />
-                      {formik.touched.c_email && formik.errors.c_email ? (
-                        <p className="errorText mt-2">
-                          {formik.errors.c_email}
-                        </p>
-                      ) : null}
-                    </div>
-                    <div className="form-group md:mr-4">
-                      <label>CONFIRM EMAIL ADDRESS</label>
-                      <input
-                        type="email"
-                        placeholder="Enter your email"
-                        id="cc_email"
-                        name="cc_email"
-                        {...formik.getFieldProps("cc_email")}
-                      />
-                      {formik.touched.cc_email && formik.errors.cc_email ? (
-                        <p className="errorText mt-2">
-                          {formik.errors.cc_email}
-                        </p>
-                      ) : null}
-                    </div>
+                      <div className="form-group md:mr-4">
+                        <label>FIRST NAME</label>
+                        <input
+                          type="text"
+                          placeholder="Enter first name"
+                          id="c_firstName"
+                          name="c_firstName"
+                          {...formik.getFieldProps("c_firstName")}
+                        />
+                        {formik.touched.c_firstName &&
+                        formik.errors.c_firstName ? (
+                          <p className="errorText mt-2">
+                            {formik.errors.c_firstName}
+                          </p>
+                        ) : null}
+                      </div>
+                      <div className="form-group md:mr-4">
+                        <label>LAST NAME</label>
+                        <input
+                          type="text"
+                          placeholder="Enter last name"
+                          id="c_lastName"
+                          name="c_lastName"
+                          {...formik.getFieldProps("c_lastName")}
+                        />
+                        {formik.touched.c_lastName &&
+                        formik.errors.c_lastName ? (
+                          <p className="errorText mt-2">
+                            {formik.errors.c_lastName}
+                          </p>
+                        ) : null}
+                      </div>
+                      <div className="form-group md:mr-4">
+                        <label>EMAIL</label>
+                        <input
+                          type="email"
+                          placeholder="Enter your email"
+                          id="c_email"
+                          name="c_email"
+                          {...formik.getFieldProps("c_email")}
+                        />
+                        {formik.touched.c_email && formik.errors.c_email ? (
+                          <p className="errorText mt-2">
+                            {formik.errors.c_email}
+                          </p>
+                        ) : null}
+                      </div>
+                      <div className="form-group md:mr-4">
+                        <label>CONFIRM EMAIL ADDRESS</label>
+                        <input
+                          type="email"
+                          placeholder="Enter your email"
+                          id="cc_email"
+                          name="cc_email"
+                          {...formik.getFieldProps("cc_email")}
+                        />
+                        {formik.touched.cc_email && formik.errors.cc_email ? (
+                          <p className="errorText mt-2">
+                            {formik.errors.cc_email}
+                          </p>
+                        ) : null}
+                      </div>
 
-                    <div className="phone-group  mr-0 md:mr-4">
-                      <label>PHONE NUMBER</label>
-                      <div className="flex">
-                        <div className="phone-select">
-                          <select
-                            name="c_code"
-                            {...formik.getFieldProps("c_code")}
-                          >
-                            <option value="+234">+234</option>
-                          </select>
-                          <div className="select-icon">
-                            <SelectIcon />
+                      <div className="phone-group  mr-0 md:mr-4">
+                        <label>PHONE NUMBER</label>
+                        <div className="flex">
+                          <div className="phone-select">
+                            <select
+                              name="c_code"
+                              {...formik.getFieldProps("c_code")}
+                            >
+                              <option value="+234">+234</option>
+                            </select>
+                            <div className="select-icon">
+                              <SelectIcon />
+                            </div>
+                          </div>
+                          <div className="phone-input">
+                            <input
+                              type="number"
+                              placeholder="Enter your number"
+                              id="c_phone"
+                              name="c_phone"
+                              {...formik.getFieldProps("c_phone")}
+                            />
                           </div>
                         </div>
-                        <div className="phone-input">
-                          <input
-                            type="number"
-                            placeholder="Enter your number"
-                            id="c_phone"
-                            name="c_phone"
-                            {...formik.getFieldProps("c_phone")}
-                          />
-                        </div>
+                        {formik.touched.c_phone && formik.errors.c_phone ? (
+                          <p className="errorText mt-2">
+                            {formik.errors.c_phone}
+                          </p>
+                        ) : null}
                       </div>
-                      {formik.touched.c_phone && formik.errors.c_phone ? (
-                        <p className="errorText mt-2">
-                          {formik.errors.c_phone}
-                        </p>
-                      ) : null}
                     </div>
                   </div>
-                </div>
-                {/* Contact Details */}
-                {/* CTA */}
-                <div className="flex flex-wrap md:flex-nowrap items-center">
-                  <button
-                    type="button"
-                    className="btn btn-outline mr-0 md:mr-2 mb-2 md:mb-0 cta basis-full md:basis-auto"
-                  >
-                    Go Back
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-primary cta basis-full md:basis-auto"
-                  >
-                    {updatePassengersLoading ? "Saving....." : "Continue"}
-                  </button>
-                </div>
-                {/* CTA */}
-              </form>
-            ) : null}
+                  {/* Contact Details */}
+                  {/* CTA */}
+                  <div className="flex flex-wrap md:flex-nowrap items-center">
+                    <button
+                      type="button"
+                      className="btn btn-outline mr-0 md:mr-2 mb-2 md:mb-0 cta basis-full md:basis-auto"
+                      onClick={() => router.back()}
+                    >
+                      Go Back
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-primary cta basis-full md:basis-auto"
+                    >
+                      {updatePassengersLoading ? "Saving....." : "Continue"}
+                    </button>
+                  </div>
+                  {/* CTA */}
+                </form>
+              ) : null}
+            </section>
           </div>
           <div className="ga__section__side">
             <IbeSidebar />

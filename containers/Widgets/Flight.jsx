@@ -4,17 +4,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { generalSelector, hideWidget } from "redux/reducers/general";
 
 const FlightWidget = () => {
-  const { widgetVisible, sign } = useSelector(generalSelector);
+  const { widgetVisible } = useSelector(generalSelector);
   const dispatch = useDispatch();
 
   const handleUser = () => {
-    window.location.assign("https://dev-website.gadevenv.com/");
+    dispatch(hideWidget());
+    // window.location.assign("https://dev-website.gadevenv.com/");
   };
 
   return (
     <Popup
       display={widgetVisible}
-      // closeModal={() => dispatch(hideWidget())}
       closeModal={handleUser}
       top={true}
       width="w-[600px]"

@@ -203,7 +203,7 @@ const SummaryDetails = ({ isRoundTrip }) => {
 
   return (
     <div className="trip__summary__item">
-      <h2 className="trip-title mb-3">PASSENGER DETAILS</h2>
+      <h2 className="trip-title mb-3">CONTACT DETAILS</h2>
       <div className="flex flex-col">
         <PassengerContact />
 

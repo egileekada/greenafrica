@@ -1,11 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Popup from "components/Popup";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  generalSelector,
-  showWidget,
-  setPromoWidgetVisible,
-} from "redux/reducers/general";
+import { generalSelector, setPromoWidgetVisible } from "redux/reducers/general";
 
 const PromoErrorWidget = () => {
   const { promoWidgetVisible } = useSelector(generalSelector);
@@ -13,7 +9,6 @@ const PromoErrorWidget = () => {
 
   const handleUser = () => {
     dispatch(setPromoWidgetVisible(false));
-    // dispatch(showWidget(true));
     window.location.assign("https://dev-website.gadevenv.com/");
   };
   return (

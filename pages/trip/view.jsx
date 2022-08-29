@@ -20,6 +20,7 @@ import {
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import { useRouter } from "next/router";
+import LogoIcon from "assets/svgs/logo.svg";
 
 const TripView = () => {
   const dispatch = useDispatch();
@@ -116,10 +117,17 @@ const TripView = () => {
 
   return (
     <BaseLayout>
-      <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
+      {/* <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
         <button className="flex items-center">
           <BackIcon />
           <span className="ml-6 text-white text-xs">TRIP DETAILS</span>
+        </button>
+      </nav> */}
+      <nav className="top__bar logo-holder">
+        <button onClick={ChangeFlight}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
         </button>
       </nav>
       <section className="w-full">
@@ -258,7 +266,7 @@ const TripView = () => {
                   </p>
                 </div>
                 <button
-                  className={`btn btn-primary w-[195px] ${
+                  className={`btn btn-primary w-full lg:w-[195px] ${
                     checked ? "" : "opacity-50 pointer-events-none"
                   }`}
                   onClick={handleSell}

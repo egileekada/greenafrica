@@ -79,21 +79,26 @@ const Home = () => {
     });
   };
 
+  const goBackToHome = async () => {
+    const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
+    router.push(query);
+  };
+
   return (
     <Fragment>
       <BaseLayout>
-        <nav className="top__bar">
+        <nav className="top__bar logo-holder">
           {/* <button>
             <figure>
               <BackIcon />
             </figure>
             <span>SELECT FLIGHT</span>
           </button> */}
-          <Link href="/">
+          <button onClick={goBackToHome}>
             <figure className="cursor-pointer">
               <LogoIcon />
             </figure>
-          </Link>
+          </button>
         </nav>
         {sessionLoading ? (
           <section className="spinner__container">
@@ -106,6 +111,7 @@ const Home = () => {
                 <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
                   SELECT FLIGHT
                 </h2>
+
                 <section className="flex flex-col scrollable">
                   <div className="flex flex-col mb-10">
                     <IbeHeader />

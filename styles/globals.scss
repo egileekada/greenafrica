@@ -280,6 +280,18 @@
   .top__bar {
     @apply bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50;
 
+    &.logo-holder {
+      @apply items-center justify-center;
+
+      button {
+        min-height: 2rem;
+      }
+
+      figure {
+        @apply flex items-center justify-center w-full;
+      }
+    }
+
     button {
       @apply flex items-center justify-center w-full relative;
 
@@ -954,7 +966,8 @@
       }
 
       h6 {
-        @apply text-primary-main text-xs font-body font-normal;
+        // @apply text-primary-main text-xs font-body font-normal;
+        @apply text-primary-main text-sm font-body font-normal;
       }
     }
 
