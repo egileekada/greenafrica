@@ -27,7 +27,6 @@ import {
   bookingResponse,
 } from "./data";
 
-
 const initialState = {
   isLoading: false,
   signature: null,
@@ -61,7 +60,6 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   bookingResponse: null,
-  bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,

@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
-import AeroIcon from "assets/svgs/aero.svg";
+import AeroTwoIcon from "assets/svgs/aerotwo.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import Fare from "containers/IbeSummary/Fare";
 import SummaryDetails from "containers/IbeSummary/SummaryDetails";
@@ -25,12 +25,12 @@ const TripConfirm = () => {
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
 
-  // useEffect(() => {
-  //   async function fetchBookingDetails() {
-  //     dispatch(GetBookingDetails());
-  //   }
-  //   fetchBookingDetails();
-  // }, []);
+  useEffect(() => {
+    async function fetchBookingDetails() {
+      dispatch(GetBookingDetails());
+    }
+    fetchBookingDetails();
+  }, []);
 
   useEffect(() => {
     if (bookingResponse) {
@@ -143,7 +143,7 @@ const TripConfirm = () => {
                     </div>
                     <div className="tripIconPath">
                       <DottedLine className="dotted-svg" />
-                      <AeroIcon className="aero-svg" />
+                      <AeroTwoIcon className="aero-svg" />
                       <DottedLine className="dotted-svg" />
                     </div>
                     <div className="flex flex-col  items-end">

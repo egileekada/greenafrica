@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
-import AeroIcon from "assets/svgs/aero.svg";
+import AeroTwoIcon from "assets/svgs/aerotwo.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import CaretDown from "assets/svgs/caretdown.svg";
 import IbeTripVariant from "./IbeTripVaraint";
@@ -53,7 +53,7 @@ const IbeTripItem = ({ journey }) => {
             </div>
             <div className="tripIconPath">
               <DottedLine className="dotted-svg" />
-              <AeroIcon className="aero-svg" />
+              <AeroTwoIcon className="aero-svg" />
               <DottedLine className="dotted-svg" />
             </div>
             <div className="flex flex-col items-end">
