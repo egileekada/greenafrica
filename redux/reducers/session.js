@@ -65,8 +65,8 @@ const initialState = {
   sellSSRLoading: false,
   sellSSRResponse: null,
   sessionStateLoading: false,
-  // sessionStateResponse: null,
-  sessionStateResponse: bookingFromState,
+  sessionStateResponse: null,
+  // sessionStateResponse: bookingFromState,
   // sessionStateResponse: bookingFromStateMultiple,
 };
 

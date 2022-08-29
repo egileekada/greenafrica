@@ -149,27 +149,29 @@ const IbeHeader = () => {
                         i === dateList.length - 1 ? "b-r-none" : ""
                       }`}
                     >
-                      <button
-                        className={`${
-                          format(new Date(_dateItem?.date), "yyyy-MM-dd") ===
-                          format(
-                            new Date(flightParams?.beginDate),
-                            "yyyy-MM-dd"
-                          )
-                            ? "active"
-                            : ""
-                        }`}
-                        onClick={FetchNewTrips.bind(this, _dateItem)}
-                      >
-                        <h6>
-                          {format(new Date(_dateItem?.date), "ccc, MMM dd")}
-                        </h6>
-                        {_dateItem?.cost > 0 ? (
-                          <p>#{_dateItem?.cost.toLocaleString()}</p>
-                        ) : (
-                          <p>No Flight</p>
-                        )}
-                      </button>
+                      {flightParams && (
+                        <button
+                          className={`${
+                            format(new Date(_dateItem?.date), "yyyy-MM-dd") ===
+                            format(
+                              new Date(flightParams?.beginDate),
+                              "yyyy-MM-dd"
+                            )
+                              ? "active"
+                              : ""
+                          }`}
+                          onClick={FetchNewTrips.bind(this, _dateItem)}
+                        >
+                          <h6>
+                            {format(new Date(_dateItem?.date), "ccc, MMM dd")}
+                          </h6>
+                          {_dateItem?.cost > 0 ? (
+                            <p>#{_dateItem?.cost.toLocaleString()}</p>
+                          ) : (
+                            <p>No Flight</p>
+                          )}
+                        </button>
+                      )}
                     </div>
                   );
                 })
