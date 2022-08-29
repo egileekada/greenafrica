@@ -4,7 +4,11 @@ import { Fragment, useEffect } from "react";
 import CheckIcon from "assets/svgs/check.svg";
 import NullIcon from "assets/svgs/null.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { saveSellRequest, sessionSelector } from "redux/reducers/session";
+import {
+  sessionSelector,
+  setSellParams,
+  setSelectedSessionJourney,
+} from "redux/reducers/session";
 import { useRouter } from "next/router";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -26,19 +30,11 @@ const IbeTripPopup = ({
   sellKey,
   segmentStd,
   segmentFlightNumber,
+  journey,
 }) => {
   const dispatch = useDispatch();
-  const { sellFlightLoading, sellResponse } = useSelector(sessionSelector);
+  const { sellFlightLoading } = useSelector(sessionSelector);
   const router = useRouter();
-
-  useEffect(() => {
-    async function redirectFromSell() {
-      if (sellResponse) {
-        router.push("/trip/passenger-form");
-      }
-    }
-    redirectFromSell();
-  }, [sellResponse]);
 
   const gSaver = [`7kg hand luggage: 55 x40 x 24cm`];
 
@@ -56,13 +52,24 @@ const IbeTripPopup = ({
 
   const handleSell = async () => {
     dispatch(
-      saveSellRequest({
+      setSellParams({
         sellKey,
         segmentStd,
         segmentFlightNumber,
         fareKey: selected?.FareSellKey,
       })
     );
+    dispatch(setSelectedSessionJourney(journey));
+    router.push("/trip/view");
+
+    // dispatch(
+    //   saveSellRequest({
+    //     sellKey,
+    //     segmentStd,
+    //     segmentFlightNumber,
+    //     fareKey: selected?.FareSellKey,
+    //   })
+    // );
   };
 
   return (
@@ -365,6 +372,7 @@ IbeTripPopup.defaultProps = {
   sellKey: "",
   segmentStd: "",
   segmentFlightNumber: "",
+  journey: {},
   //  showPopUp={showPopUp},
   //  closePopUp={closePopUp},
 };

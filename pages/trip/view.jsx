@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
@@ -10,11 +11,98 @@ import ToTop from "assets/svgs/toTop.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { sessionSelector, saveSellRequest } from "redux/reducers/session";
+import { format, differenceInMinutes } from "date-fns";
+import { timeConvert } from "utils/common";
+import { useRouter } from "next/router";
 
 const TripView = () => {
+  const dispatch = useDispatch();
+  const [flightTime, setFlightTime] = useState(null);
+  const [checked, setChecked] = useState(false);
+  const {
+    flightParams,
+    selectedSessionJourney,
+    sellParams,
+    selectedSessionFare,
+    sellFlightLoading,
+    sellResponse,
+  } = useSelector(sessionSelector);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function init() {
+      if (selectedSessionJourney && sellParams && selectedSessionFare) {
+      } else {
+        router.push("/");
+      }
+    }
+    init();
+  }, [selectedSessionJourney, sellParams]);
+
+  useEffect(() => {
+    async function redirectFromSell() {
+      if (sellResponse) {
+        router.push("/trip/passenger-form");
+      }
+    }
+    redirectFromSell();
+  }, [sellResponse]);
+
+  useEffect(() => {
+    if (selectedSessionJourney) {
+      let _info = {};
+      selectedSessionJourney.Segments.map((_segment) => {
+        _info = {
+          STA: _segment?.STA,
+          STD: _segment?.STD,
+          ArrivalStation: _segment?.ArrivalStation,
+          DepartureStation: _segment?.DepartureStation,
+        };
+      });
+
+      setFlightTime({
+        ..._info,
+      });
+    }
+  }, [selectedSessionJourney]);
+
   const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
+    setChecked(e.target.checked);
   };
+
+  const handleSell = async () => {
+    dispatch(
+      saveSellRequest({
+        sellKey: sellParams?.sellKey,
+        segmentStd: sellParams?.segmentStd,
+        segmentFlightNumber: sellParams?.segmentFlightNumber,
+        fareKey: selectedSessionFare?.FareSellKey,
+      })
+    );
+  };
+
+  const ChangeFlight = async () => {
+    const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
+    router.push(query);
+  };
+
+  const fare_name =
+    selectedSessionFare?.RuleNumber?.toLowerCase() === "flex"
+      ? "gFlex"
+      : selectedSessionFare?.RuleNumber?.toLowerCase() === "savr"
+      ? "gSaver"
+      : "gClassic";
+
+  const totalServiceCharge =
+    selectedSessionFare?.PaxFares[0]?.ServiceCharges?.reduce(
+      (accumulator, object) => {
+        return accumulator + object.Amount;
+      },
+      0
+    );
 
   return (
     <BaseLayout>
@@ -28,17 +116,17 @@ const TripView = () => {
         <section className="ga__section">
           <div className="ga__section__main">
             <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
-              YOUR TRIP TO ABUJA
+              YOUR TRIP TO {flightTime && flightTime?.DepartureStation}
             </h2>
 
             <section className="flex flex-col">
               {/* TripHeader */}
               <section className="ibe__flight__info__destination">
-                <p>Lagos (LOS)</p>
+                <p> {flightTime && flightTime?.DepartureStation}</p>
                 <figure>
                   <ArrowTo />
                 </figure>
-                <p>Abuja (ABV)</p>
+                <p> {flightTime && flightTime?.ArrivalStation}</p>
 
                 <figure className="flightCircle">
                   <FlightIcon />
@@ -52,8 +140,15 @@ const TripView = () => {
                   <p className="tripType self-center">Direct Flight</p>
                   <div className="flex justify-between">
                     <div className="flex flex-col">
-                      <h5 className="tripType">18:00</h5>
-                      <p className="tripCity">Lagos (LOS)</p>
+                      <h5 className="tripType">
+                        {" "}
+                        {flightTime &&
+                          format(new Date(flightTime?.STD), "HH:mm")}
+                      </h5>
+                      <p className="tripCity">
+                        {" "}
+                        {flightTime && flightTime?.DepartureStation}
+                      </p>
                     </div>
                     <div className="tripIconPath">
                       <DottedLine className="dotted-svg" />
@@ -61,11 +156,26 @@ const TripView = () => {
                       <DottedLine className="dotted-svg" />
                     </div>
                     <div className="flex flex-col items-end">
-                      <h5 className="tripType right-text font-bold">19:00</h5>
-                      <p className="tripCity right-text">Abuja (ABJ)</p>
+                      <h5 className="tripType right-text font-bold">
+                        {" "}
+                        {flightTime &&
+                          format(new Date(flightTime?.STA), "HH:mm")}
+                      </h5>
+                      <p className="tripCity right-text">
+                        {" "}
+                        {flightTime && flightTime?.ArrivalStation}
+                      </p>
                     </div>
                   </div>
-                  <p className="tripTime self-center">1h 35mins</p>
+                  <p className="tripTime self-center">
+                    {flightTime &&
+                      timeConvert(
+                        differenceInMinutes(
+                          new Date(flightTime?.STA),
+                          new Date(flightTime?.STD)
+                        )
+                      )}
+                  </p>
                 </div>
               </section>
               {/* TripInfo */}
@@ -73,31 +183,46 @@ const TripView = () => {
               <section className="ibe__trip__package flex justify-between">
                 <div className="flex flex-col">
                   <h5>TRAVEL PACKAGE</h5>
-                  <h6>gClassic</h6>
-                  <button className="text-primary-main underline text-xs lg:text-sm font-body mt-4">
-                    Upgrade To gFlex
+                  <h6>{fare_name}</h6>
+                  <button
+                    onClick={ChangeFlight}
+                    className="text-primary-main underline text-xs lg:text-sm font-body mt-4"
+                  >
+                    Upgrade Trip
                   </button>
                 </div>
                 <div className="flex flex-col items-end">
                   <h5>FARE PRICE</h5>
-                  <h6>₦26,501</h6>
+                  <h6>₦{totalServiceCharge?.toLocaleString("NGN")}</h6>
                 </div>
               </section>
               {/* TripPackage */}
               {/* Flight Number */}
-              <div className="ibe__trip__number tripView">
-                <div className="flex flex-wrap lg:flex-nowrap items-center justify-between">
-                  <div className="flex items-center basis-full lg:basis-1/2 mb-6">
-                    <figure className="w-[41px] h-[41px] rounded-full flex items-center justify-center bg-primary-main mr-4">
-                      <WorkIcon />
-                    </figure>
-                    <h4 className="mb-0">7kg hand luggage: 55 x40 x 24cm</h4>
+              {selectedSessionJourney?.Segments.map((_segment) => {
+                return (
+                  <div className="ibe__trip__number tripView">
+                    <div className="flex flex-wrap lg:flex-nowrap items-center justify-between">
+                      <div className="flex items-center basis-full lg:basis-1/2 mb-6">
+                        <figure className="w-[41px] h-[41px] rounded-full flex items-center justify-center bg-primary-main mr-4">
+                          <WorkIcon />
+                        </figure>
+                        <h4 className="mb-0">
+                          {" "}
+                          {_segment?.FlightDesignator?.CarrierCode}
+                          &nbsp;
+                          {_segment?.FlightDesignator?.FlightNumber}
+                        </h4>
+                      </div>
+                      <button
+                        onClick={ChangeFlight}
+                        className="btn btn-outline basis-full lg:basis-auto flex-shrink-0"
+                      >
+                        Change Flight
+                      </button>
+                    </div>
                   </div>
-                  <button className="btn btn-outline basis-full lg:basis-auto flex-shrink-0">
-                    Change Flight
-                  </button>
-                </div>
-              </div>
+                );
+              })}
               {/* Flight Number */}
 
               {/* Terms */}
@@ -122,11 +247,19 @@ const TripView = () => {
                     system access.
                   </p>
                 </div>
-                <button className="btn btn-primary w-[195px]">Continue</button>
+                <button
+                  className={`btn btn-primary w-[195px] ${
+                    checked ? "" : "opacity-50 pointer-events-none"
+                  }`}
+                  onClick={handleSell}
+                >
+                  {sellFlightLoading ? "Loading....." : "Continue"}
+                </button>
               </div>
               {/* Terms */}
             </section>
           </div>
+
           <div className="ga__section__side">
             <IbeSidebar />
           </div>

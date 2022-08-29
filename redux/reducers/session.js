@@ -25,7 +25,6 @@ import {
   sessionPassengers,
   manageRequest,
   _sessionState,
-  bookingNew,
 } from "./data";
 
 const _sig =
@@ -39,8 +38,11 @@ const initialState = {
   flightAvailabilityLoading: false,
   flightParams: null,
   availabilityResponse: null,
+  selectedSessionJourney: null,
+  selectedSessionFare: null,
   sellFlightLoading: false,
   sellResponse: null,
+  sellParams: null,
   sellInfantLoading: false,
   sellInfantResponse: null,
   sessionPassengers: null,
@@ -97,6 +99,15 @@ export const sessionSlice = createSlice({
       state.availabilityResponse = {
         ...payload,
       };
+    },
+    setSelectedSessionJourney: (state, { payload }) => {
+      state.selectedSessionJourney = payload;
+    },
+    setSelectedSessionFare: (state, { payload }) => {
+      state.selectedSessionFare = payload;
+    },
+    setSellParams: (state, { payload }) => {
+      state.sellParams = payload;
     },
     setSellFlightLoading: (state, { payload }) => {
       state.sellFlightLoading = payload;
@@ -202,7 +213,10 @@ export const {
   setFlightAvailabilityLoading,
   setAvailabilityResponse,
   setSellFlightLoading,
+  setSelectedSessionJourney,
+  setSelectedSessionFare,
   setSellResponse,
+  setSellParams,
   setSellInfantLoading,
   setSellInfantResponse,
   setSessionPassengers,
@@ -551,7 +565,6 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
       message: "Error",
       description: "Fetch Flights failed",
     });
-    console.log("er", err.response);
   }
   dispatch(setFlightAvailabilityLoading(false));
 };
@@ -729,7 +742,10 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
       dispatch(setSellInfantLoading(false));
     }
   } catch (err) {
-    console.log("Sell Request error", err.response);
+    notification.error({
+      message: "Error",
+      description: "Sell Request failed",
+    });
   }
 
   dispatch(setSellFlightLoading(false));
@@ -866,7 +882,10 @@ export const updateSinglePassenger =
       const Response = await UpdatePassengers(requestPayload);
       await dispatch(setUpdatePassengersResponse(Response.data));
     } catch (err) {
-      console.log("Update passenger Request error", err.response);
+      notification.error({
+        message: "Error",
+        description: "Update Passenger failed",
+      });
     }
     dispatch(setUpdatePassengersLoading(false));
   };
@@ -1012,7 +1031,10 @@ export const updatePassengersDetails =
       await dispatch(setUpdatePassengersResponse(Response.data));
       await dispatch(FetchStateFromServer());
     } catch (err) {
-      console.log("Update passengers Request error", err.response);
+      notification.error({
+        message: "Error",
+        description: "Update passengerfailed",
+      });
     }
     dispatch(setUpdatePassengersLoading(false));
   };
@@ -1081,7 +1103,10 @@ export const updateContactsDetails =
       await dispatch(setUpdateContactsResponse(Response.data));
       await dispatch(FetchStateFromServer());
     } catch (err) {
-      console.log("Update Contacts Request error", err.response);
+      notification.error({
+        message: "Error",
+        description: "Update Contact failed",
+      });
     }
     dispatch(setUpdateContactsLoading(false));
   };
@@ -1206,7 +1231,10 @@ export const PaymentToBooking = (payload) => async (dispatch, getState) => {
     await dispatch(setPaymentBookingResponse(Response.data));
     await dispatch(FetchStateFromServer());
   } catch (err) {
-    console.log("Payment Request error", err.response);
+    notification.error({
+      message: "Error",
+      description: "Payment failed",
+    });
   }
   dispatch(setBookingCommitLoading(false));
 };
@@ -1257,7 +1285,10 @@ export const GetBookingCommit = () => async (dispatch, getState) => {
     await dispatch(setBookingCommitResponse(Response.data));
     await dispatch(FetchStateFromServer());
   } catch (err) {
-    console.log("BookingCommit Request error", err.response);
+    notification.error({
+      message: "Error",
+      description: "Get Booking failed",
+    });
   }
   dispatch(setBookingCommitLoading(false));
 };

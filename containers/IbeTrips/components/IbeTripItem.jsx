@@ -30,7 +30,7 @@ const IbeTripItem = ({ journey }) => {
   }, [journey]);
 
   const leastFare =
-    journey?.Segments[0].Fares[0].PaxFares[0].ServiceCharges.reduce(
+    journey?.Segments[0]?.Fares[0]?.PaxFares[0]?.ServiceCharges.reduce(
       (accumulator, object) => {
         return accumulator + object.Amount;
       },
@@ -115,6 +115,7 @@ const IbeTripItem = ({ journey }) => {
                     segmentFlightNumber={
                       _segment?.FlightDesignator?.FlightNumber
                     }
+                    journey={journey}
                   />
                 </div>
               );

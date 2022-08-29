@@ -4,8 +4,18 @@ import PackageIcon from "assets/svgs/package.svg";
 import SeatIcon from "assets/svgs/seat.svg";
 import { Fragment, useState } from "react";
 import IbeTripPopup from "./IbeTripPopup";
+import { useDispatch } from "react-redux";
+import { setSelectedSessionFare } from "redux/reducers/session";
+import TripConfirm from "pages/trip/confirm";
 
-const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
+const IbeTripVariant = ({
+  fare,
+  sellKey,
+  segmentStd,
+  segmentFlightNumber,
+  journey,
+}) => {
+  const dispatch = useDispatch();
   const [showPopUp, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -30,6 +40,8 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
 
   const handleBtnClick = (_fare) => {
     setSelected(_fare);
+    dispatch(setSelectedSessionFare(_fare));
+    // for ROund TripConfirm, add an id to identify the journeu(view Trip Purpose)
     setShow(true);
   };
 
@@ -134,6 +146,7 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
         sellKey={sellKey}
         segmentStd={segmentStd}
         segmentFlightNumber={segmentFlightNumber}
+        journey={journey}
       />
     </Fragment>
   );
