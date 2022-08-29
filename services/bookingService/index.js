@@ -129,6 +129,15 @@ export const AddPaymentToBooking = async (payload) => {
   });
 };
 
+export const GetSeatAvailabilityForBooking = async (payload) => {
+  let request = axios.post(`${BOOKING}GetSeatAvailability`, payload);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
 export const GetBookingFromState = async (payload) => {
   let request = axios.post(`${BOOKING}GetBookingFromState`, payload);
   return request.then((response) => {

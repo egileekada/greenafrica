@@ -1,12 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { Fragment, useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
-import IbeSidebar from "containers/IbeSidebar";
 
 import Popup from "components/Popup";
 import Seatslegend from "containers/Seats/SeatPopUp";
@@ -22,7 +19,6 @@ import {
 } from "redux/reducers/session";
 
 const SeatSelection = () => {
-  const router = useRouter();
   const dispatch = useDispatch();
   const [showPopUp, setShow] = useState(false);
   const [ticketIndex, setTicketIndex] = useState(0);
@@ -32,28 +28,13 @@ const SeatSelection = () => {
   const [assignment, setAssignment] = useState([]);
   const [seatSelected, setSeatSelected] = useState(false);
 
-  const {
-    signature,
-    seatAvailability,
-    bookingResponse,
-    bookingCommitResponse,
-    sessionPassengers,
-    bookingState,
-  } = useSelector(sessionSelector);
+  const { signature, seatAvailability, bookingResponse } =
+    useSelector(sessionSelector);
 
   const handleChange = (e, isWithInfant) => {
     setPassengerState(isWithInfant);
     setPasengerNumber(e.target.value);
   };
-
-  useEffect(() => {
-    async function redirectToSSR() {
-      if (bookingCommitResponse) {
-        router.push("/trip/payment");
-      }
-    }
-    redirectToSSR();
-  }, [bookingCommitResponse]);
 
   useEffect(() => {
     async function getAvailability() {
@@ -105,54 +86,55 @@ const SeatSelection = () => {
                         </p>
                       </div>
                       <h3 className="title-text">PASSENGER DETAILS</h3>
-                      {bookingState?.Passengers.map((passenger, index) => (
-                        <>
-                          <div className="flex items-center mb-4" key={index}>
-                            <input
-                              id={`passenger-${index}`}
-                              type="radio"
-                              value={passenger.PassengerNumber}
-                              name="passenger-state"
-                              onChange={(e) =>
-                                handleChange(
-                                  e,
-                                  passenger.PassengerInfants.length
-                                )
-                              }
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mb-2"
-                            />
-                            <label
-                              htmlFor={`passenger-${index}`}
-                              className="ml-2"
-                            >
-                              <div className="flex mb-6 mt-4">
-                                <div className="flex flex-col w-[53px] mr-4">
-                                  <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
-                                    <ProfileIcon />
+                      {bookingResponse?.Booking.Passengers.map(
+                        (passenger, index) => (
+                          <>
+                            <div className="flex items-center mb-4" key={index}>
+                              <input
+                                id={`passenger-${index}`}
+                                type="radio"
+                                value={passenger.PassengerNumber}
+                                name="passenger-state"
+                                onChange={(e) =>
+                                  handleChange(
+                                    e,
+                                    passenger.PassengerInfants.length
+                                  )
+                                }
+                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mb-2"
+                              />
+                              <label
+                                htmlFor={`passenger-${index}`}
+                                className="ml-2"
+                              >
+                                <div className="flex mb-6 mt-4">
+                                  <div className="flex flex-col w-[53px] mr-4">
+                                    <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
+                                      <ProfileIcon />
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <h5 className="text-base font-extrabold text-primary-main font-display mb-2">
+                                      {passenger.Names[0].FirstName}{" "}
+                                      {passenger.Names[0].LastName}
+                                    </h5>
+                                    <h6 className="text-base text-[#261F5E] font-title">
+                                      DOB:
+                                      {bookingResponse &&
+                                        format(
+                                          new Date(
+                                            passenger
+                                              ? passenger.PassengerTypeInfo.DOB
+                                              : ""
+                                          ),
+                                          "MMMM dd, yyyy"
+                                        )}
+                                    </h6>
                                   </div>
                                 </div>
-                                <div className="flex flex-col">
-                                  <h5 className="text-base font-extrabold text-primary-main font-display mb-2">
-                                    {passenger.Names[0].FirstName}{" "}
-                                    {passenger.Names[0].LastName}
-                                  </h5>
-                                  <h6 className="text-base text-[#261F5E] font-title">
-                                    DOB:
-                                    {bookingResponse &&
-                                      format(
-                                        new Date(
-                                          passenger
-                                            ? passenger.PassengerTypeInfo.DOB
-                                            : ""
-                                        ),
-                                        "MMMM dd, yyyy"
-                                      )}
-                                  </h6>
-                                </div>
-                              </div>
-                            </label>
-                          </div>
-                          {/* <div className="flex mb-6 mt-4">
+                              </label>
+                            </div>
+                            {/* <div className="flex mb-6 mt-4">
                               <div className="flex flex-col w-[53px] mr-4">
                                 <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
                                   <ProfileIcon />
@@ -177,8 +159,9 @@ const SeatSelection = () => {
                                 </h6>
                               </div>
                             </div> */}
-                        </>
-                      ))}
+                          </>
+                        )
+                      )}
                       <button className="flex xxl:hidden mb-3">
                         <figure>
                           <InfoIcon className="mr-2" />
@@ -194,14 +177,7 @@ const SeatSelection = () => {
                         </span>
                       </button>
                       <div className="hidden lg:flex pr-3 my-4">
-                        <Link
-                          href="/trip/payment"
-                          className="btn btn-outline mr-4"
-                        >
-                          <a className="btn btn-outline mr-4 text-center">
-                            Skip
-                          </a>
-                        </Link>
+                        <button className="btn btn-outline mr-4">Skip</button>
                         {seatSelected && (
                           <button
                             className="btn btn-primary"
@@ -218,7 +194,7 @@ const SeatSelection = () => {
                     <PlaneSeats
                       pasengerState={pasengerState}
                       pasengerNumber={pasengerNumber}
-                      pasengerCount={bookingState?.Passengers.length}
+                      pasengerCount={bookingResponse?.Booking.Passengers.length}
                       key={ticketIndex + 1}
                       data={
                         seatAvailability.EquipmentInfos[0].Compartments[0].Seats
@@ -234,9 +210,6 @@ const SeatSelection = () => {
                   <button className="btn btn-primary">Check In</button>
                 </div> */}
               </section>
-            </div>
-            <div className="ga__section__side">
-              <IbeSidebar />
             </div>
           </section>
         </section>
