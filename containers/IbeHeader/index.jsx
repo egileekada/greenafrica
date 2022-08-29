@@ -29,15 +29,18 @@ const IbeHeader = () => {
 
   useEffect(() => {
     const selectedDate = new Date(flightParams?.beginDate);
-    const _dates = [
-      subDays(selectedDate, 3),
-      subDays(selectedDate, 2),
-      subDays(selectedDate, 1),
-      selectedDate,
-      addDays(selectedDate, 1),
-      addDays(selectedDate, 2),
-      addDays(selectedDate, 2),
-    ];
+    const _dates =
+      width > 1200
+        ? [
+            subDays(selectedDate, 3),
+            subDays(selectedDate, 2),
+            subDays(selectedDate, 1),
+            selectedDate,
+            addDays(selectedDate, 1),
+            addDays(selectedDate, 2),
+            addDays(selectedDate, 2),
+          ]
+        : [subDays(selectedDate, 1), selectedDate, addDays(selectedDate, 1)];
     const _dateList = [];
     _dates.map((_date) => {
       const newObj = {
