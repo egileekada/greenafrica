@@ -5,23 +5,17 @@ import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GetBookingCommit,
-  sessionSelector,
-  FetchStateFromServer,
-} from "redux/reducers/session";
+import { GetBookingCommit, sessionSelector } from "redux/reducers/session";
 import {
   paymentSelector,
   FetchPaymentGateways,
   InitializeGatewayPayment,
 } from "redux/reducers/payment";
-
-import { retrieveBookingFromState } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 import { notification } from "antd";
 import { useRouter } from "next/router";
 
-const TripPayment = () => {
+const CheckinPayment = () => {
   const router = useRouter();
 
   const dispatch = useDispatch();
@@ -33,58 +27,75 @@ const TripPayment = () => {
     sessionContact,
     contactsResponse,
     sellSSRResponse,
-    bookingState,
+    bookingResponse,
+    assignSeatResponse,
   } = useSelector(sessionSelector);
 
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
     useSelector(paymentSelector);
-
-  useEffect(() => {
-    async function _getBookingCommit() {
-      if (sellSSRResponse) {
-        const _recordLocator =
-          bookingCommitResponse?.BookingUpdateResponseData?.Success
-            ?.RecordLocator;
-        if (!_recordLocator || _recordLocator?.length < 1) {
-          dispatch(GetBookingCommit());
-        }
-      }
-    }
-    _getBookingCommit();
-  }, [sellSSRResponse]);
+  //
+  console.log(assignSeatResponse.Success.PNRAmount.BalanceDue);
+  //   useEffect(() => {
+  //     async function _getBookingCommit() {
+  //       if (sellSSRResponse) {
+  //         const _recordLocator =
+  //           bookingCommitResponse?.BookingUpdateResponseData?.Success
+  //             ?.RecordLocator;
+  //         console.log("record locator", _recordLocator);
+  //         if (!_recordLocator || _recordLocator?.length < 1) {
+  //           dispatch(GetBookingCommit());
+  //         }
+  //       }
+  //     }
+  //     _getBookingCommit();
+  //   }, [sellSSRResponse]);
 
   useEffect(() => {
     async function fetchGateways() {
       dispatch(FetchPaymentGateways());
-      dispatch(retrieveBookingFromState());
     }
     fetchGateways();
   }, []);
 
-  useEffect(() => {
-    async function fetchStateInfo() {
-      dispatch(FetchStateFromServer());
-    }
-    fetchStateInfo();
-  }, []);
-
-  useEffect(() => {
-    async function computeTotalFare() {
-      setTotalFare(parseInt(bookingState.BookingSum.BalanceDue));
-    }
-    computeTotalFare();
-  }, [bookingState]);
+  //   useEffect(() => {
+  //     async function computeTotalFare() {
+  //       if (sellSSRResponse) {
+  //         setTotalFare(
+  //           parseInt(
+  //             sellSSRResponse?.BookingUpdateResponseData?.Success?.PNRAmount
+  //               ?.BalanceDue
+  //           )
+  //         );
+  //       } else if (contactsResponse) {
+  //         setTotalFare(
+  //           parseInt(
+  //             contactsResponse?.BookingUpdateResponseData?.Success?.PNRAmount
+  //               ?.BalanceDue
+  //           )
+  //         );
+  //       } else {
+  //         notification.error({
+  //           message: "Error",
+  //           description: "Unable to fetch total flight cost, Redirecting in 3s",
+  //         });
+  //         // setTimeout(() => {
+  //         //   router.push("/");
+  //         // }, 3000);
+  //       }
+  //     }
+  //     computeTotalFare();
+  //   }, [sellSSRResponse, contactsResponse]);
 
   const handlePayment = async () => {
     if (bookingCommitResponse) {
       const payload = {
-        customer_name: sessionContact?.firstName,
-        customer_email: sessionContact?.email,
+        customer_name: `${bookingResponse?.Booking.BookingContacts[0].Names[0].FirstName} ${bookingResponse?.Booking.BookingContacts[0].Names[0].LastName}`,
+        customer_email:
+          bookingResponse?.Booking?.BookingContacts[0].EmailAddress,
         amount: totalFare * 100,
-        pnr: bookingCommitResponse?.BookingUpdateResponseData?.Success
-          ?.RecordLocator,
+        pnr: bookingResponse?.Booking.RecordLocator,
         gateway_type_id: selected,
-        payment_origin: "booking",
+        payment_origin: "checkin",
       };
       dispatch(InitializeGatewayPayment(payload));
     } else {
@@ -126,6 +137,7 @@ const TripPayment = () => {
                             className={`payment-card ${
                               selected === _gateway?.id ? "active" : ""
                             } `}
+                            key={_i}
                             onClick={() => setSelected(_gateway?.id)}
                           >
                             {selected === _gateway?.id ? (
@@ -183,4 +195,4 @@ const TripPayment = () => {
   );
 };
 
-export default TripPayment;
+export default CheckinPayment;

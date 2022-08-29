@@ -21,6 +21,15 @@ export const GetBooking = async (payload) => {
   });
 };
 
+export const GetBookingFromState = async (payload) => {
+  let request = axios.post(`${BOOKING}GetBookingFromState`, payload);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
 export const GetItineraryPrice = async (payload) => {
   let request = axios.post(`${BOOKING}GetItineraryPrice`, payload);
   return request.then((response) => {
@@ -57,6 +66,7 @@ export const BookingSell = async (payload) => {
   });
 };
 
+
 export const BookingCancel = async (payload) => {
   let request = axios.post(`${BOOKING}Cancel`, payload);
   return request.then((response) => {
@@ -65,6 +75,7 @@ export const BookingCancel = async (payload) => {
     }
   });
 };
+
 
 export const GetSSRAvailability = async (payload) => {
   let request = axios.post(`${BOOKING}GetSSRAvailability`, payload);
@@ -122,6 +133,7 @@ export const UpdateContacts = async (payload) => {
 
 export const AddPaymentToBooking = async (payload) => {
   let request = axios.post(`${BOOKING}AddPaymentToBooking`, payload);
+
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;
@@ -129,11 +141,14 @@ export const AddPaymentToBooking = async (payload) => {
   });
 };
 
-export const GetBookingFromState = async (payload) => {
-  let request = axios.post(`${BOOKING}GetBookingFromState`, payload);
+export const GetSeatAvailabilityForBooking = async (payload) => {
+  let request = axios.post(`${BOOKING}GetSeatAvailability`, payload);
+
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;
     }
   });
 };
+
+
