@@ -14,6 +14,7 @@ import {
   setSessionSSRs,
   CancelSSRs,
   FetchSSRAvailabilityForBooking,
+  retrieveBookingFromState,
 } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
@@ -29,6 +30,7 @@ const PassengerDetails = () => {
     sellSSRLoading,
     sessionSSRs,
     contactsResponse,
+    signature,
   } = useSelector(sessionSelector);
 
   useEffect(() => {
@@ -52,19 +54,28 @@ const PassengerDetails = () => {
 
   const proceedToSeatSelectionWithSSR = async () => {
     dispatch(SellSSROption(selectedSSRs));
-    router.push("/trip/payment");
+    router.push("/trip/seat-selection");
   };
 
   const proceedToSeatSelectionWithoutSSR = async () => {
     // this is suposed to go to seat-Selection,payment is an hotfix
     dispatch(setSessionSSRs([]));
     dispatch(setSSRResponse(contactsResponse));
-    router.push("/trip/payment");
+    router.push("/trip/seat-selection");
   };
 
   const checkSSRContent = () => {
     selectedSSRs.length > 0 ? proceedToSeatSelectionWithSSR() : setShow(true);
   };
+
+  useEffect(() => {
+    async function retrieveBooking() {
+      if (signature) {
+        dispatch(retrieveBookingFromState());
+      }
+    }
+    retrieveBooking();
+  }, []);
 
   return (
     <BaseLayout>
