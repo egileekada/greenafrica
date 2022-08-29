@@ -1,84 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment, useState, useEffect, useRef } from "react";
-import { format } from "date-fns";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
 import IbeSidebar from "containers/IbeSidebar";
-
+import { Fragment, useState } from "react";
 import Popup from "components/Popup";
 import Seatslegend from "containers/Seats/SeatPopUp";
 import PlaneSeats from "containers/Seats/PlaneSeats";
 
 import InfoIcon from "assets/svgs/seats/info.svg";
 
-import { useSelector, useDispatch } from "react-redux";
-import {
-  sessionSelector,
-  startSession,
-  retrieveSeatAvailability,
-} from "redux/reducers/session";
-
 const SeatSelection = () => {
-  const router = useRouter();
-  const dispatch = useDispatch();
   const [showPopUp, setShow] = useState(false);
-  const [ticketIndex, setTicketIndex] = useState(0);
   const [showEmergency, setEmergency] = useState(false);
-  const [pasengerState, setPassengerState] = useState(null);
-  const [pasengerNumber, setPasengerNumber] = useState(null);
-  const [assignment, setAssignment] = useState([]);
-  const [seatSelected, setSeatSelected] = useState(false);
-
-  const {
-    signature,
-    seatAvailability,
-    bookingResponse,
-    bookingCommitResponse,
-    sessionPassengers,
-    bookingState,
-  } = useSelector(sessionSelector);
-
-  const handleChange = (e, isWithInfant) => {
-    setPassengerState(isWithInfant);
-    setPasengerNumber(e.target.value);
-  };
-
-  useEffect(() => {
-    async function redirectToSSR() {
-      if (bookingCommitResponse) {
-        router.push("/trip/payment");
-      }
-    }
-    redirectToSSR();
-  }, [bookingCommitResponse]);
-
-  useEffect(() => {
-    async function getAvailability() {
-      if (signature) {
-        dispatch(retrieveSeatAvailability({ ticketIndex }));
-      }
-    }
-    getAvailability();
-  }, []);
-
-  const childRef = useRef(null);
-
-  const handleClick = () => {
-    childRef.current.assignSeat();
-  };
 
   return (
     <Fragment>
       <BaseLayout>
         <section className="w-full checkin">
-          <section className="ga__section bg-normal">
-            <div className="ga__section__main standalone">
+          <section className="ga__section">
+            <div className="ga__section__main">
               <div className="mb-8">
                 <h2 className="text-black font-bold text-2xl mb-2">
-                  Change Seat Selection
+                  Seat Selection
                 </h2>
               </div>
 
@@ -86,7 +30,6 @@ const SeatSelection = () => {
                 {/* TripHeader */}
                 <section className="ibe__flight__info__destination">
                   <p>Seat Selection</p>
-                  {/* <figure className="absolute -left-6"> */}
                   <figure className="flightCircle">
                     <FlightIcon />
                   </figure>
@@ -95,90 +38,31 @@ const SeatSelection = () => {
                 <div className="flex flex-wrap xlg:flex-nowrap">
                   <div className="basis-full xlg:basis-[30%]">
                     {/* Seat Info */}
-                    <div className="mx-6 mt-12 flex flex-col">
+                    <div className="ml-12 mt-12 xlg:mt-36 flex flex-col">
                       <div className="flex flex-col mb-6">
-                        <h2 className="text-black font-semibold font-header text-xl mb-3">
+                        <h2 className="text-black font-header font-bold text-xl">
                           Select your seat(s)
                         </h2>
-                        <p className="text-black">
+                        <p className="text-sm text-black">
                           Choose a preferred seat for your travel
                         </p>
                       </div>
                       <h3 className="title-text">PASSENGER DETAILS</h3>
-                      {bookingState?.Passengers.map((passenger, index) => (
-                        <>
-                          <div className="flex items-center mb-4" key={index}>
-                            <input
-                              id={`passenger-${index}`}
-                              type="radio"
-                              value={passenger.PassengerNumber}
-                              name="passenger-state"
-                              onChange={(e) =>
-                                handleChange(
-                                  e,
-                                  passenger.PassengerInfants.length
-                                )
-                              }
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mb-2"
-                            />
-                            <label
-                              htmlFor={`passenger-${index}`}
-                              className="ml-2"
-                            >
-                              <div className="flex mb-6 mt-4">
-                                <div className="flex flex-col w-[53px] mr-4">
-                                  <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
-                                    <ProfileIcon />
-                                  </div>
-                                </div>
-                                <div className="flex flex-col">
-                                  <h5 className="text-base font-extrabold text-primary-main font-display mb-2">
-                                    {passenger.Names[0].FirstName}{" "}
-                                    {passenger.Names[0].LastName}
-                                  </h5>
-                                  <h6 className="text-base text-[#261F5E] font-title">
-                                    DOB:
-                                    {bookingResponse &&
-                                      format(
-                                        new Date(
-                                          passenger
-                                            ? passenger.PassengerTypeInfo.DOB
-                                            : ""
-                                        ),
-                                        "MMMM dd, yyyy"
-                                      )}
-                                  </h6>
-                                </div>
-                              </div>
-                            </label>
+                      <div className="flex mb-6 mt-4">
+                        <div className="flex flex-col w-[53px] mr-4">
+                          <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
+                            <ProfileIcon />
                           </div>
-                          {/* <div className="flex mb-6 mt-4">
-                              <div className="flex flex-col w-[53px] mr-4">
-                                <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
-                                  <ProfileIcon />
-                                </div>
-                              </div>
-                              <div className="flex flex-col">
-                                <h5 className="text-base font-extrabold text-primary-main font-display mb-2">
-                                  {passenger.Names[0].FirstName}{" "}
-                                  {passenger.Names[0].LastName}
-                                </h5>
-                                <h6 className="text-base text-[#261F5E] font-title">
-                                  DOB:
-                                  {bookingResponse &&
-                                    format(
-                                      new Date(
-                                        passenger
-                                          ? passenger.PassengerTypeInfo.DOB
-                                          : ""
-                                      ),
-                                      "MMMM dd, yyyy"
-                                    )}
-                                </h6>
-                              </div>
-                            </div> */}
-                        </>
-                      ))}
+                        </div>
+                        <div className="flex flex-col">
+                          <h5 className="text-sm font-extrabold text-primary-main font-display mb-2">
+                            Michael Johnson
+                          </h5>
+                          <h6 className="text-[12px] text-[#9692B8] font-title">
+                            DOB: June 22, 1998
+                          </h6>
+                        </div>
+                      </div>
                       <button className="flex xxl:hidden mb-3">
                         <figure>
                           <InfoIcon className="mr-2" />
@@ -193,39 +77,17 @@ const SeatSelection = () => {
                           </span>
                         </span>
                       </button>
-                      <div className="hidden lg:flex pr-3 my-4">
-                        <Link
-                          href="/trip/payment"
-                          className="btn btn-outline mr-4"
-                        >
-                          <a className="btn btn-outline mr-4 text-center">
-                            Skip
-                          </a>
-                        </Link>
-                        {seatSelected && (
-                          <button
-                            className="btn btn-primary"
-                            onClick={handleClick}
-                          >
-                            Continue
-                          </button>
-                        )}
+                      <div className="hidden lg:flex pr-3">
+                        <button className="btn btn-outline mr-4">
+                          Go Back
+                        </button>
+                        <button className="btn btn-primary">Continue</button>
                       </div>
                     </div>
                     {/* Seat Info */}
                   </div>
-                  <div className="basis-full xlg:basis-[70%] pt-4 h-[650px]  scrollable overflow-y-scroll mt-12 xlg:mt-0">
-                    <PlaneSeats
-                      pasengerState={pasengerState}
-                      pasengerNumber={pasengerNumber}
-                      pasengerCount={bookingState?.Passengers.length}
-                      key={ticketIndex + 1}
-                      data={
-                        seatAvailability.EquipmentInfos[0].Compartments[0].Seats
-                      }
-                      ref={childRef}
-                      setSeatSelected={setSeatSelected}
-                    />
+                  <div className="basis-full xlg:basis-[70%] pt-4 h-[600px]  scrollable overflow-y-scroll mt-12 xlg:mt-0">
+                    <PlaneSeats />
                   </div>
                 </div>
 

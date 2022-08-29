@@ -15,8 +15,6 @@ import {
   FetchPaymentGateways,
   InitializeGatewayPayment,
 } from "redux/reducers/payment";
-
-import { retrieveBookingFromState } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 import { notification } from "antd";
 import { useRouter } from "next/router";
@@ -33,9 +31,7 @@ const TripPayment = () => {
     sessionContact,
     contactsResponse,
     sellSSRResponse,
-    bookingState,
   } = useSelector(sessionSelector);
-
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
     useSelector(paymentSelector);
 
@@ -45,7 +41,6 @@ const TripPayment = () => {
         const _recordLocator =
           bookingCommitResponse?.BookingUpdateResponseData?.Success
             ?.RecordLocator;
-
         if (!_recordLocator || _recordLocator?.length < 1) {
           dispatch(GetBookingCommit());
         }
@@ -57,7 +52,6 @@ const TripPayment = () => {
   useEffect(() => {
     async function fetchGateways() {
       dispatch(FetchPaymentGateways());
-      dispatch(retrieveBookingFromState());
     }
     fetchGateways();
   }, []);
@@ -71,10 +65,32 @@ const TripPayment = () => {
 
   useEffect(() => {
     async function computeTotalFare() {
-      setTotalFare(parseInt(bookingState.BookingSum.BalanceDue));
+      if (sellSSRResponse) {
+        setTotalFare(
+          parseInt(
+            sellSSRResponse?.BookingUpdateResponseData?.Success?.PNRAmount
+              ?.BalanceDue
+          )
+        );
+      } else if (contactsResponse) {
+        setTotalFare(
+          parseInt(
+            contactsResponse?.BookingUpdateResponseData?.Success?.PNRAmount
+              ?.BalanceDue
+          )
+        );
+      } else {
+        notification.error({
+          message: "Error",
+          description: "Unable to fetch total flight cost, Redirecting in 3s",
+        });
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
+      }
     }
     computeTotalFare();
-  }, [bookingState]);
+  }, [sellSSRResponse, contactsResponse]);
 
   const handlePayment = async () => {
     if (bookingCommitResponse) {

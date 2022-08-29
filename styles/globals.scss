@@ -9,9 +9,8 @@
 @tailwind utilities;
 
 @media (min-width: 1200px) {
-  html,
-  body {
-    font-size: 16px;
+  html {
+    font-size: 80%;
   }
 }
 
@@ -323,7 +322,7 @@
       border-radius: 6px 6px 0px 0px;
 
       p {
-        @apply font-display text-white font-semibold text-xs md:text-xl mx-4;
+        @apply font-display text-white font-extrabold text-xs md:text-2xl mx-4;
       }
     }
 
@@ -367,105 +366,6 @@
           }
         }
       }
-    }
-  }
-
-  .ibe__trip__passengers {
-    @apply flex flex-wrap lg:flex-nowrap bg-white pt-6 pb-10 px-7 rounded-t-md;
-
-    .bordered {
-      border: 1px solid #9e9bbf;
-      border-radius: 6px;
-    }
-
-    h5.tripTime {
-      @apply font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left;
-      &.right-text {
-        @apply text-right;
-      }
-    }
-
-    p.tripCity {
-      @apply font-medium font-body text-xs lg:text-sm text-black text-left;
-
-      &.right-text {
-        @apply text-right;
-      }
-    }
-
-    h5.tripType {
-      @apply text-sm lg:text-[25px] leading-8 font-header font-bold text-primary-main mb-2;
-    }
-
-    .tripIconPath {
-      @apply flex items-center basis-[70%] justify-between px-4 lg:px-0;
-
-      .dotted-svg {
-        @apply w-[30%] lg:w-auto;
-      }
-
-      .aero-svg {
-        @apply w-[20%] lg:w-auto;
-      }
-    }
-
-    &.tripView {
-      @apply lg:px-24;
-
-      &.bordered {
-        border: 0.5px solid #cfceda;
-        border-radius: 6px;
-      }
-    }
-
-    &.summaryView {
-      @apply px-6 lg:px-20;
-
-      &.bordered {
-        border: 0.5px solid #cfceda;
-        border-radius: 6px;
-      }
-    }
-
-    &.checkinView {
-      @apply px-0 pt-8 pb-0 relative flex-col;
-
-      &.bordered {
-        border: 0.5px solid #cfceda;
-        border-radius: 6px;
-      }
-
-      .trip-details {
-        background: rgba(158, 155, 191, 0.12);
-        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full;
-
-        &-item {
-          @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
-
-          h5,
-          h5 span {
-            @apply font-display font-bold text-sm text-primary-main;
-
-            button.btn-outline {
-              min-width: 48px;
-              // max-width: 50px;
-              // max-width: 150px;
-              // width: 48.8px;
-
-              height: 22px;
-              @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display w-max;
-            }
-          }
-          h6 {
-            @apply font-title font-medium text-xxs text-primary-main mb-[10px];
-          }
-        }
-      }
-    }
-
-    p.tripType,
-    p.tripTime {
-      @apply text-primary-main text-xxs lg:text-sm font-body;
     }
   }
 
@@ -531,7 +431,7 @@
 
       .trip-details {
         background: rgba(158, 155, 191, 0.12);
-        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full mt-5;
+        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap  basis-full w-full;
 
         &-item {
           @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
@@ -977,7 +877,7 @@
 
   .checkin {
     h3.title-text {
-      @apply font-display text-primary-main md:text-base my-4 md:my-6;
+      @apply font-display text-xs text-primary-main;
     }
 
     &__card {
@@ -1082,14 +982,14 @@
     }
 
     &__item {
-      @apply mr-1 flex items-center justify-center bg-primary-main h-[49px] rounded-md cursor-pointer hover:bg-opacity-70;
+      @apply mr-1 flex items-center justify-center bg-primary-main w-[38px] h-[49px] rounded-md cursor-pointer hover:bg-opacity-70;
 
       &.transparent {
         @apply bg-transparent;
       }
 
       p {
-        @apply text-white font-header;
+        @apply text-white text-lg font-header;
       }
 
       &.seatRow {
@@ -1101,15 +1001,7 @@
 
       &.unavailable {
         @apply bg-[#F1F1F1];
-        //TODO enable this effect
-        // pointer-events: none;
       }
-      &.group6 {
-        @apply bg-[#F1F1F1];
-      }
-      // &.unavailable {
-      //   @apply bg-[#F1F1F1];
-      // }
 
       &.row-title {
         @apply bg-transparent;

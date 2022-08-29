@@ -44,9 +44,9 @@ const Footer = () => {
           </div>
           <div className="ga__footer__item">
             <ul className="ga__footer__item__box">
-              {FOOTER__EXPLORE.map((item, index) => {
+              {FOOTER__EXPLORE.map((item) => {
                 return (
-                  <Link key={index + 1} href={item?.link}>
+                  <Link key={item?.link} href={item?.link}>
                     <a className="text-white font-body text-sm mb-4">
                       {item?.name}
                     </a>
@@ -57,9 +57,9 @@ const Footer = () => {
           </div>
           <div className="ga__footer__item">
             <ul className="ga__footer__item__box">
-              {FOOTER__HELP.map((item, index) => {
+              {FOOTER__HELP.map((item) => {
                 return (
-                  <Link key={index} href={item?.link}>
+                  <Link key={item?.link} href={item?.link}>
                     <a className="text-white font-body text-sm mb-4">
                       {item?.name}
                     </a>
