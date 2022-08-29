@@ -5,7 +5,11 @@ import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBookingCommit, sessionSelector } from "redux/reducers/session";
+import {
+  GetBookingCommit,
+  sessionSelector,
+  FetchStateFromServer,
+} from "redux/reducers/session";
 import {
   paymentSelector,
   FetchPaymentGateways,
@@ -50,6 +54,13 @@ const TripPayment = () => {
       dispatch(FetchPaymentGateways());
     }
     fetchGateways();
+  }, []);
+
+  useEffect(() => {
+    async function fetchStateInfo() {
+      dispatch(FetchStateFromServer());
+    }
+    fetchStateInfo();
   }, []);
 
   useEffect(() => {

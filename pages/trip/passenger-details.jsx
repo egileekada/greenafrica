@@ -57,7 +57,6 @@ const PassengerDetails = () => {
 
   const proceedToSeatSelectionWithoutSSR = async () => {
     // this is suposed to go to seat-Selection,payment is an hotfix
-    console.log("caaling this guy");
     dispatch(setSessionSSRs([]));
     dispatch(setSSRResponse(contactsResponse));
     router.push("/trip/payment");

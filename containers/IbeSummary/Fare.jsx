@@ -59,6 +59,7 @@ const Fare = ({ isRoundTrip }) => {
                           return _charge.ChargeCode === "";
                         }
                       );
+
                       const _TaxFares = _fare.PaxFares[0].ServiceCharges.filter(
                         (_charge) => {
                           return _charge.ChargeCode === "NG";
@@ -71,10 +72,12 @@ const Fare = ({ isRoundTrip }) => {
                               return accumulator + object.Amount;
                             }, 0)
                           : 0;
+
                       const AirportTax =
                         _fare.PaxFares[0].ServiceCharges.filter((_charge) => {
                           return _charge.ChargeCode === "QT";
                         });
+
                       const FuelTax = _fare.PaxFares[0].ServiceCharges.filter(
                         (_charge) => {
                           return _charge.ChargeCode === "YQ";

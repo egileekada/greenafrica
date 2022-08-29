@@ -18,7 +18,11 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
-import { bookingFromState, _sessionState } from "./data";
+import {
+  bookingFromState,
+  _sessionState,
+  bookingFromStateMultiple,
+} from "./data";
 
 const _sig =
   "nRSa/Cwg6w4=|NttRfUEqg4qb8UHS1X6n4zk1comLiMt7VKH5zvkXCODJgwsclsU5TU0btW7b94JYr5RY0ADcXLcSEZLPW1z8NkW7Bl81o/Wuznmd3ex4yWrrQ9fckFW5QDzVx3IF6P6nCyatSCqsUug=";
@@ -61,8 +65,9 @@ const initialState = {
   sellSSRLoading: false,
   sellSSRResponse: null,
   sessionStateLoading: false,
-  sessionStateResponse: null,
-  // sessionStateResponse: bookingFromState,
+  // sessionStateResponse: null,
+  sessionStateResponse: bookingFromState,
+  // sessionStateResponse: bookingFromStateMultiple,
 };
 
 export const sessionSlice = createSlice({

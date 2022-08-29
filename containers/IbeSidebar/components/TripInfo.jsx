@@ -69,28 +69,6 @@ const TripInfo = () => {
               </h6>
             </div>
           </div>
-          {/* <div className="ibe__sidebar__row bordered">
-                      <div className="flex items-center">
-                        <figure className="mr-2">
-                          <CostIcon />
-                        </figure>
-                        <h6>Flight :</h6>
-                      </div>
-                      <div>
-                        <h6>Q9 301</h6>
-                      </div>
-                    </div>
-                    <div className="ibe__sidebar__row bordered">
-                      <div className="flex items-center">
-                        <figure className="mr-2">
-                          <DiscountIcon />
-                        </figure>
-                        <h6>Discount: :</h6>
-                      </div>
-                      <div>
-                        <h6> ₦3,501</h6>
-                      </div>
-                    </div> */}
         </div>
       </div>
     );

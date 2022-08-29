@@ -5,20 +5,11 @@ import PassengerInfo from "./components/Passenger";
 import SeatInfo from "./components/SeatInfo";
 import PaymentInfo from "./components/PaymentInfo";
 import { useDispatch, useSelector } from "react-redux";
-import { sessionSelector, FetchStateFromServer } from "redux/reducers/session";
+import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
 const IbeSidebar = () => {
-  const dispatch = useDispatch();
-  const { signature, sessionStateLoading } = useSelector(sessionSelector);
-  useEffect(() => {
-    async function fetchBookingState() {
-      if (signature) {
-        // dispatch(FetchStateFromServer());
-      }
-    }
-    fetchBookingState();
-  }, [signature]);
+  const { sessionStateLoading } = useSelector(sessionSelector);
 
   return (
     <section className="ibe__sidebar">
@@ -30,7 +21,7 @@ const IbeSidebar = () => {
           <TripInfo />
           <PassengerInfo />
           <SeatInfo />
-          {/* <PaymentInfo /> */}
+          <PaymentInfo />
         </>
       )}
     </section>
@@ -38,5 +29,3 @@ const IbeSidebar = () => {
 };
 
 export default IbeSidebar;
-
- 
