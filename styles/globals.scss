@@ -32,7 +32,7 @@
   }
 
   .ga__section {
-    @apply flex flex-wrap xlg:flex-nowrap w-full;
+    @apply flex flex-wrap xlg:flex-nowrap w-full flex-grow-0 flex-shrink-0;
 
     &.bg-normal {
       background-color: rgba(158, 155, 191, 0.17);
@@ -54,7 +54,7 @@
     }
 
     &__side {
-      @apply basis-full xlg:basis-[25%] bg-white px-8 py-8;
+      @apply basis-full xlg:basis-[25%] bg-white px-8 py-8 flex-shrink-0;
     }
   }
 
