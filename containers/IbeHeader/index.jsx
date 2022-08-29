@@ -14,12 +14,12 @@ import subDays from "date-fns/subDays";
 
 const IbeHeader = () => {
   const dispatch = useDispatch();
-
   const [dateList, setDateList] = useState([]);
   const [fareDateList, setFareDateList] = useState([]);
   const [nextIndex, setNextIndex] = useState(null);
   const [prev, setPrev] = useState(null);
   const [width] = useDeviceSize();
+  const [length, setLength] = useState(width > 1200 ? 7 : 3);
 
   const {
     lowFareAvailabilityLoading,
@@ -105,8 +105,6 @@ const IbeHeader = () => {
       beginDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
       endDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
     };
-    console.log("flightRequest,", flightRequest);
-
     dispatch(setFlightRequest(flightRequest));
   };
 

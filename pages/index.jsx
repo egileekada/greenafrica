@@ -108,7 +108,7 @@ const Home = () => {
                 </h2>
                 <section className="flex flex-col scrollable">
                   <div className="flex flex-col mb-10">
-                    <IbeHeader />
+                    {/* <IbeHeader /> */}
                     {flightAvailabilityLoading ? (
                       <Spinner />
                     ) : availabilityResponse ? (
