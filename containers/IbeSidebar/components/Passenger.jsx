@@ -38,7 +38,7 @@ const PassengerInfo = () => {
                   </h5>
 
                   {_Seats.length > 0
-                    ? sessionStateResponse?.Booking?.Journeys.map(
+                    ? sessionStateResponse?.BookingData.Journeys.map(
                         (_journey) => {
                           return _journey?.Segments.map((_segment) => {
                             return (
@@ -87,7 +87,8 @@ const PassengerInfo = () => {
         onClick={() => setShow(!showContent)}
       >
         <div className="flex items-center">
-          {sessionStateResponse?.Booking?.Passengers.length > 0 ? (
+          {sessionStateResponse?.BookingData.Passengers.length > 0 &&
+          sessionStateResponse?.BookingData.Passengers[0].Names.length > 0 ? (
             <figure className="mr-2">
               <CheckIcon />
             </figure>
@@ -111,8 +112,9 @@ const PassengerInfo = () => {
       {showContent && (
         <>
           {sessionStateResponse &&
-          sessionStateResponse?.Booking?.Passengers.length > 0 ? (
-            sessionStateResponse?.Booking?.Passengers.map(
+          sessionStateResponse?.BookingData.Passengers.length > 0 &&
+          sessionStateResponse?.BookingData.Passengers[0].Names.length > 0 ? (
+            sessionStateResponse?.BookingData.Passengers.map(
               (_passenger, _paxIndex) => {
                 return (
                   <PassengerItem

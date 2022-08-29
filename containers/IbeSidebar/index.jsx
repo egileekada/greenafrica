@@ -30,7 +30,7 @@ const IbeSidebar = () => {
           <TripInfo />
           <PassengerInfo />
           <SeatInfo />
-          <PaymentInfo />
+          {/* <PaymentInfo /> */}
         </>
       )}
     </section>

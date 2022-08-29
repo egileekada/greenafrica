@@ -106,7 +106,7 @@ const TripInfo = () => {
       >
         <div className="flex items-center">
           <figure className="mr-2">
-            {sessionStateResponse?.Booking?.Journeys.length > 0 ? (
+            {sessionStateResponse?.BookingData?.Journeys.length > 0 ? (
               <CheckIcon />
             ) : (
               <OneIcon />
@@ -125,8 +125,8 @@ const TripInfo = () => {
 
       {showContent && (
         <>
-          {sessionStateResponse?.Booking?.Journeys.length > 0 ? (
-            sessionStateResponse?.Booking?.Journeys.map((_journey) => {
+          {sessionStateResponse?.BookingData?.Journeys.length > 0 ? (
+            sessionStateResponse?.BookingData?.Journeys.map((_journey) => {
               return _journey?.Segments.map((_segment) => {
                 return <JourneyItem segment={_segment} />;
               });

@@ -9,6 +9,7 @@ import {
   sessionSelector,
   updatePassengersDetails,
   updateContactsDetails,
+  FetchStateFromServer,
 } from "redux/reducers/session";
 import { useRouter } from "next/router";
 import { Checkbox } from "antd";
@@ -90,6 +91,13 @@ const PassengerForm = () => {
     }
     redirectToSSR();
   }, [passengersResponse, contactsResponse]);
+
+  useEffect(() => {
+    async function fetchStateInfo() {
+      dispatch(FetchStateFromServer());
+    }
+    fetchStateInfo();
+  }, []);
 
   const handleSubmit = async (values) => {
     const contactInfo = {

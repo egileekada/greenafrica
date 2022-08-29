@@ -179,10 +179,3 @@ const Home = () => {
 };
 
 export default Home;
-
-// ?origin=ABV
-//&destination=LOS
-// & departure=2022 - 08 - 18
-// & adt=1
-// & chd=0
-// & inf=0

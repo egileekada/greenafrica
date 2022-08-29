@@ -37,7 +37,6 @@ const TripPayment = () => {
         const _recordLocator =
           bookingCommitResponse?.BookingUpdateResponseData?.Success
             ?.RecordLocator;
-        console.log('record locator',_recordLocator)
         if (!_recordLocator || _recordLocator?.length < 1) {
           dispatch(GetBookingCommit());
         }

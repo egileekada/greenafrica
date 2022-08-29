@@ -12,7 +12,11 @@ import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { sessionSelector, saveSellRequest } from "redux/reducers/session";
+import {
+  sessionSelector,
+  saveSellRequest,
+  FetchStateFromServer,
+} from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import { useRouter } from "next/router";
@@ -68,8 +72,14 @@ const TripView = () => {
     }
   }, [selectedSessionJourney]);
 
+  useEffect(() => {
+    async function fetchStateInfo() {
+      dispatch(FetchStateFromServer());
+    }
+    fetchStateInfo();
+  }, []);
+
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
     setChecked(e.target.checked);
   };
 
