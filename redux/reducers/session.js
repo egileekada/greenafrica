@@ -63,7 +63,7 @@ const initialState = {
   bookingResponseLoading: false,
   bookingResponse: null,
   seatAvailability: null,
-  seatResponseLoading: false,
+  seatResponseLoading: true,
   SSRAvailabilityLoading: false,
   SSRAvailabilityResponse: null,
   sellSSRLoading: false,

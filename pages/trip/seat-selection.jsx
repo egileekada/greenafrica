@@ -7,7 +7,7 @@ import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
 import IbeSidebar from "containers/IbeSidebar";
-
+import Spinner from "components/Spinner";
 import Popup from "components/Popup";
 import Seatslegend from "containers/Seats/SeatPopUp";
 import PlaneSeats from "containers/Seats/PlaneSeats";
@@ -59,7 +59,7 @@ const SeatSelection = () => {
   useEffect(() => {
     async function getAvailability() {
       if (signature) {
-        dispatch(retrieveSeatAvailability({ ticketIndex }));
+        await dispatch(retrieveSeatAvailability({ ticketIndex }));
       }
     }
     getAvailability();
@@ -216,7 +216,11 @@ const SeatSelection = () => {
                     {/* Seat Info */}
                   </div>
                   <div className="basis-full xlg:basis-[70%] pt-4 h-[650px]  scrollable overflow-y-scroll mt-12 xlg:mt-0">
-                    {!seatResponseLoading && (
+                    {seatResponseLoading && seatAvailability === null ? (
+                      <section className="py-10 pl-12">
+                        <Spinner />
+                      </section>
+                    ) : (
                       <PlaneSeats
                         pasengerState={pasengerState}
                         pasengerNumber={pasengerNumber}
