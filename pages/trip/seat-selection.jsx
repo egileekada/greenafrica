@@ -31,6 +31,7 @@ const SeatSelection = () => {
   const [passengerNumber, setpassengerNumber] = useState(null);
   const [assignment, setAssignment] = useState([]);
   const [seatSelected, setSeatSelected] = useState(false);
+  const [selectedSeat, setSelectedSeat] = useState([]);
 
   const {
     signature,
@@ -138,16 +139,10 @@ const SeatSelection = () => {
                                     {passenger.Names[0].LastName}
                                   </h5>
                                   <h6 className="text-base text-[#261F5E] font-title">
-                                    DOB:
-                                    {bookingResponse &&
-                                      format(
-                                        new Date(
-                                          passenger
-                                            ? passenger.PassengerTypeInfo.DOB
-                                            : ""
-                                        ),
-                                        "MMMM dd, yyyy"
-                                      )}
+                                    {selectedSeat[index]?.seatDesignator
+                                      .length > 0
+                                      ? `Seat Number: ${selectedSeat[index].seatDesignator}`
+                                      : "No Seat Selected"}
                                   </h6>
                                 </div>
                               </div>
@@ -232,6 +227,8 @@ const SeatSelection = () => {
                         }
                         ref={childRef}
                         setSeatSelected={setSeatSelected}
+                        setSelectedSeat={setSelectedSeat}
+                        selectedSeat={selectedSeat}
                       />
                     )}
                   </div>

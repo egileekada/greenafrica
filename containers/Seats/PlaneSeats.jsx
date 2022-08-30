@@ -16,7 +16,15 @@ import { sessionSelector, tryAssignSeat } from "redux/reducers/session";
 
 const PlaneSeats = forwardRef(
   (
-    { data, pasengerState, passengerNumber, pasengerCount, setSeatSelected },
+    {
+      data,
+      pasengerState,
+      passengerNumber,
+      pasengerCount,
+      setSeatSelected,
+      selectedSeat,
+      setSelectedSeat,
+    },
     ref
   ) => {
     const dispatch = useDispatch();
@@ -31,7 +39,7 @@ const PlaneSeats = forwardRef(
     const [segmentSeatRequests, setSegmentSeatRequests] = useState([]);
     const [selected, setSelected] = useState(0);
 
-    const [selectedSeat, setSelectedSeat] = useState([]);
+    // const [selectedSeat, setSelectedSeat] = useState([]);
 
     const setSeat = (seat) => {
       //TODO pass journey type to this component
@@ -176,7 +184,6 @@ const PlaneSeats = forwardRef(
           <p>{SeatDesignator} Front Seat</p>
 
           <p> {mapSeatGroup(seatGroup)}</p>
-          <p>{seatAvailability}</p>
           {propertylist.filter((list) => list.TypeCode === "INFANT").length >
             0 && <p>Customer with infant</p>}
         </div>
@@ -512,10 +519,10 @@ const PlaneSeats = forwardRef(
             </div>
           </section>
           <section className="cabin__legend ">
-            <section className="w-[235px] bg-white rounded-xl ">
+            <section className="w-[315px] bg-white rounded-xl ">
               <div className="flex flex-col px-[21px] py-6">
-                <h2 className="text-black font-header text-xl mb-8">
-                  Seat Legend
+                <h2 className="font-header font-semibold text-primary-main text-xl mb-8">
+                  LEGEND
                 </h2>
                 <section className="seats__legend">
                   <div className="seats__legend__item">
