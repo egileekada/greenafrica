@@ -490,7 +490,7 @@
   }
 
   .ibe__trip__item {
-    @apply flex flex-wrap lg:flex-nowrap items-center bg-white pt-6 pb-10 pl-16 pr-8 rounded-t-md;
+    @apply flex flex-wrap lg:flex-nowrap items-center bg-white pt-6 pb-10 pl-8 md:pl-16 pr-8 rounded-t-md;
 
     h5.tripTime {
       @apply font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left;
