@@ -96,7 +96,7 @@ const IbeTripPopup = ({
                           : ""
                       } `}
                     >
-                      <h4>You selected:</h4>
+                      <h4>&nbsp;</h4>
                       <h3>gSaver</h3>
                     </div>
                     <div
@@ -106,7 +106,7 @@ const IbeTripPopup = ({
                           : ""
                       } `}
                     >
-                      <h4>Your Recommendation</h4>
+                      <h4>Our Recommendation</h4>
                       <h3>gClassic</h3>
                     </div>
                     <div

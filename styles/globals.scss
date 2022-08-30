@@ -93,6 +93,10 @@
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;
 
+      &.white {
+        @apply text-white;
+      }
+
       &.disabled {
         @apply opacity-50 pointer-events-none cursor-none;
       }
@@ -486,7 +490,7 @@
   }
 
   .ibe__trip__item {
-    @apply flex flex-wrap lg:flex-nowrap items-center bg-white pt-6 pb-10 px-7 rounded-t-md;
+    @apply flex flex-wrap lg:flex-nowrap items-center bg-white pt-6 pb-10 pl-16 pr-8 rounded-t-md;
 
     h5.tripTime {
       @apply font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left;
@@ -862,6 +866,11 @@
     .ant-checkbox-checked .ant-checkbox-inner {
       background-color: #26205e !important;
       border-color: #26205e;
+    }
+
+    .ant-checkbox-inner {
+      width: 24px !important;
+      height: 24px !important;
     }
   }
 
@@ -1352,7 +1361,9 @@
 }
 
 .variant-bg {
-  background-color: rgba(107, 97, 205, 0.1);
+  // background-color: rgba(107, 97, 205, 0.1);
+  @apply bg-[#EDEDFF];
+
 }
 
 .grey__out {

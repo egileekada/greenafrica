@@ -40,8 +40,8 @@ const IbeTripItem = ({ journey }) => {
   return (
     <section className="flex flex-col mb-6">
       <section className="ibe__trip__item">
-        <div className="basis-full lg:basis-[60%] flex flex-col min-h-[54px] ">
-          <p className="tripType self-center">Direct Flight</p>
+        <div className="basis-full lg:basis-[70%] flex flex-col min-h-[54px] ">
+          <p className="tripType self-center underline underline-offset-4">Direct Flight</p>
           <div className="flex justify-between">
             <div className="flex flex-col">
               <h5 className="tripType">
@@ -75,7 +75,7 @@ const IbeTripItem = ({ journey }) => {
               )}
           </p>
         </div>
-        <div className="basis-full lg:basis-[40%] mt-4 lg:mt-0 flex justify-end items-center">
+        <div className="basis-full lg:basis-[30%] mt-4 lg:mt-0 flex justify-end items-center">
           {!isVisible ? (
             <button
               className="btn btn-primary w-full lg:w-[200px] flex items-center justify-center text-center group lg:ml-4"
@@ -98,7 +98,7 @@ const IbeTripItem = ({ journey }) => {
         </div>
       </section>
       <section
-        className={`variant-bg w-full min-h-[96px] pb-10 transition-all rounded-b-md ${
+        className={`variant-bg w-full min-h-[96px] pb-10 transition-all rounded-b-md border-b ${
           isVisible ? "flex flex-col" : "hidden"
         }`}
       >
@@ -123,7 +123,7 @@ const IbeTripItem = ({ journey }) => {
           })}
         </div>
       </section>
-      {!isVisible && (
+      {/* {!isVisible && ( */}
         <>
           {journey.Segments.map((_segment) => {
             return (
@@ -138,7 +138,7 @@ const IbeTripItem = ({ journey }) => {
             );
           })}
         </>
-      )}
+      {/* )} */}
     </section>
   );
 };

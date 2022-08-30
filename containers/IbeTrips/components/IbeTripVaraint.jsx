@@ -99,7 +99,7 @@ const IbeTripVariant = ({
                   <SeatIcon />
                 </figure>
                 <p className="text-black font-normal ml-4">
-                  Free Standard Seat{fare_variant}
+                  Free Standard Seat
                 </p>
               </li>
             )}
@@ -119,7 +119,7 @@ const IbeTripVariant = ({
           {fare_variant === "clsc" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn btn-primary w-full ${
+              className={`btn btn-primary w-full text-center ${
                 parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
               }`}
             >
@@ -129,7 +129,7 @@ const IbeTripVariant = ({
           {fare_variant === "flexi" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn btn-primary w-full  ${
+              className={`btn btn-primary w-full  text-center white ${
                 parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
               }`}
             >

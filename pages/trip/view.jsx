@@ -8,7 +8,7 @@ import ArrowTo from "assets/svgs/arrowto.svg";
 import { Checkbox } from "antd";
 import BackIcon from "assets/svgs/seats/arrowleft.svg";
 import ToTop from "assets/svgs/toTop.svg";
-import AeroIcon from "assets/svgs/aero.svg";
+import AeroIcon from "assets/svgs/aerotwo.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -155,7 +155,7 @@ const TripView = () => {
               {/* TripInfo */}
               <section className="ibe__trip__item tripView">
                 <div className="basis-full flex  flex-col min-h-[54px] ">
-                  <p className="tripType self-center">Direct Flight</p>
+                  <p className="tripType self-center underline underline-offset-4">Direct Flight</p>
                   <div className="flex justify-between">
                     <div className="flex flex-col">
                       <h5 className="tripType">
