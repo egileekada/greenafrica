@@ -1912,7 +1912,7 @@ export const tryAssignSeat = (payload) => async (dispatch, getState) => {
     console.error("Update passenger Request error", err.response.data);
     notification.error({
       message: "Error",
-      description: err.response.data.BookingUpdateResponseData.Error.ErrorText,
+      description: "Unable to assign seat",
     });
   }
   dispatch(setLoading(false));

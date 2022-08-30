@@ -16,11 +16,10 @@ import { sessionSelector, tryAssignSeat } from "redux/reducers/session";
 
 const PlaneSeats = forwardRef(
   (
-    { data, pasengerState, pasengerNumber, pasengerCount, setSeatSelected },
+    { data, pasengerState, passengerNumber, pasengerCount, setSeatSelected },
     ref
   ) => {
     const dispatch = useDispatch();
-    console.log(data);
     const {
       signature,
       sessionLoading,
@@ -32,43 +31,57 @@ const PlaneSeats = forwardRef(
     const [segmentSeatRequests, setSegmentSeatRequests] = useState([]);
     const [selected, setSelected] = useState(0);
 
+    const [selectedSeat, setSelectedSeat] = useState([]);
+
     const setSeat = (seat) => {
       //TODO pass journey type to this component
       //TODO watch for situation where not all users select seat
 
-      setSeatSelected(true);
-      const { PropertyList, SeatDesignator } = seat;
+      if (passengerNumber === null) {
+        alert("Kindly choose a passenger");
+      } else {
+        setSeatSelected(true);
 
-      setSelected(SeatDesignator);
+        const { PropertyList, SeatDesignator } = seat;
 
-      const TypeCode = PropertyList.filter(
-        (list) => list.TypeCode === "WINDOW" || list.TypeCode === "AISLE"
-      );
+        setSelected(SeatDesignator);
+        setSelectedSeat(
+          selectedSeat.map((item) =>
+            passengerNumber == parseInt(item.passengerNumber)
+              ? { ...item, seatDesignator: SeatDesignator }
+              : item
+          )
+        );
 
-      const newItems = segmentSeatRequests.map((item, index) => {
-        if (pasengerNumber == index) {
-          const newItem = { ...item };
-          newItem.flightDesignator =
-            bookingState?.Journeys[0].Segments[0].FlightDesignator;
-          newItem.unitDesignator = SeatDesignator;
-          newItem.std = bookingState?.Journeys[0].Segments[0].STD;
-          newItem.departureStation =
-            bookingState?.Journeys[0].Segments[0].DepartureStation;
-          newItem.arrivalStation =
-            bookingState?.Journeys[0].Segments[0].ArrivalStation;
-          newItem.passengerSeatPreferences[0].propertyTypeCode =
-            TypeCode[0].TypeCode;
-          newItem.passengerSeatPreferences[0].propertyCode =
-            PropertyList[PropertyList.length - 1].TypeCode;
-          return {
-            ...item,
-            ...newItem,
-          };
-        }
-        return item;
-      });
+        const TypeCode = PropertyList.filter(
+          (list) => list.TypeCode === "WINDOW" || list.TypeCode === "AISLE"
+        );
 
-      setSegmentSeatRequests(newItems);
+        const newItems = segmentSeatRequests.map((item, index) => {
+          if (passengerNumber == index) {
+            const newItem = { ...item };
+            newItem.flightDesignator =
+              bookingState?.Journeys[0].Segments[0].FlightDesignator;
+            newItem.unitDesignator = SeatDesignator;
+            newItem.std = bookingState?.Journeys[0].Segments[0].STD;
+            newItem.departureStation =
+              bookingState?.Journeys[0].Segments[0].DepartureStation;
+            newItem.arrivalStation =
+              bookingState?.Journeys[0].Segments[0].ArrivalStation;
+            newItem.passengerSeatPreferences[0].propertyTypeCode =
+              TypeCode[0].TypeCode;
+            newItem.passengerSeatPreferences[0].propertyCode =
+              PropertyList[PropertyList.length - 1].TypeCode;
+            return {
+              ...item,
+              ...newItem,
+            };
+          }
+          return item;
+        });
+
+        setSegmentSeatRequests(newItems);
+      }
     };
 
     const tidyData = (data) => {
@@ -104,7 +117,12 @@ const PlaneSeats = forwardRef(
       }
     };
 
-    const mapClass = (SeatAvailability, SeatGroup, SeatDesignator) => {
+    const mapClass = (
+      SeatAvailability,
+      SeatGroup,
+      SeatDesignator,
+      propertylist
+    ) => {
       let seatCode;
       switch (SeatGroup) {
         case (SeatGroup = 1):
@@ -134,13 +152,14 @@ const PlaneSeats = forwardRef(
       //   ? "seats__item unavailable w-[38px]"
       //   : `seats__item w-[38px] ${seatCode}`;
 
-      if (SeatDesignator === selected) {
+      if (selectedSeat.some((el) => el.seatDesignator === SeatDesignator)) {
         return "seats__item bg-[#292053] w-[38px]";
       } else {
         return SeatAvailability === 12 ||
           SeatAvailability === 1 ||
           SeatAvailability === 8 ||
-          SeatAvailability === 14
+          SeatAvailability === 14 ||
+          propertylist.filter((list) => list.TypeCode === "RESTRICT").length > 0
           ? "seats__item unavailable w-[38px]"
           : `seats__item w-[38px] ${seatCode}`;
       }
@@ -167,7 +186,8 @@ const PlaneSeats = forwardRef(
     const detectPassengerState = (
       seatAvailability,
       propertylist,
-      pasengerState
+      pasengerState,
+      SeatDesignator
     ) => {
       if (pasengerState == 1) {
         if (
@@ -177,7 +197,11 @@ const PlaneSeats = forwardRef(
             (seatAvailability !== 1) &
             (seatAvailability !== 8)
         ) {
-          return "";
+          if (selectedSeat.some((el) => el.seatDesignator === SeatDesignator)) {
+            return <span className="text-white">{SeatDesignator}</span>;
+          } else {
+            return "";
+          }
         } else
           return (
             <svg
@@ -223,8 +247,24 @@ const PlaneSeats = forwardRef(
               />
             </svg>
           );
-        } else return "";
+        } else {
+          if (selectedSeat.some((el) => el.seatDesignator === SeatDesignator)) {
+            return <span className="text-white">{SeatDesignator}</span>;
+          } else {
+            return "";
+          }
+        }
       }
+    };
+
+    const mapSeatSelection = () => {
+      let i = 0;
+      const newArray = [];
+      for (i = 0; i < pasengerCount; i++) {
+        newArray.push({ passengerNumber: i, seatDesignator: "" });
+      }
+
+      setSelectedSeat(newArray);
     };
 
     useEffect(() => {
@@ -260,10 +300,10 @@ const PlaneSeats = forwardRef(
             requestedSSRs: [""],
           });
         }
-
         setSegmentSeatRequests(newArray);
       };
 
+      mapSeatSelection();
       arrayGenerator();
     }, []);
 
@@ -365,7 +405,8 @@ const PlaneSeats = forwardRef(
                                   className={`${mapClass(
                                     seat.SeatAvailability,
                                     seat.SeatGroup,
-                                    seat.SeatDesignator
+                                    seat.SeatDesignator,
+                                    seat.PropertyList
                                   )}`}
                                   key={index}
                                   onClick={() => setSeat(seat)}
@@ -375,7 +416,8 @@ const PlaneSeats = forwardRef(
                                     {detectPassengerState(
                                       seat.SeatAvailability,
                                       seat.PropertyList,
-                                      pasengerState
+                                      pasengerState,
+                                      seat.SeatDesignator
                                     )}
                                     {/* {seat.SeatAvailability === 5 ? (
                                     " "

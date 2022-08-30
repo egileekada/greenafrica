@@ -28,7 +28,7 @@ const SeatSelection = () => {
   const [ticketIndex, setTicketIndex] = useState(0);
   const [showEmergency, setEmergency] = useState(false);
   const [pasengerState, setPassengerState] = useState(null);
-  const [pasengerNumber, setPasengerNumber] = useState(null);
+  const [passengerNumber, setpassengerNumber] = useState(null);
   const [assignment, setAssignment] = useState([]);
   const [seatSelected, setSeatSelected] = useState(false);
 
@@ -44,7 +44,7 @@ const SeatSelection = () => {
 
   const handleChange = (e, isWithInfant) => {
     setPassengerState(isWithInfant);
-    setPasengerNumber(e.target.value);
+    setpassengerNumber(e.target.value);
   };
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const SeatSelection = () => {
             <div className="ga__section__main standalone">
               <div className="mb-8">
                 <h2 className="text-black font-bold text-2xl mb-2">
-                  Change Seat Selection
+                  Seat Selection
                 </h2>
               </div>
 
@@ -223,7 +223,7 @@ const SeatSelection = () => {
                     ) : (
                       <PlaneSeats
                         pasengerState={pasengerState}
-                        pasengerNumber={pasengerNumber}
+                        passengerNumber={passengerNumber}
                         pasengerCount={bookingState?.Passengers.length}
                         key={ticketIndex + 1}
                         data={

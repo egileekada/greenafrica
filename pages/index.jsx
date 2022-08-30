@@ -179,7 +179,7 @@ const Home = () => {
         </section>
       </Popup>
       <PromoErrorWidget />
-      <FlightWidget />
+      {/* <FlightWidget /> */}
     </Fragment>
   );
 };
