@@ -40,6 +40,22 @@ const TripPayment = () => {
     useSelector(paymentSelector);
 
   useEffect(() => {
+    async function checkForSession() {
+      if (bookingState) {
+        if (
+          bookingState?.Passengers.length < 1 ||
+          bookingState?.Journeys.length < 1
+        ) {
+          window.location.assign("https://dev-website.gadevenv.com/");
+        }
+      } else {
+        window.location.assign("https://dev-website.gadevenv.com/");
+      }
+    }
+    checkForSession();
+  }, [bookingState]);
+
+  useEffect(() => {
     async function _getBookingCommit() {
       if (sellSSRResponse) {
         const _recordLocator =
@@ -70,7 +86,7 @@ const TripPayment = () => {
 
   useEffect(() => {
     async function computeTotalFare() {
-      setTotalFare(parseInt(bookingState.BookingSum.BalanceDue));
+      setTotalFare(parseInt(bookingState?.BookingSum?.BalanceDue));
     }
     computeTotalFare();
   }, [bookingState]);

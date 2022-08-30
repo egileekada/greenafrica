@@ -86,7 +86,7 @@ const IbeTripVariant = ({
                   <PackageIcon />
                 </figure>
                 <p className="text-black font-normal ml-4">
-                  15 kg checked package {fare_variant}
+                  15 kg checked package 
                 </p>
               </li>
             )}

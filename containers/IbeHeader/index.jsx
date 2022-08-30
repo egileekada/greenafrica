@@ -167,7 +167,7 @@ const IbeHeader = () => {
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (
-                            <p>#{_dateItem?.cost.toLocaleString()}</p>
+                            <p> ₦{_dateItem?.cost.toLocaleString()}</p>
                           ) : (
                             <p>No Flight</p>
                           )}

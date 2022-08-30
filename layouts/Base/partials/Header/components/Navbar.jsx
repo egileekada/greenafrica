@@ -7,11 +7,11 @@ const Navbar = () => {
   return (
     <Fragment>
       <nav className="nav bg-primary-main fit-x-bleed items-center justify-between py-7 hidden lg:flex">
-        <Link href="/">
+        <a href="https://dev-website.gadevenv.com/">
           <figure className="cursor-pointer">
             <LogoIcon />
           </figure>
-        </Link>
+        </a>
         <ul className="hidden tab:flex items-center">
           <li>
             <Link href="/de">

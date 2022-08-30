@@ -1,8 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap");
-@import url("../assets/fonts/Cosmical/fonts.css");
-@import url("../assets/fonts/plus-jakarta-sans-v3-latin/font.css");
-@import "antd/dist/antd.css";
-@import "./loader.scss";
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
+@import url('../assets/fonts/Cosmical/fonts.css');
+@import url('../assets/fonts/plus-jakarta-sans-v3-latin/font.css');
+@import 'antd/dist/antd.css';
+@import './loader.scss';
 
 @tailwind base;
 @tailwind components;
@@ -157,18 +157,18 @@
 
   .form-group {
     border: 1px solid #d8d7e2;
-    @apply flex flex-col mb-4 py-[8px] px-[22px] rounded-md;
+    @apply flex flex-col mb-4 py-3 px-[22px] rounded-md;
 
     &.select-group {
-      @apply px-[16px] relative;
+      @apply px-[16px] relative md:w-40;
     }
 
     label {
-      @apply font-body text-[#979797] text-[10px] mb-[7px] font-normal;
+      @apply font-body text-[#979797] text-[11px] mb-[7px] font-normal;
     }
 
     input,
-    input[type="date"] {
+    input[type='date'] {
       @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
     }
 
@@ -205,7 +205,7 @@
 
     .phone-input {
       input,
-      input[type="date"] {
+      input[type='date'] {
         @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
       }
     }
@@ -269,12 +269,12 @@
         -o-transition: opacity 2s ease-in-out;
         transition: opacity 2s ease-in-out;
         opacity: 0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
         filter: alpha(opacity=0);
 
         &.activeText {
           opacity: 1;
-          -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+          -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)';
           filter: alpha(opacity=1);
         }
       }
@@ -783,6 +783,10 @@
 
       .form-group {
         @apply w-full md:w-auto;
+
+        &.select-field {
+          @apply md:w-40;
+        }
       }
 
       .ant-switch {
@@ -809,7 +813,7 @@
     button.cta {
       @apply w-[195px];
       &.btn-outline {
-        @apply text-primary-main;
+        @apply text-primary-main hover:text-white;
       }
     }
   }
@@ -1358,7 +1362,7 @@
 }
 
 .plane-seats {
-  background-image: url("./bg/cab.png");
+  background-image: url('./bg/cab.png');
   background-size: 35%;
   background-repeat: no-repeat;
   background-position-x: 50%;
@@ -1382,7 +1386,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 

@@ -20,7 +20,6 @@ import Spinner from "components/Spinner";
 // import BackIcon from "assets/svgs/seats/arrowleft.svg";
 // import ToTop from "assets/svgs/toTop.svg";
 import LogoIcon from "assets/svgs/logo.svg";
-import Link from "next/link";
 
 // ?origin=ABV&destination=LOS&departure=2022-08-18&adt=1&chd=0&inf=0&promocode=3hy74h
 
@@ -42,7 +41,8 @@ const Home = () => {
       if (flightOrigin) {
         dispatch(startSession());
       } else {
-        dispatch(showWidget());
+        // dispatch(showWidget());
+        window.location.assign("https://dev-website.gadevenv.com/");
       }
     }
     checkParams();

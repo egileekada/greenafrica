@@ -92,7 +92,7 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
       </h3>
 
       <div className="mb-6 flex flex-wrap">
-        <div className="form-group select-group mr-0 md:mr-4">
+        <div className="form-group select-field select-group mr-0 md:mr-4">
           <label>TITLE</label>
           <select
             id="title"
@@ -113,7 +113,7 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
           ) : null}
         </div>
 
-        <div className="form-group mr-0 md:mr-4">
+        <div className="form-group flex-grow mr-0 md:mr-4">
           <label>FIRST NAME</label>
           <input
             type="text"
@@ -128,7 +128,7 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
             <p className="errorText mt-2">{error?.firstName}</p>
           ) : null}
         </div>
-        <div className="form-group mr-0 md:mr-4">
+        <div className="form-group flex-grow mr-0 md:mr-4">
           <label>LAST NAME</label>
           <input
             type="text"
@@ -143,7 +143,7 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
             <p className="errorText mt-2">{error?.lastName}</p>
           ) : null}
         </div>
-        <div className="form-group">
+        <div className="form-group flex-grow">
           <label>DATE OF BIRTH</label>
           <input
             type="date"

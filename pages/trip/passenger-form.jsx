@@ -217,7 +217,7 @@ const PassengerForm = () => {
                     </div>
 
                     <div className="mb-6 flex flex-wrap">
-                      <div className="form-group select-group mr-0 md:mr-4">
+                      <div className="form-group select-group  mr-0 md:mr-4">
                         <label>TITLE</label>
                         <select
                           name="c_title"
@@ -237,7 +237,7 @@ const PassengerForm = () => {
                         ) : null}
                       </div>
 
-                      <div className="form-group md:mr-4">
+                      <div className="form-group flex-grow md:mr-4">
                         <label>FIRST NAME</label>
                         <input
                           type="text"
@@ -253,7 +253,7 @@ const PassengerForm = () => {
                           </p>
                         ) : null}
                       </div>
-                      <div className="form-group md:mr-4">
+                      <div className="form-group flex-grow md:mr-4">
                         <label>LAST NAME</label>
                         <input
                           type="text"
@@ -269,38 +269,10 @@ const PassengerForm = () => {
                           </p>
                         ) : null}
                       </div>
-                      <div className="form-group md:mr-4">
-                        <label>EMAIL</label>
-                        <input
-                          type="email"
-                          placeholder="Enter your email"
-                          id="c_email"
-                          name="c_email"
-                          {...formik.getFieldProps("c_email")}
-                        />
-                        {formik.touched.c_email && formik.errors.c_email ? (
-                          <p className="errorText mt-2">
-                            {formik.errors.c_email}
-                          </p>
-                        ) : null}
-                      </div>
-                      <div className="form-group md:mr-4">
-                        <label>CONFIRM EMAIL ADDRESS</label>
-                        <input
-                          type="email"
-                          placeholder="Enter your email"
-                          id="cc_email"
-                          name="cc_email"
-                          {...formik.getFieldProps("cc_email")}
-                        />
-                        {formik.touched.cc_email && formik.errors.cc_email ? (
-                          <p className="errorText mt-2">
-                            {formik.errors.cc_email}
-                          </p>
-                        ) : null}
-                      </div>
+                    </div>
 
-                      <div className="phone-group  mr-0 md:mr-4">
+                    <div className="mb-6 flex flex-wrap">
+                      <div className="phone-group flex-grow mr-0 md:mr-4">
                         <label>PHONE NUMBER</label>
                         <div className="flex">
                           <div className="phone-select">
@@ -327,6 +299,36 @@ const PassengerForm = () => {
                         {formik.touched.c_phone && formik.errors.c_phone ? (
                           <p className="errorText mt-2">
                             {formik.errors.c_phone}
+                          </p>
+                        ) : null}
+                      </div>
+                      <div className="form-group flex-grow md:mr-4">
+                        <label>EMAIL</label>
+                        <input
+                          type="email"
+                          placeholder="Enter your email"
+                          id="c_email"
+                          name="c_email"
+                          {...formik.getFieldProps("c_email")}
+                        />
+                        {formik.touched.c_email && formik.errors.c_email ? (
+                          <p className="errorText mt-2">
+                            {formik.errors.c_email}
+                          </p>
+                        ) : null}
+                      </div>
+                      <div className="form-group flex-grow md:mr-4">
+                        <label>CONFIRM EMAIL ADDRESS</label>
+                        <input
+                          type="email"
+                          placeholder="Enter your email"
+                          id="cc_email"
+                          name="cc_email"
+                          {...formik.getFieldProps("cc_email")}
+                        />
+                        {formik.touched.cc_email && formik.errors.cc_email ? (
+                          <p className="errorText mt-2">
+                            {formik.errors.cc_email}
                           </p>
                         ) : null}
                       </div>
