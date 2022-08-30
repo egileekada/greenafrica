@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Logon } from "services/sessionService";
+import { PURGE } from "redux-persist";
+
 import {
   GetLowFareAvailability,
   GetAvailabilityRequest,
@@ -218,6 +220,9 @@ export const sessionSlice = createSlice({
     setSessionStateResponse: (state, { payload }) => {
       state.sessionStateResponse = payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => initialState); // THIS LINE
   },
 });
 

@@ -47,5 +47,4 @@ export const persistor = persistStore(store);
 // Reset store when you need to e.g logout session
 export const resetStore = async () => {
   await persistor.purge();
-  await persistor.flush();
 };

@@ -83,7 +83,7 @@ const PassengerForm = () => {
     }
     sumPassengerCount();
   }, []);
-
+  // TODO watch for this
   useEffect(() => {
     async function redirectToSSR() {
       if (passengersResponse && contactsResponse) {

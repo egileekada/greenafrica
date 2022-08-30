@@ -14,6 +14,7 @@ import {
   setFlightRequest,
   fetchLowFareAvailability,
 } from "redux/reducers/session";
+import { resetStore } from "redux/store";
 import { showWidget } from "redux/reducers/general";
 import Spinner from "components/Spinner";
 // import BackIcon from "assets/svgs/seats/arrowleft.svg";
@@ -34,6 +35,7 @@ const Home = () => {
   } = useSelector(sessionSelector);
 
   useEffect(() => {
+    resetStore();
     async function checkParams() {
       const ibeQuery = new URLSearchParams(window.location.search);
       const flightOrigin = ibeQuery.get("origin");

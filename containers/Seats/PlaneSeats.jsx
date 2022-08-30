@@ -291,7 +291,7 @@ const PlaneSeats = forwardRef(
             departureStation: "",
             arrivalStation: "",
             unitDesignator: "",
-            passengerNumbers: [0],
+            passengerNumbers: [i],
             compartmentDesignator: "Y",
             passengerSeatPreferences: [
               {
@@ -303,7 +303,7 @@ const PlaneSeats = forwardRef(
                 met: "",
               },
             ],
-            passengerIDs: [0],
+            passengerIDs: [i],
             requestedSSRs: [""],
           });
         }
