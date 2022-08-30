@@ -52,7 +52,9 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
             {/* <p>{JSON.stringify(selectedSSRs)}</p> */}
-            <h2 className="title-text mb-2">INSURANCE</h2>
+            <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-2">
+              INSURANCE
+            </h2>
             <div className="flex items-center primary-checkbox">
               <Checkbox onChange={onInsuranceChange}>
                 <label className="check-label">
@@ -62,13 +64,16 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
             </div>
             <section className="flex flex-col special__needs mb-4">
               <div className="flex flex-col mt-6">
-                <h6 className="title-text mb-2">SPECIAL ASSISTANCE</h6>
+                <h6 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-2">
+                  SPECIAL ASSISTANCE
+                </h6>
                 <div className="flex items-center mb-5 primary-checkbox">
                   <Checkbox checked={checked} onChange={onChange}>
                     <label className="check-label">
-                      <span>Wheelchair</span> - Customer can climb stairs, Walk
-                      to & from seat but unable to walk long distances, Requires
-                      Assistance To and From The Aircraft.
+                      <span className="font-bold">Wheelchair</span> - Customer
+                      can climb stairs, Walk to & from seat but unable to walk
+                      long distances, Requires Assistance To and From The
+                      Aircraft.
                     </label>
                   </Checkbox>
                 </div>

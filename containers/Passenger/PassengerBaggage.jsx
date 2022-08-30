@@ -36,28 +36,30 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
             <FliightIcon className="primary-main" />
           </figure>
           <div className="flex items-center ml-[10px] ">
-            <p className="font-header text-primary-main text-sm mr-[6px]">
+            <p className="font-header text-primary-main text-sm mr-[6px] font-bold">
               {flightParams?.departureStation}
             </p>
             <figure className="flex items-center justify-center -mb-1">
               <ArrowIcon />
             </figure>
-            <p className="font-header text-primary-main text-sm ml-[6px]">
+            <p className="font-header text-primary-main text-sm ml-[6px] font-bold">
               {flightParams?.arrivalStation}
             </p>
           </div>
         </div>
 
         {/* Checkin Info*/}
-        <section className="checkin__info my-3">
+        {/* <section className="checkin__info my-3">
           <p>
             You added some new services so your fare has been updated with
             additional fees
           </p>
-        </section>
+        </section> */}
         {/* Checkin Info*/}
 
-        <h2 className="title-text mb-4">BAGGAGE INFORMATION</h2>
+        <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-4">
+          BAGGAGE INFORMATION
+        </h2>
         <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
           {SSRAvailabilityResponse.SSRAvailabilityForBookingResponse.SSRSegmentList.map(
             (_list) => {
@@ -76,13 +78,13 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
             }
           )}
         </section>
-        <div className="flex items-center primary-checkbox mb-">
+        {/* <div className="flex items-center primary-checkbox mb-4">
           <Checkbox onChange={onChange}>
             <label className="check-label">
               <p className="ml-2">I don’t need extra baggage</p>
             </label>
           </Checkbox>
-        </div>
+        </div> */}
       </section>
       <Popup
         display={showPopUp}

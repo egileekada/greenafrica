@@ -277,6 +277,10 @@
     }
   }
 
+  .ant-input[disabled] {
+    color: rgba(114, 106, 106, 0.93) !important;
+  }
+
   .top__bar {
     @apply bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50;
 
