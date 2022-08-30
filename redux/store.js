@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import {
   persistReducer,
+  persistStore,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -32,7 +33,6 @@ const rootReducer = combineReducers({
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -41,3 +41,11 @@ export const store = configureStore({
       },
     }),
 });
+
+export const persistor = persistStore(store);
+
+// Reset store when you need to e.g logout session
+export const resetStore = async () => {
+  await persistor.purge();
+  await persistor.flush();
+};

@@ -1,5 +1,4 @@
 import { Fragment, useEffect } from "react";
-import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
@@ -8,10 +7,8 @@ import "../styles/loader.scss";
 
 import Preloader from "components/Preloader";
 
-import { store } from "redux/store";
+import { store, persistor } from "redux/store";
 import { Provider } from "react-redux";
-
-let persistor = persistStore(store);
 
 const MyApp = ({ Component, pageProps }) => {
   return (
