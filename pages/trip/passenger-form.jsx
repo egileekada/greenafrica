@@ -142,9 +142,7 @@ const PassengerForm = () => {
       obj.firstName &&
       obj.firstName.length &&
       obj.lastName &&
-      obj.lastName.length &&
-      obj.dob &&
-      obj.dob.length
+      obj.lastName.length
     );
   };
 

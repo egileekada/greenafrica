@@ -22,12 +22,7 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
-import {
-  bookingFromState,
-  _sessionState,
-  bookingFromStateMultiple,
-  bookingResponse,
-} from "./data";
+import { _sessionState } from "./data";
 
 const initialState = {
   isLoading: false,
@@ -46,12 +41,10 @@ const initialState = {
   sellInfantLoading: false,
   sellInfantResponse: null,
   sessionPassengers: null,
-  // sessionPassengers: sessionPassengers,
   sessionInfants: null,
   sessionContact: null,
   sessionSegmentDetails: null,
   sessionSSRs: null,
-  // sessionSSRs: sessionSSRs,
   updatePassengersLoading: false,
   passengersResponse: null,
   updateContactsLoading: false,
@@ -946,7 +939,7 @@ export const updatePassengersDetails =
           names: [
             {
               firstName: _passenger.firstName,
-              middleName: _passenger.lastName,
+              middleName: "",
               lastName: _passenger.lastName,
               suffix: "",
               title: _passenger.title,
@@ -970,7 +963,7 @@ export const updatePassengersDetails =
             names: [
               {
                 firstName: INFANT_TO_BE_ATTACHED.firstName,
-                middleName: INFANT_TO_BE_ATTACHED.lastName,
+                middleName: "",
                 lastName: INFANT_TO_BE_ATTACHED.lastName,
                 suffix: "",
                 title: INFANT_TO_BE_ATTACHED.title,
@@ -1021,7 +1014,7 @@ export const updatePassengersDetails =
           names: [
             {
               firstName: _passenger.firstName,
-              middleName: _passenger.lastName,
+              middleName: "",
               lastName: _passenger.lastName,
               suffix: "",
               title: _passenger.title,
@@ -1088,7 +1081,7 @@ export const updateContactsDetails =
                 names: [
                   {
                     firstName: payload.firstName,
-                    middleName: payload.firstName,
+                    middleName: "",
                     lastName: payload.lastName,
                     suffix: "",
                     title: payload.title,
@@ -1300,7 +1293,7 @@ export const GetBookingCommit = () => async (dispatch, getState) => {
       waivePenaltyFeeSpecified: true,
       waiveSpoilageFee: false,
       waiveSpoilageFeeSpecified: true,
-      distributeToContacts: true,
+      distributeToContacts: false,
       distributeToContactsSpecified: true,
     },
   };
@@ -1841,7 +1834,7 @@ export const startBookingCommit = (payload) => async (dispatch, getState) => {
       waivePenaltyFeeSpecified: true,
       waiveSpoilageFee: false,
       waiveSpoilageFeeSpecified: true,
-      distributeToContacts: true,
+      distributeToContacts: false,
       distributeToContactsSpecified: true,
     },
   };

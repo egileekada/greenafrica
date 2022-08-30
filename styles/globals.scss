@@ -864,17 +864,23 @@
   .ant-checkbox-checked .ant-checkbox-inner {
     background-color: #3ddc97 !important;
     border-color: #3ddc97;
+    cursor: pointer;
+  }
+
+  .ant-checkbox-inner::after {
+    left: 33% !important;
   }
 
   .checkbox-copy {
     .ant-checkbox-checked .ant-checkbox-inner {
       background-color: #26205e !important;
       border-color: #26205e;
+      cursor: pointer;
     }
 
     .ant-checkbox-inner {
-      width: 24px !important;
-      height: 24px !important;
+      width: 20px !important;
+      height: 20px !important;
     }
   }
 
@@ -886,11 +892,13 @@
 
     .ant-switch-checked {
       background-color: #26205e !important;
+      cursor: pointer;
     }
 
     .ant-checkbox-checked .ant-checkbox-inner {
       background-color: #26205e !important;
       border-color: #26205e;
+      cursor: pointer;
     }
   }
 
@@ -1344,9 +1352,12 @@
 .special__needs {
   .ant-switch {
     background-color: #f7f7ff !important;
+    cursor: pointer;
   }
+
   .ant-switch-checked {
     background-color: #3ddc97 !important;
+    cursor: pointer;
   }
 }
 
