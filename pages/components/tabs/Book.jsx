@@ -226,6 +226,7 @@ const BookingTab = ({ type, promocode }) => {
                 alt=""
                 className="mx-2 pb-2 hidden md:block"
                 onClick={() => forcusOrigin(originSelect)}
+                role="button"
               />
               <div className="w-full mx-2 px-2 md:px-0">
                 <p className="mb-1 text-xs mb-0 text-[#979797]">FROM</p>
@@ -269,7 +270,8 @@ const BookingTab = ({ type, promocode }) => {
               <img
                 src="/images/widget_to.svg"
                 alt=""
-                className="hidden md:block mx-2 pb-2"
+                className="hidden md:block mx-2 pb-2 cursor-pointer"
+                role="button"
                 onClick={() => forcusOrigin(destinationSelect)}
               />
               <div className="w-full mx-2 px-2 md:px-0">
@@ -291,6 +293,7 @@ const BookingTab = ({ type, promocode }) => {
                   onChange={(value) => {
                     formik.setFieldValue("destination", value);
                   }}
+                  noOptionsMessage={() => "Kindly choose an origin"}
                 />
               </div>
             </div>
