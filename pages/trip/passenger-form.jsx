@@ -181,7 +181,7 @@ const PassengerForm = () => {
                   className="passenger__form"
                   onSubmit={formik.handleSubmit}
                 >
-                  {/* <p>{JSON.stringify(passengers)}</p> */}
+                  <p>{JSON.stringify(passengers)}</p>
                   {passengers
                     .sort((a, b) => {
                       return a.id - b.id;
@@ -290,6 +290,7 @@ const PassengerForm = () => {
                               placeholder="Enter your number"
                               id="c_phone"
                               name="c_phone"
+                              placeholder="9056789087"
                               {...formik.getFieldProps("c_phone")}
                             />
                           </div>
@@ -379,5 +380,8 @@ const PassengerDetailsSchema = Yup.object().shape({
     .required("Confirm Email is Required"),
   c_phone: Yup.number()
     .typeError("Please Input a valid phone number")
-    .required("Phone is Required"),
+    .required("Phone is Required")
+    .test("len", "Must be a minimum 11 characters", (val) => {
+      if (val) return val.toString().length >= 10;
+    }),
 });
