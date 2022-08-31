@@ -33,7 +33,8 @@ const IbeTripPopup = ({
   journey,
 }) => {
   const dispatch = useDispatch();
-  const { sellFlightLoading } = useSelector(sessionSelector);
+  const { sellFlightLoading, selectedSessionJourney, flightParams } =
+    useSelector(sessionSelector);
   const router = useRouter();
 
   const gSaver = [`7kg hand luggage: 55 x40 x 24cm`];
@@ -51,25 +52,21 @@ const IbeTripPopup = ({
   ];
 
   const handleSell = async () => {
-    dispatch(
-      setSellParams({
-        sellKey,
-        segmentStd,
-        segmentFlightNumber,
-        fareKey: selected?.FareSellKey,
-      })
-    );
-    dispatch(setSelectedSessionJourney(journey));
-    router.push("/trip/view");
-
-    // dispatch(
-    //   saveSellRequest({
-    //     sellKey,
-    //     segmentStd,
-    //     segmentFlightNumber,
-    //     fareKey: selected?.FareSellKey,
-    //   })
-    // );
+    if (flightParams?.isRoundTrip === 1) {
+      set
+    } else {
+      dispatch(
+        setSellParams({
+          sellKey,
+          segmentStd,
+          segmentFlightNumber,
+          fareKey: selected?.FareSellKey,
+        })
+      );
+      const _selectedJorney = [journey];
+      dispatch(setSelectedSessionJourney(_selectedJorney));
+      router.push("/trip/view");
+    }
   };
 
   return (
@@ -373,6 +370,7 @@ IbeTripPopup.defaultProps = {
   segmentStd: "",
   segmentFlightNumber: "",
   journey: {},
+  schedueIndex: "",
   //  showPopUp={showPopUp},
   //  closePopUp={closePopUp},
 };

@@ -1,18 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import IbeTripItem from "./components/IbeTripItem";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
-const IbeTrips = ({ flightSchedule, _i }) => {
+const IbeTrips = ({ flightSchedule, schedueIndex }) => {
   const { flightAvailabilityLoading, flightParams } =
     useSelector(sessionSelector);
 
   return (
     <section className="ibe__flight__trips">
       <h2 className="text-primary-main font-extrabold text-sm mb-8">
-        {parseInt(_i) === 0 ? "DEPARTURE ON" : "RETURN ON "}&nbsp;{" "}
+        {parseInt(schedueIndex) === 0 ? "DEPARTURE ON" : "RETURN ON "}&nbsp;{" "}
         {flightParams?.beginDate}
       </h2>
 
@@ -24,8 +24,13 @@ const IbeTrips = ({ flightSchedule, _i }) => {
             {flightSchedule ? (
               flightSchedule.length > 0 ? (
                 flightSchedule.map((_schedule) => {
-                  return _schedule.Journeys.map((_journey) => {
-                    return <IbeTripItem journey={_journey} />;
+                  return _schedule.Journeys.map((_journey, _journeyIndex) => {
+                    return (
+                      <IbeTripItem
+                        journey={_journey}
+                        schedueIndex={schedueIndex}
+                      />
+                    );
                   });
                 })
               ) : (
@@ -47,7 +52,7 @@ const IbeTrips = ({ flightSchedule, _i }) => {
 
 IbeTrips.defaultProps = {
   flightSchedule: {},
-  _i: "",
+  schedueIndex: "",
 };
 
 export default IbeTrips;

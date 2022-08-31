@@ -20,6 +20,7 @@ import Spinner from "components/Spinner";
 // import BackIcon from "assets/svgs/seats/arrowleft.svg";
 // import ToTop from "assets/svgs/toTop.svg";
 import LogoIcon from "assets/svgs/logo.svg";
+import { notification } from "antd";
 
 // ?origin=ABV&destination=LOS&departure=2022-08-18&adt=1&chd=0&inf=0&promocode=3hy74h
 
@@ -86,6 +87,13 @@ const Home = () => {
     router.push(query);
   };
 
+  const checkRoundTripPayload = () => {
+    notification.error({
+      message: "Error",
+      description: "Please selected all relevant journeys and fares",
+    });
+  };
+
   return (
     <Fragment>
       <BaseLayout>
@@ -122,13 +130,29 @@ const Home = () => {
                     ) : availabilityResponse ? (
                       availabilityResponse?.GetTripAvailabilityResponse
                         .Schedules.length > 0 ? (
-                        availabilityResponse.GetTripAvailabilityResponse.Schedules.map(
-                          (_schedule, _i) => {
-                            return (
-                              <IbeTrips flightSchedule={_schedule} _i={_i} />
-                            );
-                          }
-                        )
+                        <>
+                          {availabilityResponse.GetTripAvailabilityResponse.Schedules.map(
+                            (_schedule, _schedueIndex) => {
+                              return (
+                                <IbeTrips
+                                  flightSchedule={_schedule}
+                                  schedueIndex={_schedueIndex}
+                                />
+                              );
+                            }
+                          )}
+                          {availabilityResponse.GetTripAvailabilityResponse
+                            .Schedules.length > 1 && (
+                            <div className="flex items-center justify-end">
+                              <button
+                                className="btn btn-primary"
+                                onClick={checkRoundTripPayload}
+                              >
+                                Continue
+                              </button>
+                            </div>
+                          )}
+                        </>
                       ) : (
                         <h2 className=" text-red-600 font-normal text-sm mb-8">
                           No Flight Schedules

@@ -35,6 +35,7 @@ const initialState = {
   availabilityResponse: null,
   selectedSessionJourney: null,
   selectedSessionFare: null,
+  selectedSessionReturnFare: null,
   sellFlightLoading: false,
   sellResponse: null,
   sellParams: null,
@@ -101,6 +102,9 @@ export const sessionSlice = createSlice({
     },
     setSelectedSessionFare: (state, { payload }) => {
       state.selectedSessionFare = payload;
+    },
+    setSelectedSessionReturnFare: (state, { payload }) => {
+      state.selectedSessionReturnFare = payload;
     },
     setSellParams: (state, { payload }) => {
       state.sellParams = payload;
@@ -228,6 +232,7 @@ export const {
   setSellFlightLoading,
   setSelectedSessionJourney,
   setSelectedSessionFare,
+  setSelectedSessionReturnFare,
   setSellResponse,
   setSellParams,
   setSellInfantLoading,
@@ -1602,54 +1607,6 @@ export const CancelSSRs = (payload) => async (dispatch, getState) => {
     };
     _paxSSRs.push(newObj);
   });
-
-  // let requestPayloaad = {
-  //   header: {
-  //     signature: currentState.signature,
-  //     messageContractVersion: "",
-  //     enableExceptionStackTrace: false,
-  //     contractVersion: 0,
-  //   },
-  //   sellRequestDto: {
-  //     sellRequest: {
-  //       sellRequestData: {
-  //         sellBy: 2,
-  //         sellBySpecified: true,
-  //         sellSSR: {
-  //           ssrRequest: {
-  //             segmentSSRRequests: [
-  //               {
-  //                 flightDesignator: {
-  //                   carrierCode: "Q9",
-  //                   flightNumber:
-  //                     currentState?.sessionSegmentDetails?.flightDesignator
-  //                       .flightNumber,
-  //                   opSuffix: "",
-  //                 },
-  //                 std: currentState?.sessionSegmentDetails?.std,
-  //                 stdSpecified: true,
-  //                 departureStation:
-  //                   currentState?.sessionSegmentDetails?.departureStation,
-  //                 arrivalStation:
-  //                   currentState?.sessionSegmentDetails?.arrivalStation,
-  //                 paxSSRs: [..._paxSSRs],
-  //               },
-  //             ],
-  //             currencyCode: "NGN",
-  //             cancelFirstSSR: false,
-  //             cancelFirstSSRSpecified: true,
-  //             ssrFeeForceWaiveOnSell: false,
-  //             ssrFeeForceWaiveOnSellSpecified: true,
-  //             sellSSRMode: 0,
-  //             sellSSRModeSpecified: true,
-  //             feePricingMode: 0,
-  //             feePricingModeSpecified: true,
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  // };
 
   let requestPayload = {
     signature: currentState.signature,

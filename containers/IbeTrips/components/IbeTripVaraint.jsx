@@ -4,9 +4,13 @@ import PackageIcon from "assets/svgs/package.svg";
 import SeatIcon from "assets/svgs/seat.svg";
 import { Fragment, useState } from "react";
 import IbeTripPopup from "./IbeTripPopup";
-import { useDispatch } from "react-redux";
-import { setSelectedSessionFare } from "redux/reducers/session";
-import TripConfirm from "pages/trip/confirm";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  sessionSelector,
+  setSelectedSessionReturnFare,
+  setSelectedSessionFare,
+} from "redux/reducers/session";
 
 const IbeTripVariant = ({
   fare,
@@ -14,8 +18,10 @@ const IbeTripVariant = ({
   segmentStd,
   segmentFlightNumber,
   journey,
+  schedueIndex,
 }) => {
   const dispatch = useDispatch();
+  const { availabilityResponse } = useSelector(sessionSelector);
   const [showPopUp, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -39,8 +45,22 @@ const IbeTripVariant = ({
   );
 
   const handleBtnClick = (_fare) => {
-    setSelected(_fare);
-    dispatch(setSelectedSessionFare(_fare));
+    setSelected({
+      ..._fare,
+      sellKey,
+    });
+    console.log("_fare", {
+      ..._fare,
+      sellKey,
+    });
+    dispatch(
+      setSelectedSessionFare([
+        {
+          ..._fare,
+          sellKey,
+        },
+      ])
+    );
     // for ROund TripConfirm, add an id to identify the journeu(view Trip Purpose)
     setShow(true);
   };
@@ -86,7 +106,7 @@ const IbeTripVariant = ({
                   <PackageIcon />
                 </figure>
                 <p className="text-black font-normal ml-4">
-                  15 kg checked package 
+                  15 kg checked package
                 </p>
               </li>
             )}
@@ -147,6 +167,7 @@ const IbeTripVariant = ({
         segmentStd={segmentStd}
         segmentFlightNumber={segmentFlightNumber}
         journey={journey}
+        schedueIndex={schedueIndex}
       />
     </Fragment>
   );
@@ -157,6 +178,7 @@ IbeTripVariant.defaultProps = {
   sellKey: "",
   segmentStd: "",
   segmentFlightNumber: "",
+  schedueIndex: "",
 };
 
 export default IbeTripVariant;

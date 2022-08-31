@@ -1,23 +1,13 @@
-let _formIsInValid = false;
+const p = [];
 
-const passengers = [
-  {
-    c_code: "+234",
-    c_title: "",
-  },
+p[0] = {
+  id: "0",
+  name: "tee",
+};
 
-  {
-    c_code: "+234",
-    c_title: "fffjjjff",
-  },
-];
+p[1] = {
+  id: "03",
+  name: "4tee",
+};
 
-passengers.map((_pax) => {
-  for (const key in _pax) {
-    if (_pax[key].length < 1) {
-      _formIsInValid = true;
-    }
-  }
-});
-
-console.log(` form is invalid ${_formIsInValid}`);
+console.log("p", p);

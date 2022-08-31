@@ -7,7 +7,7 @@ import IbeTripVariant from "./IbeTripVaraint";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 
-const IbeTripItem = ({ journey }) => {
+const IbeTripItem = ({ journey, schedueIndex }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [flightTime, setFlightTime] = useState(null);
 
@@ -41,7 +41,9 @@ const IbeTripItem = ({ journey }) => {
     <section className="flex flex-col mb-6">
       <section className="ibe__trip__item">
         <div className="basis-full lg:basis-[70%] flex flex-col min-h-[54px] ">
-          <p className="tripType self-center underline underline-offset-4">Direct Flight</p>
+          <p className="tripType self-center underline underline-offset-4">
+            Direct Flight
+          </p>
           <div className="flex justify-between">
             <div className="flex flex-col">
               <h5 className="tripType">
@@ -116,6 +118,7 @@ const IbeTripItem = ({ journey }) => {
                       _segment?.FlightDesignator?.FlightNumber
                     }
                     journey={journey}
+                    schedueIndex={schedueIndex}
                   />
                 </div>
               );
@@ -124,20 +127,20 @@ const IbeTripItem = ({ journey }) => {
         </div>
       </section>
       {/* {!isVisible && ( */}
-        <>
-          {journey.Segments.map((_segment) => {
-            return (
-              <div className="ibe__trip__number">
-                <h4>FLIGHT NUMBER</h4>
-                <p>
-                  {_segment?.FlightDesignator?.CarrierCode}
-                  &nbsp;
-                  {_segment?.FlightDesignator?.FlightNumber}
-                </p>
-              </div>
-            );
-          })}
-        </>
+      <>
+        {journey.Segments.map((_segment) => {
+          return (
+            <div className="ibe__trip__number">
+              <h4>FLIGHT NUMBER</h4>
+              <p>
+                {_segment?.FlightDesignator?.CarrierCode}
+                &nbsp;
+                {_segment?.FlightDesignator?.FlightNumber}
+              </p>
+            </div>
+          );
+        })}
+      </>
       {/* )} */}
     </section>
   );
@@ -145,6 +148,7 @@ const IbeTripItem = ({ journey }) => {
 
 IbeTripItem.defaultProps = {
   journey: {},
+  schedueIndex: "",
 };
 
 export default IbeTripItem;
