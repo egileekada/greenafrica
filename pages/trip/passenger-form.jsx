@@ -12,7 +12,7 @@ import {
   FetchStateFromServer,
 } from "redux/reducers/session";
 import { useRouter } from "next/router";
-import { Checkbox } from "antd";
+import { Checkbox, notification } from "antd";
 import SelectIcon from "assets/svgs/select.svg";
 import PassengerFormItem from "containers/PassengerForm/PassengerFormItem";
 import LogoIcon from "assets/svgs/logo.svg";
@@ -108,8 +108,26 @@ const PassengerForm = () => {
       phone: String(values.c_phone),
       email: values.c_email,
     };
-    dispatch(updatePassengersDetails(passengers));
-    dispatch(updateContactsDetails(contactInfo));
+
+    let _formIsInValid = false;
+    passengers.map((_pax) => {
+      for (const key in _pax) {
+        if (_pax[key].length < 1) {
+          _formIsInValid = true;
+        }
+      }
+    });
+
+    if (_formIsInValid) {
+      notification.error({
+        message: "Error",
+        description:
+          "Incomplete details, Please check through your form and fill-in appropriate details",
+      });
+    } else {
+      dispatch(updatePassengersDetails(passengers));
+      dispatch(updateContactsDetails(contactInfo));
+    }
   };
 
   const formik = useFormik({

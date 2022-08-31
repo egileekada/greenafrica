@@ -1,59 +1,23 @@
-const arr = [
+let _formIsInValid = false;
+
+const passengers = [
   {
-    passengerNumber: 0,
-    ssrCode: "X15",
+    c_code: "+234",
+    c_title: "",
   },
+
   {
-    passengerNumber: 0,
-    ssrCode: "X15",
-  },
-  {
-    passengerNumber: 0,
-    ssrCode: "X20",
-  },
-  {
-    passengerNumber: 1,
-    ssrCode: "X20",
-  },
-  {
-    passengerNumber: 0,
-    ssrCode: "X10",
-  },
-  {
-    passengerNumber: 0,
-    ssrCode: "X10",
-  },
-  {
-    passengerNumber: 1,
-    ssrCode: "X10",
-  },
-  {
-    passengerNumber: 1,
-    ssrCode: "X10",
+    c_code: "+234",
+    c_title: "fffjjjff",
   },
 ];
 
-const _p = [];
-const typeArr = [];
-
-arr.map((_ar) => {
-  let typeCount = 0;
-  let _id = _ar.ssrCode + _ar.passengerNumber;
-  if (typeArr.includes(_id)) {
-    typeArr.push(_id);
-    typeCount = typeArr.filter((_type) => _type === _id).length;
-  } else {
-    typeCount = 1;
-    typeArr.push(_id);
+passengers.map((_pax) => {
+  for (const key in _pax) {
+    if (_pax[key].length < 1) {
+      _formIsInValid = true;
+    }
   }
-
-  let newObj = {
-    passengerNumber: _ar?.passengerNumber,
-    ssrCode: _ar.ssrCode,
-    ssrNumber: typeCount,
-  };
-  _p.push(newObj);
 });
 
-console.log("_paylo", _p);
-// console.log(" typeArr", typeArr);
+console.log(` form is invalid ${_formIsInValid}`);

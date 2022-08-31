@@ -3,8 +3,9 @@ import { useState } from "react";
 import SelectIcon from "assets/svgs/select.svg";
 import { isInThePast } from "lib/utils";
 import { differenceInYears } from "date-fns";
-import { diff_years } from "lib/utils";
-
+import format from "date-fns/format";
+// import { diff_years } from "lib/utils";
+import { DatePicker } from "antd";
 const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
   const [error, setErr] = useState({
     title: "",
@@ -13,6 +14,10 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
     dob: "",
   });
 
+  function disabledDate(current) {
+    return current && current.valueOf() > Date.now();
+  }
+
   const handleFieldChange = (e) => {
     let indexedPassenger = passengers.find(function (element) {
       return parseInt(element.id) === parseInt(passenger.id);
@@ -20,77 +25,31 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
 
     if (indexedPassenger) {
       if (e.target.value.length > 0) {
-        if (e.target.name === "dob") {
-          if (!isInThePast(e.target.value)) {
-            setErr({
-              ...error,
-              [e.target.name]: "The date is invalid",
-            });
-          } else {
-            const _DIFF = differenceInYears(
-              new Date(),
-              new Date(e.target.value)
-            );
+        const modifiedPassenger = {
+          ...indexedPassenger,
+          [e.target.name]: e.target.value,
+        };
 
-            // const _DIFF = diff_years(new Date(), new Date(e.target.value));
+        setErr({
+          ...error,
+          [e.target.name]: "",
+        });
 
-            if (passenger?.type === "ADT") {
-              console.log("reached here adult error", parseInt(_DIFF));
-              parseInt(_DIFF) < 13
-                ? setErr({
-                    ...error,
-                    dob: "Can't select less than 12 years of age for an adult change",
-                  })
-                : fillInDob(indexedPassenger, e.target.value);
+        let foundIndex = passengers
+          .map(function (item) {
+            return parseInt(item.id);
+          })
+          .indexOf(parseInt(modifiedPassenger.id));
+
+        if (foundIndex > -1) {
+          let oldPassengers = passengers;
+          oldPassengers.splice(foundIndex, 1);
+          const newPassArr = [...oldPassengers, modifiedPassenger].sort(
+            (a, b) => {
+              return a.id - b.id;
             }
-
-            if (passenger?.type === "INF") {
-              console.log("reached here inf error", parseInt(_DIFF));
-              parseInt(_DIFF) > 2
-                ? setErr({
-                    ...error,
-                    dob: "Can't select more than 2 years of age for an infant change",
-                  })
-                : fillInDob(indexedPassenger, e.target.value);
-            }
-
-            if (passenger?.type === "CHD") {
-              console.log("reached here chd error", parseInt(_DIFF));
-              parseInt(_DIFF) > 12
-                ? setErr({
-                    ...error,
-                    dob: "Can't select more than 12 years of age for a child change",
-                  })
-                : fillInDob(indexedPassenger, e.target.value);
-            }
-          }
-        } else {
-          const modifiedPassenger = {
-            ...indexedPassenger,
-            [e.target.name]: e.target.value,
-          };
-
-          setErr({
-            ...error,
-            [e.target.name]: "",
-          });
-
-          let foundIndex = passengers
-            .map(function (item) {
-              return parseInt(item.id);
-            })
-            .indexOf(parseInt(modifiedPassenger.id));
-
-          if (foundIndex > -1) {
-            let oldPassengers = passengers;
-            oldPassengers.splice(foundIndex, 1);
-            const newPassArr = [...oldPassengers, modifiedPassenger].sort(
-              (a, b) => {
-                return a.id - b.id;
-              }
-            );
-            setPassengers(newPassArr);
-          }
+          );
+          setPassengers(newPassArr);
         }
       } else {
         setErr({
@@ -102,60 +61,23 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
   };
 
   const handleFieldBlur = (e) => {
-    if (e.target.name === "dob") {
-      if (!isInThePast(e.target.value)) {
-        setErr({
-          ...error,
-          [e.target.name]: "The date is invalid",
-        });
-      } else {
-        const _DIFF = differenceInYears(new Date(), new Date(e.target.value));
-
-        if (passenger?.type === "ADT" && parseInt(_DIFF) < 13) {
-          setErr({
-            ...error,
-            [e.target.name]:
-              "Can't select less than 12 years of age for an iadult ",
-          });
-        }
-
-        if (passenger?.type === "CHD" && parseInt(_DIFF) > 12) {
-          setErr({
-            ...error,
-            [e.target.name]:
-              "Can't select more than 12 years of age for a child change",
-          });
-        }
-
-        if (passenger?.type === "INF" && parseInt(_DIFF) > 2) {
-          setErr({
-            ...error,
-            [e.target.name]:
-              "Can't select more than 2 years of age for an infant change",
-          });
-        }
-
-        console.log("reached here blur");
-      }
+    if (e.target.value?.length < 1) {
+      setErr({
+        ...error,
+        [e.target.name]: "Field is required",
+      });
     } else {
-      if (e.target.value?.length < 1) {
-        setErr({
-          ...error,
-          [e.target.name]: "Field is required",
-        });
-      } else {
-        setErr({
-          ...error,
-          [e.target.name]: "",
-        });
-      }
+      setErr({
+        ...error,
+        [e.target.name]: "",
+      });
     }
   };
 
   const fillInDob = (_indexedPassenger, _value) => {
     const modifiedPassenger = {
       ..._indexedPassenger,
-      dob: _value,
+      dob: format(new Date(_value), "dd-MM-yyyy"),
     };
 
     setErr({
@@ -176,6 +98,52 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
         return a.id - b.id;
       });
       setPassengers(newPassArr);
+    }
+  };
+
+  const onChange = (date, dateString) => {
+    console.log("ddd", dateString);
+    let indexedPassenger = passengers.find(function (element) {
+      return parseInt(element.id) === parseInt(passenger.id);
+    });
+
+    if (indexedPassenger) {
+      if (!isInThePast(dateString)) {
+        setErr({
+          ...error,
+          dob: "The date is invalid",
+        });
+      } else {
+        const _DIFF = differenceInYears(new Date(), new Date(dateString));
+        // const _DIFF = diff_years(new Date(), new Date(dateString));
+
+        if (passenger?.type === "ADT") {
+          parseInt(_DIFF) < 13
+            ? setErr({
+                ...error,
+                dob: "Can't select less than 12 years of age for an adult change",
+              })
+            : fillInDob(indexedPassenger, dateString);
+        }
+
+        if (passenger?.type === "INF") {
+          parseInt(_DIFF) > 2
+            ? setErr({
+                ...error,
+                dob: "Can't select more than 2 years of age for an infant change",
+              })
+            : fillInDob(indexedPassenger, dateString);
+        }
+
+        if (passenger?.type === "CHD") {
+          parseInt(_DIFF) > 12
+            ? setErr({
+                ...error,
+                dob: "Can't select more than 12 years of age for a child change",
+              })
+            : fillInDob(indexedPassenger, dateString);
+        }
+      }
     }
   };
 
@@ -242,7 +210,7 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
             <p className="errorText mt-2">{error?.lastName}</p>
           ) : null}
         </div>
-        <div className="form-group flex-grow-0 flex-shrink h-28 md:h-auto">
+        {/* <div className="form-group flex-grow-0 flex-shrink  h-20 md:h-auto">
           <label>DATE OF BIRTH</label>
           <input
             type="date"
@@ -253,6 +221,19 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
             onBlur={handleFieldBlur}
             required
           />
+          {error?.dob && error?.dob.length > 1 ? (
+            <p className="errorText mt-2">{error?.dob}</p>
+          ) : null}
+        </div> */}
+        <div className="form-group flex-grow-0 flex-shrink  h-20 md:h-auto">
+          <label>DATE OF BIRTH</label>
+          <div className="date-picker">
+            <DatePicker
+              onChange={onChange}
+              disabledDate={disabledDate}
+              // format="DD-MM-YYYY"
+            />
+          </div>
           {error?.dob && error?.dob.length > 1 ? (
             <p className="errorText mt-2">{error?.dob}</p>
           ) : null}
