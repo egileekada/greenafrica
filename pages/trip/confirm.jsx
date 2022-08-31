@@ -14,7 +14,6 @@ import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
 import ReactToPrint from "react-to-print";
 import { useRouter } from "next/router";
-import { resetStore } from "redux/store";
 
 const TripConfirm = () => {
   const router = useRouter();
@@ -27,7 +26,6 @@ const TripConfirm = () => {
     useSelector(sessionSelector);
 
   useEffect(() => {
-    resetStore();
     async function fetchBookingDetails() {
       dispatch(GetBookingDetails());
     }
