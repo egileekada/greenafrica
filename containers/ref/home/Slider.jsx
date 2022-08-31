@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useDeviceSize from "hooks/useWindowSize";
-import { getBanner, getMobileBanner } from "../../../services";
+import { getBanner } from "../../../services";
 import { Spin } from "antd";
 
 const HeroSlider = () => {
@@ -13,10 +13,7 @@ const HeroSlider = () => {
     status,
   } = useQuery(["banners"], getBanner);
 
-  const { data: mobileBanner, status: mobileStatus } = useQuery(
-    ["mobileBanner"],
-    getMobileBanner
-  );
+
   const [currIndex, setCurrIndex] = useState(0);
   const item = useRef();
   const slide = useRef();
@@ -35,19 +32,7 @@ const HeroSlider = () => {
       url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
     },
   ]);
-  const [mobileBanners, setMobileBanners] = useState([
-    {
-      id: 12,
-      slug: "banners/May2022/uYtvFKsmpEocAPCO1VIy.png",
-      type: "mobile",
-      alt_text: null,
-      title: "Children's Day",
-      show: 1,
-      created_at: "2022-05-27T07:48:47.000000Z",
-      updated_at: "2022-05-27T07:48:47.000000Z",
-      url: "https://static.greenafrica.com/media/1002/banner-home.png",
-    },
-  ]);
+
 
   useEffect(() => {
     if (status === "success") {
@@ -71,9 +56,8 @@ const HeroSlider = () => {
               "translateX(" + -size * newIndex + "px)";
           }
         }
-      }, 5000);
+      }, 10000);
     }
-    // }, [currIndex]);
   });
 
   return (
