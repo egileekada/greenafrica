@@ -40,7 +40,7 @@
 
     &__main {
       @apply basis-full xlg:basis-[75%] flex flex-col  py-10 
-            px-4 md:px-8 tab:px-16 xxl:px-24;
+            px-4 md:px-8 tab:px-16 xxl:px-24 font-body;
       background-color: rgba(158, 155, 191, 0.17);
 
       &.payment-section {
