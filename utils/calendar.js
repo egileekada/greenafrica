@@ -1,4 +1,4 @@
-export const data = {
+export const lowfare = {
   "2022-08-31": 28.99,
   "2022-08-30": 29.99,
   "2022-08-29": 41.99,

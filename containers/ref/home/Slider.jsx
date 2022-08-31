@@ -49,12 +49,11 @@ const HeroSlider = () => {
     },
   ]);
 
-  // useEffect(() => {
-  //   if (status === "success") {
-  //     setDesktopBanners(webBanners?.data?.item);
-  //     setMobileBanners(mobileBanner?.data?.item);
-  //   }
-  // }, [status, webBanners, mobileBanner]);
+  useEffect(() => {
+    if (status === "success") {
+      setDesktopBanners(webBanners?.data?.items);
+    }
+  }, [status, webBanners]);
 
   useEffect(() => {
     if (width > 899) {
@@ -88,7 +87,7 @@ const HeroSlider = () => {
           {width > 899 ? (
             <>
               <div ref={item} className="carousel__content">
-                {desktopBanners.map((bg, index) => {
+                {desktopBanners?.map((bg, index) => {
                   return (
                     <div
                       data-key={index}
@@ -96,7 +95,7 @@ const HeroSlider = () => {
                       ref={slide}
                       className="carousel__content-item"
                       style={{
-                        backgroundImage: `url(${bg.image_url})`,
+                        backgroundImage: `url(${bg.web_image_url})`,
                       }}
                     ></div>
                   );
@@ -123,8 +122,8 @@ const HeroSlider = () => {
                 <figure>
                   <img
                     src={
-                      mobileBanners?.length > 0
-                        ? mobileBanners[0].url
+                      desktopBanners?.length > 0
+                        ? desktopBanners[0].mobile_image_url
                         : "/images/mobile-hero.png"
                     }
                     alt="imagesd"

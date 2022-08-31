@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -8,7 +8,7 @@ import DatePicker from "react-date-picker/dist/entry.nostyle";
 import { getWidgetData } from "../../../services";
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
-import { data } from "../../../utils/calendar";
+import { lowfare } from "../../../utils/calendar";
 
 const validationSchema = Yup.object().shape({
   destination: Yup.object().required("Required"),
@@ -24,6 +24,9 @@ const BookingTab = ({ type, promocode }) => {
   const [adult, setAdult] = useState(1);
   const [child, setChild] = useState(0);
   const [show, setShow] = useState(false);
+
+  const originSelect = useRef(null);
+  const destinationSelect = useRef(null);
 
   const colourStyles = {
     control: (styles, { isFocused, isSelected }) => ({
@@ -72,11 +75,11 @@ const BookingTab = ({ type, promocode }) => {
   };
 
   function hasContent({ date }) {
-    for (const key in data) {
+    for (const key in lowfare) {
       if (key === format(date, "yyyy-MM-dd")) {
         return (
           <p className="text-[10px] font-light leading-tight my-1 text-[#9E9BBF]">
-            ₦{Math.round(data[key])}K
+            ₦{Math.round(lowfare[key])}K
           </p>
         );
       }
@@ -137,7 +140,7 @@ const BookingTab = ({ type, promocode }) => {
       <components.Option {...props}>
         <div class="flex items-center">
           <div>
-            <p class="font-bold mb-0">{props.data.cityName}</p>
+            <p class="font-bold text-base mb-0">{props.data.cityName}</p>
             <p class="small mb-0">{props.data.country}</p>
           </div>
           <div class="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
@@ -173,7 +176,10 @@ const BookingTab = ({ type, promocode }) => {
 
       const appendReturn = (returnDate) => {
         if (type === "round_trip") {
-          return `&return=${format(new Date(returnDate), "yyyy-MM-dd")}`;
+          return `&return=${format(
+            new Date(returnDate),
+            "yyyy-MM-dd"
+          )}&round=1`;
         }
         return "";
       };
@@ -190,7 +196,7 @@ const BookingTab = ({ type, promocode }) => {
       window.location.replace(`https://dev-ibe.gadevenv.com${test}`);
     },
   });
-//TODO - come back to this guy
+  //TODO - come back to this guy
   // useEffect(() => {
   //   console.log("I just got triggered");
 
@@ -198,6 +204,10 @@ const BookingTab = ({ type, promocode }) => {
   //   //   second
   //   // }
   // }, [formik.values.origin]);
+
+  const forcusOrigin = (value) => {
+    value.current.focus();
+  };
 
   return (
     <>
@@ -215,10 +225,13 @@ const BookingTab = ({ type, promocode }) => {
                 src="/images/widget_from.svg"
                 alt=""
                 className="mx-2 pb-2 hidden md:block"
+                onClick={() => forcusOrigin(originSelect)}
               />
               <div className="w-full mx-2 px-2 md:px-0">
                 <p className="mb-1 text-xs mb-0 text-[#979797]">FROM</p>
                 <Select
+                  ref={originSelect}
+                  openMenuOnFocus={true}
                   id="from"
                   instanceId="from"
                   placeholder="Origin"
@@ -257,12 +270,15 @@ const BookingTab = ({ type, promocode }) => {
                 src="/images/widget_to.svg"
                 alt=""
                 className="hidden md:block mx-2 pb-2"
+                onClick={() => forcusOrigin(destinationSelect)}
               />
               <div className="w-full mx-2 px-2 md:px-0">
                 <p className="mb-1 text-xs mb-0 text-[#979797]">TO</p>
                 <Select
-                  id="to"
-                  instanceId="to"
+                  ref={destinationSelect}
+                  openMenuOnFocus={true}
+                  id="destination"
+                  instanceId="destination"
                   placeholder="Destination"
                   formatOptionLabel={formatOptionLabel}
                   components={{ Option }}
