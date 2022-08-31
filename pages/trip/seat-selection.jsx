@@ -239,7 +239,7 @@ const SeatSelection = () => {
                   <Link href="/trip/payment" className="btn btn-outline mr-4">
                     <a className="btn btn-outline text-center w-full">Skip</a>
                   </Link>
-                  {!seatSelected && (
+                  {seatSelected && (
                     <button
                       className="btn btn-primary w-full"
                       onClick={handleClick}
