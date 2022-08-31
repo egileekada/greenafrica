@@ -37,7 +37,7 @@ const SeatSelection = () => {
     signature,
     seatResponseLoading,
     seatAvailability,
-    bookingResponse,
+    isLoading,
     bookingCommitResponse,
     sessionPassengers,
     bookingState,
@@ -202,8 +202,9 @@ const SeatSelection = () => {
                           <button
                             className="btn btn-primary"
                             onClick={handleClick}
+                            disabled={isLoading}
                           >
-                            Continue
+                            {isLoading ? "Assigning..." : "Continue"}
                           </button>
                         )}
                       </div>
@@ -212,7 +213,7 @@ const SeatSelection = () => {
                   </div>
                   <div className="basis-full xlg:basis-[70%] pt-4 h-[650px]  scrollable overflow-y-scroll mt-12 xlg:mt-0">
                     {seatResponseLoading && seatAvailability === null ? (
-                      <section className="py-10 pl-12">
+                      <section className="py-10 pl-12 text-center">
                         <Spinner />
                       </section>
                     ) : (

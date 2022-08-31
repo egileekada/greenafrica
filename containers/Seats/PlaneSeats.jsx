@@ -180,12 +180,16 @@ const PlaneSeats = forwardRef(
       SeatDesignator
     ) => {
       return (
-        <div>
-          <p>{SeatDesignator} Front Seat</p>
+        <div className="text-primary-main text-base p-2">
+          <p className="mb-2 font-light">
+            <span className="font-semibold">{SeatDesignator}</span> Front Seat
+          </p>
 
-          <p> {mapSeatGroup(seatGroup)}</p>
+          <p className="font-semibold mb-2 text-base">
+            {mapSeatGroup(seatGroup)}
+          </p>
           {propertylist.filter((list) => list.TypeCode === "INFANT").length >
-            0 && <p>Customer with infant</p>}
+            0 && <p className="font-light">Customer with infant</p>}
         </div>
       );
     };
@@ -407,6 +411,12 @@ const PlaneSeats = forwardRef(
                                   seat.SeatGroup,
                                   seat.SeatDesignator
                                 )}
+                                overlayInnerStyle={{
+                                  width: 237,
+                                  background: "#F7F7FF",
+                                  borderRadius: "10px",
+                                  border: "1px solid rgba(158, 155, 191, 0.31)",
+                                }}
                               >
                                 <div
                                   className={`${mapClass(
@@ -519,8 +529,9 @@ const PlaneSeats = forwardRef(
             </div>
           </section>
           <section className="cabin__legend ">
-            <section className="w-[315px] bg-white rounded-xl ">
-              <div className="flex flex-col px-[21px] py-6">
+
+            <section className="w-[280px] bg-white rounded-xl ">
+              <div className="flex flex-col px-[15px] py-6">
                 <h2 className="font-header font-semibold text-primary-main text-xl mb-8">
                   LEGEND
                 </h2>
