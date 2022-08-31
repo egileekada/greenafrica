@@ -102,7 +102,6 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
   };
 
   const onChange = (date, dateString) => {
-    console.log("ddd", dateString);
     let indexedPassenger = passengers.find(function (element) {
       return parseInt(element.id) === parseInt(passenger.id);
     });
@@ -210,29 +209,11 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
             <p className="errorText mt-2">{error?.lastName}</p>
           ) : null}
         </div>
-        {/* <div className="form-group flex-grow-0 flex-shrink  h-20 md:h-auto">
-          <label>DATE OF BIRTH</label>
-          <input
-            type="date"
-            placeholder="Enter last name"
-            id="dob"
-            name="dob"
-            onChange={handleFieldChange}
-            onBlur={handleFieldBlur}
-            required
-          />
-          {error?.dob && error?.dob.length > 1 ? (
-            <p className="errorText mt-2">{error?.dob}</p>
-          ) : null}
-        </div> */}
+
         <div className="form-group flex-grow-0 flex-shrink  h-20 md:h-auto">
           <label>DATE OF BIRTH</label>
           <div className="date-picker">
-            <DatePicker
-              onChange={onChange}
-              disabledDate={disabledDate}
-              // format="DD-MM-YYYY"
-            />
+            <DatePicker onChange={onChange} disabledDate={disabledDate} />
           </div>
           {error?.dob && error?.dob.length > 1 ? (
             <p className="errorText mt-2">{error?.dob}</p>
