@@ -35,8 +35,6 @@ const TripConfirm = () => {
   useEffect(() => {
     if (bookingResponse) {
       bookingResponse?.Booking?.Journeys.length > 1 && setIsRoundTrip(true);
-    } else {
-      window.location.assign("https://dev-website.gadevenv.com/");
     }
   }, [bookingResponse]);
 
