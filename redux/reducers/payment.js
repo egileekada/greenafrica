@@ -5,6 +5,7 @@ import {
   VerifyPayment,
 } from "services/paymentService";
 import { notification } from "antd";
+import { PURGE } from "redux-persist";
 
 const initialState = {
   gatewaysLoading: false,
@@ -37,6 +38,9 @@ export const paymentSlice = createSlice({
     setVerifyPaymentResponse: (state, { payload }) => {
       state.verifyPaymentResponse = payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => initialState); // THIS LINE
   },
 });
 
