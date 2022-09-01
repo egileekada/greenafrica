@@ -12,8 +12,7 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
   return (
     <section className="ibe__flight__trips">
       <h2 className="text-primary-main font-extrabold text-sm mb-8">
-        {parseInt(schedueIndex) === 0 ? "DEPARTURE ON" : "RETURN ON "}&nbsp;{" "}
-        {flightParams?.beginDate}
+        {parseInt(schedueIndex) === 0 ? "DEPARTURE" : "RETURN"}
       </h2>
 
       <Fragment>

@@ -31,6 +31,10 @@
     @apply text-orange-600 text-xs;
   }
 
+  .mobile-order {
+    @apply order-2 md:order-none mt-4 md:mt-0;
+  }
+
   .ga__section {
     @apply flex flex-wrap xlg:flex-nowrap w-full flex-grow-0 flex-shrink-0;
 

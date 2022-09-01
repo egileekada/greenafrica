@@ -114,7 +114,10 @@ const PassengerDetails = () => {
 
                 {sessionPassengers && sessionPassengers.length > 0 && (
                   <section className="flex items-center flex-wrap md:flex-nowrap">
-                    <button className="btn btn-outline mr-0 md:mr-4 mb-3 md:mb-0 basis-full md:basis-auto">
+                    <button
+                      className="btn btn-outline mr-0 md:mr-4 mb-3 md:mb-0 basis-full md:basis-auto mobile-order"
+                      onClick={() => router.back()}
+                    >
                       Go Back
                     </button>
                     <button

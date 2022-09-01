@@ -1031,6 +1031,8 @@ export const updatePassengersDetails =
         };
         _passengers.push(passengerObj);
       });
+
+
       requestPayload = {
         header: {
           signature: currentState.signature,
@@ -1056,7 +1058,7 @@ export const updatePassengersDetails =
     } catch (err) {
       notification.error({
         message: "Error",
-        description: "Update passengerfailed",
+        description: "Update passenger(s) details failed",
       });
     }
     dispatch(setUpdatePassengersLoading(false));

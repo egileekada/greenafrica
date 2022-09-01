@@ -31,6 +31,10 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
   return (
     <Fragment>
       <section className="flex flex-col ">
+        <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-4">
+          BAGGAGE INFORMATION
+        </h2>
+
         <div className="flex items-center mb-4">
           <figure>
             <FliightIcon className="primary-main" />
@@ -57,9 +61,6 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
         </section> */}
         {/* Checkin Info*/}
 
-        <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-4">
-          BAGGAGE INFORMATION
-        </h2>
         <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
           {SSRAvailabilityResponse.SSRAvailabilityForBookingResponse.SSRSegmentList.map(
             (_list) => {

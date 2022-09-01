@@ -77,7 +77,7 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
   const fillInDob = (_indexedPassenger, _value) => {
     const modifiedPassenger = {
       ..._indexedPassenger,
-      dob: format(new Date(_value), "dd-MM-yyyy"),
+      dob: format(new Date(_value), "yyyy-dd-MM"),
     };
 
     setErr({

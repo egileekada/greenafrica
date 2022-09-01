@@ -199,7 +199,7 @@ const PassengerForm = () => {
                   className="passenger__form"
                   onSubmit={formik.handleSubmit}
                 >
-                  {/* <p>{JSON.stringify(passengers)}</p> */}
+                  <p>{JSON.stringify(passengers)}</p>
                   {passengers
                     .sort((a, b) => {
                       return a.id - b.id;
@@ -356,7 +356,7 @@ const PassengerForm = () => {
                   <div className="flex flex-wrap md:flex-nowrap items-center">
                     <button
                       type="button"
-                      className="btn btn-outline mr-0 md:mr-2 mb-2 md:mb-0 cta basis-full md:basis-auto"
+                      className="btn btn-outline mr-0 md:mr-2 mb-2 md:mb-0 cta basis-full md:basis-auto mobile-order"
                       onClick={() => router.back()}
                     >
                       Go Back
