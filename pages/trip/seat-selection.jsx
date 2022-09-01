@@ -189,7 +189,7 @@ const SeatSelection = () => {
                           </span>
                         </span>
                       </button>
-                      <div className="hidden lg:flex pr-3 my-4">
+                      <div className="hidden md:flex pr-3 mt-10">
                         <Link
                           href="/trip/payment"
                           className="btn btn-outline mr-4"
@@ -235,10 +235,20 @@ const SeatSelection = () => {
                   </div>
                 </div>
 
-                {/* <div className="hidden lg:flex mx-6">
-                  <button className="btn btn-outline mr-4">Go Back</button>
-                  <button className="btn btn-primary">Check In</button>
-                </div> */}
+                <div className="flex lg:hidden mt-10 mx-6 gap-2">
+                  <Link href="/trip/payment" className="btn btn-outline mr-4">
+                    <a className="btn btn-outline text-center w-full">Skip</a>
+                  </Link>
+                  {seatSelected && (
+                    <button
+                      className="btn btn-primary w-full"
+                      onClick={handleClick}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Assigning..." : "Continue"}
+                    </button>
+                  )}
+                </div>
               </section>
             </div>
             <div className="ga__section__side">

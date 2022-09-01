@@ -40,7 +40,7 @@ const PassengerAccordion = ({ children, passenger }) => {
         onClick={toggleAccordion}
       >
         <div className="flex flex-col">
-          <p className={`inline-block title-text mb-2`}>
+          <p className={`inline-block title-text mb-2 text-[12px]`}>
             {_passengerType} {passenger?.typeCount}
           </p>
           <p

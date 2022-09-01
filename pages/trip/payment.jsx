@@ -165,7 +165,7 @@ const TripPayment = () => {
                             </div>
                             <div className="flex flex-col items-end pointer-events-none">
                               <h6 className="mb-[10px]">AMOUNT DUE</h6>
-                              <h5> {totalFare?.toLocaleString()}</h5>
+                              <h5> ₦ {totalFare?.toLocaleString()}</h5>
                             </div>
                           </div>
                         );

@@ -52,10 +52,10 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
             {/* <p>{JSON.stringify(selectedSSRs)}</p> */}
-            <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-2">
+            <h2 className="text-left text-[#8F8CA4] font-header font-bold mb-2 hidden">
               INSURANCE
             </h2>
-            <div className="flex items-center primary-checkbox">
+            <div className="flex items-center primary-checkbox mb-4 hidden">
               <Checkbox onChange={onInsuranceChange}>
                 <label className="check-label">
                   <p className="ml-2">Travel Insurance (N2,000)</p>
@@ -63,8 +63,8 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
               </Checkbox>
             </div>
             <section className="flex flex-col special__needs mb-4">
-              <div className="flex flex-col mt-6">
-                <h6 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-2">
+              <div className="flex flex-col mt-">
+                <h6 className="text-left text-[#8F8CA4] font-header font-bold mb-2">
                   SPECIAL ASSISTANCE
                 </h6>
                 <div className="flex items-center mb-5 primary-checkbox">

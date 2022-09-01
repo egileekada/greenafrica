@@ -5,6 +5,7 @@ import {
 } from "services/bookingService";
 import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
+import { PURGE } from "redux-persist";
 
 import {
   bookingResponseMultiple,
@@ -40,6 +41,9 @@ export const bookingSlice = createSlice({
         ...payload,
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => initialState); // THIS LINE
   },
 });
 
