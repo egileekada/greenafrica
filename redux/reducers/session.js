@@ -22,7 +22,7 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
-import { _sessionState } from "./data";
+import { _sessionState, bookingResponse } from "./data";
 
 const initialState = {
   isLoading: false,
@@ -774,145 +774,6 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
   dispatch(setSellFlightLoading(false));
 };
 
-export const updateSinglePassenger =
-  (payload) => async (dispatch, getState) => {
-    dispatch(setUpdatePassengersLoading(true));
-    const currentState = getState().session;
-
-    const requestPayload = {
-      header: {
-        signature: currentState.signature,
-        messageContractVersion: "",
-        enableExceptionStackTrace: false,
-        contractVersion: 0,
-      },
-      updatePassengersRequestDto: {
-        updatePassengerRequest: {
-          updatePassengersRequestData: {
-            passengers: [
-              {
-                state: 0,
-                stateSpecified: true,
-                customerNumber: "",
-                passengerNumber: 0,
-                passengerNumberSpecified: true,
-                familyNumber: 0,
-                familyNumberSpecified: true,
-                paxDiscountCode: "",
-                names: [
-                  {
-                    firstName: payload.firstName,
-                    middleName: "",
-                    lastName: payload.lastName,
-                    suffix: "",
-                    title: payload.title,
-                    state: 0,
-                    stateSpecified: true,
-                  },
-                ],
-                infant: {
-                  dob: "2021-08-07",
-                  dobSpecified: true,
-                  gender: 0,
-                  genderSpecified: true,
-                  nationality: "",
-                  residentCountry: "",
-                  names: [
-                    {
-                      firstName: "green",
-                      middleName: "green",
-                      lastName: "green",
-                      suffix: "",
-                      title: "",
-                      state: 0,
-                      stateSpecified: true,
-                    },
-                  ],
-                  paxType: "ADT",
-                  state: 0,
-                  stateSpecified: true,
-                },
-                passengerID: 0,
-                passengerIDSpecified: true,
-                passengerTypeInfos: [
-                  {
-                    state: 0,
-                    stateSpecified: true,
-                    dob: "1999-08-07",
-                    dobSpecified: true,
-                    paxType: "ADT",
-                  },
-                ],
-                passengerInfos: [
-                  {
-                    state: 0,
-                    stateSpecified: true,
-                    balanceDue: 0,
-                    balanceDueSpecified: true,
-                    gender: 0,
-                    genderSpecified: true,
-                    nationality: "",
-                    residentCountry: "",
-                    totalCost: 0,
-                    totalCostSpecified: true,
-                    weightCategory: 0,
-                    weightCategorySpecified: true,
-                  },
-                ],
-                passengerInfants: [
-                  {
-                    dob: "2022-08-07T18:33:39.207Z",
-                    dobSpecified: true,
-                    gender: 0,
-                    genderSpecified: true,
-                    nationality: "",
-                    residentCountry: "",
-                    names: [
-                      {
-                        firstName: "",
-                        middleName: "",
-                        lastName: "",
-                        suffix: "",
-                        title: "",
-                        state: 0,
-                        stateSpecified: true,
-                      },
-                    ],
-                    paxType: "ADT",
-                    state: 0,
-                    stateSpecified: true,
-                  },
-                ],
-                pseudoPassenger: false,
-                pseudoPassengerSpecified: true,
-                passengerTypeInfo: {
-                  state: 0,
-                  stateSpecified: true,
-                  dob: "1999-08-07",
-                  dobSpecified: true,
-                  paxType: "ADT",
-                },
-              },
-            ],
-            waiveNameChangeFee: false,
-            waiveNameChangeFeeSpecified: true,
-          },
-        },
-      },
-    };
-
-    try {
-      const Response = await UpdatePassengers(requestPayload);
-      await dispatch(setUpdatePassengersResponse(Response.data));
-    } catch (err) {
-      notification.error({
-        message: "Error",
-        description: "Update Passenger failed",
-      });
-    }
-    dispatch(setUpdatePassengersLoading(false));
-  };
-
 export const updatePassengersDetails =
   (payload) => async (dispatch, getState) => {
     dispatch(setUpdatePassengersLoading(true));
@@ -953,6 +814,12 @@ export const updatePassengersDetails =
           ],
           passengerID: 0,
           pseudoPassenger: false,
+          passengerTypeInfo: {
+            state: 0,
+            stateSpecified: true,
+            dob: _passenger.dob,
+            paxType: _passenger.type,
+          },
         };
         _passengers.push(passengerObj);
       });
@@ -1028,10 +895,15 @@ export const updatePassengersDetails =
           ],
           passengerID: 0,
           pseudoPassenger: false,
+          passengerTypeInfo: {
+            state: 0,
+            stateSpecified: true,
+            dob: _passenger.dob,
+            paxType: _passenger.type,
+          },
         };
         _passengers.push(passengerObj);
       });
-
 
       requestPayload = {
         header: {
@@ -1345,7 +1217,6 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
     await dispatch(setBookingResponse(Response.data));
     await dispatch(FetchStateFromServer());
   } catch (err) {
-    console.log("GetBooking Request error", err.response);
     notification.error({
       message: "Error",
       description: "Get Booking Details failed",

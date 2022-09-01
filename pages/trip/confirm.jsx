@@ -40,6 +40,10 @@ const TripConfirm = () => {
     }
   }, [bookingResponse]);
 
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   const WelcomeNote = () => {
     return (
       <div className="mb-8 mt-16 xlg:mt-0">
@@ -236,6 +240,12 @@ const TripConfirm = () => {
                       </button>
                       <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2">
                         Check In
+                      </button>
+                      <button
+                        className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2 mt-4 md:mt-0"
+                        onClick={goBackToHome}
+                      >
+                        Back to Home
                       </button>
                     </section>
                     {/* CTA */}
