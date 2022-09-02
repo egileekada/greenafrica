@@ -42,13 +42,13 @@ const Home = () => {
       if (flightOrigin) {
         dispatch(startSession());
       } else {
-        // dispatch(showWidget());
-        window.location.assign("https://dev-website.gadevenv.com/");
+        dispatch(showWidget());
+        // window.location.assign("https://dev-website.gadevenv.com/");
       }
     }
     checkParams();
   }, []);
-
+  //TODO this will always run and trigger to display << Fetch Flights failed >> because it is null a first when there is no params
   useEffect(() => {
     async function checkSigInit() {
       const ibeQuery = new URLSearchParams(window.location.search);
@@ -205,7 +205,7 @@ const Home = () => {
         </section>
       </Popup>
       <PromoErrorWidget />
-      {/* <FlightWidget /> */}
+      <FlightWidget />
     </Fragment>
   );
 };

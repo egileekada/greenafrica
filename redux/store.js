@@ -17,6 +17,8 @@ import sessionReducer from "redux/reducers/session";
 import paymentReducer from "redux/reducers/payment";
 import bookingReducer from "redux/reducers/booking";
 
+import { widgetApi } from "../services/widgetApi";
+
 const persistConfig = {
   key: "root",
   version: 1,
@@ -28,6 +30,7 @@ const rootReducer = combineReducers({
   session: sessionReducer,
   payment: paymentReducer,
   booking: bookingReducer,
+  [widgetApi.reducerPath]: widgetApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -39,7 +42,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(widgetApi.middleware),
 });
 
 export const persistor = persistStore(store);
