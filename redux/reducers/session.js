@@ -22,13 +22,6 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
-import {
-  _sessionState,
-  _selectedSessionFare,
-  _selectedSessionJourney,
-  ssrAv,
-} from "./data";
-
 const initialState = {
   isLoading: false,
   signature: null,
