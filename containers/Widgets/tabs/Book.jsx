@@ -439,7 +439,7 @@ const BookingTab = ({ type, promocode }) => {
                   <div
                     className={`${
                       !show && "hidden"
-                    } relative w-full h-full max-w-lg md:h-auto widget-border rounded-lg shadow bg-white`}
+                    } fixed w-auto h-auto w-full h-full max-w-lg md:h-auto widget-border rounded-lg shadow bg-white`}
                   >
                     <div className="relative">
                       <div className="p-4 space-y-6">

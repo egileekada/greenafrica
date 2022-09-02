@@ -18,9 +18,9 @@ const FlightWidget = () => {
       display={widgetVisible}
       closeModal={handleUser}
       top={true}
-      width="w-[80%]"
+      width="w-[90%]"
     >
-      <div className="bg-white rounded-lg w-full overflow-idden">
+      <div className="bg-white rounded-lg w-full overflow-hidden">
         <div className="bg-[#26205E] w-full p-5">
           <p className="text-white text-xl">Change Flight</p>
         </div>
