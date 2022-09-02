@@ -15,7 +15,7 @@ import {
   fetchLowFareAvailability,
 } from "redux/reducers/session";
 import { resetStore } from "redux/store";
-import { showWidget } from "redux/reducers/general";
+import { showWidget, hideWidget } from "redux/reducers/general";
 import Spinner from "components/Spinner";
 // import BackIcon from "assets/svgs/seats/arrowleft.svg";
 // import ToTop from "assets/svgs/toTop.svg";
@@ -40,6 +40,7 @@ const Home = () => {
       const ibeQuery = new URLSearchParams(window.location.search);
       const flightOrigin = ibeQuery.get("origin");
       if (flightOrigin) {
+        dispatch(hideWidget());
         dispatch(startSession());
       } else {
         dispatch(showWidget());
@@ -48,12 +49,12 @@ const Home = () => {
     }
     checkParams();
   }, []);
-  //TODO this will always run and trigger to display << Fetch Flights failed >> because it is null a first when there is no params
+
   useEffect(() => {
     async function checkSigInit() {
       const ibeQuery = new URLSearchParams(window.location.search);
 
-      if (signature) {
+      if (signature && ibeQuery.get("origin") !== null) {
         const isRoundTrip = parseInt(ibeQuery.get("round"));
         const flightRequest = {
           departureStation: ibeQuery.get("origin"),
