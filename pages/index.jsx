@@ -15,7 +15,7 @@ import {
   fetchLowFareAvailability,
 } from "redux/reducers/session";
 import { resetStore } from "redux/store";
-import { showWidget } from "redux/reducers/general";
+import { showWidget, hideWidget } from "redux/reducers/general";
 import Spinner from "components/Spinner";
 // import BackIcon from "assets/svgs/seats/arrowleft.svg";
 // import ToTop from "assets/svgs/toTop.svg";
@@ -43,10 +43,11 @@ const Home = () => {
       const ibeQuery = new URLSearchParams(window.location.search);
       const flightOrigin = ibeQuery.get("origin");
       if (flightOrigin) {
+        dispatch(hideWidget());
         dispatch(startSession());
       } else {
-        // dispatch(showWidget());
-        window.location.assign("https://dev-website.gadevenv.com/");
+        dispatch(showWidget());
+        // window.location.assign("https://dev-website.gadevenv.com/");
       }
     }
     checkParams();
@@ -56,7 +57,7 @@ const Home = () => {
     async function checkSigInit() {
       const ibeQuery = new URLSearchParams(window.location.search);
 
-      if (signature) {
+      if (signature && ibeQuery.get("origin") !== null) {
         const isRoundTrip = parseInt(ibeQuery.get("round"));
         const flightRequest = {
           departureStation: ibeQuery.get("origin"),
@@ -266,7 +267,7 @@ const Home = () => {
         </section>
       </Popup>
       <PromoErrorWidget />
-      {/* <FlightWidget /> */}
+      <FlightWidget />
     </Fragment>
   );
 };

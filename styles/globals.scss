@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
-@import url('../assets/fonts/Cosmical/fonts.css');
-@import url('../assets/fonts/plus-jakarta-sans-v3-latin/font.css');
-@import 'antd/dist/antd.css';
-@import './loader.scss';
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap");
+@import url("../assets/fonts/Cosmical/fonts.css");
+@import url("../assets/fonts/plus-jakarta-sans-v3-latin/font.css");
+@import "antd/dist/antd.css";
+@import "./loader.scss";
 
 @tailwind base;
 @tailwind components;
@@ -198,7 +198,7 @@
     }
 
     input,
-    input[type='date'] {
+    input[type="date"] {
       @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
     }
 
@@ -250,7 +250,7 @@
 
     .phone-input {
       input,
-      input[type='date'] {
+      input[type="date"] {
         @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
       }
     }
@@ -314,12 +314,12 @@
         -o-transition: opacity 2s ease-in-out;
         transition: opacity 2s ease-in-out;
         opacity: 0;
-        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
         filter: alpha(opacity=0);
 
         &.activeText {
           opacity: 1;
-          -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)';
+          -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
           filter: alpha(opacity=1);
         }
       }
@@ -1418,7 +1418,7 @@
 }
 
 .plane-seats {
-  background-image: url('./bg/cab.png');
+  background-image: url("./bg/cab.png");
   background-size: 35%;
   background-repeat: no-repeat;
   background-position-x: 50%;
@@ -1442,7 +1442,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -1482,4 +1482,126 @@ svg.primary-main {
     bottom: -186px;
     opacity: 1;
   }
+}
+
+// widget styles
+
+.datepicker {
+  @apply font-body;
+  font-size: 14px;
+}
+
+.react-date-picker__calendar-button,
+.react-date-picker__clear-button {
+  // @apply hidden;
+}
+
+.react-date-picker__inputGroup__input {
+  min-width: 1.24em !important;
+  text-align: center;
+  pointer-events: none;
+  font-size: 16px !important;
+}
+
+.react-date-picker__wrapper {
+  border: none !important;
+}
+
+.react-date-picker__inputGroup__input:focus {
+  outline: 0px !important;
+  border: 0px !important;
+  box-shadow: none;
+}
+
+.react-date-picker__inputGroup {
+  padding: 0px !important;
+  font-family: "Plus Jakarta Sans";
+}
+
+.react-date-picker__button {
+  padding: 0px 6px !important;
+}
+
+.booking__wrapper {
+  // border: 1px solid #d8d7e2;
+  box-shadow: 0 0 5px 0 rgb(195 198 205 / 50%);
+  @apply rounded-lg px-2 py-2 relative;
+}
+
+.react-calendar {
+  @apply font-body;
+  border: 1px solid #eaebf3 !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  padding: 2px !important;
+}
+
+.react-calendar__tile {
+  background: rgba(31, 25, 85, 0.03) !important;
+  border: 2px solid #fff !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  padding-bottom: 0px !important;
+  font-family: "Plus Jakarta Sans";
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #000 !important;
+}
+
+.react-calendar__tile--active {
+  background: #1f1955 !important;
+  color: #47ff5a !important;
+}
+
+.react-calendar__tile--now {
+  border: 2px dashed #1f195591 !important;
+  color: #47ff5a !important;
+}
+
+.react-calendar__navigation__label__labelText {
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+}
+
+.react-calendar__tile:disabled {
+  opacity: 0.5 !important;
+}
+
+.widget-border {
+  border: 1px solid #eaebf3;
+  border-radius: 6px;
+}
+
+.react-date-picker {
+  width: 100%;
+}
+
+div[disabled] {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+::selection {
+  color: #2e2260;
+  background-color: #1eff5a;
+}
+
+[type="text"]:focus,
+[type="email"]:focus,
+[type="url"]:focus,
+[type="password"]:focus,
+[type="number"]:focus,
+[type="date"]:focus,
+[type="datetime-local"]:focus,
+[type="month"]:focus,
+[type="search"]:focus,
+[type="tel"]:focus,
+[type="time"]:focus,
+[type="week"]:focus,
+[multiple]:focus,
+textarea:focus,
+select:focus {
+  box-shadow: none !important;
+  border-color: none !important;
 }

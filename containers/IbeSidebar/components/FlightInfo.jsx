@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import CalendarIcon from "assets/svgs/calendar.svg";
 import Spinner from "components/Spinner";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
-
+import { showWidget } from "redux/reducers/general";
 const FlightInfo = () => {
+  const dispatch = useDispatch();
   const { flightParams, sessionStateResponse } = useSelector(sessionSelector);
 
   // const totalPassengers = sessionStateResponse
@@ -33,7 +34,12 @@ const FlightInfo = () => {
             </h5>
           </div>
         </div>
-        {/* <button className="text-white underline">Change</button> */}
+        <button
+          className="text-white underline"
+          onClick={() => dispatch(showWidget())}
+        >
+          Change
+        </button>
       </div>
     </section>
   );

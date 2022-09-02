@@ -2,6 +2,7 @@
 import Popup from "components/Popup";
 import { useSelector, useDispatch } from "react-redux";
 import { generalSelector, hideWidget } from "redux/reducers/general";
+import DesktopFilter from "./DesktopFilter";
 
 const FlightWidget = () => {
   const { widgetVisible } = useSelector(generalSelector);
@@ -17,24 +18,18 @@ const FlightWidget = () => {
       display={widgetVisible}
       closeModal={handleUser}
       top={true}
-      width="w-[600px]"
+      width="w-[90%]"
     >
-      <section className="w-full bg-white rounded-xl ">
-        <div className="flex flex-col items-center justify-center p-[50px]">
-          <h6 className="font-display text-xl mb-5 text-red-400">
-            Flight Search Error
-          </h6>
-
-          <p className="text-center font-body text-sm mb-6">
-            Please check search terms and try again
-          </p>
-          <div className="flex flex-wrap lg:flex-nowrap items-center justify-between w-full">
-            <button onClick={handleUser} className="btn btn-primary basis-full">
-              Go Back
-            </button>
+      <div className="bg-white rounded-lg w-full overflow-hidden">
+        <div className="bg-[#26205E] w-full p-5">
+          <p className="text-white text-xl">Change Flight</p>
+        </div>
+        <div className="w-full relative">
+          <div className="mx-auto">
+            <DesktopFilter />
           </div>
         </div>
-      </section>
+      </div>
     </Popup>
   );
 };
