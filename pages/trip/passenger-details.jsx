@@ -67,7 +67,7 @@ const PassengerDetails = () => {
 
   const proceedToSeatSelectionWithSSR = async () => {
     let Extras = selectedSSRs.filter(function (ssr) {
-      if (ssr?.ssrCode === "WCHC") return true;
+      if (ssr?.ssrCode === "WCHR") return true;
     });
 
     if (Extras?.length > 0) {

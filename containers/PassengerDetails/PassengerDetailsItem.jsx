@@ -19,13 +19,13 @@ const PassengerDetailsItem = ({
   useEffect(() => {
     async function mapSessionSSRs() {
       if (sessionSSRs && sessionSSRs.length > 0) {
-        const WCHCs = sessionSSRs.filter((_ssr) => {
+        const WCHRs = sessionSSRs.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.id) &&
-            _ssr?.ssrCode === "WCHC"
+            _ssr?.ssrCode === "WCHR"
           );
         });
-        if (WCHCs.length > 0) {
+        if (WCHRs.length > 0) {
           setChecked(true);
         }
       }
@@ -37,13 +37,13 @@ const PassengerDetailsItem = ({
     if (e.target.checked) {
       const _ssrObj = {
         passengerNumber: passenger?.id,
-        ssrCode: "WCHC",
+        ssrCode: "WCHR",
         schedueIndex: 0,
       };
       setSSRs((prevState) => [...prevState, _ssrObj]);
       setChecked(true);
     } else {
-      let codeToBeRemoved = "WCHC";
+      let codeToBeRemoved = "WCHR";
       setSSRs((prevState) =>
         prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
       );
@@ -58,8 +58,8 @@ const PassengerDetailsItem = ({
       {SSRAvailabilityResponse ? (
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
-            <p>GoSSRs:: {JSON.stringify(selectedSSRs)}</p>
-            <p>RetrunSSRs:: {JSON.stringify(selectedReturnSSRs)}</p>
+            {/* <p>GoSSRs:: {JSON.stringify(selectedSSRs)}</p>
+            <p>RetrunSSRs:: {JSON.stringify(selectedReturnSSRs)}</p> */}
             <h2 className="text-left text-[#8F8CA4] font-header font-bold mb-2 hidden">
               INSURANCE
             </h2>

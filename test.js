@@ -3,8 +3,8 @@ const ssrs = [
   { passengerNumber: 0, ssrCode: "X15", schedueIndex: 0 },
   { passengerNumber: 0, ssrCode: "X15", schedueIndex: 1 },
   { passengerNumber: 0, ssrCode: "X10", schedueIndex: 0 },
-  { passengerNumber: 0, ssrCode: "WCHC", schedueIndex: 0 },
-  { passengerNumber: 1, ssrCode: "WCHC", schedueIndex: 0 },
+  { passengerNumber: 0, ssrCode: "WCHR", schedueIndex: 0 },
+  { passengerNumber: 1, ssrCode: "WCHR", schedueIndex: 0 },
 ];
 const RetrunSSRs = [
   { passengerNumber: 0, ssrCode: "X10", schedueIndex: 1 },
@@ -17,7 +17,7 @@ const RetrunSSRs = [
 });
 
 // let __FOUND = ssrs.filter(function (ssr) {
-//   if (ssr.ssrCode === "WCHC") return true;
+//   if (ssr.ssrCode === "WCHR") return true;
 // });
 
 // if (__FOUND.length > 0) {

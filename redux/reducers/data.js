@@ -5896,7 +5896,7 @@ export const sessionSSRs = [
   { passengerNumber: 0, ssrCode: "X15" },
   { passengerNumber: 0, ssrCode: "X10" },
   { passengerNumber: 0, ssrCode: "X10" },
-  { passengerNumber: 0, ssrCode: "WCHC" },
+  { passengerNumber: 0, ssrCode: "WCHR" },
 ];
 
 export const manageRequest = {

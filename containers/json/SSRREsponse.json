@@ -1,4 +1,3 @@
-
 {
   "Error": null,
   "SSRAvailabilityForBookingResponse": {
@@ -261,7 +260,7 @@
             "SSRLegList": []
           },
           {
-            "SSRCode": "WCHC",
+            "SSRCode": "WCHR",
             "InventoryControlled": false,
             "InventoryControlledSpecified": true,
             "NonInventoryControlled": true,
