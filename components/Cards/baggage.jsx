@@ -1,10 +1,17 @@
 import { Fragment, useEffect, useState } from "react";
 import BaggageIcon from "assets/svgs/baggage.svg";
 import Counter from "components/Counter";
+import { notification } from "antd";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
-const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
+const BaggageCard = ({
+  passenger,
+  selectedSSRs,
+  setSSRs,
+  SSRItem,
+  schedueIndex,
+}) => {
   const [totalFare, setFare] = useState(0);
   const [value, setValue] = useState(0);
   const { sessionSSRs, sessionPassengers } = useSelector(sessionSelector);
@@ -39,6 +46,12 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
   }, []);
 
   useEffect(() => {
+    if (parseInt(schedueIndex) === 0) {
+      handleFlightSSR();
+    }
+  }, [value]);
+
+  const handleFlightSSR = () => {
     if (value >= 1 && value <= 2) {
       const existingSSRs = [...selectedSSRs];
       const cleanedSSRs = existingSSRs.filter((_ssr) => {
@@ -52,6 +65,7 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
       const SSRItemObj = new Array(value).fill({
         passengerNumber: passenger?.id,
         ssrCode: SSRItem.SSRCode,
+        schedueIndex,
       });
       setSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
     } else {
@@ -65,10 +79,11 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
       const _SSRItemObj = new Array(value).fill({
         passengerNumber: passenger?.id,
         ssrCode: SSRItem.SSRCode,
+        schedueIndex,
       });
       setSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
     }
-  }, [value]);
+  };
 
   const onValueChange = (e) => {
     let _val = parseInt(e.target.value);
@@ -107,7 +122,9 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
         <figure>
           <BaggageIcon />
         </figure>
-        <p className="font-body text-primary-main text-xs mb-1">Up to {KG}kg</p>
+        <p className="font-body text-primary-main text-xs mb-1">
+          Up to {KG}kg {schedueIndex}
+        </p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}
@@ -127,6 +144,7 @@ BaggageCard.defaultProps = {
   SSRItem: {},
   passenger: {},
   selectedSSRs: [],
+  schedueIndex: 0,
 };
 
 export default BaggageCard;

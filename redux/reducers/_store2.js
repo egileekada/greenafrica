@@ -2471,12 +2471,7 @@ const store = {
         OtherServiceInformations: null,
       },
     },
-    sellParams: {
-      sellKey: "Q9~ 300~ ~~LOS~09/08/2022 05:50~ABV~09/08/2022 07:30~~",
-      segmentStd: "2022-09-08T05:50:00",
-      segmentFlightNumber: " 300",
-      fareKey: "0~X~~Q9~XFOW~FLEX~~5~1~NABVLOS0050010~X",
-    },
+
     sellInfantLoading: false,
     sellInfantResponse: {
       BookingUpdateResponseData: {
@@ -2553,15 +2548,6 @@ const store = {
       lastName: "taiwo",
       phone: "9078905645",
       email: "teeola48@gmail.com",
-    },
-    sessionSegmentDetails: {
-      flightDesignator: {
-        carrierCode: "Q9",
-        flightNumber: " 300",
-      },
-      std: "2022-09-08T05:50:00",
-      departureStation: "LOS",
-      arrivalStation: "ABV",
     },
     sessionSSRs: null,
     updatePassengersLoading: false,

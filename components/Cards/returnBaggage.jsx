@@ -5,11 +5,32 @@ import { notification } from "antd";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
-const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
+const ReturnBaggageCard = ({
+  passenger,
+  SSRItem,
+  selectedReturnSSRs,
+  setReturnSSRs,
+  schedueIndex,
+}) => {
   const [totalFare, setFare] = useState(0);
   const [value, setValue] = useState(0);
-  const { sessionPassengers } = useSelector(sessionSelector);
+  const {  sessionReturnSSRs, sessionPassengers } = useSelector(sessionSelector);
   const KG = SSRItem?.SSRCode.substring(1);
+
+  useEffect(() => {
+    async function mapsessionReturnSSRs() {
+      if ( sessionReturnSSRs &&  sessionReturnSSRs.length > 0) {
+        const passengerSSRs =  sessionReturnSSRs.filter((_ssr) => {
+          return (
+            _ssr?.passengerNumber === parseInt(passenger?.id) &&
+            _ssr?.ssrCode === SSRItem.SSRCode
+          );
+        });
+        setValue(passengerSSRs.length);
+      }
+    }
+    mapsessionReturnSSRs();
+  }, []);
 
   useEffect(() => {
     SSRItem.PaxSSRPriceList.map((_priceList) => {
@@ -25,23 +46,30 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
   }, []);
 
   useEffect(() => {
+    if (parseInt(schedueIndex) === 1) {
+      handleReturnSSR();
+    }
+  }, [value]);
+
+  const handleReturnSSR = () => {
     if (value >= 1 && value <= 2) {
-      const existingSSRs = [...selectedSSRs];
+      const existingSSRs = [...selectedReturnSSRs];
       const cleanedSSRs = existingSSRs.filter((_ssr) => {
         const ruleBasis =
-          _ssr.ssrCode !== SSRItem?.SSRCode &&
+          _ssr.ssrCode === SSRItem?.SSRCode &&
           parseInt(_ssr.passengerNumber) === parseInt(passenger?.id);
         return sessionPassengers.length > 1
-          ? ruleBasis
+          ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
       const SSRItemObj = new Array(value).fill({
         passengerNumber: passenger?.id,
         ssrCode: SSRItem.SSRCode,
+        schedueIndex,
       });
-      setSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+      setReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
     } else {
-      const _existingSSRs = [...selectedSSRs];
+      const _existingSSRs = [...selectedReturnSSRs];
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
         const _ruleBasis =
           _ssr.ssrCode === SSRItem.SSRCode &&
@@ -51,49 +79,36 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
       const _SSRItemObj = new Array(value).fill({
         passengerNumber: passenger?.id,
         ssrCode: SSRItem.SSRCode,
+        schedueIndex,
       });
-      setSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
+      setReturnSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
     }
-  }, [value]);
+  };
 
   const onValueChange = (e) => {
     let _val = parseInt(e.target.value);
     if (_val > 2) {
-      notification.error({
-        message: "Error",
-        description: "Maximum Value is 2",
-      });X
       setValue(2);
     } else if (_val < 0) {
-      notification.error({
-        message: "Error",
-        description: "Minimum Value is 0",
-      });
       setValue(0);
     } else {
       setValue(parseInt(_val));
     }
   };
+
   const onValueIncrement = () => {
     setValue((prevVal) => {
       if (prevVal + 1 > 2) {
-        notification.error({
-          message: "Error",
-          description: "Maximum Value is 2",
-        });
         return 2;
       } else {
         return prevVal + 1;
       }
     });
   };
+
   const onValueDecrement = () => {
     setValue((prevVal) => {
       if (prevVal - 1 < 0) {
-        notification.error({
-          message: "Error",
-          description: "Minimum Value is 0",
-        });
         return 0;
       } else {
         return prevVal - 1;
@@ -107,7 +122,9 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
         <figure>
           <BaggageIcon />
         </figure>
-        <p className="font-body text-primary-main text-xs mb-1">Up to {KG}kg</p>
+        <p className="font-body text-primary-main text-xs mb-1">
+          Up to {KG}kg {schedueIndex}
+        </p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}
@@ -123,10 +140,11 @@ const BaggageCard = ({ passenger, selectedSSRs, setSSRs, SSRItem }) => {
   );
 };
 
-BaggageCard.defaultProps = {
+ReturnBaggageCard.defaultProps = {
   SSRItem: {},
   passenger: {},
-  selectedSSRs: [],
+  selectedReturnSSRs: [],
+  schedueIndex: 0,
 };
 
-export default BaggageCard;
+export default ReturnBaggageCard;

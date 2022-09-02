@@ -46,10 +46,18 @@ const TripPayment = () => {
           bookingState?.Passengers.length < 1 ||
           bookingState?.Journeys.length < 1
         ) {
-          window.location.assign("https://dev-website.gadevenv.com/");
+          // window.location.assign("https://dev-website.gadevenv.com/");
+          notification.error({
+            message: "Error",
+            description: "No Passenger and journey in state",
+          });
         }
       } else {
-        window.location.assign("https://dev-website.gadevenv.com/");
+        // window.location.assign("https://dev-website.gadevenv.com/");
+        notification.error({
+          message: "Error",
+          description: "No Booking in state",
+        });
       }
     }
     checkForSession();
@@ -108,9 +116,9 @@ const TripPayment = () => {
         message: "Error",
         description: "PNR Code Unavailable, Redirecting in 3s",
       });
-      setTimeout(() => {
-        router.push("/");
-      }, 3000);
+      // setTimeout(() => {
+      //   router.push("/");
+      // }, 3000);
     }
   };
 

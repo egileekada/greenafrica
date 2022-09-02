@@ -6,7 +6,13 @@ import PassengerBaggage from "containers/Passenger/PassengerBaggage";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
-const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
+const PassengerDetailsItem = ({
+  passenger,
+  selectedSSRs,
+  setSSRs,
+  setReturnSSRs,
+  selectedReturnSSRs,
+}) => {
   const { SSRAvailabilityResponse, sessionSSRs } = useSelector(sessionSelector);
   const [checked, setChecked] = useState(false);
 
@@ -32,6 +38,7 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
       const _ssrObj = {
         passengerNumber: passenger?.id,
         ssrCode: "WCHC",
+        schedueIndex: 0,
       };
       setSSRs((prevState) => [...prevState, _ssrObj]);
       setChecked(true);
@@ -51,7 +58,8 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
       {SSRAvailabilityResponse ? (
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
-            {/* <p>{JSON.stringify(selectedSSRs)}</p> */}
+            <p>GoSSRs:: {JSON.stringify(selectedSSRs)}</p>
+            <p>RetrunSSRs:: {JSON.stringify(selectedReturnSSRs)}</p>
             <h2 className="text-left text-[#8F8CA4] font-header font-bold mb-2 hidden">
               INSURANCE
             </h2>
@@ -99,6 +107,8 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
               passenger={passenger}
               selectedSSRs={selectedSSRs}
               setSSRs={setSSRs}
+              selectedReturnSSRs={selectedReturnSSRs}
+              setReturnSSRs={setReturnSSRs}
             />
           </div>
         </PassengerAccordion>
@@ -112,6 +122,7 @@ const PassengerDetailsItem = ({ passenger, selectedSSRs, setSSRs }) => {
 PassengerDetailsItem.defaultProps = {
   passenger: {},
   selectedSSRs: [],
+  selectedReturnSSRs: [],
 };
 
 export default PassengerDetailsItem;

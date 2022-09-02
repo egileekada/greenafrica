@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   sessionSelector,
-  setSelectedSessionReturnFare,
   setSelectedSessionFare,
 } from "redux/reducers/session";
 
@@ -17,11 +16,13 @@ const IbeTripVariant = ({
   sellKey,
   segmentStd,
   segmentFlightNumber,
+  segmentCarrierCode,
   journey,
   schedueIndex,
+  setIsVisible,
 }) => {
   const dispatch = useDispatch();
-  const { availabilityResponse } = useSelector(sessionSelector);
+  const { flightParams, selectedSessionFare } = useSelector(sessionSelector);
   const [showPopUp, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -45,24 +46,41 @@ const IbeTripVariant = ({
   );
 
   const handleBtnClick = (_fare) => {
+    //SellKey is Journey SellKey
     setSelected({
       ..._fare,
       sellKey,
     });
-    console.log("_fare", {
-      ..._fare,
-      sellKey,
-    });
-    dispatch(
-      setSelectedSessionFare([
-        {
-          ..._fare,
-          sellKey,
-        },
-      ])
-    );
-    // for ROund TripConfirm, add an id to identify the journeu(view Trip Purpose)
-    setShow(true);
+
+    if (flightParams?.isRoundTrip === 1) {
+      const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
+      const _cleanedFares = existingFares.filter((_item) => {
+        const _ruleBasis =
+          parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
+        return !_ruleBasis;
+      });
+
+      const _newFare = {
+        ..._fare,
+        sellKey,
+        schedueIndex,
+      };
+
+      const _newFares = [..._cleanedFares, _newFare];
+      dispatch(setSelectedSessionFare([..._newFares]));
+      setShow(true);
+    } else {
+      dispatch(
+        setSelectedSessionFare([
+          {
+            ..._fare,
+            sellKey,
+            schedueIndex,
+          },
+        ])
+      );
+      setShow(true);
+    }
   };
 
   const closePopUp = () => {
@@ -166,8 +184,10 @@ const IbeTripVariant = ({
         sellKey={sellKey}
         segmentStd={segmentStd}
         segmentFlightNumber={segmentFlightNumber}
+        segmentCarrierCode={segmentCarrierCode}
         journey={journey}
         schedueIndex={schedueIndex}
+        setIsVisible={setIsVisible}
       />
     </Fragment>
   );
@@ -178,6 +198,7 @@ IbeTripVariant.defaultProps = {
   sellKey: "",
   segmentStd: "",
   segmentFlightNumber: "",
+  segmentCarrierCode: "",
   schedueIndex: "",
 };
 

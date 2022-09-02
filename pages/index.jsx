@@ -21,18 +21,21 @@ import Spinner from "components/Spinner";
 // import ToTop from "assets/svgs/toTop.svg";
 import LogoIcon from "assets/svgs/logo.svg";
 import { notification } from "antd";
-
-// ?origin=ABV&destination=LOS&departure=2022-08-18&adt=1&chd=0&inf=0&promocode=3hy74h
+import { useRouter } from "next/router";
 
 const Home = () => {
   const [showPopUp, setShow] = useState(false);
+  const [roundTripEnabled, setRoundTripEnabled] = useState(false);
   const dispatch = useDispatch();
   const {
     signature,
     sessionLoading,
     availabilityResponse,
     flightAvailabilityLoading,
+    selectedSessionJourney,
+    selectedSessionFare,
   } = useSelector(sessionSelector);
+  const router = useRouter();
 
   useEffect(() => {
     resetStore();
@@ -75,6 +78,22 @@ const Home = () => {
     checkSigInit();
   }, [signature]);
 
+  useEffect(() => {
+    async function checkRoundEnabled() {
+      if (
+        selectedSessionJourney &&
+        selectedSessionJourney.length === 2 &&
+        selectedSessionFare &&
+        selectedSessionFare.length === 2
+      ) {
+        setRoundTripEnabled(true);
+      } else {
+        setRoundTripEnabled(false);
+      }
+    }
+    checkRoundEnabled();
+  }, [selectedSessionJourney, selectedSessionFare]);
+
   const ScrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -88,10 +107,50 @@ const Home = () => {
   };
 
   const checkRoundTripPayload = () => {
-    notification.error({
-      message: "Error",
-      description: "Please selected all relevant journeys and fares",
-    });
+    if (selectedSessionJourney && selectedSessionFare) {
+      let departureJorneyIndex = selectedSessionJourney
+        .map(function (_item) {
+          return parseInt(_item.schedueIndex);
+        })
+        .indexOf(parseInt(0));
+
+      let returnJorneyIndex = selectedSessionJourney
+        .map(function (_item) {
+          return parseInt(_item.schedueIndex);
+        })
+        .indexOf(parseInt(1));
+
+      let departureFareIndex = selectedSessionFare
+        .map(function (_item) {
+          return parseInt(_item.schedueIndex);
+        })
+        .indexOf(parseInt(0));
+
+      let returnFareIndex = selectedSessionFare
+        .map(function (_item) {
+          return parseInt(_item.schedueIndex);
+        })
+        .indexOf(parseInt(1));
+
+      if (
+        departureFareIndex > -1 &&
+        returnFareIndex > -1 &&
+        departureJorneyIndex > -1 &&
+        returnJorneyIndex > -1
+      ) {
+        router.push("/trip/view");
+      } else {
+        notification.error({
+          message: "Error",
+          description: "Please select relevant trip",
+        });
+      }
+    } else {
+      notification.error({
+        message: "Error",
+        description: "Please select all relevant journeys and fares",
+      });
+    }
   };
 
   return (
@@ -145,7 +204,9 @@ const Home = () => {
                             .Schedules.length > 1 && (
                             <div className="flex items-center justify-end">
                               <button
-                                className="btn btn-primary"
+                                className={`btn btn-primary ${
+                                  roundTripEnabled ? "" : "disabled"
+                                }`}
                                 onClick={checkRoundTripPayload}
                               >
                                 Continue

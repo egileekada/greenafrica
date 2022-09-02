@@ -3,6 +3,7 @@ import { useState } from "react";
 import SelectIcon from "assets/svgs/select.svg";
 import { isInThePast } from "lib/utils";
 import { differenceInYears } from "date-fns";
+import differenceInMonths from "date-fns/differenceInMonths";
 import format from "date-fns/format";
 // import { diff_years } from "lib/utils";
 import { DatePicker } from "antd";
@@ -77,7 +78,7 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
   const fillInDob = (_indexedPassenger, _value) => {
     const modifiedPassenger = {
       ..._indexedPassenger,
-      dob: format(new Date(_value), "yyyy-dd-MM"),
+      dob: format(new Date(_value), "yyyy-MM-dd"),
     };
 
     setErr({
@@ -113,11 +114,11 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
           dob: "The date is invalid",
         });
       } else {
-        const _DIFF = differenceInYears(new Date(), new Date(dateString));
-        // const _DIFF = diff_years(new Date(), new Date(dateString));
+        // const _DIFF = differenceInYears(new Date(), new Date(dateString));
+        const _DIFF = differenceInMonths(new Date(), new Date(dateString));
 
         if (passenger?.type === "ADT") {
-          parseInt(_DIFF) < 13
+          parseInt(_DIFF) < 145
             ? setErr({
                 ...error,
                 dob: "Can't select less than 12 years of age for an adult change",
@@ -126,7 +127,7 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
         }
 
         if (passenger?.type === "INF") {
-          parseInt(_DIFF) > 2
+          parseInt(_DIFF) > 24
             ? setErr({
                 ...error,
                 dob: "Can't select more than 2 years of age for an infant change",
@@ -135,7 +136,7 @@ const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
         }
 
         if (passenger?.type === "CHD") {
-          parseInt(_DIFF) > 12
+          parseInt(_DIFF) > 144
             ? setErr({
                 ...error,
                 dob: "Can't select more than 12 years of age for a child change",

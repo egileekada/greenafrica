@@ -26,6 +26,7 @@ const IbeTripPopup = ({
   sellKey,
   segmentStd,
   segmentFlightNumber,
+  segmentCarrierCode,
 }) => {
   const dispatch = useDispatch();
   const { sellFlightLoading, sellResponse } = useSelector(sessionSelector);
@@ -60,6 +61,7 @@ const IbeTripPopup = ({
         sellKey,
         segmentStd,
         segmentFlightNumber,
+        segmentCarrierCode,
         fareKey: selected?.FareSellKey,
       })
     );
@@ -365,6 +367,7 @@ IbeTripPopup.defaultProps = {
   sellKey: "",
   segmentStd: "",
   segmentFlightNumber: "",
+  segmentCarrierCode: "",
   //  showPopUp={showPopUp},
   //  closePopUp={closePopUp},
 };

@@ -15,14 +15,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   sessionSelector,
   saveSellRequest,
-  saveMultipleSellRequest,
   FetchStateFromServer,
 } from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
-import { notification } from "antd";
 
 const TripView = () => {
   const dispatch = useDispatch();
@@ -76,31 +74,28 @@ const TripView = () => {
     setChecked(e.target.checked);
   };
 
-  const handleSell = async (JourneySellKey) => {
-    let flightJourney = selectedSessionJourney.filter((_item) => {
-      return _item?.JourneySellKey === JourneySellKey;
+  const handleSell = async () => {
+    let _asssocaitedFare = [];
+
+    selectedSessionJourney.map((_journey) => {
+      _asssocaitedFare = selectedSessionFare.filter((_sesfare) => {
+        return _sesfare?.sellKey === _journey?.JourneySellKey;
+      });
     });
 
-    flightJourney.length > 0
+    _asssocaitedFare.length > 0
       ? dispatch(
           saveSellRequest({
-            sellKey: flightJourney[0]?.sellKey,
-            segmentStd: flightJourney[0]?.segmentStd,
-            segmentFlightNumber: flightJourney[0]?.segmentFlightNumber,
-            segmentCarrierCode: flightJourney[0]?.FlightDesignator?.CarrierCode,
-            fareKey: flightJourney[0]?.fareKey,
-            arrivalStation: flightJourney[0]?.arrivalStation,
-            departureStation: flightJourney[0]?.departureStation,
+            sellKey: rplaced?.sellKey,
+            segmentStd: rplaced?.segmentStd,
+            segmentFlightNumber: rplaced?.segmentFlightNumber,
+            fareKey: _asssocaitedFare[0]?.FareSellKey,
           })
         )
-      : notification.error({
-          message: "Error",
-          description: "Please review your selected details and try again",
-        });
+      : null;
   };
-  const handleMultipleSell = async () => {
-    dispatch(saveMultipleSellRequest(selectedSessionJourney));
-  };
+
+  // localhost:4200/?origin=LOS&destination=ABV&departure=2022-09-07&return=2022-09-10&adt=1&chd=0&inf=0&round=1
 
   const ChangeFlight = async () => {
     if (roundTripEnabled) {
@@ -131,7 +126,7 @@ const TripView = () => {
         <section className="ga__section">
           <div className="ga__section__main">
             <section className="flex flex-col">
-              {selectedSessionJourney?.length > 0 ? (
+              {selectedSessionJourney.length > 0 ? (
                 selectedSessionJourney.map((_journey) => {
                   const _asssocaitedFare = selectedSessionFare.filter(
                     (_sesfare) => {
@@ -317,10 +312,7 @@ const TripView = () => {
                               className={`btn btn-primary w-full lg:w-[195px] ${
                                 checked ? "" : "opacity-50 pointer-events-none"
                               }`}
-                              onClick={handleSell.bind(
-                                this,
-                                _journey?.JourneySellKey
-                              )}
+                              onClick={handleSell}
                             >
                               {sellFlightLoading ? "Loading....." : "Continue"}
                             </button>
@@ -361,7 +353,7 @@ const TripView = () => {
                     className={`btn btn-primary w-full lg:w-[195px] ${
                       checked ? "" : "opacity-50 pointer-events-none"
                     }`}
-                    onClick={handleMultipleSell}
+                    onClick={handleSell}
                   >
                     {sellFlightLoading ? "Loading....." : "Continue"}
                   </button>

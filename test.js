@@ -1,13 +1,53 @@
-const p = [];
+const ssrs = [
+  { passengerNumber: 0, ssrCode: "X15", schedueIndex: 0 },
+  { passengerNumber: 0, ssrCode: "X15", schedueIndex: 0 },
+  { passengerNumber: 0, ssrCode: "X15", schedueIndex: 1 },
+  { passengerNumber: 0, ssrCode: "X10", schedueIndex: 0 },
+  { passengerNumber: 0, ssrCode: "WCHC", schedueIndex: 0 },
+  { passengerNumber: 1, ssrCode: "WCHC", schedueIndex: 0 },
+];
+const RetrunSSRs = [
+  { passengerNumber: 0, ssrCode: "X10", schedueIndex: 1 },
+  { passengerNumber: 0, ssrCode: "X10", schedueIndex: 1 },
+  { passengerNumber: 0, ssrCode: "X10", schedueIndex: 1 },
+];
 
-p[0] = {
-  id: "0",
-  name: "tee",
-};
+[...ssrs, ...RetrunSSRs].map((_item) => {
+  // console.log("_item", _item);
+});
 
-p[1] = {
-  id: "03",
-  name: "4tee",
-};
+// let __FOUND = ssrs.filter(function (ssr) {
+//   if (ssr.ssrCode === "WCHC") return true;
+// });
 
-console.log("p", p);
+// if (__FOUND.length > 0) {
+//   __FOUND.map((_item) => {
+//     const newObj = {
+//       ..._item,
+//       schedueIndex: 1,
+//     };
+//     RetrunSSRs.push(newObj);
+//   });
+// }
+
+// // const newReturn = [
+// //   ...RetrunSSRs,
+// //   {
+// //     ...ssrs[__FOUND],
+// //     schedueIndex: 1,
+// //   },
+// // ];
+
+// // console.log("return", newReturn);
+// console.log("r RetrunSSR", RetrunSSRs);
+
+const _sessionSSRs = [];
+const _sessionReturnSSRs = [];
+
+const ALL_SSRS = [..._sessionSSRs, ..._sessionReturnSSRs];
+
+console.log("ALL_SSRS", ALL_SSRS);
+
+[].map((_item) => {
+  console.log("ALL_SSRS", ALL_SSRS);
+});

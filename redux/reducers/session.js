@@ -22,7 +22,12 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
-import { _sessionState, bookingResponse } from "./data";
+import {
+  _sessionState,
+  _selectedSessionFare,
+  _selectedSessionJourney,
+  ssrAv,
+} from "./data";
 
 const initialState = {
   isLoading: false,
@@ -38,14 +43,13 @@ const initialState = {
   selectedSessionReturnFare: null,
   sellFlightLoading: false,
   sellResponse: null,
-  sellParams: null,
   sellInfantLoading: false,
   sellInfantResponse: null,
   sessionPassengers: null,
   sessionInfants: null,
   sessionContact: null,
-  sessionSegmentDetails: null,
-  sessionSSRs: null,
+  sessionSSRs: [],
+  sessionReturnSSRs: [],
   updatePassengersLoading: false,
   passengersResponse: null,
   updateContactsLoading: false,
@@ -106,9 +110,7 @@ export const sessionSlice = createSlice({
     setSelectedSessionReturnFare: (state, { payload }) => {
       state.selectedSessionReturnFare = payload;
     },
-    setSellParams: (state, { payload }) => {
-      state.sellParams = payload;
-    },
+
     setSellFlightLoading: (state, { payload }) => {
       state.sellFlightLoading = payload;
     },
@@ -125,20 +127,18 @@ export const sessionSlice = createSlice({
         ...payload,
       };
     },
-
     setSessionPassengers: (state, { payload }) => {
       state.sessionPassengers = [...payload];
     },
     setSessionInfants: (state, { payload }) => {
       state.sessionInfants = [...payload];
     },
-    setSessionSegmentDetails: (state, { payload }) => {
-      state.sessionSegmentDetails = payload;
-    },
     setSessionSSRs: (state, { payload }) => {
       state.sessionSSRs = payload;
     },
-
+    setSessionReturnSSRs: (state, { payload }) => {
+      state.sessionReturnSSRs = payload;
+    },
     setUpdatePassengersLoading: (state, { payload }) => {
       state.updatePassengersLoading = payload;
     },
@@ -234,14 +234,13 @@ export const {
   setSelectedSessionFare,
   setSelectedSessionReturnFare,
   setSellResponse,
-  setSellParams,
   setSellInfantLoading,
   setSellInfantResponse,
   setSessionPassengers,
   setSessionInfants,
   setSessionContact,
-  setSessionSegmentDetails,
   setSessionSSRs,
+  setSessionReturnSSRs,
   setUpdatePassengersLoading,
   setUpdatePassengersResponse,
   setUpdateContactsLoading,
@@ -604,18 +603,6 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
   const totalPaxCount = ADULT_COUNT + CHILD_COUNT;
   let infantPayload = {};
 
-  const _segmentDetails = {
-    flightDesignator: {
-      carrierCode: "Q9",
-      flightNumber: payload.segmentFlightNumber,
-    },
-    std: payload.segmentStd,
-    departureStation: flightParams?.departureStation,
-    arrivalStation: flightParams?.arrivalStation,
-  };
-
-  dispatch(setSessionSegmentDetails(_segmentDetails));
-
   if (ADULT_COUNT > 0) {
     const _newPType = {
       paxType: "ADT",
@@ -638,6 +625,7 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
 
   if (INFANT_COUNT > 0) {
     let paxSSRs = [];
+
     new Array(INFANT_COUNT).fill(0).map((i, index) => {
       let paxObj = {
         state: 0,
@@ -660,6 +648,7 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
       };
       paxSSRs.push(paxObj);
     });
+
     infantPayload = {
       header: {
         signature: currentState.signature,
@@ -677,14 +666,14 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
                 segmentSSRRequests: [
                   {
                     flightDesignator: {
-                      carrierCode: "Q9",
+                      carrierCode: payload.segmentCarrierCode,
                       flightNumber: payload.segmentFlightNumber,
                       opSuffix: "",
                     },
                     std: payload.segmentStd,
                     stdSpecified: true,
-                    departureStation: flightParams?.departureStation,
-                    arrivalStation: flightParams?.arrivalStation,
+                    departureStation: payload.departureStation,
+                    arrivalStation: payload.arrivalStation,
                     paxSSRs: [...paxSSRs],
                   },
                 ],
@@ -773,6 +762,191 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
 
   dispatch(setSellFlightLoading(false));
 };
+
+export const saveMultipleSellRequest =
+  (payload) => async (dispatch, getState) => {
+    dispatch(setSellFlightLoading(true));
+    const currentState = getState().session;
+
+    const paxPriceTypes = [];
+    const flightParams = currentState.flightParams;
+    const ADULT_COUNT = parseInt(flightParams?.ADT);
+    const CHILD_COUNT = parseInt(flightParams?.CHD);
+    const INFANT_COUNT = parseInt(flightParams?.INF);
+    const totalPaxCount = ADULT_COUNT + CHILD_COUNT;
+    let infantPayload = {};
+
+    if (ADULT_COUNT > 0) {
+      const _newPType = {
+        paxType: "ADT",
+        paxDiscountCode: "",
+        paxCount: ADULT_COUNT,
+        paxCountSpecified: true,
+      };
+      paxPriceTypes.push(_newPType);
+    }
+
+    if (CHILD_COUNT > 0) {
+      const _newPType = {
+        paxType: "CHD",
+        paxDiscountCode: "",
+        paxCount: CHILD_COUNT,
+        paxCountSpecified: true,
+      };
+      paxPriceTypes.push(_newPType);
+    }
+
+    if (INFANT_COUNT > 0) {
+      let _segmentSSRRequests = [];
+
+      payload.map((_sessionJourney) => {
+        let paxSSRs = [];
+        new Array(INFANT_COUNT).fill(0).map((i, index) => {
+          let paxObj = {
+            state: 0,
+            stateSpecified: true,
+            actionStatusCode: "NN",
+            arrivalStation: _sessionJourney?.arrivalStation,
+            departureStation: _sessionJourney?.departureStation,
+            passengerNumber: index,
+            passengerNumberSpecified: true,
+            ssrCode: "INFT",
+            ssrNumberSpecified: true,
+            ssrNumber: 0,
+            ssrDetail: "",
+            feeCode: "",
+            note: "",
+            ssrValue: 0,
+            ssrValueSpecified: true,
+            isInServiceBundle: false,
+            isInServiceBundleSpecified: true,
+          };
+          paxSSRs.push(paxObj);
+        });
+
+        let newObj = {
+          flightDesignator: {
+            carrierCode: _sessionJourney?.FlightDesignator?.CarrierCode,
+            flightNumber: _sessionJourney?.segmentFlightNumber,
+            opSuffix: "",
+          },
+          std: _sessionJourney?.segmentStd,
+          stdSpecified: true,
+          departureStation: _sessionJourney?.departureStation,
+          arrivalStation: _sessionJourney?.arrivalStation,
+          paxSSRs: [...paxSSRs],
+        };
+        _segmentSSRRequests.push(newObj);
+      });
+
+      infantPayload = {
+        header: {
+          signature: currentState.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: false,
+          contractVersion: 0,
+        },
+        sellRequestDto: {
+          sellRequest: {
+            sellRequestData: {
+              sellBy: 2,
+              sellBySpecified: true,
+              sellSSR: {
+                ssrRequest: {
+                  segmentSSRRequests: [..._segmentSSRRequests],
+                  currencyCode: "NGN",
+                  cancelFirstSSR: false,
+                  cancelFirstSSRSpecified: true,
+                  ssrFeeForceWaiveOnSell: false,
+                  ssrFeeForceWaiveOnSellSpecified: true,
+                  sellSSRMode: 0,
+                  sellSSRModeSpecified: true,
+                  feePricingMode: 0,
+                  feePricingModeSpecified: true,
+                },
+              },
+            },
+          },
+        },
+      };
+    }
+
+    const _journeySellKeys = [];
+
+    payload.map((_sessionJourney) => {
+      let newObj = {
+        JourneySellKey: _sessionJourney?.sellKey,
+        FareSellKey: _sessionJourney?.fareKey,
+        standbyPriorityCode: "",
+        packageIndicator: "",
+      };
+      _journeySellKeys.push(newObj);
+    });
+
+    const requestPayload = {
+      header: {
+        signature: currentState.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: false,
+        contractVersion: 0,
+      },
+      sellRequestDto: {
+        sellRequest: {
+          sellRequestData: {
+            sellBy: 0,
+            sellBySpecified: true,
+            sellJourneyByKeyRequest: {
+              sellJourneyByKeyRequestData: {
+                actionStatusCode: "NN",
+                journeySellKeys: [..._journeySellKeys],
+                paxPriceType: [...paxPriceTypes],
+                currencyCode: "NGN",
+                paxCount: totalPaxCount,
+                paxCountSpecified: true,
+                loyaltyFilter: 0,
+                loyaltyFilterSpecified: true,
+                isAllotmentMarketFare: false,
+                isAllotmentMarketFareSpecified: true,
+                preventOverLap: false,
+                preventOverLapSpecified: true,
+                replaceAllPassengersOnUpdate: false,
+                replaceAllPassengersOnUpdateSpecified: true,
+                serviceBundleList: [""],
+                applyServiceBundle: 0,
+                applyServiceBundleSpecified: true,
+              },
+            },
+          },
+        },
+      },
+    };
+
+    try {
+      const sellResponse = await BookingSell(requestPayload);
+      await dispatch(setSellResponse(sellResponse.data));
+      if (INFANT_COUNT > 0) {
+        dispatch(setSellInfantLoading(true));
+        try {
+          const sellInfantResponse = await BookingSell(infantPayload);
+          await dispatch(setSellInfantResponse(sellInfantResponse.data));
+          await dispatch(FetchStateFromServer());
+        } catch (err) {
+          notification.error({
+            message: "Error",
+            description: "Sell Infant Request error",
+          });
+        }
+        dispatch(setSellInfantLoading(false));
+      }
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Sell Request failed",
+      });
+    }
+
+    dispatch(setSellFlightLoading(false));
+  };
 
 export const updatePassengersDetails =
   (payload) => async (dispatch, getState) => {
@@ -1264,155 +1438,184 @@ export const FetchSSRAvailabilityForBooking =
     dispatch(setSSRAvailabilityLoading(true));
     const currentState = getState().session;
     const flightParams = currentState.flightParams;
+    const selectedSessionJourney = currentState.selectedSessionJourney;
 
-    let requestPayload = {
-      header: {
-        signature: currentState.signature,
-        messageContractVersion: "",
-        enableExceptionStackTrace: true,
-        contractVersion: 0,
-      },
-      getSsrAvailabilityForBookingRequestDto: {
-        getSsrAvailabilityForBookingRequest: {
-          ssrAvailabilityForBookingRequest: {
-            segmentKeyList: [
-              {
-                carrierCode: "Q9",
-                flightNumber:
-                  currentState?.sessionSegmentDetails?.flightDesignator
-                    .flightNumber,
-                opSuffix: "",
-                departureDate: flightParams?.beginDate,
-                departureDateSpecified: true,
-                departureStation: flightParams?.departureStation,
-                arrivalStation: flightParams?.arrivalStation,
-              },
-            ],
-            PassengerNumberList: [0],
-            inventoryControlled: true,
-            inventoryControlledSpecified: true,
-            nonInventoryControlled: true,
-            nonInventoryControlledSpecified: true,
-            seatDependent: true,
-            seatDependentSpecified: true,
-            nonSeatDependent: true,
-            nonSeatDependentSpecified: true,
-            currencyCode: "NGN",
-            ssrAvailabilityMode: 0,
-            ssrAvailabilityModeSpecified: true,
-            feePricingMode: 0,
-            feePricingModeSpecified: true,
+    let _segmentKeyList = [];
+
+    if (selectedSessionJourney) {
+      selectedSessionJourney.map((_sessionJourney) => {
+        let newObj = {
+          carrierCode: _sessionJourney?.FlightDesignator?.CarrierCode,
+          flightNumber: _sessionJourney?.segmentFlightNumber,
+          opSuffix: "",
+          departureDate:
+            _sessionJourney?.schedueIndex === 0
+              ? flightParams?.beginDate
+              : flightParams?.returnDate,
+          departureDateSpecified: true,
+          departureStation: _sessionJourney?.departureStation,
+          arrivalStation: _sessionJourney?.arrivalStation,
+        };
+        _segmentKeyList.push(newObj);
+      });
+
+      let requestPayload = {
+        header: {
+          signature: currentState.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: true,
+          contractVersion: 0,
+        },
+        getSsrAvailabilityForBookingRequestDto: {
+          getSsrAvailabilityForBookingRequest: {
+            ssrAvailabilityForBookingRequest: {
+              segmentKeyList: [..._segmentKeyList],
+              PassengerNumberList: [0],
+              inventoryControlled: true,
+              inventoryControlledSpecified: true,
+              nonInventoryControlled: true,
+              nonInventoryControlledSpecified: true,
+              seatDependent: true,
+              seatDependentSpecified: true,
+              nonSeatDependent: true,
+              nonSeatDependentSpecified: true,
+              currencyCode: "NGN",
+              ssrAvailabilityMode: 0,
+              ssrAvailabilityModeSpecified: true,
+              feePricingMode: 0,
+              feePricingModeSpecified: true,
+            },
           },
         },
-      },
-    };
+      };
 
-    try {
-      const SSRAvailabilityResponse = await GetSSRAvailabilityForBooking(
-        requestPayload
-      );
-      await dispatch(setSSRAvailabilityResponse(SSRAvailabilityResponse.data));
-    } catch (err) {
-      console.log("SSRAvailability Request error", err.response);
+      try {
+        const SSRAvailabilityResponse = await GetSSRAvailabilityForBooking(
+          requestPayload
+        );
+        await dispatch(
+          setSSRAvailabilityResponse(SSRAvailabilityResponse.data)
+        );
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: "Fetch SSR  failed",
+        });
+      }
+    } else {
       notification.error({
         message: "Error",
-        description: "Fetch SSR  failed",
+        description:
+          "Fetch Additional Services Failed,Please go back and fill-in relevant details",
       });
     }
 
     dispatch(setSSRAvailabilityLoading(false));
   };
 
-export const SellSSROption = (payload) => async (dispatch, getState) => {
-  dispatch(setSSRLoading(true));
-  dispatch(setSessionSSRs(payload));
-  const currentState = getState().session;
+export const SellSSROption =
+  (payload, returnPayload = []) =>
+  async (dispatch, getState) => {
+    dispatch(setSSRLoading(true));
+    dispatch(setSessionSSRs(payload));
+    dispatch(setSessionReturnSSRs(returnPayload));
+    const currentState = getState().session;
+    const selectedSessionJourney = currentState.selectedSessionJourney;
 
-  const _paxSSRs = [];
-  payload.map((_item) => {
-    const newObj = {
-      state: 0,
-      stateSpecified: true,
-      actionStatusCode: "NN",
-      arrivalStation: currentState?.sessionSegmentDetails?.arrivalStation,
-      departureStation: currentState?.sessionSegmentDetails?.departureStation,
-      passengerNumber: _item?.passengerNumber,
-      passengerNumberSpecified: true,
-      ssrCode: _item?.ssrCode,
-      ssrNumberSpecified: true,
-      ssrNumber: 0,
-      ssrDetail: "",
-      feeCode: "",
-      note: "",
-      ssrValue: 0,
-      ssrValueSpecified: true,
-      isInServiceBundle: false,
-      isInServiceBundleSpecified: true,
-    };
-    _paxSSRs.push(newObj);
-  });
+    const ALL_SSRS = [...payload, ...returnPayload];
 
-  let requestPayload = {
-    header: {
-      signature: currentState.signature,
-      messageContractVersion: "",
-      enableExceptionStackTrace: false,
-      contractVersion: 0,
-    },
-    sellRequestDto: {
-      sellRequest: {
-        sellRequestData: {
-          sellBy: 2,
-          sellBySpecified: true,
-          sellSSR: {
-            ssrRequest: {
-              segmentSSRRequests: [
-                {
-                  flightDesignator: {
-                    carrierCode: "Q9",
-                    flightNumber:
-                      currentState?.sessionSegmentDetails?.flightDesignator
-                        .flightNumber,
-                    opSuffix: "",
-                  },
-                  std: currentState?.sessionSegmentDetails?.std,
-                  stdSpecified: true,
-                  departureStation:
-                    currentState?.sessionSegmentDetails?.departureStation,
-                  arrivalStation:
-                    currentState?.sessionSegmentDetails?.arrivalStation,
-                  paxSSRs: [..._paxSSRs],
+    if (selectedSessionJourney) {
+      let _segmentSSRRequests = [];
+      selectedSessionJourney.map((_journey) => {
+        const _paxSSRs = [];
+        ALL_SSRS.map((_item) => {
+          if (
+            parseInt(_item?.schedueIndex) === parseInt(_journey?.schedueIndex)
+          ) {
+            const newSSR = {
+              state: 0,
+              stateSpecified: true,
+              actionStatusCode: "NN",
+              arrivalStation: _journey?.arrivalStation,
+              departureStation: _journey?.departureStation,
+              passengerNumber: _item?.passengerNumber,
+              passengerNumberSpecified: true,
+              ssrCode: _item?.ssrCode,
+              ssrNumberSpecified: true,
+              ssrNumber: 0,
+              ssrDetail: "",
+              feeCode: "",
+              note: "",
+              ssrValue: 0,
+              ssrValueSpecified: true,
+              isInServiceBundle: false,
+              isInServiceBundleSpecified: true,
+            };
+            _paxSSRs.push(newSSR);
+          }
+        });
+
+        const newObj = {
+          flightDesignator: {
+            carrierCode: _journey?.FlightDesignator?.CarrierCode,
+            flightNumber: _journey?.segmentFlightNumber,
+            opSuffix: "",
+          },
+          std: _journey?.std,
+          stdSpecified: true,
+          departureStation: _journey?.departureStation,
+          arrivalStation: _journey?.arrivalStation,
+          paxSSRs: [..._paxSSRs],
+        };
+
+        _segmentSSRRequests.push(newObj);
+      });
+
+      let requestPayload = {
+        header: {
+          signature: currentState.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: false,
+          contractVersion: 0,
+        },
+        sellRequestDto: {
+          sellRequest: {
+            sellRequestData: {
+              sellBy: 2,
+              sellBySpecified: true,
+              sellSSR: {
+                ssrRequest: {
+                  segmentSSRRequests: [..._segmentSSRRequests],
+                  currencyCode: "NGN",
+                  cancelFirstSSR: false,
+                  cancelFirstSSRSpecified: true,
+                  ssrFeeForceWaiveOnSell: false,
+                  ssrFeeForceWaiveOnSellSpecified: true,
+                  sellSSRMode: 0,
+                  sellSSRModeSpecified: true,
+                  feePricingMode: 0,
+                  feePricingModeSpecified: true,
                 },
-              ],
-              currencyCode: "NGN",
-              cancelFirstSSR: false,
-              cancelFirstSSRSpecified: true,
-              ssrFeeForceWaiveOnSell: false,
-              ssrFeeForceWaiveOnSellSpecified: true,
-              sellSSRMode: 0,
-              sellSSRModeSpecified: true,
-              feePricingMode: 0,
-              feePricingModeSpecified: true,
+              },
             },
           },
         },
-      },
-    },
+      };
+
+      try {
+        const SSRResponse = await BookingSell(requestPayload);
+        await dispatch(setSSRResponse(SSRResponse.data));
+        await dispatch(FetchStateFromServer());
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: "Sell SSR failed",
+        });
+      }
+    }
+
+    dispatch(setSSRLoading(false));
   };
-
-  try {
-    const SSRResponse = await BookingSell(requestPayload);
-    await dispatch(setSSRResponse(SSRResponse.data));
-    await dispatch(FetchStateFromServer());
-  } catch (err) {
-    notification.error({
-      message: "Error",
-      description: "Sell SSR failed",
-    });
-  }
-
-  dispatch(setSSRLoading(false));
-};
 
 export const FetchStateFromServer = () => async (dispatch, getState) => {
   const currentState = getState().session;
@@ -1440,98 +1643,105 @@ export const FetchStateFromServer = () => async (dispatch, getState) => {
   dispatch(setSessionStateLoading(false));
 };
 
-export const CancelSSRs = (payload) => async (dispatch, getState) => {
+export const CancelSSRs = () => async (dispatch, getState) => {
   dispatch(setSSRLoading(true));
-  dispatch(setSessionSSRs(payload));
   const currentState = getState().session;
+  const _sessionSSRs = currentState.sessionSSRs;
+  const _sessionReturnSSRs = currentState.sessionReturnSSRs;
+  const selectedSessionJourney = currentState.selectedSessionJourney;
 
-  const _paxSSRs = [];
-  const typeArr = [];
+  const ALL_SSRS = [..._sessionSSRs, ..._sessionReturnSSRs];
+  let _segmentKeyList = [];
 
-  payload.map((_item) => {
-    let typeCount = 0;
-    let _id = _item?.ssrCode + _item?.passengerNumber;
-    if (typeArr.includes(_id)) {
-      typeArr.push(_id);
-      typeCount = typeArr.filter((_type) => _type === _id).length;
-    } else {
-      typeCount = 1;
-      typeArr.push(_id);
-    }
+  if (selectedSessionJourney) {
+    let _segmentSSRRequests = [];
+    selectedSessionJourney.map((_sessionJourney) => {
+      const _paxSSRs = [];
+      const typeArr = [];
 
-    const newObj = {
-      state: 0,
-      stateSpecified: true,
-      actionStatusCode: "NN",
-      arrivalStation: currentState?.sessionSegmentDetails?.arrivalStation,
-      departureStation: currentState?.sessionSegmentDetails?.departureStation,
-      passengerNumber: _item?.passengerNumber,
-      passengerNumberSpecified: true,
-      ssrCode: _item?.ssrCode,
-      ssrNumberSpecified: true,
-      ssrNumber: typeCount,
-      ssrDetail: "",
-      feeCode: "",
-      note: "",
-      ssrValue: 0,
-      ssrValueSpecified: true,
-      isInServiceBundle: false,
-      isInServiceBundleSpecified: true,
-    };
-    _paxSSRs.push(newObj);
-  });
+      ALL_SSRS.map((_item) => {
+        let typeCount = 0;
+        let _id = _item?.ssrCode + _item?.passengerNumber;
+        if (typeArr.includes(_id)) {
+          typeArr.push(_id);
+          typeCount = typeArr.filter((_type) => _type === _id).length;
+        } else {
+          typeCount = 1;
+          typeArr.push(_id);
+        }
 
-  let requestPayload = {
-    signature: currentState.signature,
-    messageContractVersion: "",
-    enableExceptionStackTrace: true,
-    contractVersion: 0,
-    cancelRequestData: {
-      cancelBy: 2,
-      cancelBySpecified: true,
-      cancelSSR: {
-        SSRRequest: {
-          segmentSSRRequests: [
-            {
-              flightDesignator: {
-                carrierCode: "Q9",
-                flightNumber:
-                  currentState?.sessionSegmentDetails?.flightDesignator
-                    .flightNumber,
-                opSuffix: "",
-              },
-              std: currentState?.sessionSegmentDetails?.std,
-              stdSpecified: true,
-              departureStation:
-                currentState?.sessionSegmentDetails?.departureStation,
-              arrivalStation:
-                currentState?.sessionSegmentDetails?.arrivalStation,
-              paxSSRs: [..._paxSSRs],
-            },
-          ],
-          currencyCode: "NGN",
-          cancelFirstSSR: false,
-          cancelFirstSSRSpecified: true,
-          ssrFeeForceWaiveOnSell: false,
-          ssrFeeForceWaiveOnSellSpecified: true,
-          sellSSRMode: 0,
-          sellSSRModeSpecified: true,
-          feePricingMode: 0,
-          feePricingModeSpecified: true,
+        const newPax = {
+          state: 0,
+          stateSpecified: true,
+          actionStatusCode: "NN",
+          arrivalStation: _sessionJourney?.arrivalStation,
+          departureStation: _sessionJourney?.departureStation,
+          passengerNumber: _item?.passengerNumber,
+          passengerNumberSpecified: true,
+          ssrCode: _item?.ssrCode,
+          ssrNumberSpecified: true,
+          ssrNumber: typeCount,
+          ssrDetail: "",
+          feeCode: "",
+          note: "",
+          ssrValue: 0,
+          ssrValueSpecified: true,
+          isInServiceBundle: false,
+          isInServiceBundleSpecified: true,
+        };
+        _paxSSRs.push(newPax);
+      });
+
+      const newObj = {
+        flightDesignator: {
+          carrierCode: _sessionJourney?.FlightDesignator?.CarrierCode,
+          flightNumber: _sessionJourney?.segmentFlightNumber,
+          opSuffix: "",
+        },
+        std: _sessionJourney?.std,
+        stdSpecified: true,
+        departureStation: _sessionJourney?.departureStation,
+        arrivalStation: _sessionJourney?.arrivalStation,
+        paxSSRs: [..._paxSSRs],
+      };
+      _segmentKeyList.push(newObj);
+    });
+
+    let requestPayload = {
+      signature: currentState.signature,
+      messageContractVersion: "",
+      enableExceptionStackTrace: true,
+      contractVersion: 0,
+      cancelRequestData: {
+        cancelBy: 2,
+        cancelBySpecified: true,
+        cancelSSR: {
+          SSRRequest: {
+            segmentSSRRequests: [..._segmentSSRRequests],
+            currencyCode: "NGN",
+            cancelFirstSSR: false,
+            cancelFirstSSRSpecified: true,
+            ssrFeeForceWaiveOnSell: false,
+            ssrFeeForceWaiveOnSellSpecified: true,
+            sellSSRMode: 0,
+            sellSSRModeSpecified: true,
+            feePricingMode: 0,
+            feePricingModeSpecified: true,
+          },
         },
       },
-    },
-  };
+    };
 
-  try {
-    const SSRResponse = await BookingCancel(requestPayload);
-    await dispatch(setSSRResponse(SSRResponse.data));
-    await dispatch(FetchStateFromServer());
-  } catch (err) {
-    notification.error({
-      message: "Error",
-      description: "Cancel SSRs failed",
-    });
+    try {
+      const SSRResponse = await BookingCancel(requestPayload);
+      await dispatch(setSSRResponse(SSRResponse.data));
+      await dispatch(FetchStateFromServer());
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Cancel SSRs failed",
+      });
+    }
   }
 
   dispatch(setSSRLoading(false));

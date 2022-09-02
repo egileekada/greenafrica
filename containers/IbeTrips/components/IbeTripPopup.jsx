@@ -6,7 +6,6 @@ import NullIcon from "assets/svgs/null.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   sessionSelector,
-  setSellParams,
   setSelectedSessionJourney,
 } from "redux/reducers/session";
 import { useRouter } from "next/router";
@@ -30,10 +29,13 @@ const IbeTripPopup = ({
   sellKey,
   segmentStd,
   segmentFlightNumber,
+  segmentCarrierCode,
   journey,
+  schedueIndex,
+  setIsVisible,
 }) => {
   const dispatch = useDispatch();
-  const { sellFlightLoading, selectedSessionJourney, flightParams } =
+  const { sellFlightLoading, flightParams, selectedSessionJourney } =
     useSelector(sessionSelector);
   const router = useRouter();
 
@@ -52,19 +54,61 @@ const IbeTripPopup = ({
   ];
 
   const handleSell = async () => {
+    //FareKey is Fare SellKey
+
+    // console.log("journey", journey);
+    // console.log("fare", selected);
+
     if (flightParams?.isRoundTrip === 1) {
-      set
+      const existingJourneys = selectedSessionJourney
+        ? [...selectedSessionJourney]
+        : [];
+      const _cleanedJourneys = existingJourneys.filter((_item) => {
+        const _ruleBasis =
+          parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
+        return !_ruleBasis;
+      });
+
+      const _newJourney = {
+        ...journey,
+        sellKey,
+        segmentStd,
+        segmentFlightNumber,
+        fareKey: selected?.FareSellKey,
+        schedueIndex,
+        FlightDesignator: {
+          CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
+          FlightNumber: journey?.Segments[0]?.FlightDesignator?.FlightNumber,
+        },
+        arrivalStation: journey?.Segments[0]?.ArrivalStation,
+        departureStation: journey?.Segments[0]?.DepartureStation,
+        std: journey?.Segments[0]?.STD,
+      };
+
+      const _newJourneys = [..._cleanedJourneys, _newJourney];
+      dispatch(setSelectedSessionJourney([..._newJourneys]));
+      closePopUp();
+      // setIsVisible(false);
     } else {
-      dispatch(
-        setSellParams({
+      const _selectedJorney = [
+        {
+          ...journey,
           sellKey,
           segmentStd,
           segmentFlightNumber,
           fareKey: selected?.FareSellKey,
-        })
-      );
-      const _selectedJorney = [journey];
+          schedueIndex,
+          FlightDesignator: {
+            CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
+            FlightNumber: journey?.Segments[0]?.FlightDesignator?.FlightNumber,
+          },
+          arrivalStation: journey?.Segments[0]?.ArrivalStation,
+          departureStation: journey?.Segments[0]?.DepartureStation,
+          std: journey?.Segments[0]?.STD,
+        },
+      ];
       dispatch(setSelectedSessionJourney(_selectedJorney));
+      // setIsVisible(false);
       router.push("/trip/view");
     }
   };

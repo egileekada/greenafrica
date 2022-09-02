@@ -117,8 +117,10 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
                     segmentFlightNumber={
                       _segment?.FlightDesignator?.FlightNumber
                     }
+                    segmentCarrierCode={_segment?.FlightDesignator?.CarrierCode}
                     journey={journey}
                     schedueIndex={schedueIndex}
+                    setIsVisible={setIsVisible}
                   />
                 </div>
               );

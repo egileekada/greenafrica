@@ -305,7 +305,7 @@ const PassengerForm = () => {
                           <div className="phone-input">
                             <input
                               type="number"
-                              placeholder="Enter your number"
+                              // placeholder="Enter your number"
                               id="c_phone"
                               name="c_phone"
                               placeholder="9056789087"

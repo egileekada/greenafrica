@@ -3,18 +3,67 @@ import { Checkbox } from "antd";
 import FliightIcon from "assets/svgs/aero.svg";
 import ArrowIcon from "assets/svgs/small-arrow.svg";
 import BaggageCard from "components/Cards/baggage";
+import ReturnBaggageCard from "components/Cards/returnBaggage";
 import BaggageIcon from "assets/svgs/baggage.svg";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import Popup from "components/Popup";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
-const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
+const PassengerBaggage = ({
+  passenger,
+  selectedSSRs,
+  setSSRs,
+  selectedReturnSSRs,
+  setReturnSSRs,
+}) => {
   const router = useRouter();
+
   const [showPopUp, setShow] = useState(false);
-  const { SSRAvailabilityResponse, flightParams } =
+  const [activeTab, setActiveTab] = useState("");
+  const [schedueIndex, setSchedueIndex] = useState(0);
+  const [activeSSRS, setActiveSSRs] = useState([]);
+  const { SSRAvailabilityResponse, flightParams, selectedSessionJourney } =
     useSelector(sessionSelector);
+
+  useEffect(() => {
+    async function setDefaultTab() {
+      if (selectedSessionJourney && selectedSessionJourney.length > 0) {
+        let _activeTab = `${selectedSessionJourney[0]?.departureStation
+          .trim()
+          .toLowerCase()}${selectedSessionJourney[0]?.arrivalStation
+          .trim()
+          .toLowerCase()}`;
+        setActiveTab(_activeTab);
+        setSchedueIndex(selectedSessionJourney[0]?.schedueIndex);
+      }
+    }
+    setDefaultTab();
+  }, [selectedSessionJourney]);
+
+  useEffect(() => {
+    async function setDefaultSSRS() {
+      if (
+        SSRAvailabilityResponse &&
+        SSRAvailabilityResponse?.SSRAvailabilityForBookingResponse
+          ?.SSRSegmentList.length > 0
+      ) {
+        const _SSRList =
+          SSRAvailabilityResponse?.SSRAvailabilityForBookingResponse
+            ?.SSRSegmentList;
+        if (_SSRList && _SSRList.length > 0 && activeTab?.length > 0) {
+          const filteredSSRs = _SSRList.filter((_listItem) => {
+            let _listItemID = `${_listItem?.LegKey?.DepartureStation.trim().toLowerCase()}${_listItem?.LegKey?.ArrivalStation.trim().toLowerCase()}`;
+            return _listItemID === activeTab;
+          });
+
+          setActiveSSRs([...filteredSSRs]);
+        }
+      }
+    }
+    setDefaultSSRS();
+  }, [SSRAvailabilityResponse, activeTab]);
 
   const onChange = (e) => {
     if (e.target.checked) {
@@ -27,29 +76,51 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
     router.push("/trip/payment");
   };
 
+  const changeTab = () => {};
+
   const ALLOWED__SSRS = ["X20", "X15", "X10"];
   return (
     <Fragment>
-      <section className="flex flex-col ">
+      <section className="flex flex-col">
         <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-4">
-          BAGGAGE INFORMATION
+          BAGGAGE INFORMATION {activeTab}
         </h2>
 
-        <div className="flex items-center mb-4">
-          <figure>
-            <FliightIcon className="primary-main" />
-          </figure>
-          <div className="flex items-center ml-[10px] ">
-            <p className="font-header text-primary-main text-sm mr-[6px] font-bold">
-              {flightParams?.departureStation}
-            </p>
-            <figure className="flex items-center justify-center -mb-1">
-              <ArrowIcon />
-            </figure>
-            <p className="font-header text-primary-main text-sm ml-[6px] font-bold">
-              {flightParams?.arrivalStation}
-            </p>
-          </div>
+        <div className="flex h-16 border-b mb-6">
+          {selectedSessionJourney?.length > 0 &&
+            selectedSessionJourney.map((_journey) => {
+              const tabID = `${_journey?.departureStation
+                .trim()
+                .toLowerCase()}${_journey?.arrivalStation
+                .trim()
+                .toLowerCase()}`;
+              return (
+                <button
+                  className={`ssr__tab ${
+                    tabID === activeTab ? "active-ssr " : ""
+                  } `}
+                  onClick={() => {
+                    setActiveTab(tabID);
+                    setSchedueIndex(_journey?.schedueIndex);
+                  }}
+                >
+                  <figure>
+                    <FliightIcon />
+                  </figure>
+                  <div className="flex items-center ml-[10px] ">
+                    <p className="font-header text-sm mr-[6px] font-bold">
+                      {_journey.departureStation}
+                    </p>
+                    <figure className="flex items-center justify-center -mb-1">
+                      <ArrowIcon />
+                    </figure>
+                    <p className="font-header text-sm ml-[6px] font-bold">
+                      {_journey.arrivalStation}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
         </div>
 
         {/* Checkin Info*/}
@@ -62,8 +133,45 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
         {/* Checkin Info*/}
 
         <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
-          {SSRAvailabilityResponse.SSRAvailabilityForBookingResponse.SSRSegmentList.map(
-            (_list) => {
+          {schedueIndex === 0
+            ? activeSSRS.length > 0 &&
+              activeSSRS.map((_list) => {
+                return _list?.AvailablePaxSSRList.filter((_SSR) => {
+                  return ALLOWED__SSRS.includes(_SSR?.SSRCode);
+                }).map((_SSRITEM) => {
+                  return (
+                    <BaggageCard
+                      passenger={passenger}
+                      selectedSSRs={selectedSSRs}
+                      setSSRs={setSSRs}
+                      SSRItem={_SSRITEM}
+                      selectedReturnSSRs={selectedReturnSSRs}
+                      setReturnSSRs={setReturnSSRs}
+                      schedueIndex={schedueIndex}
+                    />
+                  );
+                });
+              })
+            : activeSSRS.length > 0 &&
+              activeSSRS.map((_list) => {
+                return _list?.AvailablePaxSSRList.filter((_SSR) => {
+                  return ALLOWED__SSRS.includes(_SSR?.SSRCode);
+                }).map((_SSRITEM) => {
+                  return (
+                    <ReturnBaggageCard
+                      passenger={passenger}
+                      selectedSSRs={selectedSSRs}
+                      setSSRs={setSSRs}
+                      SSRItem={_SSRITEM}
+                      selectedReturnSSRs={selectedReturnSSRs}
+                      setReturnSSRs={setReturnSSRs}
+                      schedueIndex={schedueIndex}
+                    />
+                  );
+                });
+              })}
+          {/* {activeSSRS.length > 0 &&
+            activeSSRS.map((_list) => {
               return _list?.AvailablePaxSSRList.filter((_SSR) => {
                 return ALLOWED__SSRS.includes(_SSR?.SSRCode);
               }).map((_SSRITEM) => {
@@ -73,11 +181,13 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
                     selectedSSRs={selectedSSRs}
                     setSSRs={setSSRs}
                     SSRItem={_SSRITEM}
+                    selectedReturnSSRs={selectedReturnSSRs}
+                    setReturnSSRs={setReturnSSRs}
+                    schedueIndex={schedueIndex}
                   />
                 );
               });
-            }
-          )}
+            })} */}
         </section>
         {/* <div className="flex items-center primary-checkbox mb-4">
           <Checkbox onChange={onChange}>
@@ -126,6 +236,7 @@ const PassengerBaggage = ({ passenger, selectedSSRs, setSSRs }) => {
 PassengerBaggage.defaultProps = {
   passenger: {},
   selectedSSRs: [],
+  selectedReturnSSRs: [],
 };
 
 export default PassengerBaggage;

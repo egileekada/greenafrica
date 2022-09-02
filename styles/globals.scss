@@ -35,6 +35,32 @@
     @apply order-2 md:order-none mt-4 md:mt-0;
   }
 
+  .ssr__tab {
+    @apply flex items-center mb-4 mr-6 h-full  py-4 border-b-[4px] border-transparent hover:border-b-primary-main;
+
+    p {
+      @apply text-[#9E9BBF];
+    }
+
+    svg {
+      path {
+        fill: #9e9bbf;
+      }
+    }
+
+    &.active-ssr {
+      p {
+        @apply text-primary-main;
+      }
+
+      svg {
+        path {
+          fill: #261f5e;
+        }
+      }
+    }
+  }
+
   .ga__section {
     @apply flex flex-wrap xlg:flex-nowrap w-full flex-grow-0 flex-shrink-0;
 

@@ -17,18 +17,27 @@ import {
   retrieveBookingFromState,
 } from "redux/reducers/session";
 import Spinner from "components/Spinner";
+import { ToolFilled } from "@ant-design/icons";
+import { withConfigConsumer } from "antd/lib/config-provider/context";
+import { isExists } from "date-fns";
+
+// TO DO
+// Create sessionReturnSSRs
 
 const PassengerDetails = () => {
   const router = useRouter();
   const [showPopUp, setShow] = useState(false);
   const [selectedSSRs, setSSRs] = useState([]);
+  const [selectedReturnSSRs, setReturnSSRs] = useState([]);
   const dispatch = useDispatch();
+
   const {
     sessionPassengers,
     SSRAvailabilityLoading,
     SSRAvailabilityResponse,
     sellSSRLoading,
     sessionSSRs,
+    sessionReturnSSRs,
     contactsResponse,
     signature,
   } = useSelector(sessionSelector);
@@ -45,16 +54,38 @@ const PassengerDetails = () => {
   useEffect(() => {
     async function checkSessionSSRs() {
       if (sessionSSRs && sessionSSRs.length > 0) {
-        dispatch(CancelSSRs(sessionSSRs));
         setSSRs(sessionSSRs);
       }
+      if (sessionReturnSSRs && sessionReturnSSRs.length > 0) {
+        setReturnSSRs(sessionReturnSSRs);
+      }
+      // dispatch(CancelSSRs(sessionSSRs));
+      dispatch(CancelSSRs());
     }
     checkSessionSSRs();
   }, []);
 
   const proceedToSeatSelectionWithSSR = async () => {
-    dispatch(SellSSROption(selectedSSRs));
-    router.push("/trip/seat-selection");
+    let Extras = selectedSSRs.filter(function (ssr) {
+      if (ssr?.ssrCode === "WCHC") return true;
+    });
+
+    if (Extras?.length > 0) {
+      const existingReturnSSRs = [...selectedReturnSSRs];
+      Extras.map((_item) => {
+        const newObj = {
+          ..._item,
+          schedueIndex: 1,
+        };
+        existingReturnSSRs.push(newObj);
+      });
+      setReturnSSRs([...existingReturnSSRs]);
+      dispatch(SellSSROption(selectedSSRs, [...existingReturnSSRs]));
+      router.push("/trip/seat-selection");
+    } else {
+      dispatch(SellSSROption(selectedSSRs, selectedReturnSSRs));
+      router.push("/trip/seat-selection");
+    }
   };
 
   const proceedToSeatSelectionWithoutSSR = async () => {
@@ -65,7 +96,9 @@ const PassengerDetails = () => {
   };
 
   const checkSSRContent = () => {
-    selectedSSRs.length > 0 ? proceedToSeatSelectionWithSSR() : setShow(true);
+    selectedSSRs.length > 0 || selectedReturnSSRs.length > 0
+      ? proceedToSeatSelectionWithSSR()
+      : setShow(true);
   };
 
   useEffect(() => {
@@ -101,6 +134,8 @@ const PassengerDetails = () => {
                             passenger={_passenger}
                             selectedSSRs={selectedSSRs}
                             setSSRs={setSSRs}
+                            setReturnSSRs={setReturnSSRs}
+                            selectedReturnSSRs={selectedReturnSSRs}
                           />
                         );
                       })
