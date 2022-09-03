@@ -70,6 +70,7 @@ const initialState = {
   bookingState: null,
   sessionStateLoading: false,
   sessionStateResponse: null,
+  seats: [],
 };
 
 export const sessionSlice = createSlice({
@@ -217,6 +218,10 @@ export const sessionSlice = createSlice({
     setSessionStateResponse: (state, { payload }) => {
       state.sessionStateResponse = payload;
     },
+    setSeats: (state, { payload }) => {
+      console.log(payload);
+      state.seats = [...state.seats, ...payload];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState); // THIS LINE
@@ -264,6 +269,7 @@ export const {
   setBookingState,
   setSessionStateLoading,
   setSessionStateResponse,
+  setSeats,
 } = sessionSlice.actions;
 export const sessionSelector = (state) => state.session;
 export default sessionSlice.reducer;
@@ -1794,7 +1800,7 @@ export const retrieveSeatAvailability =
       getSeatAvailabilityRequestDto: {
         getSeatAvailabilityRequest: {
           seatAvailabilityRequest: {
-            std: currentState.bookingState.Journeys[payload.ticketIndex]
+            std: currentState?.bookingState?.Journeys[payload.ticketIndex]
               .Segments[0].STD,
             stdSpecified: true,
             departureStation:
@@ -1920,7 +1926,7 @@ export const tryAssignSeat = (payload) => async (dispatch, getState) => {
         seatAssignmentModeSpecified: true,
         ignoreSeatSsRs: false,
         ignoreSeatSSRsSpecified: true,
-        segmentSeatRequests: [...payload.data],
+        segmentSeatRequests: [...currentState.seats],
         equipmentDeviations: [
           {
             equipmentType: "",
@@ -2094,5 +2100,22 @@ export const retrieveBookingFromState = () => async (dispatch, getState) => {
       description: "Get Booking Details failed",
     });
   }
+  dispatch(setLoading(false));
+};
+
+export const trySaveSeat = (payload) => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  const currentState = getState().session;
+  await dispatch(setSeats(payload.data));
+  // setSeats
+  // try {
+  //   const Response = await GetBookingFromState(requestPayload);
+  //   await dispatch(setBookingState(Response.data.BookingData));
+  // } catch (err) {
+  //   notification.error({
+  //     message: "Error",
+  //     description: "Get Booking Details failed",
+  //   });
+  // }
   dispatch(setLoading(false));
 };

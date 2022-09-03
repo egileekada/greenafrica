@@ -12,7 +12,11 @@ import EmergrncyIcon from "assets/svgs/seats/emergency.svg";
 import CaretLeft from "assets/svgs/seats/caretleft.svg";
 import CaretRight from "assets/svgs/seats/caretright.svg";
 
-import { sessionSelector, tryAssignSeat } from "redux/reducers/session";
+import {
+  sessionSelector,
+  tryAssignSeat,
+  trySaveSeat,
+} from "redux/reducers/session";
 
 const PlaneSeats = forwardRef(
   (
@@ -24,6 +28,7 @@ const PlaneSeats = forwardRef(
       setSeatSelected,
       selectedSeat,
       setSelectedSeat,
+      ticketIndex,
     },
     ref
   ) => {
@@ -36,6 +41,7 @@ const PlaneSeats = forwardRef(
       bookingState,
     } = useSelector(sessionSelector);
 
+    const [key] = useState(Math.random());
     const [segmentSeatRequests, setSegmentSeatRequests] = useState([]);
     const [selected, setSelected] = useState(0);
 
@@ -69,13 +75,13 @@ const PlaneSeats = forwardRef(
           if (passengerNumber == index) {
             const newItem = { ...item };
             newItem.flightDesignator =
-              bookingState?.Journeys[0].Segments[0].FlightDesignator;
+              bookingState?.Journeys[ticketIndex].Segments[0].FlightDesignator;
             newItem.unitDesignator = SeatDesignator;
-            newItem.std = bookingState?.Journeys[0].Segments[0].STD;
+            newItem.std = bookingState?.Journeys[ticketIndex].Segments[0].STD;
             newItem.departureStation =
-              bookingState?.Journeys[0].Segments[0].DepartureStation;
+              bookingState?.Journeys[ticketIndex].Segments[0].DepartureStation;
             newItem.arrivalStation =
-              bookingState?.Journeys[0].Segments[0].ArrivalStation;
+              bookingState?.Journeys[ticketIndex].Segments[0].ArrivalStation;
             newItem.passengerSeatPreferences[0].propertyTypeCode =
               TypeCode[0].TypeCode;
             newItem.passengerSeatPreferences[0].propertyCode =
@@ -322,6 +328,9 @@ const PlaneSeats = forwardRef(
       assignSeat() {
         dispatch(tryAssignSeat({ data: segmentSeatRequests }));
       },
+      saveSeat() {
+        dispatch(trySaveSeat({ data: segmentSeatRequests }));
+      },
     }));
 
     return (
@@ -398,13 +407,13 @@ const PlaneSeats = forwardRef(
                 .splice(0, 18)
                 .map((x, cIndex) => {
                   return (
-                    <div className="seats__row" key={cIndex}>
+                    <div className="seats__row" key={cIndex - Math.random()}>
                       {x.map((seat, index) => {
                         return (
                           seat.Assignable && (
                             <>
                               <Popover
-                                key={index + 1}
+                                key={index + Math.random()}
                                 content={content(
                                   seat.PropertyList,
                                   seat.SeatAvailability,
