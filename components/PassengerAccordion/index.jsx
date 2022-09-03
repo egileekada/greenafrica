@@ -16,7 +16,8 @@ const PassengerAccordion = ({ children, passenger }) => {
 
   const toggleAccordion = () => {
     setActive(active === false ? true : false);
-    setHeight(active ? "0px" : `${contentSpace.current.scrollHeight}px`);
+    // setHeight(active ? "0px" : `${contentSpace.current.scrollHeight}px`);
+    setHeight(active ? "0px" : `400px`);
     setRotate(
       active
         ? "transform duration-700 ease"
@@ -57,7 +58,8 @@ const PassengerAccordion = ({ children, passenger }) => {
         style={{ maxHeight: `${height}` }}
         className="overflow-auto transition-max-height duration-700 ease-in-out scrollable"
       >
-        <div className="px-4 md:px-10 pt-4 md:pt-10">
+        {/* <div className="px-4 md:px-10 pt-4 md:pt-10"> */}
+        <div className="px-4 md:px-10 pt-4 md:pt-8">
           {" "}
           <p className="text-[#4B4F63] font-body text-sm">{children}</p>
         </div>

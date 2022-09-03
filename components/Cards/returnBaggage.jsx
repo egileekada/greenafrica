@@ -14,13 +14,13 @@ const ReturnBaggageCard = ({
 }) => {
   const [totalFare, setFare] = useState(0);
   const [value, setValue] = useState(0);
-  const {  sessionReturnSSRs, sessionPassengers } = useSelector(sessionSelector);
+  const { sessionReturnSSRs, sessionPassengers } = useSelector(sessionSelector);
   const KG = SSRItem?.SSRCode.substring(1);
 
   useEffect(() => {
     async function mapsessionReturnSSRs() {
-      if ( sessionReturnSSRs &&  sessionReturnSSRs.length > 0) {
-        const passengerSSRs =  sessionReturnSSRs.filter((_ssr) => {
+      if (sessionReturnSSRs && sessionReturnSSRs.length > 0) {
+        const passengerSSRs = sessionReturnSSRs.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.id) &&
             _ssr?.ssrCode === SSRItem.SSRCode
@@ -122,9 +122,7 @@ const ReturnBaggageCard = ({
         <figure>
           <BaggageIcon />
         </figure>
-        <p className="font-body text-primary-main text-xs mb-1">
-          Up to {KG}kg {schedueIndex}
-        </p>
+        <p className="font-body text-primary-main text-xs mb-1">Up to {KG}kg</p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}

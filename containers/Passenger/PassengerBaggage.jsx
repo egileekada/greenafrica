@@ -65,25 +65,24 @@ const PassengerBaggage = ({
     setDefaultSSRS();
   }, [SSRAvailabilityResponse, activeTab]);
 
-  const onChange = (e) => {
-    if (e.target.checked) {
-      setShow(true);
-    }
-  };
+  // const onChange = (e) => {
+  //   if (e.target.checked) {
+  //     setShow(true);
+  //   }
+  // };
 
   const proceedToSeatSelection = () => {
     // this is suposed to go to seat-Selection,payment is an hotfix
     router.push("/trip/payment");
   };
 
-  const changeTab = () => {};
 
   const ALLOWED__SSRS = ["X20", "X15", "X10"];
   return (
     <Fragment>
       <section className="flex flex-col">
         <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-4">
-          BAGGAGE INFORMATION {activeTab}
+          BAGGAGE INFORMATION 
         </h2>
 
         <div className="flex h-16 border-b mb-6">
@@ -97,7 +96,7 @@ const PassengerBaggage = ({
               return (
                 <button
                   className={`ssr__tab ${
-                    tabID === activeTab ? "active-ssr " : ""
+                    tabID === activeTab ? "active-ssr" : ""
                   } `}
                   onClick={() => {
                     setActiveTab(tabID);

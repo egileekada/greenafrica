@@ -123,7 +123,7 @@ const BaggageCard = ({
           <BaggageIcon />
         </figure>
         <p className="font-body text-primary-main text-xs mb-1">
-          Up to {KG}kg {schedueIndex}
+          Up to {KG}kg 
         </p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}

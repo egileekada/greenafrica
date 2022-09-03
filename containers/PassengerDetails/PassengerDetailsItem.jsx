@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import PassengerAccordion from "components/PassengerAccordion";
 import { Checkbox } from "antd";
 import PassengerBaggage from "containers/Passenger/PassengerBaggage";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
 const PassengerDetailsItem = ({
@@ -14,7 +14,9 @@ const PassengerDetailsItem = ({
   selectedReturnSSRs,
 }) => {
   const { SSRAvailabilityResponse, sessionSSRs } = useSelector(sessionSelector);
-  const [checked, setChecked] = useState(false);
+  const [wcChecked, setWCChecked] = useState(false);
+  const [vpChecked, setVPChecked] = useState(false);
+  const [hpChecked, setHPChecked] = useState(false);
 
   useEffect(() => {
     async function mapSessionSSRs() {
@@ -26,14 +28,34 @@ const PassengerDetailsItem = ({
           );
         });
         if (WCHRs.length > 0) {
-          setChecked(true);
+          setWCChecked(true);
+        }
+
+        const VPRDs = sessionSSRs.filter((_ssr) => {
+          return (
+            _ssr?.passengerNumber === parseInt(passenger?.id) &&
+            _ssr?.ssrCode === "VPRD"
+          );
+        });
+        if (VPRDs.length > 0) {
+          setVPChecked(true);
+        }
+
+        const HPRDs = sessionSSRs.filter((_ssr) => {
+          return (
+            _ssr?.passengerNumber === parseInt(passenger?.id) &&
+            _ssr?.ssrCode === "HPRD"
+          );
+        });
+        if (HPRDs.length > 0) {
+          setHPChecked(true);
         }
       }
     }
     mapSessionSSRs();
   }, []);
 
-  const onChange = (e) => {
+  const onWCChange = (e) => {
     if (e.target.checked) {
       const _ssrObj = {
         passengerNumber: passenger?.id,
@@ -41,13 +63,49 @@ const PassengerDetailsItem = ({
         schedueIndex: 0,
       };
       setSSRs((prevState) => [...prevState, _ssrObj]);
-      setChecked(true);
+      setWCChecked(true);
     } else {
       let codeToBeRemoved = "WCHR";
       setSSRs((prevState) =>
         prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
       );
-      setChecked(false);
+      setWCChecked(false);
+    }
+  };
+
+  const onVPChange = (e) => {
+    if (e.target.checked) {
+      const _ssrObj = {
+        passengerNumber: passenger?.id,
+        ssrCode: "VPRD",
+        schedueIndex: 0,
+      };
+      setSSRs((prevState) => [...prevState, _ssrObj]);
+      setVPChecked(true);
+    } else {
+      let codeToBeRemoved = "VPRD";
+      setSSRs((prevState) =>
+        prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+      );
+      setVPChecked(false);
+    }
+  };
+
+  const onHPChange = (e) => {
+    if (e.target.checked) {
+      const _ssrObj = {
+        passengerNumber: passenger?.id,
+        ssrCode: "HPRD",
+        schedueIndex: 0,
+      };
+      setSSRs((prevState) => [...prevState, _ssrObj]);
+      setHPChecked(true);
+    } else {
+      let codeToBeRemoved = "HPRD";
+      setSSRs((prevState) =>
+        prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+      );
+      setHPChecked(false);
     }
   };
 
@@ -76,8 +134,8 @@ const PassengerDetailsItem = ({
                   SPECIAL ASSISTANCE
                 </h6>
                 <div className="flex items-center mb-5 primary-checkbox">
-                  <Checkbox checked={checked} onChange={onChange}>
-                    <label className="check-label">
+                  <Checkbox checked={wcChecked} onChange={onWCChange}>
+                    <label className="text-[#101010] text-xs font-body">
                       <span className="font-bold">Wheelchair</span> - Customer
                       can climb stairs, Walk to & from seat but unable to walk
                       long distances, Requires Assistance To and From The
@@ -85,22 +143,24 @@ const PassengerDetailsItem = ({
                     </label>
                   </Checkbox>
                 </div>
-                {/* <div className="flex items-center mb-5">
-                    <Checkbox onChange={onChange}>
-                      <label className="check-label">
-                        <span>Visually Impaired</span> - Customer requires full
-                        assistance to aircraft and escort inflight
-                      </label>
-                    </Checkbox>
-                  </div>
-                  <div className="flex items-center mb-5">
-                    <Checkbox onChange={onChange}>
-                      <label className="check-label">
-                        <span> Hearing Impaired </span> - Customer requires full
-                        assistance to aircraft and escort inflight
-                      </label>
-                    </Checkbox>
-                  </div> */}
+                <div className="flex items-center mb-5 primary-checkbox">
+                  <Checkbox checked={vpChecked} onChange={onVPChange}>
+                    <label className="text-[#101010] text-xs font-body">
+                      <span className="font-bold">Visually Impaired</span> -
+                      Customer requires full assistance to aircraft and escort
+                      inflight
+                    </label>
+                  </Checkbox>
+                </div>
+                <div className="flex items-center mb-5 primary-checkbox">
+                  <Checkbox checked={hpChecked} onChange={onHPChange}>
+                    <label className="text-[#101010] text-xs font-body">
+                      <span className="font-bold"> Hearing Impaired </span> -
+                      Customer requires full assistance to aircraft and escort
+                      inflight
+                    </label>
+                  </Checkbox>
+                </div>
               </div>
             </section>
             <PassengerBaggage
