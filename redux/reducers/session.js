@@ -59,7 +59,7 @@ const initialState = {
   bookingCommitLoading: false,
   bookingCommitResponse: null,
   bookingResponseLoading: false,
-  bookingResponse: latestBooking,
+  bookingResponse: null,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,

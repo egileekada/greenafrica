@@ -188,8 +188,8 @@ const Fare = ({ isRoundTrip }) => {
                             <div className="trip__summary__row subrow">
                               <div className="flex items-center">
                                 <h6>
-                                  {_SSRCount?.INFT}x&nbsp;Infant
-                                  {_SSRCount?.INFT > 1 ? "s" : ""}
+                                  {_SSRsCount?.INFT}x&nbsp;Infant
+                                  {_SSRsCount?.INFT > 1 ? "s" : ""}
                                 </h6>
                               </div>
                               <div>
