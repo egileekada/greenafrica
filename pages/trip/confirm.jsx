@@ -24,13 +24,13 @@ const TripConfirm = () => {
 
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
-
-  // useEffect(() => {
-  //   async function fetchBookingDetails() {
-  //     dispatch(GetBookingDetails());
-  //   }
-  //   fetchBookingDetails();
-  // }, []);
+  //TODO Maybe re work later but removing it currently breaks code
+  useEffect(() => {
+    async function fetchBookingDetails() {
+      dispatch(GetBookingDetails());
+    }
+    fetchBookingDetails();
+  }, []);
 
   useEffect(() => {
     if (bookingResponse) {
