@@ -529,8 +529,7 @@ const PlaneSeats = forwardRef(
             </div>
           </section>
           <section className="cabin__legend ">
-
-            <section className="w-[280px] bg-white rounded-xl ">
+            <section className="w-[240px] bg-white rounded-xl ">
               <div className="flex flex-col px-[15px] py-6">
                 <h2 className="font-header font-semibold text-primary-main text-xl mb-8">
                   LEGEND

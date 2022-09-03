@@ -20,7 +20,7 @@ const FlightWidget = () => {
       top={true}
       width="w-[90%]"
     >
-      <div className="bg-white rounded-lg w-full overflow-hidden">
+      <div className="bg-white rounded-lg w-full">
         <div className="bg-[#26205E] w-full p-5">
           <p className="text-white text-xl">Change Flight</p>
         </div>
