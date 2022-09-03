@@ -38,7 +38,6 @@ const PassengerDetails = () => {
     sellSSRLoading,
     sessionSSRs,
     sessionReturnSSRs,
-    contactsResponse,
     signature,
   } = useSelector(sessionSelector);
 
@@ -67,7 +66,12 @@ const PassengerDetails = () => {
 
   const proceedToSeatSelectionWithSSR = async () => {
     let Extras = selectedSSRs.filter(function (ssr) {
-      if (ssr?.ssrCode === "WCHR") return true;
+      if (
+        ssr?.ssrCode === "WCHR" ||
+        ssr?.ssrCode === "VPRD" ||
+        ssr?.ssrCode === "HPRD"
+      )
+        return true;
     });
 
     if (Extras?.length > 0) {
@@ -89,9 +93,6 @@ const PassengerDetails = () => {
   };
 
   const proceedToSeatSelectionWithoutSSR = async () => {
-    // this is suposed to go to seat-Selection,payment is an hotfix
-    dispatch(setSessionSSRs([]));
-    dispatch(setSSRResponse(contactsResponse));
     router.push("/trip/seat-selection");
   };
 

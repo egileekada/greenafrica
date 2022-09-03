@@ -1595,6 +1595,8 @@ export const SellSSROption =
         },
       };
 
+      console.log("Sell SSR payload", requestPayload);
+
       try {
         const SSRResponse = await BookingSell(requestPayload);
         await dispatch(setSSRResponse(SSRResponse.data));
