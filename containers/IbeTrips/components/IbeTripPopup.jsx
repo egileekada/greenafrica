@@ -88,7 +88,7 @@ const IbeTripPopup = ({
       const _newJourneys = [..._cleanedJourneys, _newJourney];
       dispatch(setSelectedSessionJourney([..._newJourneys]));
       closePopUp();
-      // setIsVisible(false);
+      setIsVisible(false);
     } else {
       const _selectedJorney = [
         {

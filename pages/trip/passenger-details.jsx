@@ -17,9 +17,6 @@ import {
   retrieveBookingFromState,
 } from "redux/reducers/session";
 import Spinner from "components/Spinner";
-import { ToolFilled } from "@ant-design/icons";
-import { withConfigConsumer } from "antd/lib/config-provider/context";
-import { isExists } from "date-fns";
 
 // TO DO
 // Create sessionReturnSSRs
@@ -35,6 +32,7 @@ const PassengerDetails = () => {
     sessionPassengers,
     SSRAvailabilityLoading,
     SSRAvailabilityResponse,
+    sellSSRResponse,
     sellSSRLoading,
     sessionSSRs,
     sessionReturnSSRs,
@@ -49,6 +47,15 @@ const PassengerDetails = () => {
     }
     checkSSRAvailability();
   }, []);
+
+  // useEffect(() => {
+  //   async function redirectToSeatSelection() {
+  //     if (sellSSRResponse) {
+  //       router.push("/trip/seat-selection");
+  //     }
+  //   }
+  //   redirectToSeatSelection();
+  // }, [sellSSRResponse]);
 
   useEffect(() => {
     async function checkSessionSSRs() {

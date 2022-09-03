@@ -1,53 +1,111 @@
-const ssrs = [
-  { passengerNumber: 0, ssrCode: "X15", schedueIndex: 0 },
-  { passengerNumber: 0, ssrCode: "X15", schedueIndex: 0 },
-  { passengerNumber: 0, ssrCode: "X15", schedueIndex: 1 },
-  { passengerNumber: 0, ssrCode: "X10", schedueIndex: 0 },
-  { passengerNumber: 0, ssrCode: "WCHR", schedueIndex: 0 },
-  { passengerNumber: 1, ssrCode: "WCHR", schedueIndex: 0 },
-];
-const RetrunSSRs = [
-  { passengerNumber: 0, ssrCode: "X10", schedueIndex: 1 },
-  { passengerNumber: 0, ssrCode: "X10", schedueIndex: 1 },
-  { passengerNumber: 0, ssrCode: "X10", schedueIndex: 1 },
+const PaxSSRs = [
+  // {
+  //   ActionStatusCode: "HK",
+  //   ArrivalStation: "LOS",
+  //   DepartureStation: "ABV",
+  //   PassengerNumber: 0,
+  //   PassengerNumberSpecified: true,
+  //   SSRCode: "X10",
+  //   SSRNumber: 1,
+  //   SSRNumberSpecified: true,
+  //   SSRDetail: "",
+  //   FeeCode: "XBAG10",
+  //   Note: "",
+  //   SSRValue: 1,
+  //   SSRValueSpecified: true,
+  //   IsInServiceBundle: false,
+  //   IsInServiceBundleSpecified: true,
+  //   State: 1,
+  //   StateSpecified: true,
+  // },
+  // {
+  //   ActionStatusCode: "HK",
+  //   ArrivalStation: "LOS",
+  //   DepartureStation: "ABV",
+  //   PassengerNumber: 0,
+  //   PassengerNumberSpecified: true,
+  //   SSRCode: "X15",
+  //   SSRNumber: 1,
+  //   SSRNumberSpecified: true,
+  //   SSRDetail: "",
+  //   FeeCode: "XBAG15",
+  //   Note: "",
+  //   SSRValue: 1,
+  //   SSRValueSpecified: true,
+  //   IsInServiceBundle: false,
+  //   IsInServiceBundleSpecified: true,
+  //   State: 1,
+  //   StateSpecified: true,
+  // },
+  {
+    ActionStatusCode: "HK",
+    ArrivalStation: "LOS",
+    DepartureStation: "ABV",
+    PassengerNumber: 0,
+    PassengerNumberSpecified: true,
+    SSRCode: "X15",
+    SSRNumber: 2,
+    SSRNumberSpecified: true,
+    SSRDetail: "",
+    FeeCode: "XBAG15",
+    Note: "",
+    SSRValue: 1,
+    SSRValueSpecified: true,
+    IsInServiceBundle: false,
+    IsInServiceBundleSpecified: true,
+    State: 1,
+    StateSpecified: true,
+  },
+  {
+    ActionStatusCode: "HK",
+    ArrivalStation: "LOS",
+    DepartureStation: "ABV",
+    PassengerNumber: 0,
+    PassengerNumberSpecified: true,
+    SSRCode: "X20",
+    SSRNumber: 1,
+    SSRNumberSpecified: true,
+    SSRDetail: "",
+    FeeCode: "XBAG20",
+    Note: "",
+    SSRValue: 1,
+    SSRValueSpecified: true,
+    IsInServiceBundle: false,
+    IsInServiceBundleSpecified: true,
+    State: 1,
+    StateSpecified: true,
+  },
+  {
+    ActionStatusCode: "HK",
+    ArrivalStation: "LOS",
+    DepartureStation: "ABV",
+    PassengerNumber: 0,
+    PassengerNumberSpecified: true,
+    SSRCode: "X20",
+    SSRNumber: 2,
+    SSRNumberSpecified: true,
+    SSRDetail: "",
+    FeeCode: "XBAG20",
+    Note: "",
+    SSRValue: 1,
+    SSRValueSpecified: true,
+    IsInServiceBundle: false,
+    IsInServiceBundleSpecified: true,
+    State: 1,
+    StateSpecified: true,
+  },
 ];
 
-[...ssrs, ...RetrunSSRs].map((_item) => {
-  // console.log("_item", _item);
+const _SSRsCount = {
+  XBAG10: null,
+  XBAG15: null,
+  XBAG20: null,
+};
+
+PaxSSRs?.map((_segSSR) => {
+  _SSRsCount[_segSSR?.FeeCode] = PaxSSRs.filter((_segCode) => {
+    return _segSSR?.FeeCode === _segCode?.FeeCode;
+  }).length;
 });
 
-// let __FOUND = ssrs.filter(function (ssr) {
-//   if (ssr.ssrCode === "WCHR") return true;
-// });
-
-// if (__FOUND.length > 0) {
-//   __FOUND.map((_item) => {
-//     const newObj = {
-//       ..._item,
-//       schedueIndex: 1,
-//     };
-//     RetrunSSRs.push(newObj);
-//   });
-// }
-
-// // const newReturn = [
-// //   ...RetrunSSRs,
-// //   {
-// //     ...ssrs[__FOUND],
-// //     schedueIndex: 1,
-// //   },
-// // ];
-
-// // console.log("return", newReturn);
-// console.log("r RetrunSSR", RetrunSSRs);
-
-const _sessionSSRs = [];
-const _sessionReturnSSRs = [];
-
-const ALL_SSRS = [..._sessionSSRs, ..._sessionReturnSSRs];
-
-console.log("ALL_SSRS", ALL_SSRS);
-
-[].map((_item) => {
-  console.log("ALL_SSRS", ALL_SSRS);
-});
+console.log("_SSRsCount", _SSRsCount);

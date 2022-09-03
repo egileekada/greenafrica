@@ -22,6 +22,13 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
+import {
+  _selectedSessionFare,
+  _selectedSessionJourney,
+  _ssrAv,
+  latestBooking,
+} from "./data";
+
 const initialState = {
   isLoading: false,
   signature: null,
@@ -52,7 +59,7 @@ const initialState = {
   bookingCommitLoading: false,
   bookingCommitResponse: null,
   bookingResponseLoading: false,
-  bookingResponse: null,
+  bookingResponse: latestBooking,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,
@@ -1595,13 +1602,13 @@ export const SellSSROption =
         },
       };
 
-      console.log("Sell SSR payload", requestPayload);
-
       try {
         const SSRResponse = await BookingSell(requestPayload);
         await dispatch(setSSRResponse(SSRResponse.data));
         await dispatch(FetchStateFromServer());
+        // router.push("/trip/seat-selection");
       } catch (err) {
+        // await dispatch(setSSRResponse(null));
         notification.error({
           message: "Error",
           description: "Sell SSR failed",
@@ -2058,7 +2065,6 @@ export const startCheckin = (payload) => async (dispatch, getState) => {
       })
     );
   } catch (err) {
-    console.error("Update passenger Request error", err.response.data);
     notification.error({
       message: "Error",
       description: err.response.data.BookingUpdateResponseData.Error.ErrorText,
@@ -2083,7 +2089,6 @@ export const retrieveBookingFromState = () => async (dispatch, getState) => {
     const Response = await GetBookingFromState(requestPayload);
     await dispatch(setBookingState(Response.data.BookingData));
   } catch (err) {
-    console.log("Update passenger Request error", err.response);
     notification.error({
       message: "Error",
       description: "Get Booking Details failed",

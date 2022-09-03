@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import BaggageIcon from "assets/svgs/baggage.svg";
 import Counter from "components/Counter";
-import { notification } from "antd";
-import { useSelector } from "react-redux";
-import { sessionSelector } from "redux/reducers/session";
+import { useSelector, useDispatch } from "react-redux";
+import { sessionSelector, setSessionReturnSSRs } from "redux/reducers/session";
 
 const ReturnBaggageCard = ({
   passenger,
@@ -16,13 +15,14 @@ const ReturnBaggageCard = ({
   const [value, setValue] = useState(0);
   const { sessionReturnSSRs, sessionPassengers } = useSelector(sessionSelector);
   const KG = SSRItem?.SSRCode.substring(1);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function mapsessionReturnSSRs() {
       if (sessionReturnSSRs && sessionReturnSSRs.length > 0) {
         const passengerSSRs = sessionReturnSSRs.filter((_ssr) => {
           return (
-            _ssr?.passengerNumber === parseInt(passenger?.id) &&
+            parseInt(_ssr?.passengerNumber) === parseInt(passenger?.id) &&
             _ssr?.ssrCode === SSRItem.SSRCode
           );
         });
@@ -68,6 +68,7 @@ const ReturnBaggageCard = ({
         schedueIndex,
       });
       setReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+      dispatch(setSessionReturnSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
       const _existingSSRs = [...selectedReturnSSRs];
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
@@ -82,6 +83,7 @@ const ReturnBaggageCard = ({
         schedueIndex,
       });
       setReturnSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
+      dispatch(setSessionReturnSSRs([..._cleanedSSRs, ..._SSRItemObj]));
     }
   };
 

@@ -14,9 +14,6 @@ const Fare = ({ isRoundTrip }) => {
             <>
               {_journey.Segments.map((_segment) => {
                 const _SSRCount = {};
-                const tempSum = {};
-                const _SSRSum = {};
-
                 bookingResponse?.Booking?.Passengers.map((_pax) => {
                   return _pax.PassengerFees.map((_paxFee) => {
                     _SSRCount[_paxFee?.FeeCode] = _pax.PassengerFees.filter(
@@ -27,6 +24,8 @@ const Fare = ({ isRoundTrip }) => {
                   });
                 });
 
+                const tempSum = {};
+                const _SSRSum = {};
                 bookingResponse?.Booking?.Passengers.map((_pax) => {
                   return _pax.PassengerFees.map((_paxFee) => {
                     tempSum[_paxFee?.FeeCode] = _paxFee.ServiceCharges;
@@ -38,6 +37,21 @@ const Fare = ({ isRoundTrip }) => {
                     );
                     _SSRSum[_paxFee?.FeeCode] = totalServiceCharge;
                   });
+                });
+
+                const _SSRsCount = {
+                  XBAG10: 0,
+                  XBAG15: 0,
+                  XBAG20: 0,
+                  INFT: 0,
+                  SEAT: 0,
+                };
+                _segment.PaxSSRs?.map((_segSSR) => {
+                  _SSRsCount[_segSSR?.FeeCode] = _segment.PaxSSRs?.filter(
+                    (_segCode) => {
+                      return _segSSR?.FeeCode === _segCode?.FeeCode;
+                    }
+                  ).length;
                 });
 
                 return (
@@ -169,7 +183,8 @@ const Fare = ({ isRoundTrip }) => {
                               </h6>
                             </div>
                           </div>
-                          {_SSRCount?.INFT && (
+
+                          {parseInt(_SSRsCount?.INFT) > 0 && (
                             <div className="trip__summary__row subrow">
                               <div className="flex items-center">
                                 <h6>
@@ -182,12 +197,12 @@ const Fare = ({ isRoundTrip }) => {
                               </div>
                             </div>
                           )}
-                          {_SSRCount?.XBAG20 && (
+                          {parseInt(_SSRsCount?.XBAG20) > 0 && (
                             <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
-                                  {_SSRCount?.XBAG20}x&nbsp;20KG Baggage
-                                  {_SSRCount?.XBAG20 > 1 ? "s" : ""}
+                                  {_SSRsCount?.XBAG20}x&nbsp;20KG Baggage
+                                  {_SSRsCount?.XBAG20 > 1 ? "s" : ""}
                                 </h6>
                               </div>
                               <div>
@@ -195,12 +210,12 @@ const Fare = ({ isRoundTrip }) => {
                               </div>
                             </div>
                           )}
-                          {_SSRCount?.XBAG15 && (
+                          {parseInt(_SSRsCount?.XBAG15) > 0 && (
                             <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
-                                  {_SSRCount?.XBAG15}x&nbsp;15KG Baggage
-                                  {_SSRCount?.XBAG15 > 1 ? "s" : ""}
+                                  {_SSRsCount?.XBAG15}x&nbsp;15KG Baggage
+                                  {_SSRsCount?.XBAG15 > 1 ? "s" : ""}
                                 </h6>
                               </div>
                               <div>
@@ -208,12 +223,12 @@ const Fare = ({ isRoundTrip }) => {
                               </div>
                             </div>
                           )}
-                          {_SSRCount?.XBAG10 && (
+                          {parseInt(_SSRsCount?.XBAG10) > 0 && (
                             <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
-                                  {_SSRCount?.XBAG10}x&nbsp;10KG Baggage
-                                  {_SSRCount?.XBAG10 > 1 ? "s" : ""}
+                                  {_SSRsCount?.XBAG10}x&nbsp;10KG Baggage
+                                  {_SSRsCount?.XBAG10 > 1 ? "s" : ""}
                                 </h6>
                               </div>
                               <div>
@@ -221,12 +236,12 @@ const Fare = ({ isRoundTrip }) => {
                               </div>
                             </div>
                           )}
-                          {_SSRCount?.SEAT && (
+                          {parseInt(_SSRsCount?.SEAT) > 0 && (
                             <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
-                                  {_SSRCount?.SEAT}x&nbsp;Seat
-                                  {_SSRCount?.SEAT > 1 ? "s" : ""}
+                                  {_SSRsCount?.SEAT}x&nbsp;Seat
+                                  {_SSRsCount?.SEAT > 1 ? "s" : ""}
                                 </h6>
                               </div>
                               <div>

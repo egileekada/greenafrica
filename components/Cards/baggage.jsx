@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import BaggageIcon from "assets/svgs/baggage.svg";
 import Counter from "components/Counter";
-import { notification } from "antd";
-import { useSelector } from "react-redux";
-import { sessionSelector } from "redux/reducers/session";
+import { useSelector, useDispatch } from "react-redux";
+import { sessionSelector, setSessionSSRs } from "redux/reducers/session";
 
 const BaggageCard = ({
   passenger,
@@ -16,13 +15,14 @@ const BaggageCard = ({
   const [value, setValue] = useState(0);
   const { sessionSSRs, sessionPassengers } = useSelector(sessionSelector);
   const KG = SSRItem?.SSRCode.substring(1);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function mapSessionSSRs() {
       if (sessionSSRs && sessionSSRs.length > 0) {
         const passengerSSRs = sessionSSRs.filter((_ssr) => {
           return (
-            _ssr?.passengerNumber === parseInt(passenger?.id) &&
+            parseInt(_ssr?.passengerNumber) === parseInt(passenger?.id) &&
             _ssr?.ssrCode === SSRItem.SSRCode
           );
         });
@@ -68,6 +68,7 @@ const BaggageCard = ({
         schedueIndex,
       });
       setSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+      dispatch(setSessionSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
       const _existingSSRs = [...selectedSSRs];
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
@@ -82,6 +83,7 @@ const BaggageCard = ({
         schedueIndex,
       });
       setSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
+      dispatch(setSessionSSRs([..._cleanedSSRs, ..._SSRItemObj]));
     }
   };
 
@@ -122,9 +124,7 @@ const BaggageCard = ({
         <figure>
           <BaggageIcon />
         </figure>
-        <p className="font-body text-primary-main text-xs mb-1">
-          Up to {KG}kg 
-        </p>
+        <p className="font-body text-primary-main text-xs mb-1">Up to {KG}kg</p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}
