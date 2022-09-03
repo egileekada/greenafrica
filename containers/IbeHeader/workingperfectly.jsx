@@ -14,15 +14,12 @@ import subDays from "date-fns/subDays";
 
 const IbeHeader = () => {
   const dispatch = useDispatch();
+  const [dateList, setDateList] = useState([]);
+  const [fareDateList, setFareDateList] = useState([]);
+  const [nextIndex, setNextIndex] = useState(null);
+  const [prev, setPrev] = useState(null);
   const [width] = useDeviceSize();
-
-  const [dateList, setDateList] = useState([]); //original Response
-  const [fareDateList, setFareDateList] = useState([]); //formatted Response
-  //Pagination
-  const [currentPage, setCurrentPage] = useState(1);
   const [length, setLength] = useState(width > 1200 ? 7 : 3);
-  const [currentFDateList, setCurrFDates] = useState([]);
-  const [pageNumbers, setPageNumbers] = useState([]);
 
   const {
     lowFareAvailabilityLoading,
@@ -34,90 +31,79 @@ const IbeHeader = () => {
     setLength(width > 1200 ? 7 : 3);
   }, [width]);
 
-  // Get current posts
-  var indexOfLastPost = currentPage * length;
-  var indexOfFirstPost = indexOfLastPost - length;
-
   useEffect(() => {
+    const selectedDate = new Date(flightParams?.beginDate);
+    const _dates =
+      width > 1200
+        ? [
+            subDays(selectedDate, 3),
+            subDays(selectedDate, 2),
+            subDays(selectedDate, 1),
+            selectedDate,
+            addDays(selectedDate, 1),
+            addDays(selectedDate, 2),
+            addDays(selectedDate, 2),
+          ]
+        : [subDays(selectedDate, 1), selectedDate, addDays(selectedDate, 1)];
+    const _dateList = [];
+    _dates.map((_date) => {
+      const newObj = {
+        id: _date,
+        date: _date,
+        cost: 0,
+      };
+      _dateList.push(newObj);
+    });
+
     if (
       lowFareAvailabilityResponse &&
       lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
     ) {
-      const _dateList =
+      const _fareDateList =
         lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
           ?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList;
-      setDateList([..._dateList]);
-
-      const _pageNumbers = [];
-      for (let i = 1; i <= Math.ceil(_dateList.length / length); i++) {
-        _pageNumbers.push(i);
-      }
-      setPageNumbers([..._pageNumbers]);
-
-      const _fareDateList = [];
-
-      _dateList.map((_dateListItem, _dl) => {
-        let newObj = {};
-        newObj.id = newObj.date = _dateListItem?.DepartureDate;
-        newObj.date = newObj.date = _dateListItem?.DepartureDate;
-        newObj.cost =
-          parseInt(_dateListItem?.FareAmount) +
-          parseInt(_dateListItem?.TaxesAndFeesAmount);
-        _fareDateList.push(newObj);
-      });
       setFareDateList([..._fareDateList]);
 
-      const selectedDate = new Date(flightParams?.beginDate);
-      let dateIndex = _fareDateList.findIndex((object) => {
-        return (
-          format(new Date(object.date), "yyyy-MM-dd") ===
-          format(new Date(selectedDate), "yyyy-MM-dd")
-        );
+      _dateList.map((_dateListItem, _dl) => {
+        _fareDateList.map((_fareDateItem, _fd) => {
+          if (
+            format(new Date(_dateListItem?.date), "yyyy-MM-dd") ===
+            format(new Date(_fareDateItem?.DepartureDate), "yyyy-MM-dd")
+          ) {
+            _dateList[_dl].cost =
+              parseInt(_fareDateItem?.FareAmount) +
+              parseInt(_fareDateItem?.TaxesAndFeesAmount);
+            setNextIndex(_fd);
+          }
+        });
       });
-      console.log("dateIndex", dateIndex);
-
-      if (dateIndex > -1) {
-        const defaultPage = Math.ceil((dateIndex + 1) / length);
-        console.log("defaultPage", defaultPage);
-
-        paginate(defaultPage);
-      } else {
-        paginate(1);
-      }
+      setDateList([..._dateList]);
     }
   }, [lowFareAvailabilityResponse]);
 
-  const paginate = (pageNumber) => {
-    indexOfLastPost = pageNumber * length;
-    indexOfFirstPost = indexOfLastPost - length;
-    setCurrFDates(fareDateList.slice(indexOfFirstPost, indexOfLastPost));
-    setCurrentPage(pageNumber);
-  };
-
   const onNext = () => {
-    const nextPage = currentPage + 1;
-    indexOfLastPost = nextPage * length;
-    indexOfFirstPost = indexOfLastPost - length;
-    const newFareList = fareDateList.slice(indexOfFirstPost, indexOfLastPost);
-
-    if (newFareList.length > 0) {
-      setCurrFDates(fareDateList.slice(indexOfFirstPost, indexOfLastPost));
-      setCurrentPage(nextPage);
+    setPrev([...dateList]);
+    const nextDates = [...fareDateList.slice(nextIndex + 1)];
+    const nextFares = [];
+    if (nextDates.length > 0) {
+      nextDates.slice(0, length).map((_fareDateItem, _fd) => {
+        const newObj = {};
+        newObj.id = _fareDateItem?.DepartureDate;
+        newObj.date = _fareDateItem?.DepartureDate;
+        newObj.cost =
+          _fareDateItem?.FareAmount + _fareDateItem?.TaxesAndFeesAmount;
+        nextFares.push(newObj);
+      });
+      setNextIndex(nextIndex + length);
+      setDateList([...nextFares]);
     }
   };
 
   const onPrev = () => {
-    if (currentPage > 1) {
-      const prevPage = currentPage - 1;
-      indexOfLastPost = prevPage * length;
-      indexOfFirstPost = indexOfLastPost - length;
-      const newFareList = fareDateList.slice(indexOfFirstPost, indexOfLastPost);
-
-      if (newFareList.length > 0) {
-        setCurrFDates(fareDateList.slice(indexOfFirstPost, indexOfLastPost));
-        setCurrentPage(prevPage);
-      }
-    }
+    setDateList(prev);
+    // setPrev(nextIndex - 7);
+    // const prevDates = [...fareDateList.slice(0,nextIndex - 7)];
+    // console.log("prevDates", prevDates);
   };
 
   const FetchNewTrips = (_dateItem) => {
@@ -137,7 +123,7 @@ const IbeHeader = () => {
           <ArrowTo />
         </figure>
         <p className="mx-4">{flightParams?.arrivalStation}</p>
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>} */}
+        {nextIndex && <p> nextIndex:: {nextIndex}</p>}
 
         <figure className="flightCircle">
           <FlightIcon />
@@ -151,19 +137,21 @@ const IbeHeader = () => {
         ) : (
           <section className="flex items-center w-full">
             <button
-              className={`pl-4 sm:pl-0 hover:bg-gray-400 flex h-16 lg:h-4 w-8 lg:w-4 items-center justify-center`}
+              className={`pl-4 sm:pl-0 hover:bg-gray-400 flex h-16 lg:h-4 w-8 lg:w-4 items-center justify-center ${
+                prev ? "" : "pointer-events-none cursor-none"
+              }`}
               onClick={onPrev}
             >
               <CaretLeft />
             </button>
             <section className="flex items-center w-full mx-4 ">
-              {currentFDateList?.length > 0 ? (
-                currentFDateList.map((_dateItem, i) => {
+              {dateList?.length > 0 ? (
+                dateList.map((_dateItem, i) => {
                   return (
                     <div
                       key={i}
                       className={`ibe__date__item ${
-                        i === currentFDateList.length - 1 ? "b-r-none" : ""
+                        i === dateList.length - 1 ? "b-r-none" : ""
                       }`}
                     >
                       {flightParams && (
@@ -196,10 +184,10 @@ const IbeHeader = () => {
                 <p className="errorText text-lg">No date available</p>
               )}
             </section>
-
-            {/* pointer-events-none cursor-none */}
             <button
-              className={`pr-4 sm:pr-0 hover:bg-gray-400 flex  h-16 lg:h-4 w-8 lg:w-4 items-center justify-center`}
+              className={`pr-4 sm:pr-0 hover:bg-gray-400 flex  h-16 lg:h-4 w-8 lg:w-4 items-center justify-center ${
+                nextIndex ? "" : "pointer-events-none cursor-none"
+              }`}
               onClick={onNext}
             >
               <CaretRight />
