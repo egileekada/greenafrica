@@ -65,7 +65,7 @@ const SeatWrapper = ({ ticketIndex }) => {
                     id={`passenger-${index}-${ticketIndex}`}
                     type="radio"
                     value={passenger.PassengerNumber}
-                    name={`passenger-state-${index}-${ticketIndex}`}
+                    name={`passenger-state-${ticketIndex}`}
                     onChange={(e) =>
                       handleChange(e, passenger.PassengerInfants.length)
                     }
