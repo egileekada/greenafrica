@@ -376,32 +376,6 @@ const PlaneSeats = forwardRef(
                   <p>D</p>
                 </div>
               </div>
-              {/* <div className="seats__row">
-              <div className="seats__item unavailable w-[38px]">
-                <XIcon />
-              </div>
-              <div className="seats__item unavailable"></div>
-              <div className="seats__item seatRow">
-                <p>1</p>
-              </div>
-              <div className="seats__item unavailable"></div>
-              <div className="seats__item unavailable"></div>
-            </div> */}
-              {/* {arr.map((x, index) => {
-              return (
-                <div key={index} className="seats__row">
-                  <div className="seats__item">
-                    <p>MJ</p>
-                  </div>
-                  <div className="seats__item"></div>
-                  <div className="seats__item seatRow">
-                    <p>{index + 2}</p>
-                  </div>
-                  <div className="seats__item"></div>
-                  <div className="seats__item"></div>
-                </div>
-              );
-            })} */}
 
               {tidyData(data)
                 .splice(0, 18)
@@ -445,45 +419,6 @@ const PlaneSeats = forwardRef(
                                       pasengerState,
                                       seat.SeatDesignator
                                     )}
-                                    {/* {seat.SeatAvailability === 5 ? (
-                                    " "
-                                  ) : seat.SeatAvailability === 14 ? (
-                                    <svg
-                                      width="13"
-                                      height="13"
-                                      viewBox="0 0 13 13"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        d="M0.634873 12.9998C0.509313 12.9998 0.386567 12.9626 0.28216 12.8928C0.177754 12.8231 0.0963775 12.724 0.0483247 12.608C0.000271907 12.492 -0.0122985 12.3643 0.0122034 12.2412C0.0367053 12.118 0.0971788 12.0049 0.185975 11.9161L11.9162 0.185879C12.0353 0.0668235 12.1968 -6.10352e-05 12.3651 -6.10352e-05C12.5335 -6.10352e-05 12.695 0.0668235 12.814 0.185879C12.9331 0.304934 13 0.466407 13 0.634777C13 0.803146 12.9331 0.96462 12.814 1.08367L1.08377 12.8139C1.02487 12.8729 0.954899 12.9197 0.877864 12.9516C0.800828 12.9835 0.71825 12.9999 0.634873 12.9998Z"
-                                        fill="#BFBFBF"
-                                      />
-                                      <path
-                                        d="M12.3652 12.9997C12.2818 12.9998 12.1992 12.9835 12.1222 12.9516C12.0451 12.9197 11.9752 12.8729 11.9163 12.8139L0.186001 1.08361C0.0669455 0.964558 6.10352e-05 0.803085 6.10352e-05 0.634716C6.10352e-05 0.466346 0.0669455 0.304873 0.186001 0.185818C0.305056 0.0667624 0.466529 -0.00012207 0.634899 -0.00012207C0.803268 -0.00012207 0.964742 0.0667624 1.0838 0.185818L12.8141 11.9161C12.9028 12.0048 12.9633 12.118 12.9878 12.2411C13.0123 12.3642 12.9998 12.4919 12.9517 12.6079C12.9036 12.7239 12.8223 12.823 12.7179 12.8928C12.6135 12.9625 12.4907 12.9997 12.3652 12.9997V12.9997Z"
-                                        fill="#BFBFBF"
-                                      />
-                                    </svg>
-                                  ) : seat.SeatAvailability === 12 ? (
-                                    <svg
-                                      width="13"
-                                      height="13"
-                                      viewBox="0 0 13 13"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        d="M0.634873 12.9998C0.509313 12.9998 0.386567 12.9626 0.28216 12.8928C0.177754 12.8231 0.0963775 12.724 0.0483247 12.608C0.000271907 12.492 -0.0122985 12.3643 0.0122034 12.2412C0.0367053 12.118 0.0971788 12.0049 0.185975 11.9161L11.9162 0.185879C12.0353 0.0668235 12.1968 -6.10352e-05 12.3651 -6.10352e-05C12.5335 -6.10352e-05 12.695 0.0668235 12.814 0.185879C12.9331 0.304934 13 0.466407 13 0.634777C13 0.803146 12.9331 0.96462 12.814 1.08367L1.08377 12.8139C1.02487 12.8729 0.954899 12.9197 0.877864 12.9516C0.800828 12.9835 0.71825 12.9999 0.634873 12.9998Z"
-                                        fill="#BFBFBF"
-                                      />
-                                      <path
-                                        d="M12.3652 12.9997C12.2818 12.9998 12.1992 12.9835 12.1222 12.9516C12.0451 12.9197 11.9752 12.8729 11.9163 12.8139L0.186001 1.08361C0.0669455 0.964558 6.10352e-05 0.803085 6.10352e-05 0.634716C6.10352e-05 0.466346 0.0669455 0.304873 0.186001 0.185818C0.305056 0.0667624 0.466529 -0.00012207 0.634899 -0.00012207C0.803268 -0.00012207 0.964742 0.0667624 1.0838 0.185818L12.8141 11.9161C12.9028 12.0048 12.9633 12.118 12.9878 12.2411C13.0123 12.3642 12.9998 12.4919 12.9517 12.6079C12.9036 12.7239 12.8223 12.823 12.7179 12.8928C12.6135 12.9625 12.4907 12.9997 12.3652 12.9997V12.9997Z"
-                                        fill="#BFBFBF"
-                                      />
-                                    </svg>
-                                  ) : (
-                                    ""
-                                  )} */}
                                   </p>
                                 </div>
                               </Popover>
@@ -548,41 +483,31 @@ const PlaneSeats = forwardRef(
                     <figure>
                       <div className="seat-box bg-[#584CB6]"></div>
                     </figure>
-                    <p>
-                      Extra Legroom Seat - <span>₦2,500</span>
-                    </p>
+                    <p>Extra Legroom Seat</p>
                   </div>
                   <div className="seats__legend__item">
                     <figure>
                       <div className="seat-box bg-[#ADFFCB]"></div>
                     </figure>
-                    <p>
-                      First Out Seat - <span>₦2,500</span>
-                    </p>
+                    <p>First Out Seat</p>
                   </div>
                   <div className="seats__legend__item">
                     <figure>
                       <div className="seat-box bg-primary-main"></div>
                     </figure>
-                    <p>
-                      Front Seat - <span>₦2,500</span>
-                    </p>
+                    <p>Front Seat</p>
                   </div>
                   <div className="seats__legend__item">
                     <figure>
                       <div className="seat-box bg-[#777093]"></div>
                     </figure>
-                    <p>
-                      Standard Seat - <span>₦2,500</span>
-                    </p>
+                    <p>Standard Seat</p>
                   </div>
                   <div className="seats__legend__item">
                     <figure>
                       <div className="seat-box bg-[#B9B5D6]"></div>
                     </figure>
-                    <p>
-                      Extra Legroom Seat - <span>₦2,500</span>
-                    </p>
+                    <p>Extra Legroom Seat</p>
                   </div>
                   <div className="seats__legend__item">
                     <figure>
