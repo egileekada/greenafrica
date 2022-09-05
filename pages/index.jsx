@@ -2,6 +2,7 @@
 import { Fragment, useState, useEffect } from "react";
 import BaseLayout from "layouts/Base";
 import IbeHeader from "containers/IbeHeader";
+import ReturnIbeHeader from "containers/IbeHeader/ReturnIbeHeader";
 import IbeTrips from "containers/IbeTrips";
 import IbeSidebar from "containers/IbeSidebar";
 import Popup from "components/Popup";
@@ -13,6 +14,8 @@ import {
   startSession,
   setFlightRequest,
   fetchLowFareAvailability,
+  returnLowFareAvailability,
+  fetchFlightAvailability,
 } from "redux/reducers/session";
 import { resetStore } from "redux/store";
 import { showWidget, hideWidget } from "redux/reducers/general";
@@ -69,11 +72,17 @@ const Home = () => {
           ADT: parseInt(ibeQuery.get("adt")),
           CHD: parseInt(ibeQuery.get("chd")),
           INF: parseInt(ibeQuery.get("inf")),
+          currentDate: new Date(),
+          recurrent: false,
           isRoundTrip,
           signature,
         };
         dispatch(setFlightRequest(flightRequest));
         dispatch(fetchLowFareAvailability(flightRequest));
+        dispatch(fetchFlightAvailability(flightRequest));
+        if (isRoundTrip === 1) {
+          dispatch(returnLowFareAvailability(flightRequest));
+        }
       }
     }
     checkSigInit();
@@ -184,42 +193,52 @@ const Home = () => {
 
                 <section className="flex flex-col scrollable">
                   <div className="flex flex-col mb-10">
-                    <IbeHeader />
                     {flightAvailabilityLoading ? (
                       <Spinner />
                     ) : availabilityResponse ? (
-                      availabilityResponse?.GetTripAvailabilityResponse
-                        .Schedules.length > 0 ? (
-                        <>
-                          {availabilityResponse.GetTripAvailabilityResponse.Schedules.map(
-                            (_schedule, _schedueIndex) => {
-                              return (
-                                <IbeTrips
-                                  flightSchedule={_schedule}
-                                  schedueIndex={_schedueIndex}
-                                />
-                              );
-                            }
-                          )}
-                          {availabilityResponse.GetTripAvailabilityResponse
-                            .Schedules.length > 1 && (
-                            <div className="flex items-center justify-end">
-                              <button
-                                className={`btn btn-primary ${
-                                  roundTripEnabled ? "" : "disabled"
-                                }`}
-                                onClick={checkRoundTripPayload}
-                              >
-                                Continue
-                              </button>
-                            </div>
-                          )}
-                        </>
-                      ) : (
-                        <h2 className=" text-red-600 font-normal text-sm mb-8">
-                          No Flight Schedules
-                        </h2>
-                      )
+                      <>
+                        {/* <IbeHeader /> */}
+
+                        {availabilityResponse?.GetTripAvailabilityResponse
+                          .Schedules.length > 0 ? (
+                          <>
+                            {availabilityResponse.GetTripAvailabilityResponse.Schedules.map(
+                              (_schedule, _schedueIndex) => {
+                                return (
+                                  <>
+                                    {_schedueIndex === 0 ? (
+                                      <IbeHeader />
+                                    ) : (
+                                      <ReturnIbeHeader />
+                                    )}
+                                    <IbeTrips
+                                      flightSchedule={_schedule}
+                                      schedueIndex={_schedueIndex}
+                                    />
+                                  </>
+                                );
+                              }
+                            )}
+                            {availabilityResponse.GetTripAvailabilityResponse
+                              .Schedules.length > 1 && (
+                              <div className="flex items-center justify-end">
+                                <button
+                                  className={`btn btn-primary ${
+                                    roundTripEnabled ? "" : "disabled"
+                                  }`}
+                                  onClick={checkRoundTripPayload}
+                                >
+                                  Continue
+                                </button>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <h2 className=" text-red-600 font-normal text-sm mb-8">
+                            No Flight Schedules
+                          </h2>
+                        )}
+                      </>
                     ) : (
                       <h2 className="text-red-600 font-normal text-sm mb-8">
                         Error fetching flight availability

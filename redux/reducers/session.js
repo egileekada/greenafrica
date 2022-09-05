@@ -35,6 +35,10 @@ const initialState = {
   sessionLoading: false,
   lowFareAvailabilityLoading: false,
   lowFareAvailabilityResponse: null,
+
+  returnFareAvailabilityLoading: false,
+  returnFareAvailabilityResponse: null,
+
   flightAvailabilityLoading: false,
   flightParams: null,
   availabilityResponse: null,
@@ -88,6 +92,14 @@ export const sessionSlice = createSlice({
     setLowFareAvailabilityResponse: (state, { payload }) => {
       state.lowFareAvailabilityResponse = payload;
     },
+
+    setReturnFareAvailabilityLoading: (state, { payload }) => {
+      state.returnFareAvailabilityLoading = payload;
+    },
+    setReturnFareAvailabilityResponse: (state, { payload }) => {
+      state.returnFareAvailabilityResponse = payload;
+    },
+
     setFlightParams: (state, { payload }) => {
       state.flightParams = {
         ...payload,
@@ -229,6 +241,10 @@ export const {
   setFlightParams,
   setFlightAvailabilityLoading,
   setAvailabilityResponse,
+
+  setReturnFareAvailabilityLoading,
+  setReturnFareAvailabilityResponse,
+
   setSellFlightLoading,
   setSelectedSessionJourney,
   setSelectedSessionFare,
@@ -325,16 +341,13 @@ export const killSession = (payload) => async (dispatch) => {
 
 export const setFlightRequest = (payload) => async (dispatch) => {
   await dispatch(setFlightParams(payload));
-  await dispatch(fetchFlightAvailability(payload));
+  // await dispatch(fetchFlightAvailability(payload));
 };
 
 export const fetchLowFareAvailability = (payload) => async (dispatch) => {
   dispatch(setLowFareAvailabilityLoading(true));
 
-  const { departureStation, arrivalStation, endDate, signature } = payload;
-
-  const date = new Date();
-  date.setDate(date.getDate() + 179);
+  const { departureStation, arrivalStation, signature, currentDate } = payload;
 
   const requestPayload = {
     signature: signature,
@@ -355,9 +368,9 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
         {
           departureStationList: [departureStation],
           arrivalStationList: [arrivalStation],
-          beginDate: format(new Date(), "yyyy-MM-dd"),
+          beginDate: format(currentDate, "yyyy-MM-dd"),
           beginDateSpecified: true,
-          endDate: format(addDays(new Date(), 179), "yyyy-MM-dd"),
+          endDate: format(addDays(currentDate, 27), "yyyy-MM-dd"),
           endDateSpecified: true,
         },
       ],
@@ -392,6 +405,70 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
     });
   }
   dispatch(setLowFareAvailabilityLoading(false));
+};
+
+export const returnLowFareAvailability = (payload) => async (dispatch) => {
+  dispatch(setReturnFareAvailabilityLoading(true));
+
+  const { departureStation, arrivalStation, signature, currentDate } = payload;
+
+  const requestPayload = {
+    signature: signature,
+    messageContractVersion: "",
+    enableExceptionStackTrace: true,
+    contractVersion: 0,
+    lowFareTripAvailabilityRequest: {
+      bypassCache: false,
+      bypassCacheSpecified: true,
+      includeTaxesAndFees: true,
+      includeTaxesAndFeesSpecified: true,
+      groupBydate: false,
+      groupBydateSpecified: true,
+      parameterSetID: 0,
+      parameterSetIDSpecified: true,
+      currencyCode: "NGN",
+      lowFareAvailabilityRequestList: [
+        {
+          departureStationList: [arrivalStation],
+          arrivalStationList: [departureStation],
+          beginDate: format(currentDate, "yyyy-MM-dd"),
+          beginDateSpecified: true,
+          endDate: format(addDays(currentDate, 27), "yyyy-MM-dd"),
+          endDateSpecified: true,
+        },
+      ],
+      productClassList: [],
+      loyaltyFilter: 0,
+      loyaltyFilterSpecified: true,
+      flightFilter: 0,
+      flightFilterSpecified: true,
+      getAllDetails: false,
+      getAllDetailsSpecified: true,
+      paxCount: 1,
+      paxCountSpecified: true,
+      paxPriceTypeList: [
+        {
+          paxType: "ADT",
+          paxCount: 1,
+          paxCountSpecified: true,
+        },
+      ],
+      maximumConnectingFlights: 20,
+      maximumConnectingFlightsSpecified: true,
+    },
+  };
+
+  try {
+    const Response = await GetLowFareAvailability(requestPayload);
+    console.log("return fare data is", Response.data);
+    await dispatch(setReturnFareAvailabilityResponse(Response.data));
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Fetch Return Low Fares failed",
+    });
+  }
+  dispatch(setReturnFareAvailabilityLoading(false));
 };
 
 export const fetchFlightAvailability = (payload) => async (dispatch) => {

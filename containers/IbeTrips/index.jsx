@@ -4,6 +4,7 @@ import IbeTripItem from "./components/IbeTripItem";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
+import format from "date-fns/format";
 
 const IbeTrips = ({ flightSchedule, schedueIndex }) => {
   const { flightAvailabilityLoading, flightParams } =
@@ -11,8 +12,16 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
 
   return (
     <section className="ibe__flight__trips">
-      <h2 className="text-primary-main font-extrabold text-sm mb-8">
-        {parseInt(schedueIndex) === 0 ? "DEPARTURE" : "RETURN"}
+      <h2 className="text-primary-main font-extrabold text-sm mb-8 uppercase">
+        {parseInt(schedueIndex) === 0
+          ? `DEPARTURE ON ${format(
+              new Date(flightParams?.beginDate),
+              "EEEE, LLLL dd yyyy"
+            )}`
+          : `RETURN ON ${format(
+              new Date(flightParams?.returnDate),
+              "EEEE, LLLL dd yyyy"
+            )}`}
       </h2>
 
       <Fragment>

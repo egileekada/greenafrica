@@ -116,8 +116,8 @@ const PassengerDetailsItem = ({
       {SSRAvailabilityResponse ? (
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
-            <p>GoSSRs:: {JSON.stringify(selectedSSRs)}</p>
-            <p>RetrunSSRs:: {JSON.stringify(selectedReturnSSRs)}</p>
+            {/* <p>GoSSRs:: {JSON.stringify(selectedSSRs)}</p>
+            <p>RetrunSSRs:: {JSON.stringify(selectedReturnSSRs)}</p> */}
             <h2 className="text-left text-[#8F8CA4] font-header font-bold mb-2 hidden">
               INSURANCE
             </h2>

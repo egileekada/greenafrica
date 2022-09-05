@@ -9,13 +9,13 @@ import FlightIcon from "assets/svgs/FlightTwo.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
-  fetchLowFareAvailability,
+  returnLowFareAvailability,
   setFlightRequest,
   fetchFlightAvailability,
 } from "redux/reducers/session";
 import { format } from "date-fns";
 
-const IbeHeader = () => {
+const ReturnIbeHeader = () => {
   const dispatch = useDispatch();
   const [width] = useDeviceSize();
 
@@ -28,9 +28,8 @@ const IbeHeader = () => {
   const [recurrent, setRecurrent] = useState(false);
 
   const {
-    availabilityResponse,
-    lowFareAvailabilityLoading,
-    lowFareAvailabilityResponse,
+    returnFareAvailabilityLoading,
+    returnFareAvailabilityResponse,
     flightParams,
   } = useSelector(sessionSelector);
 
@@ -45,13 +44,12 @@ const IbeHeader = () => {
 
   useEffect(() => {
     if (
-      lowFareAvailabilityResponse &&
-      lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
+      returnFareAvailabilityResponse &&
+      returnFareAvailabilityResponse?.LowFareTripAvailabilityResponse
     ) {
       const _dateList =
-        lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
-          ?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList;
-
+        returnFareAvailabilityResponse?.LowFareTripAvailabilityResponse
+          ?.LowFareAvailabilityResponseList[0].DateMarketLowFareList;
       setDateList([..._dateList]);
 
       const _fareDateList = [];
@@ -67,7 +65,7 @@ const IbeHeader = () => {
       setFareDateList([..._fareDateList]);
 
       if (flightParams?.recurrent) {
-        const _selectedDate = new Date(flightParams?.beginDate);
+        const _selectedDate = new Date(flightParams?.returnDate);
         let _dateIndex = _fareDateList.findIndex((object) => {
           return (
             format(new Date(object.date), "yyyy-MM-dd") ===
@@ -106,7 +104,7 @@ const IbeHeader = () => {
         }
       }
     }
-  }, [lowFareAvailabilityResponse]);
+  }, [returnFareAvailabilityResponse]);
 
   const paginate = (pageNumber, _fares) => {
     indexOfLastPost = pageNumber * _length;
@@ -132,7 +130,7 @@ const IbeHeader = () => {
         currentDate: lastDate,
       };
       setRecurrent(true);
-      dispatch(fetchLowFareAvailability(newFlightRequest));
+      dispatch(returnLowFareAvailability(newFlightRequest));
     }
   };
 
@@ -153,32 +151,31 @@ const IbeHeader = () => {
   const FetchNewTrips = (_dateItem) => {
     const flightRequest = {
       ...flightParams,
-      beginDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
-      endDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
+      returnDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
       recurrent: true,
+      isRoundTrip: 1,
     };
     dispatch(setFlightRequest(flightRequest));
     dispatch(fetchFlightAvailability(flightRequest));
   };
 
   return (
-    <section className="ibe__flight__info">
+    <section className="ibe__flight__info mt-20">
       <section className="ibe__flight__info__destination">
-        <p className="mx-4">{flightParams?.departureStation}</p>
+        <p className="mx-4">{flightParams?.arrivalStation}</p>
         <figure>
           <ArrowTo />
         </figure>
-        <p className="mx-4">{flightParams?.arrivalStation}</p>
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>}
-        {width && <p> width:: {width}</p>}
-        {_length && <p> _length:: {_length}</p>} */}
+        <p className="mx-4">{flightParams?.departureStation}</p>
+
+        {/* {currentPage && <p> currentPage:: {currentPage}</p>} */}
 
         <figure className="flightCircle">
           <FlightIcon />
         </figure>
       </section>
       <section className="ibe__flight__info__dates">
-        {lowFareAvailabilityLoading ? (
+        {returnFareAvailabilityLoading ? (
           <section className="flex items-center w-full">
             <Spinner />
           </section>
@@ -205,7 +202,7 @@ const IbeHeader = () => {
                           className={`${
                             format(new Date(_dateItem?.date), "yyyy-MM-dd") ===
                             format(
-                              new Date(flightParams?.beginDate),
+                              new Date(flightParams?.returnDate),
                               "yyyy-MM-dd"
                             )
                               ? "active"
@@ -231,7 +228,6 @@ const IbeHeader = () => {
               )}
             </section>
 
-            {/* pointer-events-none cursor-none */}
             <button
               className={`pr-4 sm:pr-0 hover:bg-gray-400 flex  h-16 lg:h-4 w-8 lg:w-4 items-center justify-center`}
               onClick={onNext}
@@ -245,4 +241,4 @@ const IbeHeader = () => {
   );
 };
 
-export default IbeHeader;
+export default ReturnIbeHeader;
