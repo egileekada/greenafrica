@@ -236,12 +236,12 @@ const Fare = ({ isRoundTrip }) => {
                               </div>
                             </div>
                           )}
-                          {parseInt(_SSRsCount?.SEAT) > 0 && (
+                          {_SSRCount?.SEAT && (
                             <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
-                                  {_SSRsCount?.SEAT}x&nbsp;Seat
-                                  {_SSRsCount?.SEAT > 1 ? "s" : ""}
+                                  {_SSRCount?.SEAT}x&nbsp;Seat
+                                  {_SSRCount?.SEAT > 1 ? "s" : ""}
                                 </h6>
                               </div>
                               <div>

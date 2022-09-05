@@ -1071,12 +1071,12 @@ export const updatePassengersDetails =
           ],
           passengerID: 0,
           pseudoPassenger: false,
-          // passengerTypeInfo: {
-          //   state: 0,
-          //   stateSpecified: true,
-          //   dob: _passenger.dob,
-          //   paxType: _passenger.type,
-          // },
+          passengerTypeInfo: {
+            state: 0,
+            stateSpecified: true,
+            dob: _passenger?.dob,
+            paxType: _passenger.type,
+          },
         };
         _passengers.push(passengerObj);
       });
@@ -1152,12 +1152,12 @@ export const updatePassengersDetails =
           ],
           passengerID: 0,
           pseudoPassenger: false,
-          // passengerTypeInfo: {
-          //   state: 0,
-          //   stateSpecified: true,
-          //   dob: _passenger.dob,
-          //   paxType: _passenger.type,
-          // },
+          passengerTypeInfo: {
+            state: 0,
+            stateSpecified: true,
+            dob: _passenger.dob,
+            paxType: _passenger.type,
+          },
         };
         _passengers.push(passengerObj);
       });
