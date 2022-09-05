@@ -42,7 +42,15 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
       <section className="ibe__trip__item">
         <div className="basis-full lg:basis-[70%] flex flex-col min-h-[54px] ">
           <p className="tripType self-center underline underline-offset-4">
-            Direct Flight
+            {journey.Segments.map((_segment) => {
+              return (
+                <>
+                  {_segment?.FlightDesignator?.CarrierCode}
+                  &nbsp;
+                  {_segment?.FlightDesignator?.FlightNumber}
+                </>
+              );
+            })}
           </p>
           <div className="flex justify-between">
             <div className="flex flex-col">
@@ -85,7 +93,7 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
             >
               {/* <span className="text-white mr-3">From ₦16,501</span> */}
               <span className="text-white mr-3">
-                {leastFare ? `From ${leastFare.toLocaleString()}` : "Proceed"}
+                {leastFare ? `From ₦${leastFare.toLocaleString()}` : "Proceed"}
               </span>
               <CaretDown />
             </button>
@@ -128,9 +136,8 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
           })}
         </div>
       </section>
-      {/* {!isVisible && ( */}
-      <>
-        {journey.Segments.map((_segment) => {
+      {/* {!isVisible &&
+        journey.Segments.map((_segment) => {
           return (
             <div className="ibe__trip__number">
               <h4>FLIGHT NUMBER</h4>
@@ -141,9 +148,7 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
               </p>
             </div>
           );
-        })}
-      </>
-      {/* )} */}
+        })} */}
     </section>
   );
 };

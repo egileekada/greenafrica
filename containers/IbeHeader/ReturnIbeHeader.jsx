@@ -160,7 +160,7 @@ const ReturnIbeHeader = () => {
   };
 
   return (
-    <section className="ibe__flight__info mt-20">
+    <section className="ibe__flight__info mt-20" id="returnContainer">
       <section className="ibe__flight__info__destination">
         <p className="mx-4">{flightParams?.arrivalStation}</p>
         <figure>

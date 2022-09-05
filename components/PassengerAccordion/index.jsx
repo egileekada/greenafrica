@@ -17,7 +17,7 @@ const PassengerAccordion = ({ children, passenger }) => {
   const toggleAccordion = () => {
     setActive(active === false ? true : false);
     // setHeight(active ? "0px" : `${contentSpace.current.scrollHeight}px`);
-    setHeight(active ? "0px" : `400px`);
+    setHeight(active ? "0px" : `max-content`);
     setRotate(
       active
         ? "transform duration-700 ease"

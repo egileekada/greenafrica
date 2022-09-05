@@ -12,7 +12,7 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
 
   return (
     <section className="ibe__flight__trips">
-      <h2 className="text-primary-main font-extrabold text-sm mb-8 uppercase">
+      <h2 className="text-primary-main font-extrabold text-lg mb-8 uppercase">
         {parseInt(schedueIndex) === 0
           ? `DEPARTURE ON ${format(
               new Date(flightParams?.beginDate),
@@ -28,7 +28,10 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
         {flightAvailabilityLoading ? (
           <Spinner />
         ) : (
-          <section className="flex flex-col">
+          <section
+            className="flex flex-col"
+            // id={schedueIndex === 0 ? "departureContainer" : "returnContainer"}
+          >
             {flightSchedule ? (
               flightSchedule.length > 0 ? (
                 flightSchedule.map((_schedule) => {

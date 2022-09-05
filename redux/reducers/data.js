@@ -348,7 +348,7 @@ export const bookingResponseMultiple = {
             StateSpecified: true,
             DOB: "9999-12-31T00:00:00Z",
             DOBSpecified: true,
-            PaxType: "ADT",
+            PaxType: "CHD",
           },
         ],
         PassengerInfos: [
@@ -18079,7 +18079,7 @@ export const latestBooking = {
             StateSpecified: true,
             DOB: "9999-12-31T00:00:00Z",
             DOBSpecified: true,
-            PaxType: "ADT",
+            PaxType: "CHD",
           },
         ],
         PassengerInfos: [
@@ -18106,7 +18106,7 @@ export const latestBooking = {
           StateSpecified: true,
           DOB: "9999-12-31T00:00:00Z",
           DOBSpecified: true,
-          PaxType: "ADT",
+          PaxType: "CHD",
         },
         PassengerEMDCouponList: [],
         State: 1,

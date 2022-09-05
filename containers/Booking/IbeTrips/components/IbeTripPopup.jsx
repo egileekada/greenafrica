@@ -76,7 +76,7 @@ const IbeTripPopup = ({
           <>
             <section className="w-full bg-white rounded-xl hidden lg:flex flex-col">
               <div className="bg-primary-main text-center flex items-center justify-center p-8 rounded-t-xl">
-                <h3 className="text-white">
+                <h3 className="text-white text-base">
                   Upgrade your fare and enjoy more benefits{" "}
                 </h3>
               </div>

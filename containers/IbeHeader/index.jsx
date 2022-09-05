@@ -26,6 +26,7 @@ const IbeHeader = () => {
   // const [length, setLength] = useState(width > 1200 ? 7 : 3);
   const [currentFDateList, setCurrFDates] = useState([]);
   const [recurrent, setRecurrent] = useState(false);
+  const [loaded, setLoaded] = useState(true);
 
   const {
     availabilityResponse,
@@ -105,6 +106,8 @@ const IbeHeader = () => {
           }
         }
       }
+
+      setLoaded(false);
     }
   }, [lowFareAvailabilityResponse]);
 
@@ -226,8 +229,10 @@ const IbeHeader = () => {
                     </div>
                   );
                 })
+              ) : loaded ? (
+                <Spinner />
               ) : (
-                <p className="errorText text-lg">No date available</p>
+                <p className="errorText text-lg"> No date available</p>
               )}
             </section>
 

@@ -19,7 +19,7 @@ const TripConfirm = () => {
   const router = useRouter();
   let componentRef = useRef();
   const dispatch = useDispatch();
-  const [segmentInfo, setSegmentInfo] = useState(null);
+  // const [segmentInfo, setSegmentInfo] = useState(null);
   const [isRoundTrip, setIsRoundTrip] = useState(false);
 
   const { bookingResponseLoading, bookingResponse, signature } =
@@ -50,21 +50,8 @@ const TripConfirm = () => {
         </h2>
         <p>
           Thank you for booking your travel wIth Green Africa. Below is a
-          summary of your{" "}
-          <span className="font-display">
-            {" "}
-            {isRoundTrip ? "Round" : "One Way"}
-          </span>{" "}
-          trip from{" "}
-          <span className="font-display font-bold">
-            {segmentInfo?.DepartureStation}
-          </span>
-          &nbsp;to&nbsp;
-          <span className="font-display font-bold">
-            {segmentInfo?.ArrivalStation}
-          </span>
-          . We’ve also sent a copy of your booking confirmation to your email
-          address.{" "}
+          summary of your trip, We’ve also sent a copy of your booking
+          confirmation to your email address.{" "}
         </p>
       </div>
     );

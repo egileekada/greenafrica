@@ -2,7 +2,7 @@
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import { useEffect, useState } from "react";
-import { useFormik } from "formik";
+import { FormikConsumer, useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -304,12 +304,25 @@ const PassengerForm = () => {
                           </div>
                           <div className="phone-input">
                             <input
-                              type="number"
-                              // placeholder="Enter your number"
+                              type="tel"
+                              pattern="[0-9]*"
                               id="c_phone"
                               name="c_phone"
                               placeholder="9056789087"
                               {...formik.getFieldProps("c_phone")}
+                              onChange={(e) => {
+                                e.preventDefault();
+                                const { value } = e.target;
+                                if (value.length > 0) {
+                                  const regex =
+                                    /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
+                                  if (regex.test(value.toString())) {
+                                    formik.setFieldValue("c_phone", value);
+                                  }
+                                } else {
+                                  formik.setFieldValue("c_phone", "");
+                                }
+                              }}
                             />
                           </div>
                         </div>
