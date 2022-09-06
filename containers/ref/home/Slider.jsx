@@ -39,7 +39,7 @@ const HeroSlider = () => {
   }, [status, webBanners]);
 
   useEffect(() => {
-    if (width > 899) {
+    if (width) {
       timer.current = setTimeout(() => {
         let newIndex = currIndex + 1;
         if (slide.current !== null) {
@@ -109,7 +109,7 @@ const HeroSlider = () => {
             </>
           ) : (
             <>
-              <div className="carousel__content h-[66vh]">
+              <div ref={item} className="carousel__content">
                 {desktopBanners
                   ?.filter((i) => !!i.mobile_image_url)
                   ?.map((bg, index) => {
@@ -121,6 +121,7 @@ const HeroSlider = () => {
                         className="carousel__content-item"
                         style={{
                           backgroundImage: `url(${bg.mobile_image_url})`,
+                          backgroundSize: "contain",
                         }}
                       >
                         <div className="flex absolute max-w-[270px] sm:max-w-sm top-24 text-primary-main left-10 sm:left-24 font-body flex-col text-left justify-center items-start gap-4">
