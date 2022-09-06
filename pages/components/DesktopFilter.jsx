@@ -115,7 +115,7 @@ const DesktopFilter = () => {
             </>
           ) : (
             <button
-              className="flex items-center hidden md:flex"
+              className="items-center hidden md:flex"
               onClick={() => setShowPromo(true)}
             >
               <figure className="mr-2">

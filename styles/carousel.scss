@@ -87,10 +87,7 @@ $cream: #fff6f6;
 }
 
 .carousel {
-  height: 380px;
-  height: 31.25rem;
-  //TODO fix this height thingy
-  height: 28rem;
+  height: 60vh;
   background-size: 100%;
   background-repeat: no-repeat;
   position: relative;
@@ -98,6 +95,10 @@ $cream: #fff6f6;
   @include flexCenter;
   justify-content: flex-start;
   overflow: hidden;
+
+  @include respond(phone) {
+    height: 20rem;
+  }
 
   &__mobile {
     height: 100%;

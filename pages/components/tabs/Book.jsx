@@ -257,7 +257,7 @@ const BookingTab = ({ type, promocode, fromTo, setFromTo }) => {
                 role="button"
                 src="/images/to_from.svg"
                 alt=""
-                className="absolute -right-6 bottom-2.5 invisible lg:visible z-10"
+                className="absolute right-6 -bottom-6 transform rotate-90 lg:rotate-0 lg:-right-6 lg:bottom-2.5 z-10"
               />
             </div>
 
