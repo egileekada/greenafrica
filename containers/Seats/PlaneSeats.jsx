@@ -41,13 +41,10 @@ const PlaneSeats = forwardRef(
       bookingState,
     } = useSelector(sessionSelector);
 
-    const [key] = useState(Math.random());
     const [segmentSeatRequests, setSegmentSeatRequests] = useState([]);
     const [selected, setSelected] = useState(0);
 
-    // const [selectedSeat, setSelectedSeat] = useState([]);
-
-    const setSeat = (seat) => {
+    const setSeat = async (seat) => {
       //TODO pass journey type to this component
       //TODO watch for situation where not all users select seat
 
@@ -73,28 +70,40 @@ const PlaneSeats = forwardRef(
 
         const newItems = segmentSeatRequests.map((item, index) => {
           if (passengerNumber == index) {
-            const newItem = { ...item };
-            newItem.flightDesignator =
-              bookingState?.Journeys[ticketIndex].Segments[0].FlightDesignator;
-            newItem.unitDesignator = SeatDesignator;
-            newItem.std = bookingState?.Journeys[ticketIndex].Segments[0].STD;
-            newItem.departureStation =
-              bookingState?.Journeys[ticketIndex].Segments[0].DepartureStation;
-            newItem.arrivalStation =
-              bookingState?.Journeys[ticketIndex].Segments[0].ArrivalStation;
-            newItem.passengerSeatPreferences[0].propertyTypeCode =
-              TypeCode[0].TypeCode;
-            newItem.passengerSeatPreferences[0].propertyCode =
-              PropertyList[PropertyList.length - 1].TypeCode;
+            const newItem = {
+              ...item,
+              flightDesignator: {
+                ...bookingState?.Journeys[ticketIndex].Segments[0]
+                  .FlightDesignator,
+              },
+              unitDesignator: SeatDesignator,
+              std: bookingState?.Journeys[ticketIndex].Segments[0].STD,
+              departureStation:
+                bookingState?.Journeys[ticketIndex].Segments[0]
+                  .DepartureStation,
+              arrivalStation:
+                bookingState?.Journeys[ticketIndex].Segments[0].ArrivalStation,
+              passengerSeatPreferences: [
+                {
+                  ...item.passengerSeatPreferences[0],
+                  propertyTypeCode: TypeCode[0].TypeCode,
+                  propertyCode: PropertyList[PropertyList.length - 1].TypeCode,
+                },
+              ],
+            };
+
+            dispatch(trySaveSeat({ data: newItem }));
+
             return {
               ...item,
               ...newItem,
             };
           }
+
           return item;
         });
 
-        setSegmentSeatRequests(newItems);
+        await setSegmentSeatRequests(newItems);
       }
     };
 
@@ -329,7 +338,7 @@ const PlaneSeats = forwardRef(
         dispatch(tryAssignSeat({ data: segmentSeatRequests }));
       },
       saveSeat() {
-        dispatch(trySaveSeat({ data: segmentSeatRequests }));
+        // dispatch(trySaveSeat({ data: segmentSeatRequests }));
       },
     }));
 

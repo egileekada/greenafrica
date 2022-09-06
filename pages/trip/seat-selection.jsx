@@ -94,24 +94,24 @@ const SeatSelection = () => {
                 </h2>
               </div>
 
-              <section className="flex flex-col bg-white pb-24">
-                <section className="ibe__flight__info__destination">
+              <section className="flex flex-col bg-white pb-24 pt-5 px-8 rounded-lg">
+                {/* <section className="ibe__flight__info__destination">
                   <p>Seat Selection</p>
                   <figure className="flightCircle">
                     <FlightIcon />
                   </figure>
-                </section>
+                </section> */}
                 {/* TripHeader*/}
 
-                <Tabs defaultActiveKey="1">
+                <Tabs defaultActiveKey="1" tabBarStyle={{ color: "#47FF5A" }}>
                   {bookingState?.Journeys.map((journey, index) => (
                     <TabPane
                       tab={
-                        <div className="inline-flex px-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 items-center font-semibold">
+                        <div className="inline-flex rounded-t-lg border-b-2 border-transparent text-[#9E9BBF] hover:text-[#9E9BBF] items-center font-semibold group">
                           <svg
                             width="16"
                             height="16"
-                            className="mr-2 w-5 h-5 text-primary-main group-hover:text-gray-500"
+                            className="mr-2 w-5 h-5 text-[#9E9BBF] group-hover:text-[#9E9BBF]"
                             viewBox="0 0 16 16"
                             fill="currentColor"
                             xmlns="http://www.w3.org/2000/svg"
@@ -123,14 +123,11 @@ const SeatSelection = () => {
                             width="17"
                             height="8"
                             viewBox="0 0 17 8"
-                            className="mx-5 w-5 h-5 text-primary-main group-hover:text-gray-500"
-                            fill="none"
+                            className="mx-5 w-5 h-5 text-[#9E9BBF] group-hover:text-[#9E9BBF]"
+                            fill="currentColor"
                             xmlns="http://www.w3.org/2000/svg"
                           >
-                            <path
-                              d="M16.3536 4.35355C16.5488 4.15829 16.5488 3.84171 16.3536 3.64645L13.1716 0.464466C12.9763 0.269204 12.6597 0.269204 12.4645 0.464466C12.2692 0.659728 12.2692 0.976311 12.4645 1.17157L15.2929 4L12.4645 6.82843C12.2692 7.02369 12.2692 7.34027 12.4645 7.53553C12.6597 7.7308 12.9763 7.7308 13.1716 7.53553L16.3536 4.35355ZM16 3.5L0 3.5V4.5L16 4.5V3.5Z"
-                              fill="#26205E"
-                            />
+                            <path d="M16.3536 4.35355C16.5488 4.15829 16.5488 3.84171 16.3536 3.64645L13.1716 0.464466C12.9763 0.269204 12.6597 0.269204 12.4645 0.464466C12.2692 0.659728 12.2692 0.976311 12.4645 1.17157L15.2929 4L12.4645 6.82843C12.2692 7.02369 12.2692 7.34027 12.4645 7.53553C12.6597 7.7308 12.9763 7.7308 13.1716 7.53553L16.3536 4.35355ZM16 3.5L0 3.5V4.5L16 4.5V3.5Z" />
                           </svg>
                           {journey.Segments[0].ArrivalStation}
                         </div>

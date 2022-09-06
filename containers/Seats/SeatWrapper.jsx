@@ -111,20 +111,6 @@ const SeatWrapper = ({ ticketIndex }) => {
                 </span>
               </span>
             </button>
-            <div className="hidden md:flex pr-3 mt-10">
-              <Link href="/trip/payment" className="btn btn-outline mr-4">
-                <a className="btn btn-outline mr-4 text-center">Skip</a>
-              </Link>
-              {seatSelected && (
-                <button
-                  className="btn btn-primary"
-                  onClick={handleClick}
-                  //   disabled={isLoading}
-                >
-                  {isLoading ? "Assigning..." : "Continue"}
-                </button>
-              )}
-            </div>
           </div>
           {/* Seat Info */}
         </div>

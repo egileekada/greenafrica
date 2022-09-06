@@ -231,8 +231,34 @@ export const sessionSlice = createSlice({
       state.sessionStateResponse = payload;
     },
     setSeats: (state, { payload }) => {
-      console.log(payload);
-      state.seats = [...state.seats, ...payload];
+      const hasItem = state.seats.some(
+        (l) =>
+          l.arrivalStation === payload.arrivalStation &&
+          l.passengerNumbers[0] === payload.passengerNumbers[0]
+      );
+
+      if (hasItem) {
+        return {
+          ...state,
+          seats: state.seats.map((el) => {
+            if (
+              el.arrivalStation === payload.arrivalStation &&
+              el.passengerNumbers[0] === payload.passengerNumbers[0]
+            ) {
+              return {
+                ...el,
+                ...payload,
+              };
+            }
+            return el;
+          }),
+        };
+      } else {
+        return {
+          ...state,
+          seats: state.seats.concat(payload),
+        };
+      }
     },
   },
   extraReducers: (builder) => {
