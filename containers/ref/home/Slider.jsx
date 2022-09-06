@@ -109,18 +109,31 @@ const HeroSlider = () => {
             </>
           ) : (
             <>
-              <div className="carousel__mobile">
-                <figure>
-                  <img
-                    src={
-                      desktopBanners?.length > 0
-                        ? desktopBanners[0].mobile_image_url
-                        : "/images/mobile-hero.png"
-                    }
-                    alt="imagesd"
-                    className="object-cover w-full"
-                  />
-                </figure>
+              <div className="carousel__content h-[66vh]">
+                {desktopBanners
+                  ?.filter((i) => !!i.mobile_image_url)
+                  ?.map((bg, index) => {
+                    return (
+                      <div
+                        data-key={index}
+                        key={bg.id}
+                        ref={slide}
+                        className="carousel__content-item"
+                        style={{
+                          backgroundImage: `url(${bg.mobile_image_url})`,
+                        }}
+                      >
+                        <div className="flex absolute max-w-[270px] sm:max-w-sm top-24 text-primary-main left-10 sm:left-24 font-body flex-col text-left justify-center items-start gap-4">
+                          <h1 className="font-bold text-4xl text-primary-main">
+                            {bg.subject}
+                          </h1>
+                          <p className="font-body text-lg text-primary-main">
+                            {bg.description}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </>
           )}
