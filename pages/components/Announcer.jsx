@@ -39,18 +39,19 @@ const HomePopup = () => {
               <p className="text-sm leading-[29px] font-light text-primary-main md:text-white mb-6">
                 {data?.data.item.body}
               </p>
-              <button
+              <a
+                href={data?.data.item.cta_link}
                 className="btn btn-primary md:white border border-white w-[133px] py-4 px-6"
                 onClick={() => setShow(false)}
               >
                 Get Started
-              </button>
+              </a>
             </div>
           </div>
           <div className="h-full rounded-r-xl md:w-auto">
             <figure className="h-[483px]">
               <img
-                src={data?.data.item.image_url}
+                src={data?.data.item.web_image_url}
                 alt={data?.data.item.subject}
                 className="w-full h-full object-cover rounded-r-xl invisible lg:visible"
               />

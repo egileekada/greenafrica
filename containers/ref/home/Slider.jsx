@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useDeviceSize from "hooks/useWindowSize";
-import { getBanner, getMobileBanner } from "../../../services";
+import { getBanner } from "../../../services";
 import { Spin } from "antd";
 
 const HeroSlider = () => {
@@ -13,10 +13,7 @@ const HeroSlider = () => {
     status,
   } = useQuery(["banners"], getBanner);
 
-  const { data: mobileBanner, status: mobileStatus } = useQuery(
-    ["mobileBanner"],
-    getMobileBanner
-  );
+
   const [currIndex, setCurrIndex] = useState(0);
   const item = useRef();
   const slide = useRef();
@@ -35,26 +32,13 @@ const HeroSlider = () => {
       url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
     },
   ]);
-  const [mobileBanners, setMobileBanners] = useState([
-    {
-      id: 12,
-      slug: "banners/May2022/uYtvFKsmpEocAPCO1VIy.png",
-      type: "mobile",
-      alt_text: null,
-      title: "Children's Day",
-      show: 1,
-      created_at: "2022-05-27T07:48:47.000000Z",
-      updated_at: "2022-05-27T07:48:47.000000Z",
-      url: "https://static.greenafrica.com/media/1002/banner-home.png",
-    },
-  ]);
 
-  // useEffect(() => {
-  //   if (status === "success") {
-  //     setDesktopBanners(webBanners?.data?.item);
-  //     setMobileBanners(mobileBanner?.data?.item);
-  //   }
-  // }, [status, webBanners, mobileBanner]);
+
+  useEffect(() => {
+    if (status === "success") {
+      setDesktopBanners(webBanners?.data?.items);
+    }
+  }, [status, webBanners]);
 
   useEffect(() => {
     if (width > 899) {
@@ -72,9 +56,8 @@ const HeroSlider = () => {
               "translateX(" + -size * newIndex + "px)";
           }
         }
-      }, 5000);
+      }, 10000);
     }
-    // }, [currIndex]);
   });
 
   return (
@@ -88,7 +71,7 @@ const HeroSlider = () => {
           {width > 899 ? (
             <>
               <div ref={item} className="carousel__content">
-                {desktopBanners.map((bg, index) => {
+                {desktopBanners?.map((bg, index) => {
                   return (
                     <div
                       data-key={index}
@@ -96,7 +79,7 @@ const HeroSlider = () => {
                       ref={slide}
                       className="carousel__content-item"
                       style={{
-                        backgroundImage: `url(${bg.image_url})`,
+                        backgroundImage: `url(${bg.web_image_url})`,
                       }}
                     ></div>
                   );
@@ -123,8 +106,8 @@ const HeroSlider = () => {
                 <figure>
                   <img
                     src={
-                      mobileBanners?.length > 0
-                        ? mobileBanners[0].url
+                      desktopBanners?.length > 0
+                        ? desktopBanners[0].mobile_image_url
                         : "/images/mobile-hero.png"
                     }
                     alt="imagesd"

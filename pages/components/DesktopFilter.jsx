@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PromoIcon from "assets/svgs/promo.svg";
 import CheckInTab from "./tabs/CheckInTab";
 import BookingTab from "./tabs/BookingTab";
@@ -9,6 +9,21 @@ const DesktopFilter = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [promocode, setPromocode] = useState(null);
   const [showPromo, setShowPromo] = useState(false);
+  const [saveStatus, setSaveStatus] = useState(false);
+
+  const promo = useRef(null);
+
+  const saveVal = () => {
+    if (promocode !== null && promocode.length > 1) {
+      setSaveStatus(true);
+    }
+  };
+
+  const clear = () => {
+    setSaveStatus(false);
+    promo.current.value = null;
+    setPromocode(null);
+  };
 
   return (
     <section className="ga__desktop__filter w-full bg-green min-h-[168px] flex flex-col">
@@ -71,14 +86,29 @@ const DesktopFilter = () => {
             <>
               <div className="relative">
                 <PromoIcon className="absolute top-3 left-2" />
+
                 <input
                   type="text"
+                  ref={promo}
                   className="rounded h-10 pl-8 border border-[#EFEFEF]"
                   placeholder="Enter Promo Code"
                   onChange={(e) => setPromocode(e.target.value)}
                 />
+                {saveStatus && (
+                  <img
+                    onClick={() => clear()}
+                    role="button"
+                    src="/images/clear-promo.svg"
+                    alt=""
+                    className="absolute right-3 bottom-2.5 invisible lg:visible z-10"
+                  />
+                )}
               </div>
-              <button className="btn btn-outline font-title text-primary-main py-2 rounded-lg mx-2">
+              <button
+                className="btn btn-outline font-title text-primary-main py-2 rounded-lg mx-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => saveVal()}
+                disabled={saveStatus}
+              >
                 Apply
               </button>
             </>
