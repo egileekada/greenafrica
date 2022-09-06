@@ -107,7 +107,7 @@ const Destinations = (props) => {
           You are one flight closer to your dreams and destinations.
         </p>
 
-        <div className="select__wrapper px-5 mx-5 visible md:invisible">
+        <div className="select__wrapper px-5 mx-5 block md:hidden">
           <p className="text-xs text-uppercase my-2">FROM</p>
           <select
             name=""
@@ -134,8 +134,8 @@ const Destinations = (props) => {
               >
                 <div className="relative">
                   <FlightIcon className="inline-block absolute" />
-                  <h1 className="text-primary-main font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
-                    {destination.destination}
+                  <h1 className="text-primary-main pl-5 font-semibold text-lg mb-2 rounded-full bg-grey-light py-2 text-center w-8/12">
+                    {destination.destination_fullname}
                   </h1>
                 </div>
                 <p className="text-base text-primary-main font-light ml-8">
