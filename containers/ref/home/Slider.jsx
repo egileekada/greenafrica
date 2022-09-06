@@ -13,7 +13,6 @@ const HeroSlider = () => {
     status,
   } = useQuery(["banners"], getBanner);
 
-
   const [currIndex, setCurrIndex] = useState(0);
   const item = useRef();
   const slide = useRef();
@@ -32,7 +31,6 @@ const HeroSlider = () => {
       url: "https://static.greenafrica.com/media/1001/microsoftteams-image-4.png",
     },
   ]);
-
 
   useEffect(() => {
     if (status === "success") {
@@ -81,7 +79,16 @@ const HeroSlider = () => {
                       style={{
                         backgroundImage: `url(${bg.web_image_url})`,
                       }}
-                    ></div>
+                    >
+                      <div className="flex absolute max-w-sm top-24 text-primary-main left-24 font-body flex-col text-left justify-center items-start gap-4">
+                        <h1 className="font-bold text-4xl text-primary-main">
+                          {bg.subject}
+                        </h1>
+                        <p className="font-body text-lg text-primary-main">
+                          {bg.description}
+                        </p>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
