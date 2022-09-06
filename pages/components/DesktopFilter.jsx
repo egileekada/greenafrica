@@ -10,6 +10,7 @@ const DesktopFilter = () => {
   const [promocode, setPromocode] = useState(null);
   const [showPromo, setShowPromo] = useState(false);
   const [saveStatus, setSaveStatus] = useState(false);
+  const [fromTo, setFromTo] = useState({ from: "", to: "" });
 
   const promo = useRef(null);
 
@@ -126,8 +127,17 @@ const DesktopFilter = () => {
         </div>
       </div>
       <section className="ga__desktop__filter__content px-5 py-[18px]">
-        {activeTab === 1 && <Book promocode={promocode} />}
-        {activeTab === 2 && <Book type={"round_trip"} promocode={promocode} />}
+        {activeTab === 1 && (
+          <Book fromTo={fromTo} setFromTo={setFromTo} promocode={promocode} />
+        )}
+        {activeTab === 2 && (
+          <Book
+            fromTo={fromTo}
+            setFromTo={setFromTo}
+            type={"round_trip"}
+            promocode={promocode}
+          />
+        )}
         {activeTab === 3 && <CheckInTab />}
         {activeTab === 4 && <BookingTab />}
       </section>

@@ -15,9 +15,9 @@ const validationSchema = Yup.object().shape({
   origin: Yup.object().required("Required"),
 });
 
-const BookingTab = ({ type, promocode }) => {
+const BookingTab = ({ type, promocode, fromTo, setFromTo }) => {
   const { data } = useQuery(["destination"], getWidgetData);
-  const [departing, setDeparting] = useState(add(new Date(), { weeks: 1 }));
+  // const [departing, setDeparting] = useState(add(new Date(), { weeks: 1 }));
   const [arrivals, setArrivals] = useState([]);
   const [passengers, setPassengers] = useState(0);
   const [infant, setInfant] = useState(0);
@@ -157,8 +157,8 @@ const BookingTab = ({ type, promocode }) => {
 
   const formik = useFormik({
     initialValues: {
-      origin: "",
-      destination: "",
+      origin: fromTo.from,
+      destination: fromTo.to,
       departure: add(new Date(), { weeks: 1 }),
       return: add(new Date(), { days: 10 }),
       promocode,
@@ -229,7 +229,7 @@ const BookingTab = ({ type, promocode }) => {
                 role="button"
               />
               <div className="w-full mx-2 px-2 md:px-0">
-                <p className="mb-1 text-xs mb-0 text-[#979797]">FROM</p>
+                <p className="mb-0 text-xs text-[#979797]">FROM</p>
                 <Select
                   ref={originSelect}
                   openMenuOnFocus={true}
@@ -244,7 +244,8 @@ const BookingTab = ({ type, promocode }) => {
                   onChange={(value) => (
                     formik.setFieldValue("origin", value),
                     formik.setFieldValue("destination", " "),
-                    setArrivals(value.arrivals)
+                    setArrivals(value.arrivals),
+                    setFromTo({ ...fromTo, from: value, to: " " })
                   )}
                   options={data?.data?.values}
                   className="border-0"
@@ -275,7 +276,7 @@ const BookingTab = ({ type, promocode }) => {
                 onClick={() => forcusOrigin(destinationSelect)}
               />
               <div className="w-full mx-2 px-2 md:px-0">
-                <p className="mb-1 text-xs mb-0 text-[#979797]">TO</p>
+                <p className="mb-0 text-xs text-[#979797]">TO</p>
                 <Select
                   ref={destinationSelect}
                   openMenuOnFocus={true}
@@ -292,6 +293,7 @@ const BookingTab = ({ type, promocode }) => {
                   value={formik.values.destination}
                   onChange={(value) => {
                     formik.setFieldValue("destination", value);
+                    setFromTo({ ...fromTo, to: value });
                   }}
                   noOptionsMessage={() => "Kindly choose an origin"}
                 />
