@@ -48,7 +48,7 @@ const Home = () => {
         <section className="w-full px-3.5 py-14 lg:fit-x-bleed support-docs">
           <div>
             <div
-              className="blog_post"
+              className="story__post privacy_page"
               dangerouslySetInnerHTML={{
                 __html: `${data?.data?.item.body}`,
               }}

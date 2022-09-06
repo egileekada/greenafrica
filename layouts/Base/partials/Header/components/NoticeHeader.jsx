@@ -4,8 +4,7 @@ import { getNotifications } from "../../../../../services";
 import useDeviceSize from "hooks/useWindowSize";
 import CovidIcon from "assets/svgs/bell.svg";
 import { useEffect, useState } from "react";
-
-export const BANNER_SHOW = "greenBannerShow";
+import { BANNER_SHOW } from "lib/common";
 
 const NoticeHeader = () => {
   const { data } = useQuery(["notifications"], getNotifications);
@@ -15,7 +14,14 @@ const NoticeHeader = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    setShow(localStorage?.getItem(BANNER_SHOW) ?? true);
+    if (typeof window !== "undefined") {
+      if (
+        localStorage.getItem(BANNER_SHOW) !== "false" &&
+        localStorage.getItem(BANNER_SHOW) !== false
+      ) {
+        setShow(true);
+      }
+    }
   }, []);
 
   return (
