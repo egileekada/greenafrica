@@ -118,7 +118,6 @@ const SummaryDetails = ({ isRoundTrip }) => {
                       : "INFANT"}
                   </h6>
                   <h6>
-                    _passenger?.PassengerTypeInfo?.PaxType ::{" "}
                     {_passenger?.PassengerTypeInfo?.PaxType}
                   </h6>
 
