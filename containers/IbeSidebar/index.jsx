@@ -4,7 +4,7 @@ import TripInfo from "./components/TripInfo";
 import PassengerInfo from "./components/Passenger";
 import SeatInfo from "./components/SeatInfo";
 import PaymentInfo from "./components/PaymentInfo";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 

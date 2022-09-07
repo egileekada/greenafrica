@@ -26,7 +26,7 @@ import {
   _selectedSessionFare,
   _selectedSessionJourney,
   _ssrAv,
-  latestBooking,
+  bookingState,
 } from "./data";
 
 const initialState = {
@@ -35,10 +35,8 @@ const initialState = {
   sessionLoading: false,
   lowFareAvailabilityLoading: false,
   lowFareAvailabilityResponse: null,
-
   returnFareAvailabilityLoading: false,
   returnFareAvailabilityResponse: null,
-
   flightAvailabilityLoading: false,
   flightParams: null,
   availabilityResponse: null,
@@ -73,6 +71,7 @@ const initialState = {
   assignSeatResponse: null,
   bookingState: null,
   sessionStateLoading: false,
+  // sessionStateResponse: bookingState,
   sessionStateResponse: null,
   seats: [],
 };
