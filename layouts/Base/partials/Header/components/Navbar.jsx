@@ -7,11 +7,11 @@ const Navbar = () => {
   return (
     <Fragment>
       <nav className="nav bg-primary-main fit-x-bleed items-center justify-between py-7 hidden lg:flex">
-        <Link href="/">
+        <a href="https://dev-website.gadevenv.com/">
           <figure className="cursor-pointer">
             <LogoIcon />
           </figure>
-        </Link>
+        </a>
         <ul className="hidden tab:flex items-center">
           <li>
             <Link href="/de">
@@ -35,12 +35,12 @@ const Navbar = () => {
           </li>
         </ul>
       </nav>
-      <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
+      {/* <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
         <button className="flex items-center">
           <BackIcon />
           <span className="ml-6 text-white text-xs">ADDITIONAL SERVICES</span>
         </button>
-      </nav>
+      </nav> */}
     </Fragment>
   );
 };

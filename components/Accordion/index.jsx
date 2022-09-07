@@ -30,7 +30,7 @@ const Accordion = ({ item: { question, answer } }) => {
         onClick={toggleAccordion}
       >
         <p
-          className={`inline-block text-[#26205E] text-base  md:text-lg font-body text-left transition-all w-[80%] md:w-auto ${
+          className={`inline-block text-[#26205E] text-base  md:text-lg font-body font-bold text-left transition-all w-[80%] md:w-auto ${
             active ? "text-green" : ""
           }  `}
         >

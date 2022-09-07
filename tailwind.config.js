@@ -45,6 +45,7 @@ module.exports = {
           seven: "#7A7794",
         },
         faq__border: "rgba(229, 230, 236, 0.6)",
+        details__border: "1px solid rgba(158, 155, 191, 0.15)",
         purple: {
           light: "#ECEAFD",
         },

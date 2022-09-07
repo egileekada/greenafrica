@@ -1,7 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 import CalendarIcon from "assets/svgs/calendar.svg";
+import Spinner from "components/Spinner";
+import { useDispatch, useSelector } from "react-redux";
+import { sessionSelector } from "redux/reducers/session";
+import { showWidget } from "redux/reducers/general";
+import format from "date-fns/format";
 
 const FlightInfo = () => {
+  const dispatch = useDispatch();
+  const { flightParams, sessionStateResponse } = useSelector(sessionSelector);
+
+  // const totalPassengers = sessionStateResponse
+  //   ? sessionStateResponse?.BookingData?.Passengers.length
+  //   : 0;
+
+  const totalPassengers =
+    parseInt(flightParams?.ADT) +
+    parseInt(flightParams?.CHD) +
+    parseInt(flightParams?.INF);
+
   return (
     <section className="ibe__sidebar__item mb-10">
       <h1 className="mb-4">FLIGHT INFORMATION</h1>
@@ -12,16 +29,20 @@ const FlightInfo = () => {
           </figure>
           <div className="flex flex-col">
             <h4 className="text-white text-[10px] leading-[13px] font-display font-extrabold mb-1">
-              22 JULY 2022
+              {format(new Date(flightParams?.beginDate), "LLL dd, yyyy")}
             </h4>
             <h5 className="text-[#928DC0]  text-[10px] leading-[13px] font-display font-extrabold">
-              1 PASSENGER
+              {totalPassengers} PASSENGER{totalPassengers > 1 ? "S" : ""}
             </h5>
           </div>
         </div>
-        <button className="text-white underline">Change</button>
+        <button
+          className="text-white underline"
+          onClick={() => dispatch(showWidget())}
+        >
+          Edit
+        </button>
       </div>
-     
     </section>
   );
 };

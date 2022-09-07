@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import axios from "services/axiosConfig";
+// import axios from "axios";
 
 const SESSION = `Session/`;
 
 export const Logon = async (payload) => {
-  let request = axios.post(`${SESSION}Logon`, payload);
+  let request = axios.post(`${SESSION}Logon`, { ...payload });
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;
@@ -21,7 +22,6 @@ export const WhoAmI = async (payload) => {
   });
 };
 
-
 export const KeepAlive = async (payload) => {
   let request = axios.post(`${SESSION}KeepAlive`, payload);
   return request.then((response) => {
@@ -30,7 +30,6 @@ export const KeepAlive = async (payload) => {
     }
   });
 };
-
 
 export const LogOutAsync = async (payload) => {
   let request = axios.post(`${SESSION}LogOutAsync`, payload);

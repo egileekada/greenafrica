@@ -1,0 +1,145 @@
+/* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
+import BaseLayout from "layouts/Base";
+import IbeSidebar from "containers/IbeSidebar";
+import FlightIcon from "assets/svgs/FlightTwo.svg";
+import ArrowTo from "assets/svgs/arrowto.svg";
+import { Checkbox } from "antd";
+import BackIcon from "assets/svgs/seats/arrowleft.svg";
+import ToTop from "assets/svgs/toTop.svg";
+import AeroIcon from "assets/svgs/aero.svg";
+import DottedLine from "assets/svgs/dotted-line.svg";
+import WorkIcon from "assets/svgs/work.svg";
+
+const TripView = () => {
+  const onChange = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+
+  return (
+    <BaseLayout>
+      <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
+        <button className="flex items-center">
+          <BackIcon />
+          <span className="ml-6 text-white text-xs">TRIP DETAILS</span>
+        </button>
+      </nav>
+      <section className="w-full">
+        <section className="ga__section">
+          <div className="ga__section__main">
+            <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
+              YOUR TRIP TO ABUJA
+            </h2>
+
+            <section className="flex flex-col">
+              {/* TripHeader */}
+              <section className="ibe__flight__info__destination">
+                <p>Lagos (LOS)</p>
+                <figure>
+                  <ArrowTo />
+                </figure>
+                <p>Abuja (ABV)</p>
+
+                <figure className="flightCircle">
+                  <FlightIcon />
+                </figure>
+              </section>
+              {/* TripHeader*/}
+
+              {/* TripInfo */}
+              <section className="ibe__trip__item tripView">
+                <div className="basis-full flex  flex-col min-h-[54px] ">
+                  <p className="tripType self-center">Direct Flight</p>
+                  <div className="flex justify-between">
+                    <div className="flex flex-col">
+                      <h5 className="tripType">18:00</h5>
+                      <p className="tripCity">Lagos (LOS)</p>
+                    </div>
+                    <div className="tripIconPath">
+                      <DottedLine className="dotted-svg" />
+                      <AeroIcon className="aero-svg" />
+                      <DottedLine className="dotted-svg" />
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <h5 className="tripType right-text font-bold">19:00</h5>
+                      <p className="tripCity right-text">Abuja (ABJ)</p>
+                    </div>
+                  </div>
+                  <p className="tripTime self-center">1h 35mins</p>
+                </div>
+              </section>
+              {/* TripInfo */}
+              {/* TripPackage */}
+              <section className="ibe__trip__package flex justify-between">
+                <div className="flex flex-col">
+                  <h5>TRAVEL PACKAGE</h5>
+                  <h6>gClassic</h6>
+                  <button className="text-primary-main underline text-xs lg:text-sm font-body mt-4">
+                    Upgrade To gFlex
+                  </button>
+                </div>
+                <div className="flex flex-col items-end">
+                  <h5>FARE PRICE</h5>
+                  <h6>₦26,501</h6>
+                </div>
+              </section>
+              {/* TripPackage */}
+              {/* Flight Number */}
+              <div className="ibe__trip__number tripView">
+                <div className="flex flex-wrap lg:flex-nowrap items-center justify-between">
+                  <div className="flex items-center basis-full lg:basis-1/2 mb-6">
+                    <figure className="w-[41px] h-[41px] rounded-full flex items-center justify-center bg-primary-main mr-4">
+                      <WorkIcon />
+                    </figure>
+                    <h4 className="mb-0">7kg hand luggage: 55 x40 x 24cm</h4>
+                  </div>
+                  <button className="btn btn-outline basis-full lg:basis-auto flex-shrink-0">
+                    Change Flight
+                  </button>
+                </div>
+              </div>
+              {/* Flight Number */}
+
+              {/* Terms */}
+              <div className="flex flex-col my-6">
+                <div className="flex mb-6">
+                  <div className="flex items-center checkbox-copy mb-6">
+                    <Checkbox onChange={onChange}>
+                      <label className="check-label"></label>
+                    </Checkbox>
+                  </div>
+
+                  <p>
+                    I have read and accept the airline’s &nbsp;
+                    <Link href="/terms">
+                      <a className="text-primary-main hover:text-green underline font-display">
+                        Fare Rules and Terms and Conditions.
+                      </a>
+                    </Link>{" "}
+                    I acknowledge that personal information relating to my
+                    booking may be accessible to government authorities,
+                    selected airlines and the agents to whom the airline grants
+                    system access.
+                  </p>
+                </div>
+                <button className="btn btn-primary w-[195px]">Continue</button>
+              </div>
+              {/* Terms */}
+            </section>
+          </div>
+          <div className="ga__section__side">
+            <IbeSidebar />
+          </div>
+        </section>
+      </section>
+      {/* <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50 bottom-0">
+        <button className="flex items-center ">
+          <ToTop />
+        </button>
+        <button className="btn btn-green">Continue</button>
+      </nav> */}
+    </BaseLayout>
+  );
+};
+
+export default TripView;

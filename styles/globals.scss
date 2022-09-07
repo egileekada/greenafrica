@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
-@import url('../assets/fonts/Cosmical/fonts.css');
-@import url('../assets/fonts/plus-jakarta-sans-v3-latin/font.css');
-@import 'antd/dist/antd.css';
-@import './loader.scss';
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap");
+@import url("../assets/fonts/Cosmical/fonts.css");
+@import url("../assets/fonts/plus-jakarta-sans-v3-latin/font.css");
+@import "antd/dist/antd.css";
+@import "./loader.scss";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @media (min-width: 1200px) {
-  html {
-    font-size: 80%;
+  html,
+  body {
+    font-size: 14px;
   }
 }
 
@@ -26,8 +27,43 @@
     @apply focus:outline-none;
   }
 
+  .errorText {
+    @apply text-orange-600 text-xs;
+  }
+
+  .mobile-order {
+    @apply order-2 md:order-none mt-4 md:mt-0;
+  }
+
+  .ssr__tab {
+    @apply flex items-center mb-4 mr-6 h-full  py-4 border-b-[4px] border-transparent hover:border-b-primary-main;
+
+    p {
+      @apply text-[#9E9BBF];
+    }
+
+    svg {
+      path {
+        fill: #9e9bbf;
+      }
+    }
+
+    &.active-ssr {
+      @apply border-b-primary-main;
+      p {
+        @apply text-primary-main;
+      }
+
+      svg {
+        path {
+          fill: #261f5e;
+        }
+      }
+    }
+  }
+
   .ga__section {
-    @apply flex flex-wrap xlg:flex-nowrap w-full;
+    @apply flex flex-wrap xlg:flex-nowrap w-full flex-grow-0 flex-shrink-0;
 
     &.bg-normal {
       background-color: rgba(158, 155, 191, 0.17);
@@ -35,7 +71,7 @@
 
     &__main {
       @apply basis-full xlg:basis-[75%] flex flex-col  py-10 
-            px-4 md:px-8 tab:px-16 xxl:px-24;
+            px-4 md:px-8 tab:px-16 xxl:px-24 font-body;
       background-color: rgba(158, 155, 191, 0.17);
 
       &.payment-section {
@@ -49,12 +85,16 @@
     }
 
     &__side {
-      @apply basis-full xlg:basis-[25%] bg-white px-8 py-8;
+      @apply basis-full xlg:basis-[25%] bg-white px-8 py-8 flex-shrink-0;
     }
   }
 
   .fit-x-bleed {
     @apply px-4 md:px-8 tab:px-16 xxl:px-24;
+  }
+
+  .fit-y {
+    @apply pt-16 lg:pt-0;
   }
 
   .fit-nav {
@@ -70,7 +110,7 @@
   }
 
   .title-text {
-    @apply text-xxs text-left text-[#8F8CA4] font-header;
+    @apply text-xxs text-left text-[#8F8CA4] font-header font-bold;
   }
 
   .content-text {
@@ -83,6 +123,14 @@
 
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;
+
+      &.white {
+        @apply text-white;
+      }
+
+      &.disabled {
+        @apply opacity-50 pointer-events-none cursor-none;
+      }
     }
 
     &.btn-green {
@@ -140,19 +188,19 @@
 
   .form-group {
     border: 1px solid #d8d7e2;
-    @apply flex flex-col mb-4 py-[8px] px-[22px] rounded-md;
+    @apply flex flex-col mb-4 py-3 px-[22px] rounded-md;
 
     &.select-group {
-      @apply px-[16px] relative;
+      @apply px-[16px] relative md:w-40;
     }
 
     label {
-      @apply font-body text-[#979797] text-[12px] mb-[7px] font-normal;
+      @apply font-body text-[#979797] text-[11px] mb-[7px] font-normal;
     }
 
     input,
-    input[type='date'] {
-      @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-base font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
+    input[type="date"] {
+      @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
     }
 
     select {
@@ -160,7 +208,52 @@
     }
 
     .select-icon {
-      @apply absolute right-[10%] bottom-4 z-[2];
+      @apply absolute right-[10%] bottom-[40%] z-[2];
+      transform: translateY(50%);
+    }
+
+    .date-picker {
+      .ant-picker {
+        border: none;
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .ant-picker-focused {
+        box-shadow: none;
+        border: 0;
+        outline: 0;
+      }
+    }
+  }
+
+  .phone-group {
+    border: 1px solid #d8d7e2;
+    @apply flex flex-col  mb-4 py-[8px] px-[22px] rounded-md;
+
+    label {
+      @apply font-body text-[#979797] text-[10px] mb-[7px] font-normal;
+    }
+
+    .phone-select {
+      @apply w-[80px] relative mr-4;
+
+      select {
+        @apply bg-transparent appearance-none w-full border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal focus:ring-0 focus:outline-none;
+      }
+
+      .select-icon {
+        @apply absolute right-[10%] bottom-[40%] z-[2];
+        transform: translateY(50%);
+      }
+    }
+
+    .phone-input {
+      input,
+      input[type="date"] {
+        @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
+      }
     }
   }
   // Form
@@ -187,7 +280,7 @@
   }
 
   figure.flightCircle {
-    @apply absolute left-3 md:-left-6 w-[29px] h-[29px] md:w-[61px] md:h-[61px];
+    @apply absolute left-3 md:-left-6 w-[40px] h-[40px] md:w-[61px] md:h-[61px] bg-green rounded-full flex items-center justify-center z-10;
   }
 
   .ga__counter {
@@ -222,14 +315,68 @@
         -o-transition: opacity 2s ease-in-out;
         transition: opacity 2s ease-in-out;
         opacity: 0;
-        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
         filter: alpha(opacity=0);
 
         &.activeText {
           opacity: 1;
-          -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)';
+          -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
           filter: alpha(opacity=1);
         }
+      }
+    }
+  }
+
+  .ant-input[disabled] {
+    color: rgba(114, 106, 106, 0.93) !important;
+  }
+
+  .top__bar {
+    @apply bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50;
+
+    &.logo-holder {
+      @apply items-center justify-center;
+
+      button {
+        min-height: 2rem;
+      }
+
+      figure {
+        @apply flex items-center justify-center w-full;
+      }
+    }
+
+    button {
+      @apply flex items-center justify-center w-full relative;
+
+      figure {
+        @apply absolute left-0;
+      }
+
+      span {
+        @apply ml-6 text-white text-xs;
+      }
+    }
+  }
+
+  .manage-booking-bar {
+    @apply bg-white fit-x-bleed items-center justify-between py-10 flex fixed bottom-0 w-full z-50;
+
+    button {
+      @apply flex items-center justify-center  relative w-[200px];
+
+      span {
+        @apply ml-6 text-white text-xs;
+      }
+    }
+  }
+
+  .bottom__bar {
+    @apply bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50 bottom-0;
+
+    button {
+      &.toTop {
+        @apply flex items-center;
       }
     }
   }
@@ -242,7 +389,7 @@
       border-radius: 6px 6px 0px 0px;
 
       p {
-        @apply font-display text-white font-extrabold text-xs md:text-2xl mx-4;
+        @apply font-display text-white font-semibold text-xs md:text-xl mx-4;
       }
     }
 
@@ -259,14 +406,14 @@
         }
 
         button {
-          @apply flex flex-col items-start px-4 sm:px-6 py-[20px] transition-all;
+          @apply flex flex-col items-center justify-center px-4 sm:px-6 py-[20px] transition-all;
 
           h6 {
-            @apply text-primary-main font-extrabold text-xxs md:text-[11px] leading-[14px] font-body mb-2;
+            @apply text-primary-main font-medium text-xxs md:text-[11px] leading-[14px] font-body mb-2 text-center;
           }
 
           p {
-            @apply text-primary-main font-bold text-xs md:text-base;
+            @apply text-primary-main font-bold text-xs md:text-base text-center;
           }
 
           &:hover {
@@ -289,8 +436,13 @@
     }
   }
 
-  .ibe__trip__item {
-    @apply flex flex-wrap lg:flex-nowrap items-center bg-white pt-6 pb-10 px-7 rounded-t-md;
+  .ibe__trip__passengers {
+    @apply flex flex-wrap lg:flex-nowrap bg-white pt-6 pb-10 px-7 rounded-t-md;
+
+    .bordered {
+      border: 1px solid #9e9bbf;
+      border-radius: 6px;
+    }
 
     h5.tripTime {
       @apply font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left;
@@ -300,11 +452,15 @@
     }
 
     p.tripCity {
-      @apply font-semibold font-body text-xs lg:text-sm text-black text-left;
+      @apply font-medium font-body text-xs lg:text-sm text-black text-left;
 
       &.right-text {
         @apply text-right;
       }
+    }
+
+    h5.tripType {
+      @apply text-sm lg:text-[25px] leading-8 font-header font-bold text-primary-main mb-2;
     }
 
     .tripIconPath {
@@ -329,7 +485,7 @@
     }
 
     &.summaryView {
-      @apply px-6;
+      @apply px-6 lg:px-20;
 
       &.bordered {
         border: 0.5px solid #cfceda;
@@ -347,14 +503,14 @@
 
       .trip-details {
         background: rgba(158, 155, 191, 0.12);
-        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap  basis-full w-full;
+        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full;
 
         &-item {
           @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
 
           h5,
           h5 span {
-            @apply font-display text-sm text-primary-main;
+            @apply font-display font-bold text-sm text-primary-main;
 
             button.btn-outline {
               min-width: 48px;
@@ -367,7 +523,7 @@
             }
           }
           h6 {
-            @apply font-title text-xxs text-primary-main mb-[10px];
+            @apply font-title font-medium text-xxs text-primary-main mb-[10px];
           }
         }
       }
@@ -375,7 +531,101 @@
 
     p.tripType,
     p.tripTime {
-      @apply font-extrabold text-primary-main text-xxs lg:text-sm font-body;
+      @apply text-primary-main text-xxs lg:text-sm font-body;
+    }
+  }
+
+  .ibe__trip__item {
+    @apply flex flex-wrap lg:flex-nowrap items-center bg-white pt-6 pb-10 pl-8 md:pl-16 pr-8 rounded-t-md;
+
+    h5.tripTime {
+      @apply font-extrabold font-header text-xl lg:text-2xl text-primary-main text-left;
+      &.right-text {
+        @apply text-right;
+      }
+    }
+
+    p.tripCity {
+      @apply font-medium font-body text-xs lg:text-sm text-black text-left;
+
+      &.right-text {
+        @apply text-right;
+      }
+    }
+
+    h5.tripType {
+      @apply text-sm lg:text-[25px] leading-8 font-header font-bold text-primary-main mb-2;
+    }
+
+    .tripIconPath {
+      @apply flex items-center basis-[70%] justify-between px-4 lg:px-0;
+
+      .dotted-svg {
+        @apply w-[30%] lg:w-auto;
+      }
+
+      .aero-svg {
+        @apply w-[20%] lg:w-auto;
+      }
+    }
+
+    &.tripView {
+      @apply lg:px-24;
+
+      &.bordered {
+        border: 0.5px solid #cfceda;
+        border-radius: 6px;
+      }
+    }
+
+    &.summaryView {
+      @apply px-6 lg:px-20;
+
+      &.bordered {
+        border: 0.5px solid #cfceda;
+        border-radius: 6px;
+      }
+    }
+
+    &.checkinView {
+      @apply px-0 pt-8 pb-0 relative flex-col;
+
+      &.bordered {
+        border: 0.5px solid #cfceda;
+        border-radius: 6px;
+      }
+
+      .trip-details {
+        background: rgba(158, 155, 191, 0.12);
+        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full mt-5;
+
+        &-item {
+          @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
+
+          h5,
+          h5 span {
+            @apply font-display font-bold text-sm text-primary-main;
+
+            button.btn-outline {
+              min-width: 48px;
+              // max-width: 50px;
+              // max-width: 150px;
+              // width: 48.8px;
+
+              height: 22px;
+              @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display w-max;
+            }
+          }
+          h6 {
+            @apply font-title font-medium text-xxs text-primary-main mb-[10px];
+          }
+        }
+      }
+    }
+
+    p.tripType,
+    p.tripTime {
+      @apply text-primary-main text-xxs lg:text-sm font-body;
     }
   }
 
@@ -383,11 +633,11 @@
     @apply bg-white px-7 lg:px-24 py-6;
 
     h5 {
-      @apply text-xxs lg:text-xs text-black font-header mb-2;
+      @apply text-xxs lg:text-xs text-black font-header font-bold mb-2;
     }
 
     h6 {
-      @apply text-xl lg:text-[25px] leading-[32px] text-primary-main font-display;
+      @apply text-xl lg:text-[25px] leading-[32px] text-primary-main font-display font-bold;
     }
   }
 
@@ -398,7 +648,7 @@
       @apply px-7 lg:px-24 py-[30px];
 
       h4 {
-        @apply mb-0 font-body text-xs lg:text-sm;
+        @apply mb-0 font-body font-normal text-xs lg:text-sm;
       }
     }
 
@@ -407,7 +657,7 @@
     }
 
     p {
-      @apply font-extrabold font-header text-xs text-primary-main;
+      @apply font-extrabold font-header text-sm text-primary-main;
     }
 
     button.btn-outline {
@@ -416,17 +666,16 @@
   }
 
   .ibe__trip__variant {
-    @apply flex flex-col w-full pb-6;
+    @apply flex flex-col w-full h-full pb-6 bg-white;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-    border-radius: 6px 6px 0px 0px;
-
-    //
+    border-radius: 6px;
+    min-height: 358px;
 
     button {
-      @apply flex flex-col text-sm font-bold;
+      @apply text-xl font-bold py-6;
     }
 
-    &.saver {
+    &.savr {
       .type-header {
         @apply flex flex-col items-center py-5;
         background: #26205e;
@@ -439,7 +688,7 @@
       }
     }
 
-    &.classic {
+    &.clsc {
       @apply border-t-black;
 
       .type-header {
@@ -453,7 +702,7 @@
       }
     }
 
-    &.gflex {
+    &.flexi {
       .type-header {
         @apply flex flex-col items-center py-5 bg-green;
         border-radius: 6px 6px 0px 0px;
@@ -477,6 +726,14 @@
 
     &__content {
       @apply w-full p-4 bg-primary-main rounded-md;
+
+      h4 {
+        @apply text-white text-xs font-body font-extrabold;
+      }
+    }
+
+    button.ibe-accordion-header {
+      @apply w-full p-4 bg-primary-main hover:bg-opacity-90 rounded-md;
 
       h4 {
         @apply text-white text-xs font-body font-extrabold;
@@ -544,7 +801,7 @@
     @apply flex flex-col;
 
     h1 {
-      @apply text-[#101010] text-sm font-header mb-5;
+      @apply text-[#101010] text-sm font-header font-bold mb-5;
     }
 
     figure.adImage {
@@ -572,6 +829,10 @@
 
       .form-group {
         @apply w-full md:w-auto;
+
+        &.select-field {
+          @apply md:w-40;
+        }
       }
 
       .ant-switch {
@@ -583,23 +844,89 @@
         background-color: #3ddc97 !important;
       }
 
-      .ant-checkbox-checked .ant-checkbox-inner {
-        background-color: #3ddc97 !important;
-        border-color: #3ddc97;
-      }
+      // .ant-checkbox-checked .ant-checkbox-inner {
+      //   background-color: #3ddc97 !important;
+      //   border-color: #3ddc97;
+      // }
 
-      .checkbox-copy {
-        .ant-checkbox-checked .ant-checkbox-inner {
-          background-color: #26205e !important;
-          border-color: #26205e;
-        }
-      }
+      // .checkbox-copy {
+      //   .ant-checkbox-checked .ant-checkbox-inner {
+      //     background-color: #26205e !important;
+      //     border-color: #26205e;
+      //   }
+      // }
     }
     button.cta {
       @apply w-[195px];
       &.btn-outline {
-        @apply text-primary-main;
+        @apply text-primary-main hover:text-white;
       }
+    }
+  }
+
+  .tabs__container {
+    button {
+      @apply flex items-center mb-4 mr-12 h-full;
+
+      p {
+        @apply font-header font-bold text-[#9E9BBF] text-sm;
+      }
+
+      svg {
+        path {
+          fill: #9e9bbf;
+        }
+      }
+
+      &:hover {
+        p {
+          @apply text-primary-main opacity-70;
+        }
+
+        svg {
+          path {
+            fill: #26205e;
+            opacity: 0.7;
+          }
+        }
+      }
+
+      &.active-tab {
+        @apply border-b-[3px] border-b-primary-main;
+
+        p {
+          @apply text-primary-main;
+        }
+
+        svg {
+          path {
+            fill: #26205e;
+          }
+        }
+      }
+    }
+  }
+
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #3ddc97 !important;
+    border-color: #3ddc97;
+    cursor: pointer;
+  }
+
+  .ant-checkbox-inner::after {
+    left: 33% !important;
+  }
+
+  .checkbox-copy {
+    .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: #26205e !important;
+      border-color: #26205e;
+      cursor: pointer;
+    }
+
+    .ant-checkbox-inner {
+      width: 20px !important;
+      height: 20px !important;
     }
   }
 
@@ -611,11 +938,13 @@
 
     .ant-switch-checked {
       background-color: #26205e !important;
+      cursor: pointer;
     }
 
     .ant-checkbox-checked .ant-checkbox-inner {
       background-color: #26205e !important;
       border-color: #26205e;
+      cursor: pointer;
     }
   }
 
@@ -641,7 +970,7 @@
 
   .payment-section {
     h2 {
-      @apply font-display text-base  text-black;
+      @apply font-display font-bold text-base  text-black;
     }
 
     p {
@@ -649,11 +978,11 @@
     }
 
     h6 {
-      @apply text-primary-main font-body text-[8px] leading-[9px] lg:text-xxs;
+      @apply text-primary-main font-body font-bold  text-[8px] leading-[9px] lg:text-xxs;
     }
 
     h5 {
-      @apply text-primary-main font-display text-sm lg:text-[28px] leading-[36px];
+      @apply text-primary-main font-display font-bold text-sm lg:text-[28px] leading-[36px];
     }
 
     .payment-card {
@@ -675,7 +1004,7 @@
 
   .trip__summary {
     h2.trip-title {
-      @apply text-primary-main text-sm font-display;
+      @apply text-primary-main text-sm font-display font-bold;
     }
 
     p.trip-body {
@@ -688,7 +1017,7 @@
     }
 
     &__row {
-      @apply flex justify-between items-center py-4 pl-4;
+      @apply flex justify-between items-center py-3 pl-4;
       border-bottom: 1px solid rgba(158, 155, 191, 0.15);
 
       &.subrow {
@@ -699,16 +1028,17 @@
         @apply border-none;
 
         h5 {
-          @apply text-primary-main text-xs font-title;
+          @apply text-primary-main text-xs font-title font-bold;
         }
 
         h6 {
-          @apply text-primary-main text-base font-display;
+          @apply text-primary-main text-base font-display font-bold;
         }
       }
 
       h6 {
-        @apply text-primary-main text-xs font-body;
+        // @apply text-primary-main text-xs font-body font-normal;
+        @apply text-primary-main text-sm font-body font-normal;
       }
     }
 
@@ -719,11 +1049,11 @@
         @apply basis-1/2;
 
         h5 {
-          @apply text-primary-main text-xs font-body;
+          @apply text-primary-main text-xs font-body font-medium;
         }
 
         h6 {
-          @apply text-primary-main text-xs font-header;
+          @apply text-primary-main text-xs font-header font-bold;
         }
       }
     }
@@ -731,7 +1061,7 @@
 
   .checkin {
     h3.title-text {
-      @apply font-display text-xs text-primary-main;
+      @apply font-display text-primary-main md:text-base my-4 md:my-6;
     }
 
     &__card {
@@ -759,7 +1089,7 @@
     }
 
     &__row {
-      @apply flex justify-between items-center py-4 pl-4;
+      @apply flex justify-between items-center py-3 pl-4;
       border-bottom: 1px solid rgba(158, 155, 191, 0.15);
 
       h6 {
@@ -774,11 +1104,11 @@
         @apply border-none;
 
         h5 {
-          @apply font-title text-xs text-primary-main;
+          @apply font-title font-bold text-xs text-primary-main;
         }
 
         h6 {
-          @apply font-display text-primary-main text-base;
+          @apply font-display font-bold text-primary-main text-base;
         }
       }
     }
@@ -791,7 +1121,7 @@
       @apply flex items-center mb-4;
 
       p {
-        @apply text-primary-main text-sm font-title;
+        @apply text-primary-main font-title;
 
         &.confirmed-p {
           color: white;
@@ -799,12 +1129,12 @@
       }
 
       figure {
-        @apply rounded-[5px] w-[30px] h-[30px] bg-white flex items-center justify-center mr-[15px];
+        @apply rounded-[5px] w-[38px] h-[38px] bg-white flex items-center justify-center mr-[15px];
         border: 2px solid #efedff;
         padding: 2px;
 
         .seat-box {
-          @apply w-[26px] h-[24px] rounded-[5px] flex items-center justify-center;
+          @apply w-[36px] h-[30px] rounded-[5px] flex items-center justify-center;
         }
       }
     }
@@ -825,7 +1155,11 @@
   .cabin__legend {
     @apply hidden xxl:block xxl:absolute z-[9] top-[25px] right-5;
     p {
-      @apply text-xs;
+      @apply text-[13px];
+
+      span {
+        @apply font-semibold;
+      }
     }
   }
 
@@ -836,14 +1170,14 @@
     }
 
     &__item {
-      @apply mr-1 flex items-center justify-center bg-primary-main w-[38px] h-[49px] rounded-md cursor-pointer hover:bg-opacity-70;
+      @apply mr-1 flex items-center justify-center bg-primary-main h-[49px] rounded-md cursor-pointer hover:bg-opacity-70;
 
       &.transparent {
         @apply bg-transparent;
       }
 
       p {
-        @apply text-white text-lg font-header;
+        @apply text-white font-header;
       }
 
       &.seatRow {
@@ -855,7 +1189,15 @@
 
       &.unavailable {
         @apply bg-[#F1F1F1];
+        //TODO enable this effect
+        // pointer-events: none;
       }
+      &.group6 {
+        @apply bg-[#F1F1F1];
+      }
+      // &.unavailable {
+      //   @apply bg-[#F1F1F1];
+      // }
 
       &.row-title {
         @apply bg-transparent;
@@ -986,6 +1328,10 @@
 
         button {
           @apply text-sm;
+
+          &.disabled {
+            @apply border-opacity-50 opacity-50 pointer-events-none;
+          }
         }
       }
 
@@ -1040,11 +1386,32 @@
         }
       }
     }
+
+    button {
+      &.disabled {
+        @apply border-opacity-50 opacity-50 pointer-events-none;
+      }
+    }
+  }
+}
+
+.special__needs {
+  .ant-switch {
+    background-color: #f7f7ff !important;
+    cursor: pointer;
+  }
+
+  .ant-switch-checked {
+    background-color: #3ddc97 !important;
+    cursor: pointer;
   }
 }
 
 .modal--close--icon {
   cursor: pointer;
+}
+.spinner__container {
+  @apply py-24 px-4 md:px-24;
 }
 
 .greylike {
@@ -1052,10 +1419,19 @@
 }
 
 .plane-seats {
-  background-image: url('./bg/cab.png');
+  background-image: url("./bg/cab.png");
   background-size: 35%;
   background-repeat: no-repeat;
   background-position-x: 50%;
+}
+
+.variant-bg {
+  // background-color: rgba(107, 97, 205, 0.1);
+  @apply bg-[#EDEDFF];
+}
+
+.grey__out {
+  @apply opacity-50 pointer-events-none;
 }
 
 // Clean up Styles
@@ -1067,7 +1443,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -1106,5 +1482,143 @@ svg.primary-main {
   100% {
     bottom: -186px;
     opacity: 1;
+  }
+}
+
+// widget styles
+
+.datepicker {
+  @apply font-body;
+  font-size: 14px;
+}
+
+.react-date-picker__calendar-button,
+.react-date-picker__clear-button {
+  // @apply hidden;
+}
+
+.react-date-picker__inputGroup__input {
+  min-width: 1.24em !important;
+  text-align: center;
+  pointer-events: none;
+  font-size: 16px !important;
+}
+
+.react-date-picker__wrapper {
+  border: none !important;
+}
+
+.react-date-picker__inputGroup__input:focus {
+  outline: 0px !important;
+  border: 0px !important;
+  box-shadow: none;
+}
+
+.react-date-picker__inputGroup {
+  padding: 0px !important;
+  font-family: "Plus Jakarta Sans";
+}
+
+.react-date-picker__button {
+  padding: 0px 6px !important;
+}
+
+.booking__wrapper {
+  // border: 1px solid #d8d7e2;
+  box-shadow: 0 0 5px 0 rgb(195 198 205 / 50%);
+  @apply rounded-lg px-2 py-2 relative;
+}
+
+.react-calendar {
+  @apply font-body;
+  border: 1px solid #eaebf3 !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  padding: 2px !important;
+}
+
+.react-calendar__tile {
+  background: rgba(31, 25, 85, 0.03) !important;
+  border: 2px solid #fff !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  padding-bottom: 0px !important;
+  font-family: "Plus Jakarta Sans";
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #000 !important;
+}
+
+.react-calendar__tile--active {
+  background: #1f1955 !important;
+  color: #47ff5a !important;
+}
+
+.react-calendar__tile--now {
+  border: 2px dashed #1f195591 !important;
+  color: #47ff5a !important;
+}
+
+.react-calendar__navigation__label__labelText {
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+}
+
+.react-calendar__tile:disabled {
+  opacity: 0.5 !important;
+}
+
+.widget-border {
+  border: 1px solid #eaebf3;
+  border-radius: 6px;
+}
+
+.react-date-picker {
+  width: 100%;
+}
+
+div[disabled] {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+::selection {
+  color: #2e2260;
+  background-color: #1eff5a;
+}
+
+[type="text"]:focus,
+[type="email"]:focus,
+[type="url"]:focus,
+[type="password"]:focus,
+[type="number"]:focus,
+[type="date"]:focus,
+[type="datetime-local"]:focus,
+[type="month"]:focus,
+[type="search"]:focus,
+[type="tel"]:focus,
+[type="time"]:focus,
+[type="week"]:focus,
+[multiple]:focus,
+textarea:focus,
+select:focus {
+  box-shadow: none !important;
+  border-color: none !important;
+}
+
+.ant-tabs-ink-bar {
+  position: absolute;
+  background: #261f5e;
+  pointer-events: none;
+  height: 3px !important;
+}
+
+.ant-tabs-tab-active {
+  div {
+    @apply text-primary-main;
+    svg {
+      @apply text-primary-main;
+    }
   }
 }

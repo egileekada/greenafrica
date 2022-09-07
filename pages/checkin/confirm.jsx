@@ -1,44 +1,45 @@
 /* eslint-disable @next/next/no-img-element */
+import { useEffect } from "react";
 import BaseLayout from "layouts/Base";
-import FlightIcon from "assets/svgs/flightcircle.svg";
+import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import GreenCheck from "assets/svgs/green.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
-import CheckInCard from "components/Cards/checkin";
+// import CheckInCard from "components/Cards/checkin";
 import IbeAdbar from "containers/IbeAdbar";
+import { useRouter } from "next/router";
 
 const CheckInDetails = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    // console.log("router is:", router);
+    console.log("router is:", router.asPath);
+    // if (router.asPath === "/checkin/confirm") {
+    //   window.onpopstate = () => {
+    //     history.go(1);
+    //   };
+    // }
+  }, [router]);
+
   return (
     <BaseLayout>
       <section className="flex items-center justify-center bg-green px-3 py-3 pt-24 lg:pt-3">
-        <p className="text-center">Boarding pass has been emailed to test@greenafrica.net</p>
+        <p className="text-center">
+          Boarding pass has been emailed to test@greenafrica.net
+        </p>
       </section>
       <section className="w-full checkin">
         <section className="ga__section">
           <div className="ga__section__main">
             <div className="mb-8 mt-16 xlg:mt-0">
-              <h2 className="text-black font-extrabold text-2xl mb-2">
-                Check In
-              </h2>
+              <h2 className="text-black font-bold text-2xl mb-2">Check In</h2>
               <p>
                 Kindly confirm that the information below is correct before
                 checking in
               </p>
             </div>
-
-            <section className="bg-white py-11 px-8 flex-col mb-8 rounded-md">
-              <h3 className="title-text mb-[6px]">PASSENGER DETAILS</h3>
-              <p className="font-body text-black text-xs mb-7">
-                Kindly confirm that the information below is correct before
-                checking in
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <CheckInCard />
-                <CheckInCard />
-                <CheckInCard />
-              </div>
-            </section>
 
             <section className="flex flex-col bg-white pb-24">
               {/* TripHeader */}
@@ -75,7 +76,7 @@ const CheckInDetails = () => {
               </div>
 
               <section className="ibe__trip__item checkinView bordered mx-6 my-3">
-                <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3 lg:top-[18px]">
+                <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3">
                   gSaver
                 </p>
                 <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
