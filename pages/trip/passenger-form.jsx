@@ -20,6 +20,7 @@ import LogoIcon from "assets/svgs/logo.svg";
 const PassengerForm = () => {
   const dispatch = useDispatch();
   const [totalPassengerCount, setCount] = useState(0);
+  const [errorIds, setErrorIds] = useState([]);
   const [passengers, setPassengers] = useState([]);
   const {
     passengersResponse,
@@ -111,6 +112,10 @@ const PassengerForm = () => {
 
     let _formIsInValid = false;
     passengers.map((_pax) => {
+      if (_pax?.dob?.length < 1) {
+        setErrorIds([...errorIds, _pax?.id]);
+      }
+
       for (const key in _pax) {
         if (_pax[key].length < 1) {
           _formIsInValid = true;
@@ -210,6 +215,8 @@ const PassengerForm = () => {
                           passenger={_pass}
                           passengers={passengers}
                           setPassengers={setPassengers}
+                          errorIds={errorIds}
+                          setErrorIds={setErrorIds}
                         />
                       );
                     })}

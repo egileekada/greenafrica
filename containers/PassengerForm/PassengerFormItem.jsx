@@ -7,7 +7,13 @@ import differenceInMonths from "date-fns/differenceInMonths";
 import format from "date-fns/format";
 // import { diff_years } from "lib/utils";
 import { DatePicker } from "antd";
-const PassengerFormItem = ({ passenger, passengers, setPassengers }) => {
+const PassengerFormItem = ({
+  passenger,
+  passengers,
+  setPassengers,
+  errorIds,
+  setErrorIds,
+}) => {
   const [error, setErr] = useState({
     title: "",
     firstName: "",
