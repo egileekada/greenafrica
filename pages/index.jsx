@@ -50,7 +50,6 @@ const Home = () => {
         dispatch(startSession());
       } else {
         dispatch(showWidget());
-        // window.location.assign("https://dev-website.gadevenv.com/");
       }
     }
     checkParams();
@@ -59,8 +58,10 @@ const Home = () => {
   useEffect(() => {
     async function checkSigInit() {
       const ibeQuery = new URLSearchParams(window.location.search);
+      const flightOrigin = ibeQuery.get("origin");
 
-      if (signature && ibeQuery.get("origin") !== null) {
+      // if (signature && ibeQuery.get("origin") !== null) {
+      if (signature && flightOrigin) {
         const isRoundTrip = parseInt(ibeQuery.get("round"));
         const flightRequest = {
           departureStation: ibeQuery.get("origin"),

@@ -56,9 +56,6 @@ const IbeTripPopup = ({
   const handleSell = async () => {
     //FareKey is Fare SellKey
 
-    // console.log("journey", journey);
-    // console.log("fare", selected);
-
     if (flightParams?.isRoundTrip === 1) {
       const existingJourneys = selectedSessionJourney
         ? [...selectedSessionJourney]
