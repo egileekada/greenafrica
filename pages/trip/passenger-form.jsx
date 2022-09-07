@@ -112,6 +112,7 @@ const PassengerForm = () => {
 
     let _formIsInValid = false;
     passengers.map((_pax) => {
+      
       if (_pax?.dob?.length < 1) {
         setErrorIds([...errorIds, _pax?.id]);
       }
@@ -121,6 +122,7 @@ const PassengerForm = () => {
           _formIsInValid = true;
         }
       }
+      
     });
 
     if (_formIsInValid) {
@@ -204,7 +206,8 @@ const PassengerForm = () => {
                   className="passenger__form"
                   onSubmit={formik.handleSubmit}
                 >
-                  {/* <p>{JSON.stringify(passengers)}</p> */}
+                  <p>{JSON.stringify(passengers)}</p>
+                  <p>{JSON.stringify(errorIds)}</p>
                   {passengers
                     .sort((a, b) => {
                       return a.id - b.id;
