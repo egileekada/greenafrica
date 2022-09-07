@@ -130,7 +130,7 @@ const TripView = () => {
       <section className="w-full">
         <section className="ga__section">
           <div className="ga__section__main">
-            <section className="flex flex-col">
+            <section className="flex flex-col mt-16 lg:mt-0">
               {selectedSessionJourney?.length > 0 ? (
                 selectedSessionJourney.map((_journey) => {
                   const _asssocaitedFare = selectedSessionFare.filter(
