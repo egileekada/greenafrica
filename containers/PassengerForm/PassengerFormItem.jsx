@@ -105,6 +105,10 @@ const PassengerFormItem = ({
         return a.id - b.id;
       });
       setPassengers(newPassArr);
+      let newErrorIDS = errorIds.filter(
+        (item) => parseInt(item) !== parseInt(passenger?.id)
+      );
+      setErrorIds(newErrorIDS);
     }
   };
 
@@ -233,6 +237,7 @@ const PassengerFormItem = ({
 
 PassengerFormItem.defaultProps = {
   passenger: "",
+  errorIds: [],
 };
 
 export default PassengerFormItem;
