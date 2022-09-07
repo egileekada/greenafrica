@@ -37,6 +37,17 @@ const TripView = () => {
   } = useSelector(sessionSelector);
   const router = useRouter();
 
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
+
   useEffect(() => {
     async function init() {
       if (selectedSessionJourney && selectedSessionFare) {

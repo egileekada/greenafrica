@@ -6,6 +6,7 @@ import { paymentSelector, VerifyGatewayPayment } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
 import { useRouter } from "next/router";
 import { sessionSelector, startSession } from "redux/reducers/session";
+import LogoIcon from "assets/svgs/logo.svg";
 
 const ConfirmTripPayment = () => {
   const router = useRouter();
@@ -13,6 +14,17 @@ const ConfirmTripPayment = () => {
   const { signature } = useSelector(sessionSelector);
   const { verifyPaymentLoading, verifyPaymentResponse } =
     useSelector(paymentSelector);
+
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
 
   useEffect(() => {
     async function redirectFromGateway() {
@@ -44,8 +56,19 @@ const ConfirmTripPayment = () => {
     _checkVerifyPayment();
   }, [verifyPaymentResponse, signature]);
 
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   return (
     <BaseLayout>
+      <nav className="top__bar logo-holder">
+        <button onClick={goBackToHome}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
       <section className="w-full">
         {verifyPaymentLoading ? (
           <Spinner />

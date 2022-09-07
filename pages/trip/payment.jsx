@@ -20,6 +20,7 @@ import { retrieveBookingFromState } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 import { notification } from "antd";
 import { useRouter } from "next/router";
+import LogoIcon from "assets/svgs/logo.svg";
 
 const TripPayment = () => {
   const router = useRouter();
@@ -31,7 +32,6 @@ const TripPayment = () => {
     bookingCommitLoading,
     bookingCommitResponse,
     sessionContact,
-    contactsResponse,
     sellSSRResponse,
     bookingState,
   } = useSelector(sessionSelector);
@@ -114,16 +114,24 @@ const TripPayment = () => {
     } else {
       notification.error({
         message: "Error",
-        description: "PNR Code Unavailable, Redirecting in 3s",
+        description: "PNR Code Unavailable",
       });
-      // setTimeout(() => {
-      //   router.push("/");
-      // }, 3000);
     }
+  };
+
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
   };
 
   return (
     <BaseLayout>
+      <nav className="top__bar logo-holder">
+        <button onClick={goBackToHome}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
       <section className="w-full">
         {bookingCommitLoading && <p>Saving booking details...</p>}
         {gatewaysLoading ? (
@@ -171,8 +179,8 @@ const TripPayment = () => {
                                 checkout.
                               </p>
                             </div>
-                            <div className="flex flex-col items-end pointer-events-none">
-                              <h6 className="mb-[10px]">AMOUNT DUE</h6>
+                            <div className="flex flex-col items-end pointer-events-none basis-[40%]">
+                              <h6 className="mb-2 md:mb-[10px]">AMOUNT DUE</h6>
                               <h5> ₦ {totalFare?.toLocaleString()}</h5>
                             </div>
                           </div>
