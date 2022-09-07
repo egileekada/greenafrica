@@ -221,15 +221,22 @@ const PassengerFormItem = ({
           ) : null}
         </div>
 
-        <div className="form-group flex-grow-0 flex-shrink  h-20 md:h-auto">
-          <label>DATE OF BIRTH</label>
-          <div className="date-picker">
-            <DatePicker onChange={onChange} disabledDate={disabledDate} />
+        <div className="flex flex-col flex-grow-0 flex-shrink">
+          <div className="form-group w-full  h-20 md:h-auto">
+            <label>DATE OF BIRTH</label>
+            <div className="date-picker">
+              <DatePicker onChange={onChange} disabledDate={disabledDate} />
+            </div>
+            {error?.dob && error?.dob.length > 1 ? (
+              <p className="errorText">{error?.dob}</p>
+            ) : null}
           </div>
-          {error?.dob && error?.dob.length > 1 ? (
-            <p className="errorText mt-2">{error?.dob}</p>
+
+          {errorIds.includes(parseInt(passenger?.id)) ? (
+            <p className="errorText">Date is required</p>
           ) : null}
         </div>
+        
       </div>
     </div>
   );
