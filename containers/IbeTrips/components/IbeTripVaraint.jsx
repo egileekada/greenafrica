@@ -3,7 +3,8 @@ import BriefcaseIcon from "assets/svgs/briefcase.svg";
 import PackageIcon from "assets/svgs/package.svg";
 import SeatIcon from "assets/svgs/seat.svg";
 import { Fragment, useState } from "react";
-import IbeTripPopup from "./IbeTripPopup";
+// import IbeTripPopup from "./IbeTripPopup";
+import IbeTripPopup from "./UpsellTripPopup";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -20,6 +21,7 @@ const IbeTripVariant = ({
   journey,
   schedueIndex,
   setIsVisible,
+  segment,
 }) => {
   const dispatch = useDispatch();
   const { flightParams, selectedSessionFare } = useSelector(sessionSelector);
@@ -51,36 +53,37 @@ const IbeTripVariant = ({
       ..._fare,
       sellKey,
     });
+    setShow(true);
 
-    if (flightParams?.isRoundTrip === 1) {
-      const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
-      const _cleanedFares = existingFares.filter((_item) => {
-        const _ruleBasis =
-          parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
-        return !_ruleBasis;
-      });
+    // if (flightParams?.isRoundTrip === 1) {
+    //   const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
+    //   const _cleanedFares = existingFares.filter((_item) => {
+    //     const _ruleBasis =
+    //       parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
+    //     return !_ruleBasis;
+    //   });
 
-      const _newFare = {
-        ..._fare,
-        sellKey,
-        schedueIndex,
-      };
+    //   const _newFare = {
+    //     ..._fare,
+    //     sellKey,
+    //     schedueIndex,
+    //   };
 
-      const _newFares = [..._cleanedFares, _newFare];
-      dispatch(setSelectedSessionFare([..._newFares]));
-      setShow(true);
-    } else {
-      dispatch(
-        setSelectedSessionFare([
-          {
-            ..._fare,
-            sellKey,
-            schedueIndex,
-          },
-        ])
-      );
-      setShow(true);
-    }
+    //   const _newFares = [..._cleanedFares, _newFare];
+    //   dispatch(setSelectedSessionFare([..._newFares]));
+    //   setShow(true);
+    // } else {
+    //   dispatch(
+    //     setSelectedSessionFare([
+    //       {
+    //         ..._fare,
+    //         sellKey,
+    //         schedueIndex,
+    //       },
+    //     ])
+    //   );
+    //   setShow(true);
+    // }
   };
 
   const closePopUp = () => {
@@ -188,6 +191,7 @@ const IbeTripVariant = ({
         journey={journey}
         schedueIndex={schedueIndex}
         setIsVisible={setIsVisible}
+        segment={segment}
       />
     </Fragment>
   );
@@ -200,6 +204,7 @@ IbeTripVariant.defaultProps = {
   segmentFlightNumber: "",
   segmentCarrierCode: "",
   schedueIndex: "",
+  segment: {},
 };
 
 export default IbeTripVariant;

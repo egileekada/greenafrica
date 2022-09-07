@@ -129,6 +129,7 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
                     journey={journey}
                     schedueIndex={schedueIndex}
                     setIsVisible={setIsVisible}
+                    segment={_segment}
                   />
                 </div>
               );

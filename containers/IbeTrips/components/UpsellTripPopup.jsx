@@ -34,7 +34,7 @@ const IbeTripPopup = ({
   journey,
   schedueIndex,
   setIsVisible,
-  fare,
+  segment,
 }) => {
   const dispatch = useDispatch();
   const {
@@ -59,42 +59,49 @@ const IbeTripPopup = ({
     `Free Standard Seat`,
   ];
 
-  const handleFare = async () => {
-    console.log("selected is", selected?.RuleNumber);
-    console.log("fare is", fare?.RuleNumber);
-    if (flightParams?.isRoundTrip === 1) {
-      const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
-      const _cleanedFares = existingFares.filter((_item) => {
-        const _ruleBasis =
-          parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
-        return !_ruleBasis;
-      });
+  const handleFare = async (fareId) => {
+    const latestFare = segment?.Fares.filter(
+      (_newFare) => _newFare?.RuleNumber?.toLowerCase() === fareId.toLowerCase()
+    );
 
-      const _newFare = {
-        ...fare,
-        sellKey,
-        schedueIndex,
-      };
+    // console.log("latestFare", latestFare[0]);
+    if (latestFare.length > 0) {
+      if (flightParams?.isRoundTrip === 1) {
+        const existingFares = selectedSessionFare
+          ? [...selectedSessionFare]
+          : [];
+        const _cleanedFares = existingFares.filter((_item) => {
+          const _ruleBasis =
+            parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
+          return !_ruleBasis;
+        });
 
-      const _newFares = [..._cleanedFares, _newFare];
-      dispatch(setSelectedSessionFare([..._newFares]));
-    } else {
-      dispatch(
-        setSelectedSessionFare([
-          {
-            ...fare,
-            sellKey,
-            schedueIndex,
-          },
-        ])
-      );
+        const _newFare = {
+          ...latestFare[0],
+          sellKey,
+          schedueIndex,
+        };
+
+        const _newFares = [..._cleanedFares, _newFare];
+        dispatch(setSelectedSessionFare([..._newFares]));
+      } else {
+        dispatch(
+          setSelectedSessionFare([
+            {
+              ...latestFare[0],
+              sellKey,
+              schedueIndex,
+            },
+          ])
+        );
+      }
     }
   };
 
-  const handleSell = async () => {
+  const handleSell = async (fareId) => {
     //FareKey is Fare SellKey
 
-    handleFare();
+    handleFare(fareId);
 
     if (flightParams?.isRoundTrip === 1) {
       const existingJourneys = selectedSessionJourney
@@ -148,7 +155,7 @@ const IbeTripPopup = ({
         },
       ];
       dispatch(setSelectedSessionJourney(_selectedJorney));
-      // router.push("/trip/view");
+      router.push("/trip/view");
     }
   };
 
@@ -162,7 +169,7 @@ const IbeTripPopup = ({
             <section className="w-full bg-white rounded-xl hidden lg:flex flex-col">
               <div className="bg-primary-main text-center flex items-center justify-center p-8 rounded-t-xl">
                 <h3 className="text-white text-base">
-                  Upgrade your fare and enjoy more benefits {fare?.RuleNumber}
+                  Upgrade your fare and enjoy more benefits
                 </h3>
               </div>
               <section>
@@ -321,7 +328,7 @@ const IbeTripPopup = ({
                     </div>
                     <div className="benefits__popup__row__item cta-row">
                       <button
-                        onClick={handleSell}
+                        onClick={handleSell.bind(this, "savr")}
                         className={`btn ${
                           selected?.RuleNumber.toLowerCase() === "savr"
                             ? "btn-primary"
@@ -333,7 +340,7 @@ const IbeTripPopup = ({
                     </div>
                     <div className="benefits__popup__row__item cta-row">
                       <button
-                        onClick={handleSell}
+                        onClick={handleSell.bind(this, "clsc")}
                         className={`btn ${
                           selected?.RuleNumber.toLowerCase() === "clsc" ||
                           selected?.RuleNumber.toLowerCase() === "savr"
@@ -346,7 +353,7 @@ const IbeTripPopup = ({
                     </div>
                     <div className="benefits__popup__row__item cta-row">
                       <button
-                        onClick={handleSell}
+                        onClick={handleSell.bind(this, "flex")}
                         className={`btn ${
                           selected?.RuleNumber.toLowerCase() === "flex" ||
                           selected?.RuleNumber.toLowerCase() === "clsc" ||
@@ -457,6 +464,7 @@ IbeTripPopup.defaultProps = {
   segmentFlightNumber: "",
   journey: {},
   schedueIndex: "",
+  segment: {},
   //  showPopUp={showPopUp},
   //  closePopUp={closePopUp},
 };
