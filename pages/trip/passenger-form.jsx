@@ -112,17 +112,25 @@ const PassengerForm = () => {
 
     let _formIsInValid = false;
     passengers.map((_pax) => {
-      
-      if (_pax?.dob?.length < 1) {
-        setErrorIds([...errorIds, _pax?.id]);
-      }
-
       for (const key in _pax) {
         if (_pax[key].length < 1) {
           _formIsInValid = true;
         }
       }
-      
+    });
+
+    passengers.map((_pax) => {
+      if (_pax?.type === "CHD" || _pax?.type === "INF") {
+        if (_pax?.dob?.length < 1) {
+          setErrorIds([...errorIds, _pax?.id]);
+          _formIsInValid = true;
+        }
+      } else {
+        if (_pax?.dob?.length < 1) {
+          console.log("rreached here,", _pax?.type);
+          _formIsInValid = false;
+        }
+      }
     });
 
     if (_formIsInValid) {
@@ -132,6 +140,8 @@ const PassengerForm = () => {
           "Incomplete details, Please check through your form and fill-in appropriate details",
       });
     } else {
+      console.log("disaptching");
+
       dispatch(updatePassengersDetails(passengers));
       dispatch(updateContactsDetails(contactInfo));
     }
@@ -206,8 +216,8 @@ const PassengerForm = () => {
                   className="passenger__form"
                   onSubmit={formik.handleSubmit}
                 >
-                  <p>{JSON.stringify(passengers)}</p>
-                  <p>{JSON.stringify(errorIds)}</p>
+                  {/* <p>{JSON.stringify(passengers)}</p>
+                  <p>{JSON.stringify(errorIds)}</p> */}
                   {passengers
                     .sort((a, b) => {
                       return a.id - b.id;

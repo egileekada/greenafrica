@@ -1100,7 +1100,7 @@ export const updatePassengersDetails =
           passengerTypeInfo: {
             state: 0,
             stateSpecified: true,
-            dob: _passenger?.dob,
+            dob: _passenger?.dob || "9999-12-31T00:00:00Z",
             paxType: _passenger.type,
           },
         };
@@ -1181,7 +1181,7 @@ export const updatePassengersDetails =
           passengerTypeInfo: {
             state: 0,
             stateSpecified: true,
-            dob: _passenger.dob,
+            dob: _passenger.dob || "9999-12-31T00:00:00Z",
             paxType: _passenger.type,
           },
         };
