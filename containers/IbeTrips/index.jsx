@@ -12,7 +12,7 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
 
   return (
     <section className="ibe__flight__trips">
-      <h2 className="text-primary-main font-extrabold text-lg mb-8 uppercase">
+      <h2 className="text-primary-main font-extrabold text-base mb-8 uppercase">
         {parseInt(schedueIndex) === 0
           ? `DEPARTURE ON ${format(
               new Date(flightParams?.beginDate),

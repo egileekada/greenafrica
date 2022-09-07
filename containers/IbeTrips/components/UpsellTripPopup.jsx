@@ -371,33 +371,6 @@ const IbeTripPopup = ({
             </section>
             <section className="w-full bg-white rounded-xl flex flex-col  lg:hidden p-8">
               <div className="mobile__benefits__item">
-                <h4>Upgrade your fare and enjoy more benefits</h4>
-                <p>You selected:</p>
-                <h5>gClassic</h5>
-                <ul>
-                  {gClassic.map((_gClassic, _i) => {
-                    return (
-                      <li key={_i} className="flex items-center mb-5">
-                        <figure>
-                          <CheckIcon />
-                        </figure>
-                        <span>{_gClassic}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <button
-                  onClick={handleSell}
-                  className={`btn btn-primary ${
-                    selected?.RuleNumber.toLowerCase() === "clsc"
-                      ? ""
-                      : "disabled"
-                  }`}
-                >
-                  Continue With gClassic
-                </button>
-              </div>
-              <div className="mobile__benefits__item">
                 <p>Our Recommendation</p>
                 <h5>gSaver</h5>
                 <ul>
@@ -413,7 +386,7 @@ const IbeTripPopup = ({
                   })}
                 </ul>
                 <button
-                  onClick={handleSell}
+                  onClick={handleSell.bind(this, "savr")}
                   className={`btn btn-primary ${
                     selected?.RuleNumber.toLowerCase() === "savr"
                       ? ""
@@ -423,6 +396,36 @@ const IbeTripPopup = ({
                   Continue With gSaver
                 </button>
               </div>
+
+              <div className="mobile__benefits__item">
+                <h4>Upgrade your fare and enjoy more benefits</h4>
+                {/* <p>You selected:</p> */}
+                <h5>gClassic</h5>
+                <ul>
+                  {gClassic.map((_gClassic, _i) => {
+                    return (
+                      <li key={_i} className="flex items-center mb-5">
+                        <figure>
+                          <CheckIcon />
+                        </figure>
+                        <span>{_gClassic}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <button
+                  onClick={handleSell.bind(this, "clsc")}
+                  className={`btn btn-primary ${
+                    selected?.RuleNumber.toLowerCase() === "clsc" ||
+                    selected?.RuleNumber.toLowerCase() === "savr"
+                      ? ""
+                      : "disabled"
+                  }`}
+                >
+                  Continue With gClassic
+                </button>
+              </div>
+
               <div className="mobile__benefits__item">
                 <p>Our Recommendation</p>
                 <h5>gFlex</h5>
@@ -439,9 +442,11 @@ const IbeTripPopup = ({
                   })}
                 </ul>
                 <button
-                  onClick={handleSell}
+                  onClick={handleSell.bind(this, "flex")}
                   className={`btn btn-primary ${
-                    selected?.RuleNumber.toLowerCase() === "flex"
+                    selected?.RuleNumber.toLowerCase() === "flex" ||
+                    selected?.RuleNumber.toLowerCase() === "clsc" ||
+                    selected?.RuleNumber.toLowerCase() === "savr"
                       ? ""
                       : "disabled"
                   }`}
