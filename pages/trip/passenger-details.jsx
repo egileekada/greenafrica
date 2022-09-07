@@ -39,6 +39,17 @@ const PassengerDetails = () => {
     signature,
   } = useSelector(sessionSelector);
 
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
+
   useEffect(() => {
     async function checkSSRAvailability() {
       if (!SSRAvailabilityResponse) {

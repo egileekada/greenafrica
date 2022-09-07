@@ -59,9 +59,9 @@ const Home = () => {
     async function checkSigInit() {
       const ibeQuery = new URLSearchParams(window.location.search);
       const flightOrigin = ibeQuery.get("origin");
+      const flightDestination = ibeQuery.get("destination");
 
-      // if (signature && ibeQuery.get("origin") !== null) {
-      if (signature && flightOrigin) {
+      if (signature && flightOrigin && flightDestination) {
         const isRoundTrip = parseInt(ibeQuery.get("round"));
         const flightRequest = {
           departureStation: ibeQuery.get("origin"),
@@ -111,6 +111,10 @@ const Home = () => {
       behavior: "smooth",
     });
   };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
 
   const goBackToHome = async () => {
     const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;

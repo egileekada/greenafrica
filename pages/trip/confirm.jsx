@@ -14,6 +14,7 @@ import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
 import ReactToPrint from "react-to-print";
 import { useRouter } from "next/router";
+import LogoIcon from "assets/svgs/logo.svg";
 
 const TripConfirm = () => {
   const router = useRouter();
@@ -24,6 +25,18 @@ const TripConfirm = () => {
 
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
+
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
+
   //TODO Maybe re work later but removing it currently breaks code
   useEffect(() => {
     async function fetchBookingDetails() {
@@ -192,6 +205,13 @@ const TripConfirm = () => {
 
   return (
     <BaseLayout>
+      <nav className="top__bar logo-holder">
+        <button onClick={goBackToHome}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
       <section className="w-full">
         {bookingResponseLoading ? (
           <Spinner />

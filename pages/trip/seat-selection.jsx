@@ -54,6 +54,17 @@ const SeatSelection = () => {
     setpassengerNumber(e.target.value);
   };
 
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
+
   useEffect(() => {
     async function redirectToSSR() {
       if (bookingCommitResponse) {

@@ -2,7 +2,7 @@
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import { useEffect, useState } from "react";
-import { FormikConsumer, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -29,6 +29,17 @@ const PassengerForm = () => {
     flightParams,
   } = useSelector(sessionSelector);
   const router = useRouter();
+
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
 
   useEffect(() => {
     async function sumPassengerCount() {
