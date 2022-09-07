@@ -19,7 +19,7 @@ const SeatInfo = () => {
       sessionStateResponse &&
       sessionStateResponse?.BookingData.Passengers.length > 0
     ) {
-      setChecked(true);
+      setChecked(false);
     }
   }, [sessionStateResponse]);
 

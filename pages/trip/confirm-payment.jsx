@@ -15,46 +15,46 @@ const ConfirmTripPayment = () => {
   const { verifyPaymentLoading, verifyPaymentResponse } =
     useSelector(paymentSelector);
 
-  // const ScrollToTop = () => {
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: "smooth",
-  //   });
-  // };
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
-  // useEffect(() => {
-  //   ScrollToTop();
-  // }, []);
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
 
-  // useEffect(() => {
-  //   async function redirectFromGateway() {
-  //     const paymentQuery = new URLSearchParams(window.location.search);
+  useEffect(() => {
+    async function redirectFromGateway() {
+      const paymentQuery = new URLSearchParams(window.location.search);
 
-  //     const paystackRef = paymentQuery.get("reference");
-  //     if (paystackRef && paystackRef.length > 0) {
-  //       const payload = {
-  //         ref: paystackRef,
-  //       };
-  //       console.log("payment refernce", payload);
-  //       dispatch(VerifyGatewayPayment(payload));
-  //     } else {
-  //       router.push("/");
-  //     }
-  //   }
-  //   redirectFromGateway();
-  // }, []);
+      const paystackRef = paymentQuery.get("reference");
+      if (paystackRef && paystackRef.length > 0) {
+        const payload = {
+          ref: paystackRef,
+        };
+        console.log("payment refernce", payload);
+        dispatch(VerifyGatewayPayment(payload));
+      } else {
+        router.push("/");
+      }
+    }
+    redirectFromGateway();
+  }, []);
 
-  // useEffect(() => {
-  //   async function _checkVerifyPayment() {
-  //     if (verifyPaymentResponse) {
-  //       dispatch(startSession());
-  //       if (signature) {
-  //         router.push("/trip/confirm");
-  //       }
-  //     }
-  //   }
-  //   _checkVerifyPayment();
-  // }, [verifyPaymentResponse, signature]);
+  useEffect(() => {
+    async function _checkVerifyPayment() {
+      if (verifyPaymentResponse) {
+        dispatch(startSession());
+        if (signature) {
+          router.push("/trip/confirm");
+        }
+      }
+    }
+    _checkVerifyPayment();
+  }, [verifyPaymentResponse, signature]);
 
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
