@@ -1,15 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import useDeviceSize from "hooks/useWindowSize";
+// import useDeviceSize from "hooks/useWindowSize";
 import HeroSlider from "../../containers/ref/home/Slider";
 import DesktopFilter from "./DesktopFilter";
-import MobileFilter from "./MobileFilter";
+// import MobileFilter from "./MobileFilter";
 
 const HomeHero = () => {
-  const [width] = useDeviceSize();
+  // const [width] = useDeviceSize();
 
   return (
     <section className="w-full flex flex-col relative">
-      <div className="relative h-4/6">
+      <div className="relative h-[50vh] sm:h-[70vh]">
         <HeroSlider />
       </div>
       <div className="basis-ful w-full  relative -top-[4rem]">

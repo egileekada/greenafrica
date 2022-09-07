@@ -87,7 +87,7 @@ $cream: #fff6f6;
 }
 
 .carousel {
-  height: 60vh;
+  height: 70vh;
   background-size: 100%;
   background-repeat: no-repeat;
   position: relative;
@@ -97,7 +97,7 @@ $cream: #fff6f6;
   overflow: hidden;
 
   @include respond(phone) {
-    height: 20rem;
+    height: 50vh;
   }
 
   &__mobile {
@@ -133,7 +133,7 @@ $cream: #fff6f6;
       align-items: flex-start;
       flex-direction: column;
       padding-left: 15rem;
-      height: 79.2rem;
+      height: 70vh;
       background-repeat: no-repeat;
       background-size: contain;
 
@@ -142,6 +142,7 @@ $cream: #fff6f6;
       }
       @include respond(phone) {
         padding-left: 5rem;
+        height: 50vh;
       }
     }
   }

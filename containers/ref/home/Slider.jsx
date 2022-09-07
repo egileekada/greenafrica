@@ -77,10 +77,11 @@ const HeroSlider = () => {
                       ref={slide}
                       className="carousel__content-item"
                       style={{
+                        backgroundSize: "cover",
                         backgroundImage: `url(${bg.web_image_url})`,
                       }}
                     >
-                      <div className="flex absolute max-w-sm top-24 text-primary-main left-24 font-body flex-col text-left justify-center items-start gap-4">
+                      <div className="flex absolute max-w-sm top-1/2 transform -translate-y-1/2  text-primary-main left-24 font-body flex-col text-left justify-center items-start gap-4">
                         <h1 className="font-bold text-4xl text-primary-main">
                           {bg.subject}
                         </h1>
@@ -121,10 +122,10 @@ const HeroSlider = () => {
                         className="carousel__content-item"
                         style={{
                           backgroundImage: `url(${bg.mobile_image_url})`,
-                          backgroundSize: "contain",
+                          backgroundSize: "cover",
                         }}
                       >
-                        <div className="flex absolute max-w-[270px] sm:max-w-sm top-24 text-primary-main left-10 sm:left-24 font-body flex-col text-left justify-center items-start gap-4">
+                        <div className="flex absolute max-w-[270px] sm:max-w-sm top-36 text-primary-main left-10 sm:left-24 font-body flex-col text-left justify-center items-start gap-4">
                           <h1 className="font-bold text-4xl text-primary-main">
                             {bg.subject}
                           </h1>
