@@ -38,12 +38,12 @@ const TripConfirm = () => {
   }, []);
 
   //TODO Maybe re work later but removing it currently breaks code
-  useEffect(() => {
-    async function fetchBookingDetails() {
-      dispatch(GetBookingDetails());
-    }
-    fetchBookingDetails();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchBookingDetails() {
+  //     dispatch(GetBookingDetails());
+  //   }
+  //   fetchBookingDetails();
+  // }, []);
 
   useEffect(() => {
     if (bookingResponse) {
@@ -237,7 +237,7 @@ const TripConfirm = () => {
                         className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-0 md:mr-2 mb-4 md:mb-0"
                         onClick={() =>
                           router.push(
-                            `/bookings?pnr=${bookingResponse?.Booking?.RecordLocator}&signature=${signature}`
+                            `/bookings?pnr=${bookingResponse?.Booking?.RecordLocator}`
                           )
                         }
                       >

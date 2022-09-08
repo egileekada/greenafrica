@@ -117,9 +117,6 @@ const SummaryDetails = ({ isRoundTrip }) => {
                       ? "CHILD"
                       : "INFANT"}
                   </h6>
-                  <h6>
-                    {_passenger?.PassengerTypeInfo?.PaxType}
-                  </h6>
 
                   {/* {_passenger?.PassengerInfants.length
                     ? _passenger?.PassengerInfants.map((_paxInfant) => {

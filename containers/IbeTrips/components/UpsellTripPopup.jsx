@@ -130,7 +130,21 @@ const IbeTripPopup = ({
       };
 
       const _newJourneys = [..._cleanedJourneys, _newJourney];
-      dispatch(setSelectedSessionJourney([..._newJourneys]));
+      let orderedJourneys = [];
+
+      _newJourneys.map((_item) => {
+        if (_item) {
+          if (parseInt(_item?.schedueIndex) === 0) {
+            orderedJourneys[0] = _item;
+          }
+
+          if (parseInt(_item?.schedueIndex) === 1) {
+            orderedJourneys[1] = _item;
+          }
+        }
+      });
+
+      dispatch(setSelectedSessionJourney([...orderedJourneys]));
       document
         .getElementById("returnContainer")
         .scrollIntoView({ behavior: "smooth" });

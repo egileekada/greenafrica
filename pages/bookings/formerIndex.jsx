@@ -21,11 +21,12 @@ import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 
 const ManageBookings = () => {
   const router = useRouter();
+  const [selectedTab, setTab] = useState(0);
   const [selectedPaxs, setSelectedPaxs] = useState([]);
   const dispatch = useDispatch();
   const { bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
-  const { pnr } = router.query;
+  const { pnr, signature } = router.query;
   const [isRoundTrip, setIsRoundTrip] = useState(false);
 
   useEffect(() => {
@@ -57,15 +58,85 @@ const ManageBookings = () => {
     );
   };
 
+  const TabIndicator = () => {
+    return (
+      bookingResponse && (
+        <>
+          {isRoundTrip ? (
+            <div className="mx-6 my-6 flex tabs__container border-b h-12">
+              {bookingResponse?.Booking?.Journeys.map(
+                (_journey, _journeyIndex) => {
+                  return (
+                    <button
+                      className={` ${
+                        selectedTab === _journeyIndex ? "active-tab" : ""
+                      }`}
+                      onClick={() => setTab(_journeyIndex)}
+                    >
+                      <figure>
+                        <FliightIcon className="primary-main" />
+                      </figure>
+                      {_journey?.Segments.map((_segment) => {
+                        return (
+                          <div className="flex items-center ml-[10px] ">
+                            <p className="mr-[6px]">
+                              {_segment?.DepartureStation}
+                            </p>
+                            <figure className="flex items-center justify-center -mb-1">
+                              <ArrowIcon />
+                            </figure>
+                            <p className=" ml-[6px]">
+                              {_segment?.ArrivalStation}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </button>
+                  );
+                }
+              )}
+            </div>
+          ) : (
+            <div className="mx-6 my-6 flex tabs__container border-b h-12">
+              {bookingResponse?.Booking?.Journeys.map(
+                (_journey, _journeyIndex) => {
+                  return _journey?.Segments.map((_segment) => {
+                    return (
+                      <button className="active-tab" onClick={() => setTab(1)}>
+                        <figure>
+                          <FliightIcon className="primary-main" />
+                        </figure>
+                        <div className="flex items-center ml-[10px] ">
+                          <p className="mr-[6px]">
+                            {_segment?.DepartureStation}
+                          </p>
+                          <figure className="flex items-center justify-center -mb-1">
+                            <ArrowIcon />
+                          </figure>
+                          <p className=" ml-[6px]">
+                            {_segment?.ArrivalStation}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  });
+                }
+              )}
+            </div>
+          )}
+        </>
+      )
+    );
+  };
+
   const TabContent = () => {
     return (
       <>
-        {bookingResponse?.Booking?.Journeys?.length > 0 ? (
-          bookingResponse?.Booking?.Journeys.map((_journey, _index) => (
-            <SingleJourneyItem journey={_journey} />
-          ))
-        ) : (
-          <p className="errorText">No Journeys</p>
+        {selectedTab === 0 && (
+          <DepartJourney journey={bookingResponse?.Booking?.Journeys[0]} />
+        )}
+        {selectedTab === 1 && (
+          <ReturnJourney journey={bookingResponse?.Booking?.Journeys[1]} />
         )}
       </>
     );
@@ -102,7 +173,7 @@ const ManageBookings = () => {
     console.log(payload);
   };
 
-  const SingleJourneyItem = ({ journey }) => {
+  const DepartJourney = ({ journey }) => {
     return journey?.Segments.map((_segment) => {
       return (
         <>
@@ -170,15 +241,15 @@ const ManageBookings = () => {
               </div>
             </div>
           </section>
-          {/* <section className="checkin__info mx-6 my-3">
+          <section className="checkin__info mx-6 my-3">
             <p>
               You added some new services so your fare has been updated with
               additional fees
             </p>
-          </section> */}
-          {/* <section className="mx-6 my-6 flex flex-col ">
+          </section>
+          <section className="mx-6 my-6 flex flex-col ">
             <h3 className="title-text font-700 text-sm">PASSENGER</h3>
-            <p>{JSON.stringify(selectedPaxs)}</p>
+            {/* <p>{JSON.stringify(selectedPaxs)}</p> */}
             <section className="flex flex-col mt-3">
               {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
                 return (
@@ -191,8 +262,8 @@ const ManageBookings = () => {
                 );
               })}
             </section>
-          </section> */}
-          {/* <section className="flex flex-wrap md:flex-nowrap mx-6">
+          </section>
+          <section className="flex flex-wrap md:flex-nowrap mx-6">
             <button
               className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
                 selectedPaxs?.length < 1 && "pointer-events-none opacity-50"
@@ -215,7 +286,101 @@ const ManageBookings = () => {
             >
               Seat Management
             </button>
-          </section> */}
+          </section>
+        </>
+      );
+    });
+  };
+
+  const ReturnJourney = ({ journey }) => {
+    return journey?.Segments.map((_segment) => {
+      return (
+        <>
+          <div className="mx-6">
+            <h3 className="title-text">
+              Departing&nbsp; &nbsp;{" "}
+              {format(new Date(_segment?.STD), "MMM dd, yyyy")}
+            </h3>
+          </div>
+          <section className="ibe__trip__item checkinView bordered mx-6 my-3">
+            <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3">
+              gSaver
+            </p>
+            <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
+              <p className="tripType self-center">Direct Flight</p>
+              <div className="flex justify-between">
+                <div className="flex flex-col">
+                  <h5 className="tripType">
+                    {" "}
+                    {format(new Date(_segment?.STD), "HH:mm")}
+                  </h5>
+                  <p className="tripCity"> {_segment?.DepartureStation}</p>
+                </div>
+                <div className="tripIconPath">
+                  <DottedLine className="dotted-svg" />
+                  <AeroIcon className="aero-svg" />
+                  <DottedLine className="dotted-svg" />
+                </div>
+                <div className="flex flex-col  items-end">
+                  <h5 className="tripType right-text">
+                    {" "}
+                    {format(new Date(_segment?.STA), "HH:mm")}
+                  </h5>
+                  <p className="tripCity right-text">
+                    {" "}
+                    {_segment?.ArrivalStation}
+                  </p>
+                </div>
+              </div>
+              <p className="tripTime self-center">
+                {" "}
+                {timeConvert(
+                  differenceInMinutes(
+                    new Date(_segment?.STA),
+                    new Date(_segment?.STD)
+                  )
+                )}
+              </p>
+            </div>
+
+            <div className="trip-details">
+              <div className="trip-details-item">
+                <h6>FLIGHT NUMBER</h6>
+                <h5>
+                  {_segment?.FlightDesignator?.CarrierCode}{" "}
+                  {_segment?.FlightDesignator?.FlightNumber}
+                </h5>
+              </div>
+            </div>
+          </section>
+          <section className="checkin__info mx-6 my-3">
+            <p>
+              You added some new services so your fare has been updated with
+              additional fees
+            </p>
+          </section>
+          <section className="mx-6 my-6 flex flex-col ">
+            <h3 className="title-text font-700 text-sm">PASSENGER</h3>
+            <section className="flex flex-col mt-6">
+              {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
+                return (
+                  <ManagePassengerItem passenger={_pax} paxIndex={_paxIndex} />
+                );
+              })}
+            </section>
+          </section>
+          <section className="flex flex-wrap md:flex-nowrap mx-6">
+            <button className="basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3">
+              Update Itinerary
+            </button>
+            <button className="basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3">
+              Manage Services
+            </button>
+            <button className="basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3">
+              Seat Management
+            </button>
+          </section>
+          {/* <ManagePassengerFares /> */}
         </>
       );
     });
@@ -252,6 +417,7 @@ const ManageBookings = () => {
                 {bookingResponse ? (
                   <section className="flex flex-col bg-white pb-24">
                     <TripHeader />
+                    <TabIndicator />
                     <TabContent />
                   </section>
                 ) : null}

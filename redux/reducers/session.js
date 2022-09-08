@@ -22,16 +22,15 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
-import {
-  _selectedSessionFare,
-  _selectedSessionJourney,
-  _ssrAv,
-  bookingState,
-} from "./data";
+import { bookingResponse } from "./data";
+
+const _sig =
+  "olj/2G1ewsY=|xzLgOWBS90DJl/P/ik2m83JAvLAHV0zzjh1VjwUvhPUCzT4uIqhcR4jBy8se3GyjyjpIfMnJLIs6Cs+F9suMk/ivXKZ/xZQS/kWR0jMmDr3edg2Z7a27kZlOUe8X1h31dNFmcNooOZU=";
 
 const initialState = {
   isLoading: false,
-  signature: null,
+  // signature: null,
+  signature: _sig,
   sessionLoading: false,
   lowFareAvailabilityLoading: false,
   lowFareAvailabilityResponse: null,
@@ -61,7 +60,7 @@ const initialState = {
   bookingCommitLoading: false,
   bookingCommitResponse: null,
   bookingResponseLoading: false,
-  bookingResponse: null,
+  bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,
@@ -491,7 +490,6 @@ export const returnLowFareAvailability = (payload) => async (dispatch) => {
 
   try {
     const Response = await GetLowFareAvailability(requestPayload);
-    console.log("return fare data is", Response.data);
     await dispatch(setReturnFareAvailabilityResponse(Response.data));
   } catch (err) {
     notification.error({
@@ -1515,11 +1513,13 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
 
 export const GetBookingDetailsWithPNR =
   (payload) => async (dispatch, getState) => {
+    const currentState = getState().session;
+
     dispatch(setBookingResponseLoading(true));
 
     const requestPayload = {
       header: {
-        signature: payload.signature,
+        signature: currentState?.signature,
         messageContractVersion: "",
         enableExceptionStackTrace: false,
         contractVersion: 0,
@@ -1538,7 +1538,7 @@ export const GetBookingDetailsWithPNR =
       const Response = await GetBooking(requestPayload);
       await dispatch(setBookingResponse(Response.data));
     } catch (err) {
-      console.log("GetBooking Request error", err.response);
+      // console.log("GetBooking Request error", err.response);
       notification.error({
         message: "Error",
         description: "Get Booking Details failed",
