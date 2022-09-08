@@ -1211,7 +1211,6 @@
 }
 
 .ga__popup {
-  position: absolute;
   position: fixed;
   top: 0;
   left: 0;
@@ -1219,6 +1218,7 @@
   height: 100%;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
   z-index: 100;
+  overflow-y: auto;
   display: none;
 
   &.active {
@@ -1243,8 +1243,7 @@
     display: flex;
     position: relative;
     background-color: transparent;
-    // width: 825px;
-    overflow-y: scroll;
+    @apply overflow-auto md:overflow-hidden;
 
     @media (max-width: 900px) {
       width: 95%;
