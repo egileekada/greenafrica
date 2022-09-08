@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import CloseIcon from "assets/svgs/white-close.svg";
+import Back from "assets/svgs/icon-back-small.svg";
 import PromoIcon from "assets/svgs/promo.svg";
 import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
@@ -147,9 +148,9 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
   };
 
   const formatOptionLabel = ({ value, cityName, code }) => (
-    <div class="flex items-center">
+    <div className="flex items-center">
       <div>
-        <p class="font-bold mb-0">
+        <p className="font-bold mb-0">
           {cityName} ({value})
         </p>
       </div>
@@ -159,12 +160,12 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
   const Option = (props) => {
     return (
       <components.Option {...props}>
-        <div class="flex items-center">
+        <div className="flex items-center">
           <div>
-            <p class="font-bold text-base mb-0">{props.data.cityName}</p>
-            <p class="small mb-0">{props.data.country}</p>
+            <p className="font-bold text-base mb-0">{props.data.cityName}</p>
+            <p className="small mb-0">{props.data.country}</p>
           </div>
-          <div class="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
+          <div className="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
             {props.data.value}
           </div>
         </div>
@@ -242,7 +243,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
                   : ""
               } flex items-end booking__wrapper `}
               onClick={() => {
-                if (width < 899) {
+                if (width < 769) {
                   setShowModal(true);
                 }
               }}
@@ -256,14 +257,14 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
               />
               <div
                 onClick={() => {
-                  if (width < 899) {
+                  if (width < 769) {
                     setShowModal(true);
                   }
                 }}
                 className="w-full mx-2 px-2 md:px-0"
               >
                 <p className="mb-0 text-xs text-[#979797]">FROM</p>
-                {width > 899 ? (
+                {width > 769 ? (
                   <Select
                     ref={originSelect}
                     openMenuOnFocus={true}
@@ -307,7 +308,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
                   : ""
               } flex items-end booking__wrapper`}
               onClick={() => {
-                if (width < 899) {
+                if (width < 769) {
                   setShowModal(true);
                 }
               }}
@@ -321,7 +322,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
               />
               <div className="w-full mx-2 px-2 md:px-0">
                 <p className="mb-0 text-xs text-[#979797]">TO</p>
-                {width > 899 ? (
+                {width > 769 ? (
                   <Select
                     ref={destinationSelect}
                     openMenuOnFocus={true}
@@ -358,7 +359,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
           >
             <div
               onClick={() => {
-                if (width < 899) {
+                if (width < 769) {
                   setShowModal(true);
                 }
               }}
@@ -384,7 +385,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
               </span>
               <div className="flex-auto px-4 md:px-0">
                 <p className="mb-1 text-xs text-[#979797]">DEPARTING</p>
-                {width > 899 ? (
+                {width > 769 ? (
                   <DatePicker
                     id="departure"
                     clearIcon={null}
@@ -412,7 +413,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
             {type && (
               <div
                 onClick={() => {
-                  if (width < 899) {
+                  if (width < 769) {
                     setShowModal(true);
                   }
                 }}
@@ -439,7 +440,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
 
                 <div className="flex-auto px-4 md:px-0">
                   <p className="mb-1 text-xs text-[#979797]">RETURNING</p>
-                  {width > 899 ? (
+                  {width > 769 ? (
                     <DatePicker
                       id="return"
                       clearIcon={null}
@@ -474,7 +475,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
             >
               <div
                 onClick={() => {
-                  if (width < 899) {
+                  if (width < 769) {
                     setShowModal(true);
                   }
                 }}
@@ -486,7 +487,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
                 <div
                   className="flex items-center relative"
                   onClick={() =>
-                    width > 899 ? setShow(!show) : setShowModal(true)
+                    width > 769 ? setShow(!show) : setShowModal(true)
                   }
                   role="button"
                 >
@@ -705,10 +706,16 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
         </div>
       </form>
       {showModal && (
-        <div className="fixed top-0 bottom-0 left-0 right-0 z-20 h-screen w-screen bg-primary-main flex flex-col justify-start items-center">
-          <button onClick={() => setShowModal(false)} className="">
-            <CloseIcon />
-          </button>
+        <div className="fixed top-0 bottom-0 left-0 right-0 z-20 h-screen p-4 w-screen bg-primary-main flex flex-col justify-start items-center">
+          <div className="w-full flex justify-between items-center gap-2">
+            <button onClick={() => setShowModal(false)} className="">
+              <Back />
+            </button>
+            <h2 className="text-white font-bold text-lg font-body">Select</h2>
+            <button onClick={() => setShowModal(false)} className="">
+              <CloseIcon />
+            </button>
+          </div>
         </div>
       )}
     </>
