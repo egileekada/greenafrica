@@ -1,5 +1,5 @@
-// /* eslint-disable @next/next/no-img-element */
-// import { Fragment, useState, useEffect } from "react";
+/* eslint-disable @next/next/no-img-element */
+import { Fragment, useState, useEffect } from "react";
 // import BaseLayout from "layouts/Base";
 // import FlightIcon from "assets/svgs/FlightTwo.svg";
 // import AeroIcon from "assets/svgs/aero.svg";
@@ -17,9 +17,9 @@
 // import { format, differenceInMinutes } from "date-fns";
 // import { timeConvert } from "utils/common";
 // import ManagePassengerItem from "containers/Booking/components/PassengerItem";
-// // import ManagePassengerFares from "containers/Booking/components/Fares";
+// import ManagePassengerFares from "containers/Booking/components/Fares";
 
-// const ManageBookings = () => {
+const ManageBookings = () => {
 //   const router = useRouter();
 //   const [selectedTab, setTab] = useState(0);
 //   const [selectedPaxs, setSelectedPaxs] = useState([]);
@@ -386,51 +386,51 @@
 //     });
 //   };
 
-//   return (
-//     <Fragment>
-//       {/* <nav className="manage-booking-bar">
-//         <p className="font-display text-base text-primary-main">
-//           You made a few changes to your booking and additional charges have
-//           been added
-//         </p>
-//         <button className="btn btn-primary">Pay ₦26,501</button>
-//       </nav> */}
-//       <BaseLayout>
-//         <section className="w-full checkin">
-//           {bookingResponseLoading ? (
-//             <div className="px-12 py-12">
-//               <Spinner />
-//             </div>
-//           ) : (
-//             <section className="ga__section">
-//               <div className="ga__section__main">
-//                 <div className="mb-8 mt-16 xlg:mt-0">
-//                   <h2 className="text-black font-bold text-2xl mb-2">
-//                     Booking
-//                   </h2>
-//                   <p>
-//                     Kindly confirm that the information below is correct before
-//                     checking in
-//                   </p>
-//                 </div>
+  return (
+    <Fragment>
+      {/* <nav className="manage-booking-bar">
+        <p className="font-display text-base text-primary-main">
+          You made a few changes to your booking and additional charges have
+          been added
+        </p>
+        <button className="btn btn-primary">Pay ₦26,501</button>
+      </nav> */}
+      <BaseLayout>
+        {/* <section className="w-full checkin">
+          {bookingResponseLoading ? (
+            <div className="px-12 py-12">
+              <Spinner />
+            </div>
+          ) : (
+            <section className="ga__section">
+              <div className="ga__section__main">
+                <div className="mb-8 mt-16 xlg:mt-0">
+                  <h2 className="text-black font-bold text-2xl mb-2">
+                    Booking
+                  </h2>
+                  <p>
+                    Kindly confirm that the information below is correct before
+                    checking in
+                  </p>
+                </div>
 
-//                 {bookingResponse ? (
-//                   <section className="flex flex-col bg-white pb-24">
-//                     <TripHeader />
-//                     <TabIndicator />
-//                     <TabContent />
-//                   </section>
-//                 ) : null}
-//               </div>
-//               <div className="ga__section__side">
-//                 <IbeAdbar />
-//               </div>
-//             </section>
-//           )}
-//         </section>
-//       </BaseLayout>
-//     </Fragment>
-//   );
-// };
+                {bookingResponse ? (
+                  <section className="flex flex-col bg-white pb-24">
+                    <TripHeader />
+                    <TabIndicator />
+                    <TabContent />
+                  </section>
+                ) : null}
+              </div>
+              <div className="ga__section__side">
+                <IbeAdbar />
+              </div>
+            </section>
+          )}
+        </section> */}
+      </BaseLayout>
+    </Fragment>
+  );
+};
 
-// export default ManageBookings;
+export default ManageBookings;

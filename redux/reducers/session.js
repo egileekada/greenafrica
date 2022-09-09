@@ -856,7 +856,10 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
         await dispatch(setSellInfantResponse(sellInfantResponse.data));
         await dispatch(FetchStateFromServer());
       } catch (err) {
-        console.log("Sell Infant Request error", err.response);
+        notification.error({
+          message: "Error",
+          description: "Error booking Infant",
+        });
       }
       dispatch(setSellInfantLoading(false));
     }
