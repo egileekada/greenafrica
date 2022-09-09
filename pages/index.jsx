@@ -202,8 +202,6 @@ const Home = () => {
                       <Spinner />
                     ) : availabilityResponse ? (
                       <>
-                        {/* <IbeHeader /> */}
-
                         {availabilityResponse?.GetTripAvailabilityResponse
                           .Schedules.length > 0 ? (
                           <>

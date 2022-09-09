@@ -26,7 +26,6 @@ const IbeHeader = () => {
   // const [length, setLength] = useState(width > 1200 ? 7 : 3);
   const [currentFDateList, setCurrFDates] = useState([]);
   const [recurrent, setRecurrent] = useState(false);
-  const [loaded, setLoaded] = useState(true);
 
   const {
     availabilityResponse,
@@ -98,6 +97,8 @@ const IbeHeader = () => {
             );
           });
 
+          console.log("dateIndex", dateIndex);
+
           if (dateIndex > -1) {
             const defaultPage = Math.ceil((dateIndex + 1) / _length);
             paginate(defaultPage, _fareDateList);
@@ -106,8 +107,6 @@ const IbeHeader = () => {
           }
         }
       }
-
-      setLoaded(false);
     }
   }, [lowFareAvailabilityResponse]);
 
@@ -172,9 +171,9 @@ const IbeHeader = () => {
           <ArrowTo />
         </figure>
         <p className="mx-4">{flightParams?.arrivalStation}</p>
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>}
+        {currentPage && <p> currentPage:: {currentPage}</p>}
         {width && <p> width:: {width}</p>}
-        {_length && <p> _length:: {_length}</p>} */}
+        {_length && <p> _length:: {_length}</p>}
 
         <figure className="flightCircle">
           <FlightIcon />
@@ -229,10 +228,8 @@ const IbeHeader = () => {
                     </div>
                   );
                 })
-              ) : loaded ? (
-                <Spinner />
               ) : (
-                <p className="errorText text-lg"> No date available</p>
+                <p className="errorText text-lg">No date available</p>
               )}
             </section>
 

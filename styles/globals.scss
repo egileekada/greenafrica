@@ -1,8 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap");
-@import url("../assets/fonts/Cosmical/fonts.css");
-@import url("../assets/fonts/plus-jakarta-sans-v3-latin/font.css");
-@import "antd/dist/antd.css";
-@import "./loader.scss";
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
+@import url('../assets/fonts/Cosmical/fonts.css');
+@import url('../assets/fonts/plus-jakarta-sans-v3-latin/font.css');
+@import 'antd/dist/antd.css';
+@import './loader.scss';
 
 @tailwind base;
 @tailwind components;
@@ -199,7 +199,7 @@
     }
 
     input,
-    input[type="date"] {
+    input[type='date'] {
       @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
     }
 
@@ -251,7 +251,7 @@
 
     .phone-input {
       input,
-      input[type="date"] {
+      input[type='date'] {
         @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
       }
     }
@@ -315,12 +315,12 @@
         -o-transition: opacity 2s ease-in-out;
         transition: opacity 2s ease-in-out;
         opacity: 0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
         filter: alpha(opacity=0);
 
         &.activeText {
           opacity: 1;
-          -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+          -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)';
           filter: alpha(opacity=1);
         }
       }
@@ -1062,6 +1062,10 @@
   .checkin {
     h3.title-text {
       @apply font-display text-primary-main md:text-base my-4 md:my-6;
+
+      &.no-mb {
+        @apply mb-0;
+      }
     }
 
     &__card {
@@ -1418,7 +1422,7 @@
 }
 
 .plane-seats {
-  background-image: url("./bg/cab.png");
+  background-image: url('./bg/cab.png');
   background-size: 35%;
   background-repeat: no-repeat;
   background-position-x: 50%;
@@ -1442,7 +1446,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -1515,7 +1519,7 @@ svg.primary-main {
 
 .react-date-picker__inputGroup {
   padding: 0px !important;
-  font-family: "Plus Jakarta Sans";
+  font-family: 'Plus Jakarta Sans';
 }
 
 .react-date-picker__button {
@@ -1542,7 +1546,7 @@ svg.primary-main {
   font-weight: 700 !important;
   font-size: 15px !important;
   padding-bottom: 0px !important;
-  font-family: "Plus Jakarta Sans";
+  font-family: 'Plus Jakarta Sans';
 }
 
 .react-calendar__month-view__days__day--weekend {
@@ -1587,18 +1591,18 @@ div[disabled] {
   background-color: #1eff5a;
 }
 
-[type="text"]:focus,
-[type="email"]:focus,
-[type="url"]:focus,
-[type="password"]:focus,
-[type="number"]:focus,
-[type="date"]:focus,
-[type="datetime-local"]:focus,
-[type="month"]:focus,
-[type="search"]:focus,
-[type="tel"]:focus,
-[type="time"]:focus,
-[type="week"]:focus,
+[type='text']:focus,
+[type='email']:focus,
+[type='url']:focus,
+[type='password']:focus,
+[type='number']:focus,
+[type='date']:focus,
+[type='datetime-local']:focus,
+[type='month']:focus,
+[type='search']:focus,
+[type='tel']:focus,
+[type='time']:focus,
+[type='week']:focus,
 [multiple]:focus,
 textarea:focus,
 select:focus {

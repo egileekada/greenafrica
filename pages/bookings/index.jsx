@@ -8,20 +8,27 @@ import IbeAdbar from "containers/IbeAdbar";
 import FliightIcon from "assets/svgs/aero.svg";
 import ArrowIcon from "assets/svgs/small-arrow.svg";
 import Spinner from "components/Spinner";
+import SkeletonLoader from "components/SkeletonLoader";
 import { useDispatch, useSelector } from "react-redux";
 import {
   sessionSelector,
   GetBookingDetailsWithPNR,
 } from "redux/reducers/session";
+import {
+  saveTripParams,
+  saveReturnParams,
+  bookingSelector,
+} from "redux/reducers/booking";
 import { useRouter } from "next/router";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
+import PageFares from "./components/PageFares";
 // import ManagePassengerFares from "containers/Booking/components/Fares";
 
 const ManageBookings = () => {
   const router = useRouter();
-  const [selectedPaxs, setSelectedPaxs] = useState([]);
+  const [selectedPaxs] = useState([]);
   const dispatch = useDispatch();
   const { bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
@@ -57,13 +64,75 @@ const ManageBookings = () => {
     );
   };
 
+  const PassengersSection = () => {
+    return (
+      <section className="mx-6 my-6 flex flex-col ">
+        <h3 className="title-text no-mb font-700 text-sm">
+          PASSENGER
+          {bookingResponse?.Booking?.Passengers?.length > 0 ? "S" : ""}
+        </h3>
+        <section className="flex flex-col">
+          {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
+            return (
+              <ManagePassengerItem passenger={_pax} paxIndex={_paxIndex} />
+            );
+          })}
+        </section>
+      </section>
+    );
+  };
+
+  const PageCTA = () => {
+    return (
+      <section className="flex flex-wrap md:flex-nowrap mx-6">
+        <button
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
+          onClick={handleItenary}
+        >
+          Change Flight
+        </button>
+        <button
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+            selectedPaxs?.length < 1 && "pointer-events-none opacity-50"
+          } `}
+        >
+          Manage Services
+        </button>
+        <button
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+            selectedPaxs?.length < 1 && "pointer-events-none opacity-50"
+          } `}
+        >
+          Seat Management
+        </button>
+      </section>
+    );
+  };
+
+  const PageInfo = () => {
+    return (
+      <section className="checkin__info mx-6 my-3">
+        <p>
+          You added some new services so your fare has been updated with
+          additional fees
+        </p>
+      </section>
+    );
+  };
+
   const TabContent = () => {
     return (
       <>
         {bookingResponse?.Booking?.Journeys?.length > 0 ? (
-          bookingResponse?.Booking?.Journeys.map((_journey, _index) => (
-            <SingleJourneyItem journey={_journey} />
-          ))
+          <>
+            {bookingResponse?.Booking?.Journeys.map((_journey, _index) => (
+              <SingleJourneyItem journey={_journey} journeyIndex={_index} />
+            ))}
+            <PageInfo />
+            <PassengersSection />
+            <PageCTA />
+            <PageFares />
+          </>
         ) : (
           <p className="errorText">No Journeys</p>
         )}
@@ -72,44 +141,102 @@ const ManageBookings = () => {
   };
 
   const handleItenary = () => {
-    const _deptStation =
-      bookingResponse?.Booking?.Journeys[0].Segments[0].DepartureStation;
-    const _arrStation =
-      bookingResponse?.Booking?.Journeys[0].Segments[0].ArrivalStation;
-    const _beginDate = format(
-      new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STA),
-      "yyyy-MM-dd"
-    );
-    const _endDate = format(
-      new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STD),
-      "yyyy-MM-dd"
-    );
-    const _minimumFarePrice =
-      bookingResponse?.Booking?.Journeys[0].Segments[0].Fares[0].PaxFares;
+    let _JourneyOneTax = 0;
+    let _JourneyOneFare = 0;
 
-    const payload = {
-      departureStation: _deptStation,
-      arrivalStation: _arrStation,
-      beginDate: _beginDate,
-      endDate: _endDate,
-      returnDate: _endDate,
-      signature,
-      isRoundTrip,
+    const _JourneyOneServiceCharges =
+      bookingResponse?.Booking?.Journeys[0].Segments[0].Fares[0].PaxFares[0]
+        .ServiceCharges;
+
+    _JourneyOneServiceCharges.map((_serviceCharge) => {
+      _serviceCharge.ChargeCode === ""
+        ? (_JourneyOneFare = _serviceCharge?.Amount)
+        : (_JourneyOneTax = _JourneyOneTax + parseInt(_serviceCharge?.Amount));
+    });
+
+    const tripPayload = {
+      departureStation:
+        bookingResponse?.Booking?.Journeys[0].Segments[0].DepartureStation,
+      arrivalStation:
+        bookingResponse?.Booking?.Journeys[0].Segments[0].ArrivalStation,
+      beginDate: format(
+        new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STA),
+        "yyyy-MM-dd"
+      ),
+      endDate: format(
+        new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STD),
+        "yyyy-MM-dd"
+      ),
+      returnDate: null,
+      isRoundTrip: bookingResponse?.Booking?.Journeys.length > 1 ? true : false,
       totalPaxCount: bookingResponse?.Booking?.Passengers.length,
-      minimumFarePrice: _minimumFarePrice,
+      taxAmount: _JourneyOneTax,
+      minimumFarePrice: _JourneyOneFare,
+      serviceBundleItem:
+        bookingResponse?.Booking?.Journeys[0].Segments[0].Fares[0].RuleNumber,
+      scheduleIndex: 0,
     };
 
-    console.log(payload);
+    if (bookingResponse?.Booking?.Journeys.length > 1) {
+      let _JourneyTwoTax = 0;
+      let _JourneyTwoFare = 0;
+
+      const _JourneyTwoServiceCharges =
+        bookingResponse?.Booking?.Journeys[1].Segments[0].Fares[0].PaxFares[0]
+          .ServiceCharges;
+
+      _JourneyTwoServiceCharges.map((_serviceCharge) => {
+        _serviceCharge.ChargeCode === ""
+          ? (_JourneyTwoFare = _serviceCharge?.Amount)
+          : (_JourneyTwoTax =
+              _JourneyTwoTax + parseInt(_serviceCharge?.Amount));
+      });
+
+      const returnPayload = {
+        departureStation:
+          bookingResponse?.Booking?.Journeys[1].Segments[0].DepartureStation,
+        arrivalStation:
+          bookingResponse?.Booking?.Journeys[1].Segments[0].ArrivalStation,
+        beginDate: format(
+          new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STA),
+          "yyyy-MM-dd"
+        ),
+        endDate: format(
+          new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STD),
+          "yyyy-MM-dd"
+        ),
+        returnDate: format(
+          new Date(bookingResponse?.Booking?.Journeys[1].Segments[0].STD),
+          "yyyy-MM-dd"
+        ),
+        isRoundTrip: true,
+        totalPaxCount: bookingResponse?.Booking?.Passengers.length,
+        taxAmount: _JourneyTwoTax,
+        minimumFarePrice: _JourneyTwoFare,
+        serviceBundleItem:
+          bookingResponse?.Booking?.Journeys[1].Segments[0].Fares[0].RuleNumber,
+        scheduleIndex: 1,
+      };
+      dispatch(saveTripParams(tripPayload));
+      dispatch(saveReturnParams(returnPayload));
+      // console.log("tripParams", tripPayload);
+      // console.log("returnPayloa", returnPayload);
+      router.push("/bookings/change-flight");
+    } else {
+      // console.log("tripParams", tripPayload);
+      dispatch(saveTripParams(tripPayload));
+      router.push("/bookings/change-flight");
+    }
   };
 
-  const SingleJourneyItem = ({ journey }) => {
+  const SingleJourneyItem = ({ journey, journeyIndex }) => {
     return journey?.Segments.map((_segment) => {
       return (
         <>
           <div className="mx-6">
             <h3 className="title-text">
-              Departing&nbsp; &nbsp;{" "}
-              {format(new Date(_segment?.STD), "MMM dd, yyyy")}
+              {journeyIndex === 0 ? "Departing" : "Returning"} on &nbsp;
+              {format(new Date(_segment?.STD), "EEEE, LLLL dd yyyy")}
             </h3>
           </div>
           <section className="ibe__trip__item checkinView bordered mx-6 my-3">
@@ -170,52 +297,6 @@ const ManageBookings = () => {
               </div>
             </div>
           </section>
-          {/* <section className="checkin__info mx-6 my-3">
-            <p>
-              You added some new services so your fare has been updated with
-              additional fees
-            </p>
-          </section> */}
-          {/* <section className="mx-6 my-6 flex flex-col ">
-            <h3 className="title-text font-700 text-sm">PASSENGER</h3>
-            <p>{JSON.stringify(selectedPaxs)}</p>
-            <section className="flex flex-col mt-3">
-              {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
-                return (
-                  <ManagePassengerItem
-                    selectedPaxs={selectedPaxs}
-                    setSelectedPaxs={setSelectedPaxs}
-                    passenger={_pax}
-                    paxIndex={_paxIndex}
-                  />
-                );
-              })}
-            </section>
-          </section> */}
-          {/* <section className="flex flex-wrap md:flex-nowrap mx-6">
-            <button
-              className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
-                selectedPaxs?.length < 1 && "pointer-events-none opacity-50"
-              }`}
-              onClick={handleItenary}
-            >
-              Update Itinerary
-            </button>
-            <button
-              className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
-                selectedPaxs?.length < 1 && "pointer-events-none opacity-50"
-              } `}
-            >
-              Manage Services
-            </button>
-            <button
-              className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
-                selectedPaxs?.length < 1 && "pointer-events-none opacity-50"
-              } `}
-            >
-              Seat Management
-            </button>
-          </section> */}
         </>
       );
     });
@@ -223,18 +304,18 @@ const ManageBookings = () => {
 
   return (
     <Fragment>
-      {/* <nav className="manage-booking-bar">
+      <nav className="manage-booking-bar">
         <p className="font-display text-base text-primary-main">
           You made a few changes to your booking and additional charges have
           been added
         </p>
         <button className="btn btn-primary">Pay ₦26,501</button>
-      </nav> */}
+      </nav>
       <BaseLayout>
         <section className="w-full checkin">
           {bookingResponseLoading ? (
             <div className="px-12 py-12">
-              <Spinner />
+              <SkeletonLoader />
             </div>
           ) : (
             <section className="ga__section">

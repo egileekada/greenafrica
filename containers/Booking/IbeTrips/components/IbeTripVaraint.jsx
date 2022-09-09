@@ -3,9 +3,28 @@ import BriefcaseIcon from "assets/svgs/briefcase.svg";
 import PackageIcon from "assets/svgs/package.svg";
 import SeatIcon from "assets/svgs/seat.svg";
 import { Fragment, useState } from "react";
-import IbeTripPopup from "./IbeTripPopup";
+// import IbeTripPopup from "./IbeTripPopup";
+import IbeTripPopup from "./UpsellTripPopup";
+import { useDispatch, useSelector } from "react-redux";
 
-const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
+import {
+  sessionSelector,
+  setSelectedSessionFare,
+} from "redux/reducers/session";
+
+const IbeTripVariant = ({
+  fare,
+  sellKey,
+  segmentStd,
+  segmentFlightNumber,
+  segmentCarrierCode,
+  journey,
+  schedueIndex,
+  setIsVisible,
+  segment,
+}) => {
+  const dispatch = useDispatch();
+  const { flightParams, selectedSessionFare } = useSelector(sessionSelector);
   const [showPopUp, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -29,8 +48,42 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
   );
 
   const handleBtnClick = (_fare) => {
-    setSelected(_fare);
+    //SellKey is Journey SellKey
+    setSelected({
+      ..._fare,
+      sellKey,
+    });
     setShow(true);
+
+    // if (flightParams?.isRoundTrip === 1) {
+    //   const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
+    //   const _cleanedFares = existingFares.filter((_item) => {
+    //     const _ruleBasis =
+    //       parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
+    //     return !_ruleBasis;
+    //   });
+
+    //   const _newFare = {
+    //     ..._fare,
+    //     sellKey,
+    //     schedueIndex,
+    //   };
+
+    //   const _newFares = [..._cleanedFares, _newFare];
+    //   dispatch(setSelectedSessionFare([..._newFares]));
+    //   setShow(true);
+    // } else {
+    //   dispatch(
+    //     setSelectedSessionFare([
+    //       {
+    //         ..._fare,
+    //         sellKey,
+    //         schedueIndex,
+    //       },
+    //     ])
+    //   );
+    //   setShow(true);
+    // }
   };
 
   const closePopUp = () => {
@@ -74,7 +127,7 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
                   <PackageIcon />
                 </figure>
                 <p className="text-black font-normal ml-4">
-                  15 kg checked package {fare_variant}
+                  15 kg checked package
                 </p>
               </li>
             )}
@@ -87,7 +140,7 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
                   <SeatIcon />
                 </figure>
                 <p className="text-black font-normal ml-4">
-                  Free Standard Seat{fare_variant}
+                  Free Standard Seat
                 </p>
               </li>
             )}
@@ -97,7 +150,9 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
           {fare_variant === "savr" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className="btn btn-primary w-full text-center"
+              className={`btn btn-primary w-full text-center ${
+                parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
+              }`}
             >
               ₦{totalServiceCharge.toLocaleString("NGN")}
             </button>
@@ -105,7 +160,9 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
           {fare_variant === "clsc" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className="btn btn-primary  w-full"
+              className={`btn btn-primary w-full text-center ${
+                parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
+              }`}
             >
               ₦{totalServiceCharge.toLocaleString("NGN")}
             </button>
@@ -113,7 +170,9 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
           {fare_variant === "flexi" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className="btn btn-primary  w-full"
+              className={`btn btn-primary w-full  text-center white ${
+                parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
+              }`}
             >
               ₦{totalServiceCharge.toLocaleString("NGN")}
             </button>
@@ -128,6 +187,11 @@ const IbeTripVariant = ({ fare, sellKey, segmentStd, segmentFlightNumber }) => {
         sellKey={sellKey}
         segmentStd={segmentStd}
         segmentFlightNumber={segmentFlightNumber}
+        segmentCarrierCode={segmentCarrierCode}
+        journey={journey}
+        schedueIndex={schedueIndex}
+        setIsVisible={setIsVisible}
+        segment={segment}
       />
     </Fragment>
   );
@@ -138,6 +202,9 @@ IbeTripVariant.defaultProps = {
   sellKey: "",
   segmentStd: "",
   segmentFlightNumber: "",
+  segmentCarrierCode: "",
+  schedueIndex: "",
+  segment: {},
 };
 
 export default IbeTripVariant;

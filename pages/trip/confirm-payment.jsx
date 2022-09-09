@@ -35,7 +35,6 @@ const ConfirmTripPayment = () => {
         const payload = {
           ref: paystackRef,
         };
-        console.log("payment refernce", payload);
         dispatch(VerifyGatewayPayment(payload));
       } else {
         router.push("/");

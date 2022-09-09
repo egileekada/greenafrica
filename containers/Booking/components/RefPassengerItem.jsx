@@ -5,9 +5,23 @@ import { sessionSelector } from "redux/reducers/session";
 
 const ManagePassengerItem = ({
   passenger,
-  paxIndex
+  paxIndex,
+  selectedPaxs,
+  setSelectedPaxs,
 }) => {
   const { bookingResponse } = useSelector(sessionSelector);
+
+  const onChange = (e) => {
+    const _existingPaxs = [...selectedPaxs];
+    if (_existingPaxs.indexOf(parseInt(passenger.PassengerNumber)) === -1) {
+      setSelectedPaxs([...selectedPaxs, parseInt(passenger.PassengerNumber)]);
+    } else {
+      const _newPaxs = _existingPaxs.filter((_pax) => {
+        return parseInt(_pax) !== parseInt(passenger.PassengerNumber);
+      });
+      setSelectedPaxs([..._newPaxs]);
+    }
+  };
 
   const _Seats =
     passenger &&
@@ -27,12 +41,17 @@ const ManagePassengerItem = ({
     <div className="flex flex-col ibe__trip__item checkinView pt-0 rounded-none">
       <div className="flex items-center justify-between w-full px-6 py-4 rounded-lg border mb-2">
         <div className="flex items-center primary-checkbox">
-          <p className="check-label">
-            <h3 className="font-header font-bold text-sm ">
-              {passenger?.Names[0]?.FirstName}&nbsp;
-              {passenger?.Names[0]?.LastName}
-            </h3>
-          </p>
+          <Checkbox
+            onChange={onChange}
+            checked={selectedPaxs.includes(parseInt(passenger.PassengerNumber))}
+          >
+            <label className="check-label">
+              <h3 className="ml-2 font-header font-bold text-sm">
+                {passenger?.Names[0]?.FirstName}&nbsp;
+                {passenger?.Names[0]?.LastName}
+              </h3>
+            </label>
+          </Checkbox>
         </div>
       </div>
       <div className="trip-details">

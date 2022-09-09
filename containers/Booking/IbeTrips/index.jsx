@@ -1,30 +1,44 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import IbeTripItem from "./components/IbeTripItem";
 import { useSelector } from "react-redux";
-import { sessionSelector } from "redux/reducers/session";
+import { bookingSelector } from "redux/reducers/booking";
 import Spinner from "components/Spinner";
+import format from "date-fns/format";
 
-const BookingIbeTrips = ({ flightSchedule, _i }) => {
-  const { flightAvailabilityLoading } =
-    useSelector(sessionSelector);
+const IbeTrips = ({ flightSchedule, schedueIndex }) => {
+  const { tripParams, returnParams, manageFlightAvailabilityLoading } =
+    useSelector(bookingSelector);
 
   return (
     <section className="ibe__flight__trips">
-      <h2 className="text-primary-main font-extrabold text-sm mb-8">
-        {parseInt(_i) === 0 ? "DEPARTURE" : "RETURN"}
+      <h2 className="text-primary-main font-extrabold text-base mb-8 uppercase">
+        {parseInt(schedueIndex) === 0
+          ? `DEPARTURE ON ${format(
+              new Date(tripParams?.beginDate),
+              "EEEE, LLLL dd yyyy"
+            )}`
+          : `RETURN ON ${format(
+              new Date(returnParams?.returnDate),
+              "EEEE, LLLL dd yyyy"
+            )}`}
       </h2>
 
       <Fragment>
-        {flightAvailabilityLoading ? (
+        {manageFlightAvailabilityLoading ? (
           <Spinner />
         ) : (
           <section className="flex flex-col">
             {flightSchedule ? (
               flightSchedule.length > 0 ? (
                 flightSchedule.map((_schedule) => {
-                  return _schedule.Journeys.map((_journey) => {
-                    return <IbeTripItem journey={_journey} />;
+                  return _schedule.Journeys.map((_journey, _journeyIndex) => {
+                    return (
+                      <IbeTripItem
+                        journey={_journey}
+                        schedueIndex={schedueIndex}
+                      />
+                    );
                   });
                 })
               ) : (
@@ -46,7 +60,7 @@ const BookingIbeTrips = ({ flightSchedule, _i }) => {
 
 IbeTrips.defaultProps = {
   flightSchedule: {},
-  _i: "",
+  schedueIndex: "",
 };
 
-export default BookingIbeTrips;
+export default IbeTrips;

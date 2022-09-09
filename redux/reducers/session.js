@@ -25,12 +25,12 @@ import addDays from "date-fns/addDays";
 import { bookingResponse } from "./data";
 
 const _sig =
-  "olj/2G1ewsY=|xzLgOWBS90DJl/P/ik2m83JAvLAHV0zzjh1VjwUvhPUCzT4uIqhcR4jBy8se3GyjyjpIfMnJLIs6Cs+F9suMk/ivXKZ/xZQS/kWR0jMmDr3edg2Z7a27kZlOUe8X1h31dNFmcNooOZU=";
+  "evvMITkS66k=|g6x/dRNRkxY5PCxI9b+JfAOuL4VBljSZ3s9bNbeZGtLbeW6PGf30nEKn6L9z28x0Ap/sKKQqN63mUemlUOMPdvL7OSSZr0uoXEOj+nibyi35zaGmdzszVfDGCk9GjKY77fJJofLvYJY=";
 
 const initialState = {
   isLoading: false,
-  // signature: null,
-  signature: _sig,
+  signature: null,
+  // signature: _sig,
   sessionLoading: false,
   lowFareAvailabilityLoading: false,
   lowFareAvailabilityResponse: null,
@@ -60,7 +60,8 @@ const initialState = {
   bookingCommitLoading: false,
   bookingCommitResponse: null,
   bookingResponseLoading: false,
-  bookingResponse: bookingResponse,
+  bookingResponse: null,
+  // bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,
@@ -70,8 +71,8 @@ const initialState = {
   assignSeatResponse: null,
   bookingState: null,
   sessionStateLoading: false,
-  // sessionStateResponse: bookingState,
   sessionStateResponse: null,
+  // sessionStateResponse: bookingState,
   seats: [],
 };
 

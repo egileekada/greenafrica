@@ -12,6 +12,15 @@ export const GetAvailabilityRequest = async (payload) => {
   });
 };
 
+export const GetAvailability = async (payload) => {
+  let request = axios.post(`${BOOKING}GetAvailability`, payload);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
 export const GetBooking = async (payload) => {
   let request = axios.post(`${BOOKING}GetBooking`, payload);
   return request.then((response) => {
@@ -66,7 +75,6 @@ export const BookingSell = async (payload) => {
   });
 };
 
-
 export const BookingCancel = async (payload) => {
   let request = axios.post(`${BOOKING}Cancel`, payload);
   return request.then((response) => {
@@ -75,7 +83,6 @@ export const BookingCancel = async (payload) => {
     }
   });
 };
-
 
 export const GetSSRAvailability = async (payload) => {
   let request = axios.post(`${BOOKING}GetSSRAvailability`, payload);
@@ -150,5 +157,3 @@ export const GetSeatAvailabilityForBooking = async (payload) => {
     }
   });
 };
-
-
