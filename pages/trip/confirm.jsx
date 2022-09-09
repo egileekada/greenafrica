@@ -37,7 +37,7 @@ const TripConfirm = () => {
     ScrollToTop();
   }, []);
 
-  //TODO Maybe re work later but removing it currently breaks code
+  //Don't re work - it currently breaks code
   useEffect(() => {
     async function fetchBookingDetails() {
       dispatch(GetBookingDetails());
