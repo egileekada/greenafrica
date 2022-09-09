@@ -1,37 +1,50 @@
 import React, { useState, useEffect, useRef } from "react";
-import CloseIcon from "assets/svgs/white-close.svg";
-import Back from "assets/svgs/icon-back-small.svg";
 import PromoIcon from "assets/svgs/promo.svg";
 import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select, { components } from "react-select";
-import { format, add } from "date-fns";
+import { format } from "date-fns";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import { getWidgetData } from "../../../services";
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
 import { lowfare } from "../../../utils/calendar";
 import useDeviceSize from "hooks/useWindowSize";
+import MobileSearch from "components/MobileSearch";
+import { hasBasePath } from "next/dist/server/router";
 
 const validationSchema = Yup.object().shape({
   destination: Yup.object().required("Required"),
   origin: Yup.object().required("Required"),
 });
 
-const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
+const BookingTab = ({
+  arrivals,
+  setArrivals,
+  type,
+  promocode: code,
+  fromTo,
+  setFromTo,
+  returningDate,
+  setReturningDate,
+  departureDate,
+  setDepartureDate,
+  passengers,
+  setPassengers,
+  infant,
+  setInfant,
+  adult,
+  setAdult,
+  child,
+  setChild,
+}) => {
   const [width] = useDeviceSize();
   const [showModal, setShowModal] = useState(false);
   const { data } = useQuery(["destination"], getWidgetData);
-  // const [departing, setDeparting] = useState(add(new Date(), { weeks: 1 }));
-  const [arrivals, setArrivals] = useState([]);
-  const [passengers, setPassengers] = useState(0);
   const [promocode, setPromocode] = useState(code);
   const [showPromo, setShowPromo] = useState(false);
   const [saveStatus, setSaveStatus] = useState(false);
-  const [infant, setInfant] = useState(0);
-  const [adult, setAdult] = useState(1);
-  const [child, setChild] = useState(0);
   const [show, setShow] = useState(false);
 
   const originSelect = useRef(null);
@@ -150,8 +163,8 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
   const formatOptionLabel = ({ value, cityName, code }) => (
     <div className="flex items-center">
       <div>
-        <p className="font-bold mb-0">
-          {cityName} ({value})
+        <p className=" mb-0">
+          {!!cityName ? cityName : ""} {!!value ? `(${value})` : ""} &nbsp;
         </p>
       </div>
     </div>
@@ -179,10 +192,10 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
 
   const formik = useFormik({
     initialValues: {
-      origin: fromTo.from,
-      destination: fromTo.to,
-      departure: add(new Date(), { weeks: 1 }),
-      return: add(new Date(), { days: 10 }),
+      origin: fromTo.from.value,
+      destination: fromTo.to.value,
+      departure: departureDate,
+      return: returningDate,
       promocode,
     },
     validationSchema,
@@ -231,6 +244,49 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
     value.current.focus();
   };
 
+  const setDepartureDateFormik = (value) => {
+    formik.setFieldValue("departure", value);
+    setDepartureDate(value);
+  };
+
+  const setReturnDateFormik = (value) => {
+    formik.setFieldValue("return", value);
+    setReturningDate(value);
+  };
+
+  const setOrigin = (value) => {
+    formik.setFieldValue("origin", value);
+  };
+
+  useEffect(() => {
+    setOrigin(fromTo.from);
+    setDestination(fromTo.to);
+    setDepartureDateFormik(departureDate);
+    setReturnDateFormik(returningDate);
+  }, []);
+
+  const setDestination = (value) => {
+    formik.setFieldValue("destination", value);
+  };
+
+  const setFromDate = (value) => {
+    formik.setFieldValue("origin", value);
+    formik.setFieldValue("destination", " ");
+    setArrivals(value.arrivals);
+    setFromTo({
+      ...fromTo,
+      from: value,
+      to: { cityName: "", value: "", country: "" },
+    });
+    console.log("fromDate: ", value);
+  };
+
+  const setToDate = (value) => {
+    formik.setFieldValue("destination", value);
+    setFromTo({ ...fromTo, to: value });
+    console.log("ToDate: ", value);
+  };
+
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -276,20 +332,13 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
                     name="origin"
                     defaultValue={formik.values.origin}
                     value={formik.values.origin}
-                    onChange={(value) => (
-                      formik.setFieldValue("origin", value),
-                      formik.setFieldValue("destination", " "),
-                      setArrivals(value.arrivals),
-                      setFromTo({ ...fromTo, from: value, to: " " })
-                    )}
+                    onChange={(value) => setFromDate(value)}
                     options={data?.data?.values}
                     className="border-0"
                     styles={colourStyles}
                   />
                 ) : (
-                  <p className="h-10 flex justify-start items-center text-base font-medium text-primary-main">
-                    {formik.values.origin}
-                  </p>
+                  <>{formatOptionLabel(formik.values.origin)}</>
                 )}
               </div>
               <img
@@ -337,16 +386,11 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
                     name="destination"
                     defaultValue={formik.values.destination}
                     value={formik.values.destination}
-                    onChange={(value) => {
-                      formik.setFieldValue("destination", value);
-                      setFromTo({ ...fromTo, to: value });
-                    }}
+                    onChange={(value) => setToDate(value)}
                     noOptionsMessage={() => "Kindly choose an origin"}
                   />
                 ) : (
-                  <p className="h-10 flex justify-start items-center text-base font-medium text-primary-main">
-                    {formik.values.destination}
-                  </p>
+                  <>{formatOptionLabel(formik.values.destination)}</>
                 )}
               </div>
             </div>
@@ -355,7 +399,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
           <div
             className={`${
               type && "lg:grid-cols-2 md:col-span-2"
-            } grid grid-cols-1 gap-2 md:col-auto`}
+            } hidden md:grid grid-cols-1 gap-2 md:col-auto`}
           >
             <div
               onClick={() => {
@@ -393,9 +437,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
                     tileContent={hasContent}
                     format={"d/M/y"}
                     name="departure"
-                    onChange={(value) =>
-                      formik.setFieldValue("departure", value)
-                    }
+                    onChange={(value) => setDepartureDateFormik(value)}
                     value={formik.values.departure}
                     onKeyDown={(e) => e.preventDefault()}
                     minDate={new Date()}
@@ -403,8 +445,8 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
                 ) : (
                   <p className="h-10 flex justify-start items-center text-base font-medium text-primary-main">
                     {`
-											${format(formik.values.departure, "dd/mm/yyyy")}
-											`}
+										${format(formik.values.departure, "dd/mm/yyyy")}
+										`}
                   </p>
                 )}
               </div>
@@ -450,17 +492,15 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
                       minDate={new Date()}
                       name="return"
                       format={"d/M/y"}
-                      onChange={(value) =>
-                        formik.setFieldValue("return", value)
-                      }
+                      onChange={(value) => setReturnDateFormik(value)}
                       value={formik.values.return}
                       onKeyDown={(e) => e.preventDefault()}
                     />
                   ) : (
                     <p className="h-10 flex justify-start items-center text-base font-medium text-primary-main">
                       {`
-											${format(formik.values.return, "dd/mm/yyyy")}
-											`}
+										${format(formik.values.return, "dd/mm/yyyy")}
+										`}
                     </p>
                   )}
                 </div>
@@ -470,7 +510,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
 
           <div className="flex gap-3">
             <div
-              className="booking__wrapper flex-auto relative"
+              className="booking__wrapper hidden md:flex flex-auto relative"
               data-modal-toggle="defaultModal"
             >
               <div
@@ -649,9 +689,9 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
               </div>
             </div>
 
-            <div className="">
+            <div className="w-full md:w-auto">
               <button
-                className="btn btn-primary font-title block h-full"
+                className="btn btn-primary w-full md:w-auto font-title block h-full"
                 type="submit"
                 disabled={formik.isSubmitting}
               >
@@ -661,7 +701,7 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2 md:hidden">
+        {/*<div className="mt-4 flex flex-wrap gap-2 md:hidden">
           {showPromo ? (
             <>
               <div className="relative">
@@ -703,20 +743,34 @@ const BookingTab = ({ type, promocode: code, fromTo, setFromTo }) => {
               <span className="text-primary text-sm">Use promo code</span>
             </button>
           )}
-        </div>
+        </div>*/}
       </form>
       {showModal && (
-        <div className="fixed top-0 bottom-0 left-0 right-0 z-20 h-screen p-4 w-screen bg-primary-main flex flex-col justify-start items-center">
-          <div className="w-full flex justify-between items-center gap-2">
-            <button onClick={() => setShowModal(false)} className="">
-              <Back />
-            </button>
-            <h2 className="text-white font-bold text-lg font-body">Select</h2>
-            <button onClick={() => setShowModal(false)} className="">
-              <CloseIcon />
-            </button>
-          </div>
-        </div>
+        <MobileSearch
+          updateAdult={updateAdult}
+          updateChild={updateChild}
+          updateInfant={updateInfant}
+          decreaseAdult={decreaseAdult}
+          switchSection={onClick}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          setDepartureDate={setDepartureDate}
+          // setReturnDate={setReturnDate}
+          departureDate={formik.values.departure}
+          returnDate={formik.values.return}
+          setOrigin={setOrigin}
+          setDestination={setDestination}
+          setFromDate={setFromDate}
+          fromDate={formik.values.departure}
+          toDate={formik.values.return}
+          origin={formik.values.origin}
+          destination={formik.values.destination}
+          setToDate={setToDate}
+          arrivals={arrivals}
+          formatOptionLabel={formatOptionLabel}
+          Option={Option}
+          hasContent={hasContent}
+        />
       )}
     </>
   );

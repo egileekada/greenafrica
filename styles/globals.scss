@@ -628,6 +628,10 @@ select:focus {
       div:nth-child(1) {
         display: none !important;
       }
+      div:nth-child(2) {
+        width: 100% !important;
+        max-width: none !important;
+      }
     }
   }
 }
