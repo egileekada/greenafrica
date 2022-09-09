@@ -836,7 +836,7 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
               preventOverLapSpecified: true,
               replaceAllPassengersOnUpdate: false,
               replaceAllPassengersOnUpdateSpecified: true,
-              serviceBundleList: [""],
+              serviceBundleList: [payload?.RuleNumber],
               applyServiceBundle: 0,
               applyServiceBundleSpecified: true,
             },
@@ -879,6 +879,7 @@ export const saveMultipleSellRequest =
     const currentState = getState().session;
 
     const paxPriceTypes = [];
+    const _serviceBundleList = [];
     const flightParams = currentState.flightParams;
     const ADULT_COUNT = parseInt(flightParams?.ADT);
     const CHILD_COUNT = parseInt(flightParams?.CHD);
@@ -991,6 +992,7 @@ export const saveMultipleSellRequest =
         packageIndicator: "",
       };
       _journeySellKeys.push(newObj);
+      _serviceBundleList.push(_sessionJourney?.RuleNumber);
     });
 
     const requestPayload = {
@@ -1021,7 +1023,7 @@ export const saveMultipleSellRequest =
                 preventOverLapSpecified: true,
                 replaceAllPassengersOnUpdate: false,
                 replaceAllPassengersOnUpdateSpecified: true,
-                serviceBundleList: [""],
+                serviceBundleList: [..._serviceBundleList],
                 applyServiceBundle: 0,
                 applyServiceBundleSpecified: true,
               },

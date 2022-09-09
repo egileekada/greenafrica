@@ -102,6 +102,7 @@ const TripView = () => {
             fareKey: flightJourney[0]?.fareKey,
             arrivalStation: flightJourney[0]?.arrivalStation,
             departureStation: flightJourney[0]?.departureStation,
+            RuleNumber: flightJourney[0]?.RuleNumber,
           })
         )
       : notification.error({

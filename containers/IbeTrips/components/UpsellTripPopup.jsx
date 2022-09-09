@@ -100,6 +100,7 @@ const IbeTripPopup = ({
 
   const handleSell = async (fareId) => {
     //FareKey is Fare SellKey
+    console.log("selected", selected);
 
     handleFare(fareId);
 
@@ -127,6 +128,7 @@ const IbeTripPopup = ({
         arrivalStation: journey?.Segments[0]?.ArrivalStation,
         departureStation: journey?.Segments[0]?.DepartureStation,
         std: journey?.Segments[0]?.STD,
+        RuleNumber: selected?.RuleNumber,
       };
 
       const _newJourneys = [..._cleanedJourneys, _newJourney];
@@ -166,6 +168,7 @@ const IbeTripPopup = ({
           arrivalStation: journey?.Segments[0]?.ArrivalStation,
           departureStation: journey?.Segments[0]?.DepartureStation,
           std: journey?.Segments[0]?.STD,
+          RuleNumber: selected?.RuleNumber,
         },
       ];
       dispatch(setSelectedSessionJourney(_selectedJorney));
@@ -349,7 +352,7 @@ const IbeTripPopup = ({
                             : "btn-outline disabled"
                         } w-full `}
                       >
-                        {sellFlightLoading ? "Loading....." : "Continue"}
+                        {sellFlightLoading ? "Loading....." : "Continue with gSaver"}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -362,7 +365,7 @@ const IbeTripPopup = ({
                             : "btn-outline disabled"
                         } w-full `}
                       >
-                        {sellFlightLoading ? "Loading....." : "Continue"}
+                        {sellFlightLoading ? "Loading....." : "Continue with gClassic"}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -376,7 +379,7 @@ const IbeTripPopup = ({
                             : "btn-outline disabled"
                         } w-full `}
                       >
-                        {sellFlightLoading ? "Loading....." : "Continue"}
+                        {sellFlightLoading ? "Loading....." : "Continue with gFlex"}
                       </button>
                     </div>
                   </div>
