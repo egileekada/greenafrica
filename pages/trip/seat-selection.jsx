@@ -150,7 +150,7 @@ const SeatSelection = () => {
                   ))}
                 </Tabs>
 
-                <div className="flex mt-10 mx-6 gap-2">
+                {/* <div className="flex mt-10 mx-6 gap-2">
                   <Link href="/trip/payment" className="btn btn-outline mr-4">
                     <a className="btn btn-outline text-center w-full">Skip</a>
                   </Link>
@@ -163,7 +163,7 @@ const SeatSelection = () => {
                       {isLoading ? "Assigning..." : "Continue"}
                     </button>
                   )}
-                </div>
+                </div> */}
               </section>
             </div>
             <div className="ga__section__side">
@@ -171,6 +171,25 @@ const SeatSelection = () => {
             </div>
           </section>
         </section>
+
+        <div className="sticky bottom-0 border border-t-2 border-[#dadce0] z-40 bg-[#fff] p-6 w-full">
+          <div className="flex md:justify-items-end gap-2">
+            <Link href="/trip/payment">
+              <a className="btn btn-outline text-center mr-4 w-1/2 md:w-1/6 md:ml-auto">
+                Skip
+              </a>
+            </Link>
+            {seats.length > 0 && (
+              <button
+                className="btn btn-primary w-1/2 md:w-1/6"
+                onClick={initAssignSeats}
+                disabled={isLoading}
+              >
+                {isLoading ? "Assigning..." : "Continue"}
+              </button>
+            )}
+          </div>
+        </div>
       </BaseLayout>
       <Popup display={showPopUp} closeModal={() => setShow(false)} top={true}>
         <Seatslegend />
