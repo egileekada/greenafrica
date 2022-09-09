@@ -117,7 +117,13 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
           {journey.Segments.map((_segment) => {
             return _segment.Fares.map((_fare) => {
               return (
-                <div className="basis-full lg:basis-[29%] mb-7">
+                <div
+                  className={`basis-full ${
+                    _segment.Fares.length > 2
+                      ? "lg:basis-[29%]"
+                      : "lg:basis-[47%] "
+                  } l mb-7`}
+                >
                   <IbeTripVariant
                     fare={_fare}
                     sellKey={journey?.JourneySellKey}
