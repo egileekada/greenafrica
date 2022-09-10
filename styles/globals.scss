@@ -621,3 +621,39 @@ select:focus {
 #nprogress .bar {
   background: #1eff5a !important;
 }
+
+.privacy_page {
+  div:nth-child(2) {
+    & > div {
+      div:nth-child(1) {
+        display: none !important;
+      }
+      div:nth-child(2) {
+        width: 100% !important;
+        max-width: none !important;
+      }
+    }
+  }
+}
+
+.story__post {
+  font-family: Plus Jakarta Sans;
+
+  & h1 {
+    font-family: Plus Jakarta Sans !important;
+  }
+
+  & div {
+    font-family: Plus Jakarta Sans !important;
+  }
+
+  & .container-wrap {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  & > div {
+    background: #fff !important;
+  }
+}

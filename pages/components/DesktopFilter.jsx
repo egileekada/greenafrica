@@ -4,12 +4,28 @@ import PromoIcon from "assets/svgs/promo.svg";
 import CheckInTab from "./tabs/CheckInTab";
 import BookingTab from "./tabs/BookingTab";
 import Book from "./tabs/Book";
+import { format, add } from "date-fns";
 
 const DesktopFilter = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [promocode, setPromocode] = useState(null);
   const [showPromo, setShowPromo] = useState(false);
+  const [passengers, setPassengers] = useState(0);
   const [saveStatus, setSaveStatus] = useState(false);
+  const [departureDate, setDepartureDate] = useState(
+    add(new Date(), { weeks: 1 })
+  );
+  const [returningDate, setReturningDate] = useState(
+    add(new Date(), { days: 10 })
+  );
+  const [arrivals, setArrivals] = useState([]);
+  const [fromTo, setFromTo] = useState({
+    from: { cityName: "", value: "", country: "", arrivals: [] },
+    to: { cityName: "", value: "", country: "" },
+  });
+  const [infant, setInfant] = useState(0);
+  const [adult, setAdult] = useState(1);
+  const [child, setChild] = useState(0);
 
   const promo = useRef(null);
 
@@ -114,7 +130,7 @@ const DesktopFilter = () => {
             </>
           ) : (
             <button
-              className="flex items-center hidden md:flex"
+              className="items-center hidden md:flex"
               onClick={() => setShowPromo(true)}
             >
               <figure className="mr-2">
@@ -126,8 +142,49 @@ const DesktopFilter = () => {
         </div>
       </div>
       <section className="ga__desktop__filter__content px-5 py-[18px]">
-        {activeTab === 1 && <Book promocode={promocode} />}
-        {activeTab === 2 && <Book type={"round_trip"} promocode={promocode} />}
+        {activeTab === 1 && (
+          <Book
+            setArrivals={setArrivals}
+            arrivals={arrivals}
+            returningDate={returningDate}
+            setReturningDate={setReturningDate}
+            departureDate={departureDate}
+            setDepartureDate={setDepartureDate}
+            fromTo={fromTo}
+            passengers={passengers}
+            setPassengers={setPassengers}
+            setFromTo={setFromTo}
+            promocode={promocode}
+            infant={infant}
+            setInfant={setInfant}
+            adult={adult}
+            setAdult={setAdult}
+            child={child}
+            setChild={setChild}
+          />
+        )}
+        {activeTab === 2 && (
+          <Book
+            fromTo={fromTo}
+            setArrivals={setArrivals}
+            arrivals={arrivals}
+            returningDate={returningDate}
+            setReturningDate={setReturningDate}
+            departureDate={departureDate}
+            setDepartureDate={setDepartureDate}
+            setFromTo={setFromTo}
+            passengers={passengers}
+            setPassengers={setPassengers}
+            type={"round_trip"}
+            promocode={promocode}
+            infant={infant}
+            setInfant={setInfant}
+            adult={adult}
+            setAdult={setAdult}
+            child={child}
+            setChild={setChild}
+          />
+        )}
         {activeTab === 3 && <CheckInTab />}
         {activeTab === 4 && <BookingTab />}
       </section>

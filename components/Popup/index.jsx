@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
-import CloseIcon from "assets/svgs/white-close.svg"
+import CloseIcon from "assets/svgs/white-close.svg";
 
 const Popup = ({ children, display, closeModal, canClose = true }) => {
   const activeClass = display ? "active" : "inactive";
@@ -8,7 +8,7 @@ const Popup = ({ children, display, closeModal, canClose = true }) => {
   return display ? (
     <div className={`ga__popup ${activeClass}`}>
       <div
-        className={`ga__popup__container h-full md:h-auto`}
+        className={`ga__popup__container h-full `}
         onClick={(e) => {
           e.stopPropagation();
           e.nativeEvent.stopImmediatePropagation();
@@ -19,10 +19,14 @@ const Popup = ({ children, display, closeModal, canClose = true }) => {
           className="ga__popup__close close"
           onClick={closeModal}
         >
-          <span className="modal--close--icon"><CloseIcon /></span>
+          <span className="modal--close--icon">
+            <CloseIcon />
+          </span>
         </span>
 
-        <section className={`ga__popup__main lg:overflow-hidden ${activeClass}`}>
+        <section
+          className={`ga__popup__main lg:overflow-hidden ${activeClass}`}
+        >
           {children}
         </section>
       </div>
