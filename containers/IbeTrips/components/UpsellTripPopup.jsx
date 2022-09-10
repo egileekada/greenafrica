@@ -210,7 +210,7 @@ const IbeTripPopup = ({
                           : "hover:bg-green hover:bg-opacity-5"
                       } cursor-pointer  `}
                     >
-                      <h4>Our Recommendation</h4>
+                      <h4>We Recommend</h4>
                       <h3>gClassic</h3>
                     </div>
                     <div
@@ -352,7 +352,9 @@ const IbeTripPopup = ({
                             : "btn-outline disabled"
                         } w-full `}
                       >
-                        {sellFlightLoading ? "Loading....." : "Continue with gSaver"}
+                        {sellFlightLoading
+                          ? "Loading....."
+                          : "Continue with gSaver"}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -365,7 +367,9 @@ const IbeTripPopup = ({
                             : "btn-outline disabled"
                         } w-full `}
                       >
-                        {sellFlightLoading ? "Loading....." : "Continue with gClassic"}
+                        {sellFlightLoading
+                          ? "Loading....."
+                          : "Continue with gClassic"}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -379,7 +383,9 @@ const IbeTripPopup = ({
                             : "btn-outline disabled"
                         } w-full `}
                       >
-                        {sellFlightLoading ? "Loading....." : "Continue with gFlex"}
+                        {sellFlightLoading
+                          ? "Loading....."
+                          : "Continue with gFlex"}
                       </button>
                     </div>
                   </div>

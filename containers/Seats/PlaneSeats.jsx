@@ -18,6 +18,8 @@ import {
   trySaveSeat,
 } from "redux/reducers/session";
 
+import { useGetSeatlegendsQuery } from "services/widgetApi.js";
+
 const PlaneSeats = forwardRef(
   (
     {
@@ -33,6 +35,7 @@ const PlaneSeats = forwardRef(
     ref
   ) => {
     const dispatch = useDispatch();
+    const { data, isLoading } = useGetSeatlegendsQuery();
     const {
       signature,
       sessionLoading,
@@ -534,6 +537,17 @@ const PlaneSeats = forwardRef(
                     </figure>
                     <p>Confirmed</p>
                   </div>
+                  {!isLoading &&
+                    data.data.items.map((legend, index) => (
+                      <div className="seats__legend__item" key={index}>
+                        <figure>
+                          <div
+                            className={`eat-box bg-[${legend.color_code}]`}
+                          ></div>
+                        </figure>
+                        <p>{legend.name}</p>
+                      </div>
+                    ))}
                   <div className="seats__legend__item">
                     <figure>
                       <div className="seat-box bg-[#AADEC8]"></div>

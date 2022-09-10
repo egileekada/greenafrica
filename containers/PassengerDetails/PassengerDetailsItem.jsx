@@ -5,6 +5,7 @@ import { Checkbox } from "antd";
 import PassengerBaggage from "containers/Passenger/PassengerBaggage";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
+import { useGetSpecialAssistancesQuery } from "services/widgetApi.js";
 
 const PassengerDetailsItem = ({
   passenger,
@@ -13,6 +14,8 @@ const PassengerDetailsItem = ({
   setReturnSSRs,
   selectedReturnSSRs,
 }) => {
+  const { data: specialAssistances, isLoading } =
+    useGetSpecialAssistancesQuery();
   const { SSRAvailabilityResponse, sessionSSRs } = useSelector(sessionSelector);
   const [wcChecked, setWCChecked] = useState(false);
   const [vpChecked, setVPChecked] = useState(false);
@@ -133,6 +136,26 @@ const PassengerDetailsItem = ({
                 <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-2">
                   SPECIAL ASSISTANCE
                 </h6>
+
+                {/* //TODO I don't understand the logic here yet */}
+                {/* {!isLoading &&
+                  specialAssistances.data.items.map(
+                    (specialAssistance, index) => (
+                      <div
+                        className="flex items-center mb-5 primary-checkbox"
+                        key={index}
+                      >
+                        <Checkbox checked={wcChecked} onChange={onWCChange}>
+                          <label className="text-[#101010] text-xs font-body">
+                            <span className="font-bold">
+                              {specialAssistance.name}
+                            </span>{" "}
+                            -{specialAssistance.description}
+                          </label>
+                        </Checkbox>
+                      </div>
+                    )
+                  )} */}
                 <div className="flex items-center mb-5 primary-checkbox">
                   <Checkbox checked={wcChecked} onChange={onWCChange}>
                     <label className="text-[#101010] text-xs font-body">

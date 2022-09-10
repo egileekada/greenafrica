@@ -13,9 +13,11 @@ import {
   setFlightRequest,
   fetchFlightAvailability,
 } from "redux/reducers/session";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 import { format } from "date-fns";
 
 const IbeHeader = () => {
+  const { data, isLoading } = useGetLocationsQuery();
   const dispatch = useDispatch();
   const [width] = useDeviceSize();
 
@@ -164,22 +166,34 @@ const IbeHeader = () => {
     dispatch(fetchFlightAvailability(flightRequest));
   };
 
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
+  };
+
   return (
     <section className="ibe__flight__info">
-      <section className="ibe__flight__info__destination">
-        <p className="mx-4">{flightParams?.departureStation}</p>
-        <figure>
-          <ArrowTo />
-        </figure>
-        <p className="mx-4">{flightParams?.arrivalStation}</p>
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>}
-        {width && <p> width:: {width}</p>}
-        {_length && <p> _length:: {_length}</p>} */}
+      {!isLoading && (
+        <section className="ibe__flight__info__destination">
+          <p className="mx-4">
+            {resolveAbbreviation(flightParams?.departureStation)}
+          </p>
+          <figure>
+            <ArrowTo />
+          </figure>
+          <p className="mx-4">
+            {resolveAbbreviation(flightParams?.arrivalStation)}
+          </p>
 
-        <figure className="flightCircle">
-          <FlightIcon />
-        </figure>
-      </section>
+          <figure className="flightCircle">
+            <FlightIcon />
+          </figure>
+        </section>
+      )}
+
       <section className="ibe__flight__info__dates">
         {lowFareAvailabilityLoading ? (
           <section className="flex items-center w-full">

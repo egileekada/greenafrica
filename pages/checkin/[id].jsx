@@ -23,8 +23,13 @@ const CheckInDetails = () => {
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
-  const { signature, sessionLoading, bookingResponseLoading, bookingResponse } =
-    useSelector(sessionSelector);
+  const {
+    signature,
+    sessionLoading,
+    isLoading,
+    bookingResponseLoading,
+    bookingResponse,
+  } = useSelector(sessionSelector);
 
   useEffect(() => {
     if (router.isReady) {
@@ -77,8 +82,8 @@ const CheckInDetails = () => {
     );
   };
 
-  console.log(bookingResponse.Booking.BookingSum.BalanceDue > 0);
-  console.log(bookingResponse.Booking.BookingSum.BalanceDue);
+  console.log(bookingResponse);
+  console.log(bookingResponse);
 
   return (
     <BaseLayout>
@@ -290,7 +295,7 @@ const CheckInDetails = () => {
 
                 {/* Checkin Info*/}
                 <div className="flex mx-6 mt-5">
-                  {bookingResponse.Booking.BookingSum.BalanceDue > 0 ? (
+                  {bookingResponse?.Booking.BookingSum.BalanceDue > 0 ? (
                     <Link href="/checkin/pay">
                       <a className="btn btn-primary">Pay & Check In </a>
                     </Link>
