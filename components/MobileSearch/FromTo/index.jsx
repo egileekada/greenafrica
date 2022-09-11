@@ -114,6 +114,7 @@ const FromTo = ({
             <div className="flex flex-col w-full justify-start mt-4 items-start gap-3">
               {values?.map((item) => (
                 <Option
+                  key={item.value}
                   value={item.value}
                   cityName={item.cityName}
                   arrivals={item.arrivals}
@@ -132,6 +133,7 @@ const FromTo = ({
             <div className="flex flex-col w-full justify-start mt-4 items-start gap-3">
               {arrivals?.map((item) => (
                 <Option
+                  key={item.value}
                   value={item.value}
                   cityName={item.cityName}
                   country={item.country}
