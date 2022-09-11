@@ -1,43 +1,37 @@
 import * as React from "react";
-import { format, add } from "date-fns";
-import Select, { components } from "react-select";
-import { useQuery } from "@tanstack/react-query";
 import Back from "assets/svgs/icon-back-small.svg";
 import CloseIcon from "assets/svgs/white-close.svg";
-import DatePicker from "react-date-picker/dist/entry.nostyle";
-import { getWidgetData } from "../../services";
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
-import { lowfare } from "../../utils/calendar";
 import FromTo from "./FromTo";
 import Departure from "./Departure";
 import Flight from "./Flight";
 import Passengers from "./Passengers";
+import BookingEnd from "./BookingEnd";
 
 const MobileSearch = ({
-  showModal,
   setShowModal,
   arrivals,
-  updateAdult,
-  updateChild,
-  updateInfant,
-  decreaseAdult,
-  switchSection,
-  setFromTo,
   setArrivals,
-  setDepartureDate,
-  setReturnDate,
+  type,
+  setType,
+  promocode,
+  setPromocode,
+  fromTo,
+  setFromTo,
+  returningDate,
+  setReturningDate,
   departureDate,
-  returnDate,
-  setOrigin,
-  setDestination,
-  setFromDate,
-  setToDate,
-  origin,
-  destination,
-  formatOptionLabel,
-  Option,
-  hasContent,
+  setDepartureDate,
+  passengers,
+  setPassengers,
+  infant,
+  setInfant,
+  adult,
+  setAdult,
+  child,
+  setChild,
+  values,
 }) => {
   const [screen, setScreen] = React.useState(1);
 
@@ -52,14 +46,18 @@ const MobileSearch = ({
         >
           <Back />
         </button>
-        <h2 className="text-white font-bold text-lg font-body">
+        <h2 className="text-white text-lg font-body">
           {screen === 1
             ? "Select Route"
             : screen === 2
             ? "Departure Date"
             : screen === 3
             ? "Flight Dates"
-            : "Select Passengers"}
+            : screen === 4
+            ? "Select Passengers"
+            : type === "round_trip"
+            ? "Round Trip"
+            : "One Way"}
         </h2>
         <button onClick={() => setShowModal(false)} className="">
           <CloseIcon />
@@ -69,26 +67,54 @@ const MobileSearch = ({
       <>
         {screen === 1 ? (
           <FromTo
-          // arrivals={arrivals}
-          // origin={origin}
-          // destination={destination}
-          // setScreen={setScreen}
+            arrivals={arrivals}
+            setArrivals={setArrivals}
+            setScreen={setScreen}
+            values={values}
+            fromTo={fromTo}
+            setFromTo={setFromTo}
           />
         ) : screen === 2 ? (
           <Departure
-          // setFromDate={setFromDate}
-          // setToDate={setToDate}
-          // setScreen={setScreen}
+            departureDate={departureDate}
+            setDepartureDate={setDepartureDate}
+            setScreen={setScreen}
           />
         ) : screen === 3 ? (
           <Flight
-          // setFromDate={setFromDate}
-          // setToDate={setToDate}
-          // setScreen={setScreen}
+            departureDate={departureDate}
+            setDepartureDate={setDepartureDate}
+            returningDate={returningDate}
+            setReturningDate={setReturningDate}
+            type={type}
+            setType={setType}
+            setScreen={setScreen}
+          />
+        ) : screen === 4 ? (
+          <Passengers
+            setScreen={setScreen}
+            passengers={passengers}
+            setPassengers={setPassengers}
+            infant={infant}
+            setInfant={setInfant}
+            adult={adult}
+            setAdult={setAdult}
+            child={child}
+            setChild={setChild}
           />
         ) : (
-          <Passengers
-          // setShowModal={setShowModal}
+          <BookingEnd
+            departureDate={departureDate}
+            passengers={passengers}
+            infant={infant}
+            adult={adult}
+            child={child}
+            fromTo={fromTo}
+            type={type}
+            promocode={promocode}
+            setPromocode={setPromocode}
+            returningDate={returningDate}
+            setShowModal={setShowModal}
           />
         )}
       </>
