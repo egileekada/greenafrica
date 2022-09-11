@@ -13,11 +13,9 @@ import {
   setFlightRequest,
   fetchFlightAvailability,
 } from "redux/reducers/session";
-import { useGetLocationsQuery } from "services/widgetApi.js";
 import { format } from "date-fns";
 
 const IbeHeader = () => {
-  const { data, isLoading } = useGetLocationsQuery();
   const dispatch = useDispatch();
   const [width] = useDeviceSize();
 
@@ -28,7 +26,6 @@ const IbeHeader = () => {
   // const [length, setLength] = useState(width > 1200 ? 7 : 3);
   const [currentFDateList, setCurrFDates] = useState([]);
   const [recurrent, setRecurrent] = useState(false);
-  const [loaded, setLoaded] = useState(true);
 
   const {
     availabilityResponse,
@@ -100,6 +97,8 @@ const IbeHeader = () => {
             );
           });
 
+          console.log("dateIndex", dateIndex);
+
           if (dateIndex > -1) {
             const defaultPage = Math.ceil((dateIndex + 1) / _length);
             paginate(defaultPage, _fareDateList);
@@ -108,8 +107,6 @@ const IbeHeader = () => {
           }
         }
       }
-
-      setLoaded(false);
     }
   }, [lowFareAvailabilityResponse]);
 
@@ -166,34 +163,22 @@ const IbeHeader = () => {
     dispatch(fetchFlightAvailability(flightRequest));
   };
 
-  const resolveAbbreviation = (abrreviation) => {
-    const [{ name, code }] = data?.data?.items.filter(
-      (location) => location.code === abrreviation
-    );
-
-    return `${name} (${code})`;
-  };
-
   return (
     <section className="ibe__flight__info">
-      {!isLoading && (
-        <section className="ibe__flight__info__destination">
-          <p className="mx-4">
-            {resolveAbbreviation(flightParams?.departureStation)}
-          </p>
-          <figure>
-            <ArrowTo />
-          </figure>
-          <p className="mx-4">
-            {resolveAbbreviation(flightParams?.arrivalStation)}
-          </p>
+      <section className="ibe__flight__info__destination">
+        <p className="mx-4">{flightParams?.departureStation}</p>
+        <figure>
+          <ArrowTo />
+        </figure>
+        <p className="mx-4">{flightParams?.arrivalStation}</p>
+        {currentPage && <p> currentPage:: {currentPage}</p>}
+        {width && <p> width:: {width}</p>}
+        {_length && <p> _length:: {_length}</p>}
 
-          <figure className="flightCircle">
-            <FlightIcon />
-          </figure>
-        </section>
-      )}
-
+        <figure className="flightCircle">
+          <FlightIcon />
+        </figure>
+      </section>
       <section className="ibe__flight__info__dates">
         {lowFareAvailabilityLoading ? (
           <section className="flex items-center w-full">
@@ -243,10 +228,8 @@ const IbeHeader = () => {
                     </div>
                   );
                 })
-              ) : loaded ? (
-                <Spinner />
               ) : (
-                <p className="errorText text-lg"> No date available</p>
+                <p className="errorText text-lg">No date available</p>
               )}
             </section>
 

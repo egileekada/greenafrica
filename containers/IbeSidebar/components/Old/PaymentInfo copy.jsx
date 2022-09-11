@@ -75,27 +75,11 @@ const PaymentInfo = () => {
                                 }
                               );
 
-                              const _SSRsCount = {
-                                XBAG10: 0,
-                                XBAG15: 0,
-                                XBAG20: 0,
-                                INFT: 0,
-                                SEAT: 0,
-                              };
-                              _segment.PaxSSRs?.map((_segSSR) => {
-                                _SSRsCount[_segSSR?.FeeCode] =
-                                  _segment.PaxSSRs?.filter((_segCode) => {
-                                    return (
-                                      _segSSR?.FeeCode === _segCode?.FeeCode
-                                    );
-                                  }).length;
-                              });
-
                               return (
                                 <>
                                   <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center">
-                                      <h6 className="font-display font-bold text-sm text-primary-main">
+                                      <h6 className="font-display text-xs text-primary-main">
                                         {_journeyIndex === 1
                                           ? "Return"
                                           : "Departure"}
@@ -271,14 +255,13 @@ const PaymentInfo = () => {
                                             </div>
                                           </div>
                                         )}
-
-                                        {parseInt(_SSRsCount?.XBAG20) > 0 && (
+                                        {_SSRCount?.XBAG20 && (
                                           <div className="trip__summary__row">
                                             <div className="flex items-center">
                                               <h6>
-                                                {_SSRsCount?.XBAG20}x&nbsp;20KG
+                                                {_SSRCount?.XBAG20}x&nbsp;20KG
                                                 Baggage
-                                                {_SSRsCount?.XBAG20 > 1
+                                                {_SSRCount?.XBAG20 > 1
                                                   ? "s"
                                                   : ""}
                                               </h6>
@@ -292,13 +275,13 @@ const PaymentInfo = () => {
                                             </div>
                                           </div>
                                         )}
-                                        {parseInt(_SSRsCount?.XBAG15) > 0 && (
+                                        {_SSRCount?.XBAG15 && (
                                           <div className="trip__summary__row">
                                             <div className="flex items-center">
                                               <h6>
-                                                {_SSRsCount?.XBAG15}x&nbsp;15KG
+                                                {_SSRCount?.XBAG15}x&nbsp;15KG
                                                 Baggage
-                                                {_SSRsCount?.XBAG15 > 1
+                                                {_SSRCount?.XBAG15 > 1
                                                   ? "s"
                                                   : ""}
                                               </h6>
@@ -312,14 +295,13 @@ const PaymentInfo = () => {
                                             </div>
                                           </div>
                                         )}
-
-                                        {parseInt(_SSRsCount?.XBAG10) > 0 && (
+                                        {_SSRCount?.XBAG10 && (
                                           <div className="trip__summary__row">
                                             <div className="flex items-center">
                                               <h6>
-                                                {_SSRsCount?.XBAG10}x&nbsp;10KG
+                                                {_SSRCount?.XBAG10}x&nbsp;10KG
                                                 Baggage
-                                                {_SSRsCount?.XBAG10 > 1
+                                                {_SSRCount?.XBAG10 > 1
                                                   ? "s"
                                                   : ""}
                                               </h6>
@@ -333,7 +315,6 @@ const PaymentInfo = () => {
                                             </div>
                                           </div>
                                         )}
-
                                         {_SSRCount?.SEAT && (
                                           <div className="trip__summary__row">
                                             <div className="flex items-center">

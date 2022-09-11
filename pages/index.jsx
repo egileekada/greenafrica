@@ -50,7 +50,6 @@ const Home = () => {
         dispatch(startSession());
       } else {
         dispatch(showWidget());
-        // window.location.assign("https://dev-website.gadevenv.com/");
       }
     }
     checkParams();
@@ -59,8 +58,10 @@ const Home = () => {
   useEffect(() => {
     async function checkSigInit() {
       const ibeQuery = new URLSearchParams(window.location.search);
+      const flightOrigin = ibeQuery.get("origin");
+      const flightDestination = ibeQuery.get("destination");
 
-      if (signature && ibeQuery.get("origin") !== null) {
+      if (signature && flightOrigin && flightDestination) {
         const isRoundTrip = parseInt(ibeQuery.get("round"));
         const flightRequest = {
           departureStation: ibeQuery.get("origin"),
@@ -110,6 +111,10 @@ const Home = () => {
       behavior: "smooth",
     });
   };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
 
   const goBackToHome = async () => {
     const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
@@ -197,8 +202,6 @@ const Home = () => {
                       <Spinner />
                     ) : availabilityResponse ? (
                       <>
-                        {/* <IbeHeader /> */}
-
                         {availabilityResponse?.GetTripAvailabilityResponse
                           .Schedules.length > 0 ? (
                           <>
@@ -241,7 +244,8 @@ const Home = () => {
                       </>
                     ) : (
                       <h2 className="text-red-600 font-normal text-sm mb-8">
-                        Error fetching flight availability
+                        {/* TODO this needs to be checked - edge case what happens when we close the modal on the landing page */}
+                        {/* Error fetching flight availability */}
                       </h2>
                     )}
                   </div>

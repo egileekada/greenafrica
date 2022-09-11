@@ -6,8 +6,11 @@ import CaretDown from "assets/svgs/caretdown.svg";
 import IbeTripVariant from "./IbeTripVaraint";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 
 const IbeTripItem = ({ journey, schedueIndex }) => {
+  const { data, isLoading } = useGetLocationsQuery();
+
   const [isVisible, setIsVisible] = useState(false);
   const [flightTime, setFlightTime] = useState(null);
 
@@ -37,54 +40,67 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
       0
     );
 
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
+  };
+
   return (
     <section className="flex flex-col mb-6">
       <section className="ibe__trip__item">
-        <div className="basis-full lg:basis-[70%] flex flex-col min-h-[54px] ">
-          <p className="tripType self-center underline underline-offset-4">
-            {journey.Segments.map((_segment) => {
-              return (
-                <>
-                  {_segment?.FlightDesignator?.CarrierCode}
-                  &nbsp;
-                  {_segment?.FlightDesignator?.FlightNumber}
-                </>
-              );
-            })}
-          </p>
-          <div className="flex justify-between">
-            <div className="flex flex-col">
-              <h5 className="tripType">
-                {flightTime && format(new Date(flightTime?.STD), "HH:mm")}
-              </h5>
-              <p className="tripCity">
-                {flightTime && flightTime?.DepartureStation}
-              </p>
+        {!isLoading && (
+          <div className="basis-full lg:basis-[70%] flex flex-col min-h-[54px] ">
+            <p className="tripType self-center underline underline-offset-4">
+              {journey.Segments.map((_segment) => {
+                return (
+                  <>
+                    {_segment?.FlightDesignator?.CarrierCode}
+                    &nbsp;
+                    {_segment?.FlightDesignator?.FlightNumber}
+                  </>
+                );
+              })}
+            </p>
+            <div className="flex justify-between">
+              <div className="flex flex-col">
+                <h5 className="tripType">
+                  {flightTime && format(new Date(flightTime?.STD), "HH:mm")}
+                </h5>
+                <p className="tripCity">
+                  {flightTime &&
+                    resolveAbbreviation(flightTime?.DepartureStation)}
+                </p>
+              </div>
+              <div className="tripIconPath">
+                <DottedLine className="dotted-svg" />
+                <AeroTwoIcon className="aero-svg" />
+                <DottedLine className="dotted-svg" />
+              </div>
+              <div className="flex flex-col items-end">
+                <h5 className="tripType right-text">
+                  {flightTime && format(new Date(flightTime?.STA), "HH:mm")}
+                </h5>
+                <p className="tripCity right-text">
+                  {flightTime &&
+                    resolveAbbreviation(flightTime?.ArrivalStation)}
+                </p>
+              </div>
             </div>
-            <div className="tripIconPath">
-              <DottedLine className="dotted-svg" />
-              <AeroTwoIcon className="aero-svg" />
-              <DottedLine className="dotted-svg" />
-            </div>
-            <div className="flex flex-col items-end">
-              <h5 className="tripType right-text">
-                {flightTime && format(new Date(flightTime?.STA), "HH:mm")}
-              </h5>
-              <p className="tripCity right-text">
-                {flightTime && flightTime?.ArrivalStation}
-              </p>
-            </div>
+            <p className="tripTime self-center">
+              {flightTime &&
+                timeConvert(
+                  differenceInMinutes(
+                    new Date(flightTime?.STA),
+                    new Date(flightTime?.STD)
+                  )
+                )}
+            </p>
           </div>
-          <p className="tripTime self-center">
-            {flightTime &&
-              timeConvert(
-                differenceInMinutes(
-                  new Date(flightTime?.STA),
-                  new Date(flightTime?.STD)
-                )
-              )}
-          </p>
-        </div>
+        )}
+
         <div className="basis-full lg:basis-[30%] mt-4 lg:mt-0 flex justify-end items-center">
           {!isVisible ? (
             <button
@@ -117,7 +133,13 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
           {journey.Segments.map((_segment) => {
             return _segment.Fares.map((_fare) => {
               return (
-                <div className="basis-full lg:basis-[29%] mb-7">
+                <div
+                  className={`basis-full ${
+                    _segment.Fares.length > 2
+                      ? "lg:basis-[29%]"
+                      : "lg:basis-[47%] "
+                  } l mb-7`}
+                >
                   <IbeTripVariant
                     fare={_fare}
                     sellKey={journey?.JourneySellKey}
@@ -129,6 +151,7 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
                     journey={journey}
                     schedueIndex={schedueIndex}
                     setIsVisible={setIsVisible}
+                    segment={_segment}
                   />
                 </div>
               );

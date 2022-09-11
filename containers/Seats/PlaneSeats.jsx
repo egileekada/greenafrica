@@ -18,6 +18,8 @@ import {
   trySaveSeat,
 } from "redux/reducers/session";
 
+import { useGetSeatlegendsQuery } from "services/widgetApi.js";
+
 const PlaneSeats = forwardRef(
   (
     {
@@ -33,6 +35,7 @@ const PlaneSeats = forwardRef(
     ref
   ) => {
     const dispatch = useDispatch();
+    const { data: legend, isLoading } = useGetSeatlegendsQuery();
     const {
       signature,
       sessionLoading,
@@ -488,7 +491,7 @@ const PlaneSeats = forwardRef(
                   LEGEND
                 </h2>
                 <section className="seats__legend">
-                  <div className="seats__legend__item">
+                  {/* <div className="seats__legend__item">
                     <figure>
                       <div className="seat-box bg-[#584CB6]"></div>
                     </figure>
@@ -517,7 +520,20 @@ const PlaneSeats = forwardRef(
                       <div className="seat-box bg-[#B9B5D6]"></div>
                     </figure>
                     <p>Extra Legroom Seat</p>
-                  </div>
+                  </div> */}
+
+                  {!isLoading &&
+                    legend?.data.items.map((legend, index) => (
+                      <div className="seats__legend__item" key={index}>
+                        <figure>
+                          <div
+                            className={`eat-box bg-[${legend.color_code}]`}
+                          ></div>
+                        </figure>
+                        <p>{legend.name}</p>
+                      </div>
+                    ))}
+
                   <div className="seats__legend__item">
                     <figure>
                       <div className="seat-box  bg-gray-200">
@@ -534,6 +550,7 @@ const PlaneSeats = forwardRef(
                     </figure>
                     <p>Confirmed</p>
                   </div>
+
                   <div className="seats__legend__item">
                     <figure>
                       <div className="seat-box bg-[#AADEC8]"></div>

@@ -2,7 +2,7 @@
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import { useEffect, useState } from "react";
-import { FormikConsumer, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -16,9 +16,11 @@ import { Checkbox, notification } from "antd";
 import SelectIcon from "assets/svgs/select.svg";
 import PassengerFormItem from "containers/PassengerForm/PassengerFormItem";
 import LogoIcon from "assets/svgs/logo.svg";
+import { useGetSalutationsQuery } from "services/widgetApi.js";
 
 const PassengerForm = () => {
   const dispatch = useDispatch();
+  const { data, isLoading } = useGetSalutationsQuery();
   const [totalPassengerCount, setCount] = useState(0);
   const [errorIds, setErrorIds] = useState([]);
   const [passengers, setPassengers] = useState([]);
@@ -29,6 +31,17 @@ const PassengerForm = () => {
     flightParams,
   } = useSelector(sessionSelector);
   const router = useRouter();
+
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
 
   useEffect(() => {
     async function sumPassengerCount() {
@@ -260,8 +273,12 @@ const PassengerForm = () => {
                           {...formik.getFieldProps("c_title")}
                         >
                           <option value="">Select</option>
-                          <option value="Mr">Mr</option>
-                          <option value="Mrs">Mrs</option>
+                          {!isLoading &&
+                            data?.data.items.map((salutation, index) => (
+                              <option value={salutation.title} key={index}>
+                                {salutation.title}
+                              </option>
+                            ))}
                         </select>
                         <div className="select-icon">
                           <SelectIcon />

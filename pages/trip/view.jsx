@@ -24,8 +24,18 @@ import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
 import { notification } from "antd";
 
+import {
+  useGetProductsQuery,
+  useGetLocationsQuery,
+} from "services/widgetApi.js";
+
 const TripView = () => {
   const dispatch = useDispatch();
+  const { data, isLoading } = useGetLocationsQuery();
+  const {
+    data: products,
+    isLoading: productLoading,
+  } = useGetProductsQuery();
   const [roundTripEnabled, setRoundTripEnabled] = useState(false);
   const [checked, setChecked] = useState(false);
   const {
@@ -36,6 +46,17 @@ const TripView = () => {
     sellResponse,
   } = useSelector(sessionSelector);
   const router = useRouter();
+
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
 
   useEffect(() => {
     async function init() {
@@ -91,6 +112,7 @@ const TripView = () => {
             fareKey: flightJourney[0]?.fareKey,
             arrivalStation: flightJourney[0]?.arrivalStation,
             departureStation: flightJourney[0]?.departureStation,
+            RuleNumber: flightJourney[0]?.RuleNumber,
           })
         )
       : notification.error({
@@ -112,6 +134,15 @@ const TripView = () => {
     }
   };
 
+  const resolveAbbreviation = (abrreviation) => {
+
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
+  };
+
   return (
     <BaseLayout>
       {/* <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
@@ -130,7 +161,7 @@ const TripView = () => {
       <section className="w-full">
         <section className="ga__section">
           <div className="ga__section__main">
-            <section className="flex flex-col">
+            <section className="flex flex-col mt-16 lg:mt-0">
               {selectedSessionJourney?.length > 0 ? (
                 selectedSessionJourney.map((_journey) => {
                   const _asssocaitedFare = selectedSessionFare.filter(
@@ -138,18 +169,14 @@ const TripView = () => {
                       return _sesfare?.sellKey === _journey?.JourneySellKey;
                     }
                   );
-                  const fare_name =
-                    _asssocaitedFare.length > 0
-                      ? _asssocaitedFare[0]?.RuleNumber?.toLowerCase() ===
-                        "flex"
-                        ? "gFlex"
-                        : _asssocaitedFare[0]?.RuleNumber?.toLowerCase() ===
-                          "savr"
-                        ? "gSaver"
-                        : "gClassic"
-                      : "null";
-                  {
-                  }
+
+                  const fare_name = () => {
+                    const [{ name }] = products?.data?.items.filter(
+                      (product) =>
+                        product.code === _asssocaitedFare[0]?.ProductClass
+                    );
+                    return `${name}`;
+                  };
 
                   const totalServiceCharge =
                     _asssocaitedFare.length > 0
@@ -164,7 +191,7 @@ const TripView = () => {
                   return (
                     <>
                       <section className="flex flex-col">
-                        {_journey?.Segments.map((_segment) => {
+                        {!isLoading && _journey?.Segments.map((_segment) => {
                           return (
                             <>
                               <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
@@ -173,11 +200,23 @@ const TripView = () => {
                               </h2>
                               {/* TripHeader */}
                               <section className="ibe__flight__info__destination">
-                                <p> {_segment && _segment?.DepartureStation}</p>
+                                <p>
+                                  {" "}
+                                  {_segment &&
+                                    resolveAbbreviation(
+                                      _segment?.DepartureStation
+                                    )}
+                                </p>
                                 <figure>
                                   <ArrowTo />
                                 </figure>
-                                <p> {_segment && _segment?.ArrivalStation}</p>
+                                <p>
+                                  {" "}
+                                  {_segment &&
+                                    resolveAbbreviation(
+                                      _segment?.ArrivalStation
+                                    )}
+                                </p>
 
                                 <figure className="flightCircle">
                                   <FlightIcon />
@@ -203,7 +242,10 @@ const TripView = () => {
                                       </h5>
                                       <p className="tripCity">
                                         {" "}
-                                        {_segment && _segment?.DepartureStation}
+                                        {_segment &&
+                                          resolveAbbreviation(
+                                            _segment?.DepartureStation
+                                          )}
                                       </p>
                                     </div>
                                     <div className="tripIconPath">
@@ -222,7 +264,10 @@ const TripView = () => {
                                       </h5>
                                       <p className="tripCity right-text">
                                         {" "}
-                                        {_segment && _segment?.ArrivalStation}
+                                        {_segment &&
+                                          resolveAbbreviation(
+                                            _segment?.ArrivalStation
+                                          )}
                                       </p>
                                     </div>
                                   </div>
@@ -246,7 +291,7 @@ const TripView = () => {
                         <section className="ibe__trip__package flex justify-between">
                           <div className="flex flex-col">
                             <h5>TRAVEL PACKAGE</h5>
-                            <h6>{fare_name}</h6>
+                            {!productLoading && <h6>{fare_name()}</h6>}
                             <button
                               onClick={ChangeFlight}
                               className="text-primary-main underline text-xs lg:text-sm font-body mt-4"

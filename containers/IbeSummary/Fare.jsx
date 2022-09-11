@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
+import { useGetFareconfigsQuery } from "services/widgetApi.js";
 
 const Fare = ({ isRoundTrip }) => {
+  const { data: fareConfig, isLoading } = useGetFareconfigsQuery();
   const { bookingResponse } = useSelector(sessionSelector);
 
   return (

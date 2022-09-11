@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import TwoIcon from "assets/svgs/two.svg";
 import CheckIcon from "assets/svgs/done.svg";
 import FlightIcon from "assets/svgs/aero-2.svg";
-import BagIcon from "assets/svgs/bag.svg";
+// import BagIcon from "assets/svgs/bag.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
 import CaretLeft from "assets/svgs/sidebar/caretleft.svg";
 import { useSelector } from "react-redux";
@@ -23,6 +23,10 @@ const PassengerInfo = () => {
       <Fragment>
         <div className="ibe__sidebar__box">
           {passenger?.Names.map((_name) => {
+            {
+              /* console.log("passenger", passenger?.PassengerTypeInfo?.PaxType); */
+            }
+            const paxType = passenger?.PassengerTypeInfo?.PaxType;
             return (
               <div className="flex mb-6">
                 <div className="flex flex-col w-[53px] mr-4">
@@ -37,7 +41,19 @@ const PassengerInfo = () => {
                     )} ${capitalizeFirstLetter(_name?.LastName)}`}
                   </h5>
 
-                  {_Seats.length > 0
+                  <h6 className="text-[12px] font-normal text-[#9692B8] font-title">
+                    {paxType && (
+                      <span className="mr-2">
+                        {paxType === "ADT"
+                          ? "ADULT"
+                          : paxType === "CHD"
+                          ? "CHILD"
+                          : "INFANT"}
+                      </span>
+                    )}
+                  </h6>
+
+                  {/* {_Seats.length > 0
                     ? sessionStateResponse?.BookingData.Journeys.map(
                         (_journey) => {
                           return _journey?.Segments.map((_segment) => {
@@ -56,7 +72,7 @@ const PassengerInfo = () => {
                           });
                         }
                       )
-                    : null}
+                    : null} */}
                 </div>
               </div>
             );

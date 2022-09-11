@@ -14,9 +14,12 @@ import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
 import ReactToPrint from "react-to-print";
 import { useRouter } from "next/router";
+import LogoIcon from "assets/svgs/logo.svg";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 
 const TripConfirm = () => {
   const router = useRouter();
+  const { data, isLoading: locationLoading } = useGetLocationsQuery();
   let componentRef = useRef();
   const dispatch = useDispatch();
   // const [segmentInfo, setSegmentInfo] = useState(null);
@@ -24,7 +27,19 @@ const TripConfirm = () => {
 
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
-  //TODO Maybe re work later but removing it currently breaks code
+
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
+
+  //Don't re work - it currently breaks code
   useEffect(() => {
     async function fetchBookingDetails() {
       dispatch(GetBookingDetails());
@@ -40,6 +55,14 @@ const TripConfirm = () => {
 
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
   };
 
   const WelcomeNote = () => {
@@ -127,7 +150,8 @@ const TripConfirm = () => {
                       {_journey?.Segments.map((_segment) => {
                         return (
                           <p className="font-semibold font-body text-xs lg:text-sm text-black text-left">
-                            {_segment?.DepartureStation}
+                            {!locationLoading &&
+                              resolveAbbreviation(_segment?.DepartureStation)}
                           </p>
                         );
                       })}
@@ -149,7 +173,8 @@ const TripConfirm = () => {
                       {_journey?.Segments.map((_segment) => {
                         return (
                           <p className="tripCity right-text">
-                            {_segment?.ArrivalStation}
+                            {!locationLoading &&
+                              resolveAbbreviation(_segment?.ArrivalStation)}
                           </p>
                         );
                       })}
@@ -192,6 +217,13 @@ const TripConfirm = () => {
 
   return (
     <BaseLayout>
+      <nav className="top__bar logo-holder">
+        <button onClick={goBackToHome}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
       <section className="w-full">
         {bookingResponseLoading ? (
           <Spinner />
@@ -217,7 +249,7 @@ const TripConfirm = () => {
                         className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-0 md:mr-2 mb-4 md:mb-0"
                         onClick={() =>
                           router.push(
-                            `/bookings?pnr=${bookingResponse?.Booking?.RecordLocator}&signature=${signature}`
+                            `/bookings?pnr=${bookingResponse?.Booking?.RecordLocator}`
                           )
                         }
                       >

@@ -22,23 +22,20 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
-import {
-  _selectedSessionFare,
-  _selectedSessionJourney,
-  _ssrAv,
-  latestBooking,
-} from "./data";
+import { bookingResponse } from "./data";
+
+const _sig =
+  "evvMITkS66k=|g6x/dRNRkxY5PCxI9b+JfAOuL4VBljSZ3s9bNbeZGtLbeW6PGf30nEKn6L9z28x0Ap/sKKQqN63mUemlUOMPdvL7OSSZr0uoXEOj+nibyi35zaGmdzszVfDGCk9GjKY77fJJofLvYJY=";
 
 const initialState = {
   isLoading: false,
   signature: null,
+  // signature: _sig,
   sessionLoading: false,
   lowFareAvailabilityLoading: false,
   lowFareAvailabilityResponse: null,
-
   returnFareAvailabilityLoading: false,
   returnFareAvailabilityResponse: null,
-
   flightAvailabilityLoading: false,
   flightParams: null,
   availabilityResponse: null,
@@ -64,6 +61,7 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   bookingResponse: null,
+  // bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,
@@ -74,6 +72,7 @@ const initialState = {
   bookingState: null,
   sessionStateLoading: false,
   sessionStateResponse: null,
+  // sessionStateResponse: bookingState,
   seats: [],
 };
 
@@ -492,7 +491,6 @@ export const returnLowFareAvailability = (payload) => async (dispatch) => {
 
   try {
     const Response = await GetLowFareAvailability(requestPayload);
-    console.log("return fare data is", Response.data);
     await dispatch(setReturnFareAvailabilityResponse(Response.data));
   } catch (err) {
     notification.error({
@@ -838,8 +836,8 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
               preventOverLapSpecified: true,
               replaceAllPassengersOnUpdate: false,
               replaceAllPassengersOnUpdateSpecified: true,
-              serviceBundleList: [""],
-              applyServiceBundle: 0,
+              serviceBundleList: [payload?.RuleNumber],
+              applyServiceBundle: 1,
               applyServiceBundleSpecified: true,
             },
           },
@@ -858,7 +856,10 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
         await dispatch(setSellInfantResponse(sellInfantResponse.data));
         await dispatch(FetchStateFromServer());
       } catch (err) {
-        console.log("Sell Infant Request error", err.response);
+        notification.error({
+          message: "Error",
+          description: "Error booking Infant",
+        });
       }
       dispatch(setSellInfantLoading(false));
     }
@@ -878,6 +879,7 @@ export const saveMultipleSellRequest =
     const currentState = getState().session;
 
     const paxPriceTypes = [];
+    const _serviceBundleList = [];
     const flightParams = currentState.flightParams;
     const ADULT_COUNT = parseInt(flightParams?.ADT);
     const CHILD_COUNT = parseInt(flightParams?.CHD);
@@ -990,6 +992,7 @@ export const saveMultipleSellRequest =
         packageIndicator: "",
       };
       _journeySellKeys.push(newObj);
+      _serviceBundleList.push(_sessionJourney?.RuleNumber);
     });
 
     const requestPayload = {
@@ -1020,8 +1023,8 @@ export const saveMultipleSellRequest =
                 preventOverLapSpecified: true,
                 replaceAllPassengersOnUpdate: false,
                 replaceAllPassengersOnUpdateSpecified: true,
-                serviceBundleList: [""],
-                applyServiceBundle: 0,
+                serviceBundleList: [..._serviceBundleList],
+                applyServiceBundle: 1,
                 applyServiceBundleSpecified: true,
               },
             },
@@ -1097,12 +1100,15 @@ export const updatePassengersDetails =
           ],
           passengerID: 0,
           pseudoPassenger: false,
-          passengerTypeInfo: {
-            state: 0,
-            stateSpecified: true,
-            dob: _passenger?.dob || "9999-12-31T00:00:00Z",
-            paxType: _passenger.type,
-          },
+          passengerTypeInfos: [
+            {
+              state: 0,
+              stateSpecified: true,
+              dob: _passenger?.dob || "9999-12-31T00:00:00Z",
+              dobSpecified: true,
+              paxType: _passenger.type,
+            },
+          ],
         };
         _passengers.push(passengerObj);
       });
@@ -1178,12 +1184,15 @@ export const updatePassengersDetails =
           ],
           passengerID: 0,
           pseudoPassenger: false,
-          passengerTypeInfo: {
-            state: 0,
-            stateSpecified: true,
-            dob: _passenger.dob || "9999-12-31T00:00:00Z",
-            paxType: _passenger.type,
-          },
+          passengerTypeInfos: [
+            {
+              state: 0,
+              stateSpecified: true,
+              dob: _passenger.dob || "9999-12-31T00:00:00Z",
+              dobSpecified: true,
+              paxType: _passenger.type,
+            },
+          ],
         };
         _passengers.push(passengerObj);
       });
@@ -1510,11 +1519,13 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
 
 export const GetBookingDetailsWithPNR =
   (payload) => async (dispatch, getState) => {
+    const currentState = getState().session;
+
     dispatch(setBookingResponseLoading(true));
 
     const requestPayload = {
       header: {
-        signature: payload.signature,
+        signature: currentState?.signature,
         messageContractVersion: "",
         enableExceptionStackTrace: false,
         contractVersion: 0,
@@ -1533,7 +1544,7 @@ export const GetBookingDetailsWithPNR =
       const Response = await GetBooking(requestPayload);
       await dispatch(setBookingResponse(Response.data));
     } catch (err) {
-      console.log("GetBooking Request error", err.response);
+      // console.log("GetBooking Request error", err.response);
       notification.error({
         message: "Error",
         description: "Get Booking Details failed",

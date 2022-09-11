@@ -221,7 +221,7 @@ const PassengerFormItem = ({
           ) : null}
         </div>
 
-        <div className="flex flex-col flex-grow-0 flex-shrink">
+        <div className="flex flex-col flex-grow-0 flex-shrink w-full md:w-auto">
           <div className="form-group w-full  h-20 md:h-auto">
             <label>DATE OF BIRTH</label>
             <div className="date-picker">
@@ -236,7 +236,6 @@ const PassengerFormItem = ({
             <p className="errorText">Date is required</p>
           ) : null}
         </div>
-        
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Fragment } from "react";
-import IbeTripItem from "./components/IbeTripItem";
+import IbeTripItem from "./IbeTripItem";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";

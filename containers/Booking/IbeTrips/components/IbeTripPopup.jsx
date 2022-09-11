@@ -4,7 +4,11 @@ import { Fragment, useEffect } from "react";
 import CheckIcon from "assets/svgs/check.svg";
 import NullIcon from "assets/svgs/null.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { saveSellRequest, sessionSelector } from "redux/reducers/session";
+import {
+  sessionSelector,
+  setSelectedSessionFare,
+  setSelectedSessionJourney,
+} from "redux/reducers/session";
 import { useRouter } from "next/router";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -27,19 +31,19 @@ const IbeTripPopup = ({
   segmentStd,
   segmentFlightNumber,
   segmentCarrierCode,
+  journey,
+  schedueIndex,
+  setIsVisible,
+  fare,
 }) => {
   const dispatch = useDispatch();
-  const { sellFlightLoading, sellResponse } = useSelector(sessionSelector);
+  const {
+    sellFlightLoading,
+    flightParams,
+    selectedSessionJourney,
+    selectedSessionFare,
+  } = useSelector(sessionSelector);
   const router = useRouter();
-
-  useEffect(() => {
-    async function redirectFromSell() {
-      if (sellResponse) {
-        router.push("/trip/passenger-form");
-      }
-    }
-    redirectFromSell();
-  }, [sellResponse]);
 
   const gSaver = [`7kg hand luggage: 55 x40 x 24cm`];
 
@@ -55,16 +59,97 @@ const IbeTripPopup = ({
     `Free Standard Seat`,
   ];
 
+  const handleFare = async () => {
+    console.log("selected is", selected?.RuleNumber);
+    console.log("fare is", fare?.RuleNumber);
+    if (flightParams?.isRoundTrip === 1) {
+      const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
+      const _cleanedFares = existingFares.filter((_item) => {
+        const _ruleBasis =
+          parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
+        return !_ruleBasis;
+      });
+
+      const _newFare = {
+        ...fare,
+        sellKey,
+        schedueIndex,
+      };
+
+      const _newFares = [..._cleanedFares, _newFare];
+      dispatch(setSelectedSessionFare([..._newFares]));
+    } else {
+      dispatch(
+        setSelectedSessionFare([
+          {
+            ...fare,
+            sellKey,
+            schedueIndex,
+          },
+        ])
+      );
+    }
+  };
+
   const handleSell = async () => {
-    dispatch(
-      saveSellRequest({
+    //FareKey is Fare SellKey
+
+    handleFare();
+
+    if (flightParams?.isRoundTrip === 1) {
+      const existingJourneys = selectedSessionJourney
+        ? [...selectedSessionJourney]
+        : [];
+      const _cleanedJourneys = existingJourneys.filter((_item) => {
+        const _ruleBasis =
+          parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
+        return !_ruleBasis;
+      });
+
+      const _newJourney = {
+        ...journey,
         sellKey,
         segmentStd,
         segmentFlightNumber,
-        segmentCarrierCode,
         fareKey: selected?.FareSellKey,
-      })
-    );
+        schedueIndex,
+        FlightDesignator: {
+          CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
+          FlightNumber: journey?.Segments[0]?.FlightDesignator?.FlightNumber,
+        },
+        arrivalStation: journey?.Segments[0]?.ArrivalStation,
+        departureStation: journey?.Segments[0]?.DepartureStation,
+        std: journey?.Segments[0]?.STD,
+      };
+
+      const _newJourneys = [..._cleanedJourneys, _newJourney];
+      dispatch(setSelectedSessionJourney([..._newJourneys]));
+      document
+        .getElementById("returnContainer")
+        .scrollIntoView({ behavior: "smooth" });
+      closePopUp();
+      setIsVisible(false);
+    } else {
+      const _selectedJorney = [
+        {
+          ...journey,
+          sellKey,
+          segmentStd,
+          segmentFlightNumber,
+          fareKey: selected?.FareSellKey,
+          schedueIndex,
+          FlightDesignator: {
+            CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
+            FlightNumber: journey?.Segments[0]?.FlightDesignator?.FlightNumber,
+          },
+          arrivalStation: journey?.Segments[0]?.ArrivalStation,
+          departureStation: journey?.Segments[0]?.DepartureStation,
+          std: journey?.Segments[0]?.STD,
+        },
+      ];
+      dispatch(setSelectedSessionJourney(_selectedJorney));
+      // router.push("/trip/view");
+    }
   };
 
   return (
@@ -77,7 +162,7 @@ const IbeTripPopup = ({
             <section className="w-full bg-white rounded-xl hidden lg:flex flex-col">
               <div className="bg-primary-main text-center flex items-center justify-center p-8 rounded-t-xl">
                 <h3 className="text-white text-base">
-                  Upgrade your fare and enjoy more benefits{" "}
+                  Upgrade your fare and enjoy more benefits {fare?.RuleNumber}
                 </h3>
               </div>
               <section>
@@ -88,28 +173,28 @@ const IbeTripPopup = ({
                       className={`benefits__popup__row__item ${
                         selected?.RuleNumber.toLowerCase() === "savr"
                           ? "bg-green"
-                          : ""
-                      } `}
+                          : "hover:bg-green hover:bg-opacity-5"
+                      } cursor-pointer`}
                     >
-                      <h4>You selected:</h4>
+                      <h4>&nbsp;</h4>
                       <h3>gSaver</h3>
                     </div>
                     <div
                       className={`benefits__popup__row__item ${
                         selected?.RuleNumber.toLowerCase() === "clsc"
                           ? "bg-green"
-                          : ""
-                      } `}
+                          : "hover:bg-green hover:bg-opacity-5"
+                      } cursor-pointer  `}
                     >
-                      <h4>Your Recommendation</h4>
+                      <h4>Our Recommendation</h4>
                       <h3>gClassic</h3>
                     </div>
                     <div
                       className={`benefits__popup__row__item ${
                         selected?.RuleNumber.toLowerCase() === "flex"
                           ? "bg-green"
-                          : ""
-                      } border-b`}
+                          : "hover:bg-green hover:bg-opacity-5"
+                      } border-b cursor-pointer `}
                     >
                       <h4>For max comfort</h4>
                       <h3>gFlex</h3>
@@ -240,7 +325,7 @@ const IbeTripPopup = ({
                         className={`btn ${
                           selected?.RuleNumber.toLowerCase() === "savr"
                             ? "btn-primary"
-                            : "btn-outlined disabled"
+                            : "btn-outline disabled"
                         } w-full `}
                       >
                         {sellFlightLoading ? "Loading....." : "Continue"}
@@ -250,7 +335,8 @@ const IbeTripPopup = ({
                       <button
                         onClick={handleSell}
                         className={`btn ${
-                          selected?.RuleNumber.toLowerCase() === "clsc"
+                          selected?.RuleNumber.toLowerCase() === "clsc" ||
+                          selected?.RuleNumber.toLowerCase() === "savr"
                             ? "btn-primary"
                             : "btn-outline disabled"
                         } w-full `}
@@ -262,7 +348,9 @@ const IbeTripPopup = ({
                       <button
                         onClick={handleSell}
                         className={`btn ${
-                          selected?.RuleNumber.toLowerCase() === "flex"
+                          selected?.RuleNumber.toLowerCase() === "flex" ||
+                          selected?.RuleNumber.toLowerCase() === "clsc" ||
+                          selected?.RuleNumber.toLowerCase() === "savr"
                             ? "btn-primary"
                             : "btn-outline disabled"
                         } w-full `}
@@ -367,7 +455,8 @@ IbeTripPopup.defaultProps = {
   sellKey: "",
   segmentStd: "",
   segmentFlightNumber: "",
-  segmentCarrierCode: "",
+  journey: {},
+  schedueIndex: "",
   //  showPopUp={showPopUp},
   //  closePopUp={closePopUp},
 };
