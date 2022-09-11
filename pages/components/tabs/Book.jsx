@@ -19,7 +19,7 @@ const validationSchema = Yup.object().shape({
   origin: Yup.object().required("Required"),
 });
 
-const BookingTab = ({
+const Book = ({
   arrivals,
   setArrivals,
   type,
@@ -449,26 +449,18 @@ const BookingTab = ({
               </span>
               <div className="flex-auto px-4 md:px-0">
                 <p className="mb-1 text-xs text-[#979797]">DEPARTING</p>
-                {width > 769 ? (
-                  <DatePicker
-                    id="departure"
-                    clearIcon={null}
-                    calendarIcon={null}
-                    tileContent={hasContent}
-                    format={"d/M/y"}
-                    name="departure"
-                    onChange={(value) => setDepartureDateFormik(value)}
-                    value={formik.values.departure}
-                    onKeyDown={(e) => e.preventDefault()}
-                    minDate={new Date()}
-                  />
-                ) : (
-                  <p className="h-10 flex justify-start items-center text-base font-medium text-primary-main">
-                    {`
-										${format(formik.values.departure, "dd/mm/yyyy")}
-										`}
-                  </p>
-                )}
+                <DatePicker
+                  id="departure"
+                  clearIcon={null}
+                  calendarIcon={null}
+                  tileContent={hasContent}
+                  format={"d/M/y"}
+                  name="departure"
+                  onChange={(value) => setDepartureDateFormik(value)}
+                  value={formik.values.departure}
+                  onKeyDown={(e) => e.preventDefault()}
+                  minDate={new Date()}
+                />
               </div>
             </div>
 
@@ -502,27 +494,19 @@ const BookingTab = ({
 
                 <div className="flex-auto px-4 md:px-0">
                   <p className="mb-1 text-xs text-[#979797]">RETURNING</p>
-                  {width > 769 ? (
-                    <DatePicker
-                      id="return"
-                      clearIcon={null}
-                      calendarIcon={null}
-                      tileContent={hasContent}
-                      className="datepicker border-0 w-full font-body"
-                      minDate={new Date()}
-                      name="return"
-                      format={"d/M/y"}
-                      onChange={(value) => setReturnDateFormik(value)}
-                      value={formik.values.return}
-                      onKeyDown={(e) => e.preventDefault()}
-                    />
-                  ) : (
-                    <p className="h-10 flex justify-start items-center text-base font-medium text-primary-main">
-                      {`
-										${format(formik.values.return, "dd/mm/yyyy")}
-										`}
-                    </p>
-                  )}
+                  <DatePicker
+                    id="return"
+                    clearIcon={null}
+                    calendarIcon={null}
+                    tileContent={hasContent}
+                    className="datepicker border-0 w-full font-body"
+                    minDate={new Date()}
+                    name="return"
+                    format={"d/M/y"}
+                    onChange={(value) => setReturnDateFormik(value)}
+                    value={formik.values.return}
+                    onKeyDown={(e) => e.preventDefault()}
+                  />
                 </div>
               </div>
             )}
@@ -756,4 +740,4 @@ const BookingTab = ({
   );
 };
 
-export default BookingTab;
+export default Book;

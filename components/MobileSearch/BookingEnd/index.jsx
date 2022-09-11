@@ -185,7 +185,7 @@ const BookingEnd = ({
             <div className="px-4 md:px-0">
               <p className="mb-1 text-xs md:mx-4 text-[#979797]">PASSENGERS</p>
               <div className="flex items-center relative">
-                <span className="mr-0 pb-1 block">
+                <span className="mr-2 pb-1 block">
                   <svg
                     width="18"
                     height="17"
