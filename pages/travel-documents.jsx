@@ -47,10 +47,11 @@ const Home = () => {
       </Head>
 
       <BaseLayout>
-        <section className="w-full px-3.5 py-14 lg:fit-x-bleed support-docs">
+        <section className="w-full px-3.5 py-14 lg:fit-x-bleed">
+          <h2 className="header-text mb-4">Travel Documents</h2>
           <div>
             <div
-              className="story__post privacy_page"
+              className="story__post travel_docs"
               dangerouslySetInnerHTML={{
                 __html: `${data?.data?.item.body}`,
               }}
