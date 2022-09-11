@@ -230,23 +230,24 @@ const IbeTripPopup = ({
                     </div>
                     <div className="benefits__popup__row__item">
                       <figure>
-                        <NullIcon />
+                        <CheckIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>&nbsp;</p>
                     </div>
                     <div className="benefits__popup__row__item">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>&nbsp;</p>
                     </div>
                     <div className="benefits__popup__row__item border-b">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>Free</p>
+                      <p>&nbsp;</p>
                     </div>
                   </div>
+                  {/* Free Airport Check-In */}
                   <div className="benefits__popup__row item-center">
                     <div className="benefits__popup__row__item">
                       <h5>Free Airport Check-In</h5>
@@ -255,13 +256,13 @@ const IbeTripPopup = ({
                       <figure>
                         <NullIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>₦2000 fee</p>
                     </div>
                     <div className="benefits__popup__row__item">
                       <figure>
-                        <CheckIcon />
+                        <NullIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>₦2000 fee</p>
                     </div>
                     <div className="benefits__popup__row__item border-b">
                       <figure>
@@ -270,21 +271,22 @@ const IbeTripPopup = ({
                       <p>&nbsp;</p>
                     </div>
                   </div>
+                  {/* Hand Luggage (Free 7kg) */}
                   <div className="benefits__popup__row item-center">
                     <div className="benefits__popup__row__item">
                       <h5>Hand Luggage (Free 7kg)</h5>
                     </div>
                     <div className="benefits__popup__row__item">
                       <figure>
-                        <NullIcon />
+                        <CheckIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>&nbsp;</p>
                     </div>
                     <div className="benefits__popup__row__item">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>&nbsp;</p>
                     </div>
                     <div className="benefits__popup__row__item border-b">
                       <figure>
@@ -293,6 +295,7 @@ const IbeTripPopup = ({
                       <p>&nbsp;</p>
                     </div>
                   </div>
+                  {/* Checked Baggage */}
                   <div className="benefits__popup__row item-center">
                     <div className="benefits__popup__row__item">
                       <h5>Checked Baggage</h5>
@@ -301,21 +304,22 @@ const IbeTripPopup = ({
                       <figure>
                         <NullIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>₦500/kg</p>
                     </div>
                     <div className="benefits__popup__row__item">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>15 kg (extra ₦500/kg)</p>
                     </div>
                     <div className="benefits__popup__row__item border-b">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>&nbsp;</p>
+                      <p>20 kg (extra ₦500/kg)</p>
                     </div>
                   </div>
+                  {/* Seat Selection */}
                   <div className="benefits__popup__row item-center">
                     <div className="benefits__popup__row__item">
                       <h5>Seat Selection</h5>
@@ -324,19 +328,19 @@ const IbeTripPopup = ({
                       <figure>
                         <NullIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>Automatically allocated Pay for preferred seat</p>
                     </div>
                     <div className="benefits__popup__row__item">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>You selected:</p>
+                      <p>Free standard seat Pay for non-standard</p>
                     </div>
                     <div className="benefits__popup__row__item rr">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>&nbsp;</p>
+                      <p>Free</p>
                     </div>
                   </div>
                   <div className="benefits__popup__row item-center">
