@@ -16,6 +16,8 @@ export async function getServerSideProps() {
     },
   };
 }
+
+
 const Home = () => {
   const { data } = useQuery(["privacy_policy", "privacy-policy"], () =>
     getPageBySlug("privacy-policy")

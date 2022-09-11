@@ -79,6 +79,10 @@ const getPageBySlug = async (slug) => {
   const { data } = await axios.get(`/pages/${slug}`);
   return data;
 };
+const getFareRules = async () => {
+  const { data } = await axios.get(`/products/farerules`);
+  return data;
+};
 
 export {
   getMobileBanner,
@@ -97,4 +101,5 @@ export {
   getContacts,
   getPageBySlug,
   getNotifications,
+  getFareRules,
 };

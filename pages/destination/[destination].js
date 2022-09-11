@@ -10,7 +10,7 @@ import BaseLayout from "layouts/Base";
 
 const Destination = () => {
   const router = useRouter();
-  const { destination, origin } = router.query;
+  const { destination } = router.query;
   const [width] = useDeviceSize();
   return (
     <BaseLayout>
@@ -68,7 +68,7 @@ const Destination = () => {
           </p>
         </section>
 
-        <Destinations query={origin} />
+        <Destinations query={destination} />
       </section>
     </BaseLayout>
   );
