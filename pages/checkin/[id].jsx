@@ -158,23 +158,20 @@ const CheckInDetails = () => {
                   </div>
                 </div> */}
 
-                <div className="mx-6">
-                  <h3 className="title-text">
-                    DEPARTURE:{" "}
-                    {bookingResponse &&
-                      format(
-                        new Date(
-                          bookingResponse
-                            ? bookingResponse?.Booking?.Journeys[0].Segments[0]
-                                .STD
-                            : ""
-                        ),
-                        "MMMM dd, yyyy"
-                      )}
-                  </h3>
-                </div>
                 {bookingResponse?.Booking?.Journeys.map((Journey, index) => (
                   <>
+                    <div className="mx-6">
+                      <h3 className="title-text">
+                        DEPARTURE:{" "}
+                        {bookingResponse &&
+                          format(
+                            new Date(
+                              bookingResponse ? Journey?.Segments[0].STD : ""
+                            ),
+                            "MMMM dd, yyyy"
+                          )}
+                      </h3>
+                    </div>
                     <section
                       className="ibe__trip__item checkinView bordered mx-6 my-3"
                       key={index}

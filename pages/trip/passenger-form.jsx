@@ -243,7 +243,7 @@ const PassengerForm = () => {
                           setPassengers={setPassengers}
                           errorIds={errorIds}
                           setErrorIds={setErrorIds}
-                          salutations={!isLoading && data?.data.items}
+                          salutations={!isLoading ? data?.data.items : []}
                         />
                       );
                     })}

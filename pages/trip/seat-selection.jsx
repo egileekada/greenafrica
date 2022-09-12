@@ -84,7 +84,7 @@ const SeatSelection = () => {
                 </h2>
               </div>
 
-              <section className="flex flex-col bg-white pb-24 pt-5 px-8 rounded-lg">
+              <section className="flex flex-col bg-white pb-24 pt-5 px-3 md:px-8 rounded-lg">
                 <Tabs defaultActiveKey="1" tabBarStyle={{ color: "#47FF5A" }}>
                   {bookingState?.Journeys.map((journey, index) => (
                     <TabPane
@@ -122,7 +122,11 @@ const SeatSelection = () => {
                       }
                       key={index + 1}
                     >
-                      <SeatWrapper ticketIndex={index} key={index + 2} />
+                      <SeatWrapper
+                        setShow={setShow}
+                        ticketIndex={index}
+                        key={index + 2}
+                      />
                     </TabPane>
                   ))}
                 </Tabs>
