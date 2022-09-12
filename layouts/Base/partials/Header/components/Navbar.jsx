@@ -55,7 +55,7 @@ const Navigation = () => {
                       <h3 className="uppercase">PLAN YOUR TRIP</h3>
                       <ul className="list-unstyled with-sub">
                         <li className="mt-0">
-                          <Link href="/destinations">Destinations</Link>
+                          <Link href="#">Destinations</Link>
                         </li>
                       </ul>
                     </div>
