@@ -64,10 +64,10 @@ const Navigation = () => {
                       <h3 className="uppercase">TRAVEL INFORMATION</h3>
                       <ul className="list-unstyled with-sub">
                         <li className="my-4">
-                          <Link href="/destinations">Fare Categories</Link>
+                          <Link href="/fare-categories">Fare Categories</Link>
                         </li>
                         <li className="my-4">
-                          <Link href="/destinations">Travel Documents</Link>
+                          <Link href="/travel-documents">Travel Documents</Link>
                         </li>
                       </ul>
                     </div>
@@ -79,7 +79,7 @@ const Navigation = () => {
                           <Link href="/faqs">FAQ</Link>
                         </li>
                         <li className="my-4">
-                          <Link href="/faqs">Our Fleet</Link>
+                          <Link href="/our-fleet">Our Fleet</Link>
                         </li>
                       </ul>
                     </div>

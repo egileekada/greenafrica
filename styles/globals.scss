@@ -19,11 +19,11 @@
 // Tailwind Styles
 @layer base {
   html {
-    font-family: Plus Jakarta Sans, system-ui, sans-serif;
+    font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
   }
 
   body {
-    font-family: Plus Jakarta Sans, system-ui, sans-serif;
+    font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
   }
 }
 
@@ -660,6 +660,22 @@ select:focus {
   }
 }
 
+
+.travel_docs {
+  p {
+    font-size: 16px !important;
+    font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
+  }
+  ul {
+    margin-left: 20px !important;
+    font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
+    li {
+      margin: 15px 0 !important;
+      font-size: 16px !important;
+      list-style: circle;
+      font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
+    }
+
 .departure-mobile {
   .react-calendar {
     background: #261f5e !important;
@@ -742,5 +758,6 @@ select:focus {
 
   .react-date-picker {
     width: 100%;
+
   }
 }
