@@ -40,7 +40,11 @@ const MobileSearch = ({
       <div className="w-full flex justify-between items-center gap-2 p-4 bg-primary-main">
         <button
           onClick={() => {
-            screen <= 1 ? null : setScreen(screen - 1);
+            screen <= 1
+              ? null
+              : screen === 4 && type !== "round_trip"
+              ? setScreen(2)
+              : setScreen(screen - 1);
           }}
           className=""
         >

@@ -69,7 +69,7 @@ const FromTo = ({
       <div className="relative bg-primary-main w-full p-3 flex justify-center items-center gap-4">
         <div
           onClick={() => setShow(true)}
-          className="flex flex-col flex-1 rounded-lg justify-start items-start gap-1 bg-[#EDECFA] py-2 px-4"
+          className="cursor-pointer flex flex-col flex-1 rounded-lg justify-start items-start gap-1 bg-[#EDECFA] py-2 px-4"
         >
           <span className="text-[10px] text-primary-main uppercase">
             DEPARTING
@@ -92,7 +92,7 @@ const FromTo = ({
         />
         <div
           onClick={() => setShow(false)}
-          className="flex flex-col flex-1 rounded-lg justify-start items-start gap-1 bg-[#EDECFA] py-2 px-4"
+          className="cursor-pointer flex flex-col flex-1 rounded-lg justify-start items-start gap-1 bg-[#EDECFA] py-2 px-4"
         >
           <span className="text-[10px] text-primary-main uppercase">
             ARRIVING

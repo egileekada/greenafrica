@@ -16,12 +16,15 @@ const Flight = ({
 }) => {
   const [returnFlight, setReturnFlight] = React.useState(false);
   const [flightDate, setFlightDate] = React.useState(departureDate);
+  const [pickedReturnDate, setPickedReturnDate] = React.useState(false);
+  const [showError, setShowError] = React.useState(false);
 
   const setDate = (value) => {
     if (returnFlight) {
       setFlightDate(value);
       setDepartureDate(value[0]);
       setReturningDate(value[1]);
+      setPickedReturnDate(true);
     } else {
       setDepartureDate(value);
       setFlightDate(value);
@@ -92,10 +95,19 @@ const Flight = ({
             minDate={new Date()}
           />
         </div>
+        {showError && !pickedReturnDate && (
+          <p className="text-red-700 text-sm">
+            You need to select a return date
+          </p>
+        )}
         <div className="w-full max-w-[400px] px-4">
           <button
             className="btn btn-primary !text-white border-white border w-full md:w-auto font-title block h-full"
-            onClick={() => setScreen(4)}
+            onClick={() =>
+              type === "round_trip" && !pickedReturnDate
+                ? setShowError(true)
+                : setScreen(4)
+            }
           >
             Continue
           </button>
