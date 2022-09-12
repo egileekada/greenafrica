@@ -14,7 +14,7 @@ const Flight = ({
   departureDate,
   setScreen,
 }) => {
-  const [returnFlight, setReturnFlight] = React.useState(type === "round_trip");
+  const [returnFlight, setReturnFlight] = React.useState(false);
   const [flightDate, setFlightDate] = React.useState(departureDate);
 
   const setDate = (value) => {
@@ -59,7 +59,7 @@ const Flight = ({
             }`}
             onClick={() => {
               setReturnFlight(false);
-              setType("");
+              // setType("");
             }}
           >
             Departing
@@ -72,7 +72,7 @@ const Flight = ({
             }`}
             onClick={() => {
               setReturnFlight(true);
-              setType("round_trip");
+              // setType("round_trip");
             }}
           >
             Returning
