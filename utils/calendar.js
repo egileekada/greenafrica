@@ -313,3 +313,7 @@ export const lowfare = {
   "2022-07-02": 132.99,
   "2022-07-01": 123.99,
 };
+
+export function dateIsValid(date) {
+  return !Number.isNaN(new Date(date).getTime());
+}

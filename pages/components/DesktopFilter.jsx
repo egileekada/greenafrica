@@ -4,7 +4,7 @@ import PromoIcon from "assets/svgs/promo.svg";
 import CheckInTab from "./tabs/CheckInTab";
 import BookingTab from "./tabs/BookingTab";
 import Book from "./tabs/Book";
-import { format, add } from "date-fns";
+import { add } from "date-fns";
 
 const DesktopFilter = () => {
   const [activeTab, setActiveTab] = useState(1);

@@ -405,8 +405,10 @@ textarea {
 }
 
 .booking__wrapper {
-  // border: 1px solid #d8d7e2;
-  box-shadow: 0 0 5px 0 rgb(195 198 205 / 50%);
+  border: 1px solid #d8d7e2;
+  border-radius: 14px;
+  padding: 16x 24px;
+  // box-shadow: 0 0 5px 0 rgb(195 198 205 / 50%);
   @apply rounded-lg px-2 py-2 relative;
 }
 
@@ -658,6 +660,7 @@ select:focus {
   }
 }
 
+
 .travel_docs {
   p {
     font-size: 16px !important;
@@ -672,5 +675,89 @@ select:focus {
       list-style: circle;
       font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
     }
+
+.departure-mobile {
+  .react-calendar {
+    background: #261f5e !important;
+    @apply font-body;
+    border: 1px solid #261f5e !important;
+    border-radius: 0px !important;
+    padding: 2px !important;
+  }
+
+  .react-calendar__tile {
+    background: #1f1955 !important;
+    border: 4px solid #261f5e !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    padding-bottom: 0px !important;
+    font-family: "Plus Jakarta Sans";
+
+    & abbr {
+      color: #fff !important;
+    }
+  }
+
+  .react-calendar__navigation button:disabled {
+    background-color: transparent;
+    cursor: not-allowed;
+  }
+
+  .react-calendar__navigation button {
+    fill: #fff !important;
+    color: #fff !important;
+
+    &:hover {
+      background: none;
+      background-color: transparent !important;
+    }
+  }
+
+  .react-calendar__month-view__weekdays__weekday {
+    color: #fff !important;
+
+    & abbr {
+      text-decoration: none;
+    }
+  }
+
+  .react-calendar__month-view__days__day--weekend {
+    color: #fff !important;
+  }
+
+  .react-calendar__tile--active {
+    background: #47ff5a !important;
+    color: #26205e !important;
+
+    & p {
+      color: #26205e !important;
+    }
+    & abbr {
+      color: #26205e !important;
+    }
+  }
+
+  .react-calendar__tile--now {
+    border: 2px dashed #f19559 !important;
+    color: #47ff5a !important;
+  }
+
+  .react-calendar__navigation__label__labelText {
+    text-transform: uppercase !important;
+    font-weight: 700 !important;
+  }
+
+  .react-calendar__tile:disabled {
+    opacity: 0.5 !important;
+  }
+
+  .widget-border {
+    border: 1px solid #eaebf3;
+    border-radius: 6px;
+  }
+
+  .react-date-picker {
+    width: 100%;
+
   }
 }
