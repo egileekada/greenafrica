@@ -62,22 +62,23 @@ const BookingEnd = ({
       returningDate
     )}&adt=${adult}&chd=${child}&inf=${infant}${appendPromo(promocode)}`;
 
-    console.log(test);
-    // window.location.replace(`https://dev-ibe.gadevenv.com${test}`);
+    window.location.replace(`https://dev-ibe.gadevenv.com${test}`);
   };
 
   return (
     <div className="w-full p-4">
       <div className="flex w-full flex-col justify-start items-start gap-4">
         <div className="grid w-full grid-cols-1 lg:grid-cols-2 gap-4 md:col-span-2">
-          <div className={`border flex items-end booking__wrapper `}>
+          <div
+            className={`border border-[#D8D7E2] flex items-end  shadow-none rounded-[14px] px-[24px] py-[16px] `}
+          >
             <img
               src="/images/widget_from.svg"
               alt=""
               className="mx-2 pb-2 block"
             />
             <div className="w-full mx-2 px-2 md:px-0">
-              <p className="mb-0 text-xs text-[#979797]">FROM</p>
+              <p className="mb-2 text-xs text-[#979797]">FROM</p>
               {formatOptionLabel(
                 fromTo?.from ?? {
                   cityName: "",
@@ -94,14 +95,16 @@ const BookingEnd = ({
             />
           </div>
 
-          <div className={`border flex items-end booking__wrapper`}>
+          <div
+            className={`border border-[#D8D7E2] flex items-end  shadow-none rounded-[14px] px-[24px] py-[16px]`}
+          >
             <img
               src="/images/widget_to.svg"
               alt=""
               className="block mx-2 pb-2 cursor-pointer"
             />
             <div className="w-full mx-2 px-2 md:px-0">
-              <p className="mb-0 text-xs text-[#979797]">TO</p>
+              <p className="mb-2 text-xs text-[#979797]">TO</p>
               {formatOptionLabel(
                 fromTo?.to ?? {
                   cityName: "",
@@ -118,7 +121,7 @@ const BookingEnd = ({
             type === "round_trip" && "lg:grid-cols-2 md:col-span-2"
           } grid w-full grid-cols-1 gap-4 md:col-auto`}
         >
-          <div className="booking__wrapper flex items-end">
+          <div className="rounded-[14px] px-[24px] py-[16px] flex border border-[#D8D7E2]  shadow-none items-end">
             <span className="mr-2 ml-1 pb-1 block">
               <svg
                 width="26"
@@ -138,7 +141,7 @@ const BookingEnd = ({
               </svg>
             </span>
             <div className="flex-auto px-4 md:px-0">
-              <p className="mb-1 text-xs text-[#979797]">DEPARTING</p>
+              <p className="mb-2 text-xs text-[#979797]">DEPARTING</p>
               <p className="flex justify-start mb-0 items-center text-base font-medium text-primary-main">
                 {`
 										${format(departureDate, "dd/MM/yyyy")}
@@ -148,7 +151,7 @@ const BookingEnd = ({
           </div>
 
           {type === "round_trip" && (
-            <div className="booking__wrapper flex items-end">
+            <div className="rounded-[14px] px-[24px] py-[16px] border border-[#D8D7E2] flex items-end">
               <span className="mr-2 ml-1 pb-1 block">
                 <svg
                   width="26"
@@ -169,7 +172,7 @@ const BookingEnd = ({
               </span>
 
               <div className="flex-auto px-4 md:px-0">
-                <p className="mb-1 text-xs text-[#979797]">RETURNING</p>
+                <p className="mb-2 text-xs text-[#979797]">RETURNING</p>
                 <p className="flex justify-start items-center text-base font-medium text-primary-main mb-0">
                   {`
 										${format(returningDate, "dd/MM/yyyy")}
@@ -181,9 +184,9 @@ const BookingEnd = ({
         </div>
 
         <div className="flex gap-3 w-full">
-          <div className="booking__wrapper flex flex-auto relative">
-            <div className="px-4 md:px-0">
-              <p className="mb-1 text-xs md:mx-4 text-[#979797]">PASSENGERS</p>
+          <div className="rounded-[14px] px-[24px] py-[16px] flex flex-auto  shadow-none border border-[#D8D7E2] relative">
+            <div className="px-0">
+              <p className="mb-2 text-xs text-[#979797]">PASSENGERS</p>
               <div className="flex items-center relative">
                 <span className="mr-2 pb-1 block">
                   <svg
