@@ -43,9 +43,9 @@ const Departure = ({ setDepartureDate, departureDate, setScreen }) => {
         <div className="w-full max-w-[400px] px-4">
           <button
             className="btn btn-primary !text-white border-white border w-full md:w-auto font-title block h-full"
-            onClick={() => setScreen(3)}
+            onClick={() => setScreen(4)}
           >
-            Select Date
+            Continue
           </button>
         </div>
       </div>

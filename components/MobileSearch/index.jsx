@@ -73,11 +73,13 @@ const MobileSearch = ({
             values={values}
             fromTo={fromTo}
             setFromTo={setFromTo}
+            type={type}
           />
         ) : screen === 2 ? (
           <Departure
             departureDate={departureDate}
             setDepartureDate={setDepartureDate}
+            type={type}
             setScreen={setScreen}
           />
         ) : screen === 3 ? (

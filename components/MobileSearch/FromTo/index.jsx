@@ -4,6 +4,7 @@ const FromTo = ({
   values,
   arrivals,
   setArrivals,
+  type,
   setScreen,
   fromTo,
   setFromTo,
@@ -37,7 +38,11 @@ const FromTo = ({
       to: value,
     });
     setDestination(`${value.cityName} ${value.value}`);
-    setScreen(2);
+    if (type === "round_trip") {
+      setScreen(3);
+    } else {
+      setScreen(2);
+    }
   };
 
   const Option = (props) => {
