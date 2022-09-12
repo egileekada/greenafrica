@@ -660,7 +660,6 @@ select:focus {
   }
 }
 
-
 .travel_docs {
   p {
     font-size: 16px !important;
@@ -675,6 +674,8 @@ select:focus {
       list-style: circle;
       font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
     }
+  }
+}
 
 .departure-mobile {
   .react-calendar {
@@ -758,6 +759,5 @@ select:focus {
 
   .react-date-picker {
     width: 100%;
-
   }
 }
