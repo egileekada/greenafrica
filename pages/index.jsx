@@ -239,7 +239,8 @@ const Home = () => {
                       </>
                     ) : (
                       <h2 className="text-red-600 font-normal text-sm mb-8">
-                        Error fetching flight availability
+                        {/* TODO this needs to be checked - edge case what happens when we close the modal on the landing page */}
+                        {/* Error fetching flight availability */}
                       </h2>
                     )}
                   </div>

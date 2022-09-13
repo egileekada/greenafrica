@@ -13,6 +13,7 @@ const PassengerFormItem = ({
   setPassengers,
   errorIds,
   setErrorIds,
+  salutations,
 }) => {
   const [error, setErr] = useState({
     title: "",
@@ -179,8 +180,11 @@ const PassengerFormItem = ({
             required
           >
             <option value="">Select</option>
-            <option value="Mrs">Mrs</option>
-            <option value="Mr">Mr</option>
+            {salutations.map((salutation, index) => (
+              <option value={salutation.title} key={index}>
+                {salutation.title}
+              </option>
+            ))}
           </select>
           <div className="select-icon">
             <SelectIcon />

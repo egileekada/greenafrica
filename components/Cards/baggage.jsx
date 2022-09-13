@@ -124,7 +124,7 @@ const BaggageCard = ({
         <figure>
           <BaggageIcon />
         </figure>
-        <p className="font-body text-primary-main text-xs mb-1">Up to {KG}kg</p>
+        <p className="font-body text-primary-main text-xs mb-1">Extra Bag Up to {KG}kg</p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}

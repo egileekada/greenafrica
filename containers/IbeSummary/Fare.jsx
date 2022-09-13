@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
+import { useGetFareconfigsQuery } from "services/widgetApi.js";
 
 const Fare = ({ isRoundTrip }) => {
+  const { data: fareConfig, isLoading } = useGetFareconfigsQuery();
   const { bookingResponse } = useSelector(sessionSelector);
 
   return (
@@ -140,7 +142,7 @@ const Fare = ({ isRoundTrip }) => {
                               <h6>
                                 {" "}
                                 {bookingResponse?.Booking?.Passengers.length}x
-                                Passenget Service Charge:
+                                Passenger Service Charge:
                               </h6>
                             </div>
                             <div>
@@ -170,7 +172,7 @@ const Fare = ({ isRoundTrip }) => {
                               <h6>
                                 {" "}
                                 {bookingResponse?.Booking?.Passengers.length}x
-                                Fuel Subcharge:
+                                Fuel Surcharge:
                               </h6>
                             </div>
                             <div>

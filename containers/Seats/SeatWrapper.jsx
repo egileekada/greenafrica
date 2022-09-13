@@ -12,7 +12,7 @@ import {
 import ProfileIcon from "assets/svgs/profile.svg";
 import InfoIcon from "assets/svgs/seats/info.svg";
 
-const SeatWrapper = ({ ticketIndex }) => {
+const SeatWrapper = ({ ticketIndex, setShow }) => {
   const dispatch = useDispatch();
   const {
     signature,

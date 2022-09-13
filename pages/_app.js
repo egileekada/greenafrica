@@ -2,6 +2,7 @@ import { Fragment, useEffect } from "react";
 import { PersistGate } from "redux-persist/integration/react";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
+import { useRouter } from "next/router";
 import "../styles/globals.scss";
 import "../styles/loader.scss";
 
@@ -11,6 +12,25 @@ import { store, persistor } from "redux/store";
 import { Provider } from "react-redux";
 
 const MyApp = ({ Component, pageProps }) => {
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Broadcast that you're opening a page.
+      localStorage.openpages = Date.now();
+      var onLocalStorageEvent = function (e) {
+        if (e.key == "openpages") {
+          // Listen if anybody else is opening the same page!
+          localStorage.page_available = Date.now();
+        }
+        if (e.key == "page_available" && router.pathname !== "/multipleTabs") {
+          router.push("/multipleTabs");
+        }
+      };
+      window.addEventListener("storage", onLocalStorageEvent, false);
+    }
+  }, []);
+
   return (
     <Fragment>
       <Provider store={store}>

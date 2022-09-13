@@ -15,7 +15,10 @@ import {
 } from "redux/reducers/session";
 import { format } from "date-fns";
 
+import { useGetLocationsQuery } from "services/widgetApi.js";
+
 const ReturnIbeHeader = () => {
+  const { data, isLoading } = useGetLocationsQuery();
   const dispatch = useDispatch();
   const [width] = useDeviceSize();
 
@@ -159,14 +162,22 @@ const ReturnIbeHeader = () => {
     dispatch(fetchFlightAvailability(flightRequest));
   };
 
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
+  };
+
   return (
     <section className="ibe__flight__info mt-20" id="returnContainer">
       <section className="ibe__flight__info__destination">
-        <p className="mx-4">{flightParams?.arrivalStation}</p>
+        <p className="mx-4">{!isLoading && resolveAbbreviation(flightParams?.arrivalStation)}</p>
         <figure>
           <ArrowTo />
         </figure>
-        <p className="mx-4">{flightParams?.departureStation}</p>
+        <p className="mx-4">{!isLoading && resolveAbbreviation(flightParams?.departureStation)}</p>
 
         {/* {currentPage && <p> currentPage:: {currentPage}</p>} */}
 

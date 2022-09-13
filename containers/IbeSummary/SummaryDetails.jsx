@@ -5,7 +5,13 @@ import { sessionSelector } from "redux/reducers/session";
 import ProfileIcon from "assets/svgs/profile.svg";
 import { capitalizeFirstLetter } from "lib/utils";
 
+import {
+  useGetProductsQuery,
+} from "services/widgetApi.js";
+
 const SummaryDetails = ({ isRoundTrip }) => {
+  const { data: products, isLoading } = useGetProductsQuery();
+
   const { bookingResponse } = useSelector(sessionSelector);
   const [passengerInfo, setPassengerInfo] = useState(null);
 
@@ -24,6 +30,13 @@ const SummaryDetails = ({ isRoundTrip }) => {
       });
     }
   }, [bookingResponse]);
+
+  const fare_name = (value) => {
+    const [{ name }] = products?.data?.items.filter(
+      (product) => product.code === value
+    );
+    return `${name}`;
+  };
 
   const PassengerContact = () => {
     return (
@@ -250,13 +263,7 @@ const SummaryDetails = ({ isRoundTrip }) => {
                           </h5>
                         </div>
                         <div className="f-1">
-                          <h6>
-                            {_fare.ProductClass === "GS"
-                              ? "gSaver"
-                              : _fare.ProductClass === "GC"
-                              ? "gClassic"
-                              : "gFlex"}
-                          </h6>
+                          <h6>{!isLoading && fare_name(_fare.ProductClass)}</h6>
                         </div>
                       </div>
                     );

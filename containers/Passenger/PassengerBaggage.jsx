@@ -10,6 +10,7 @@ import Popup from "components/Popup";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 
 const PassengerBaggage = ({
   passenger,
@@ -19,7 +20,7 @@ const PassengerBaggage = ({
   setReturnSSRs,
 }) => {
   const router = useRouter();
-
+  const { data, isLoading } = useGetLocationsQuery();
   const [showPopUp, setShow] = useState(false);
   const [activeTab, setActiveTab] = useState("");
   const [schedueIndex, setSchedueIndex] = useState(0);
@@ -76,13 +77,21 @@ const PassengerBaggage = ({
     router.push("/trip/payment");
   };
 
-
   const ALLOWED__SSRS = ["X20", "X15", "X10"];
+
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
+  };
+
   return (
     <Fragment>
       <section className="flex flex-col">
         <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-4">
-          BAGGAGE INFORMATION 
+          EXTRA BAGGAGE
         </h2>
 
         <div className="flex h-16 border-b mb-6">
@@ -108,13 +117,13 @@ const PassengerBaggage = ({
                   </figure>
                   <div className="flex items-center ml-[10px] ">
                     <p className="font-header text-sm mr-[6px] font-bold">
-                      {_journey.departureStation}
+                      {!isLoading && resolveAbbreviation(_journey.departureStation)}
                     </p>
                     <figure className="flex items-center justify-center -mb-1">
                       <ArrowIcon />
                     </figure>
                     <p className="font-header text-sm ml-[6px] font-bold">
-                      {_journey.arrivalStation}
+                      {!isLoading && resolveAbbreviation(_journey.arrivalStation)}
                     </p>
                   </div>
                 </button>

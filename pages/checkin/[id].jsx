@@ -12,6 +12,11 @@ import Spinner from "components/Spinner";
 import CheckInCard from "components/Cards/checkin";
 import IbeAdbar from "containers/IbeAdbar";
 
+import {
+  useGetLocationsQuery,
+  useGetProductsQuery,
+} from "services/widgetApi.js";
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
@@ -22,9 +27,16 @@ import {
 const CheckInDetails = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { data, isLoading: locationLoading } = useGetLocationsQuery();
+  const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   const dispatch = useDispatch();
-  const { signature, sessionLoading, bookingResponseLoading, bookingResponse } =
-    useSelector(sessionSelector);
+  const {
+    signature,
+    sessionLoading,
+    isLoading,
+    bookingResponseLoading,
+    bookingResponse,
+  } = useSelector(sessionSelector);
 
   useEffect(() => {
     if (router.isReady) {
@@ -56,6 +68,7 @@ const CheckInDetails = () => {
         pax.FeeCode === "XBAG10"
       );
     });
+
     return (
       <div className="trip-details-item">
         <h6>BAGGAGE{_Baggages.length > 1 ? "S" : ""}: </h6>
@@ -77,8 +90,23 @@ const CheckInDetails = () => {
     );
   };
 
-  console.log(bookingResponse.Booking.BookingSum.BalanceDue > 0);
-  console.log(bookingResponse.Booking.BookingSum.BalanceDue);
+  console.log(bookingResponse);
+  console.log(bookingResponse);
+
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
+  };
+
+  const fare_name = (value) => {
+    const [{ name }] = products?.data?.items.filter(
+      (product) => product.code === value
+    );
+    return `${name}`;
+  };
 
   return (
     <BaseLayout>
@@ -130,105 +158,153 @@ const CheckInDetails = () => {
                   </div>
                 </div> */}
 
-                <div className="mx-6">
-                  <h3 className="title-text">
-                    DEPARTURE:{" "}
-                    {bookingResponse &&
-                      format(
-                        new Date(
-                          bookingResponse
-                            ? bookingResponse?.Booking?.Journeys[0].Segments[0]
-                                .STD
-                            : ""
-                        ),
-                        "MMMM dd, yyyy"
-                      )}
-                  </h3>
-                </div>
-
-                <section className="ibe__trip__item checkinView bordered mx-6 my-3">
-                  <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3 ">
-                    gSaver
-                  </p>
-                  <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
-                    <p className="tripType self-center">Direct Flight</p>
-                    <div className="flex justify-between">
-                      <div className="flex flex-col">
-                        <h5 className="tripType">
+                {bookingResponse?.Booking?.Journeys.map((Journey, index) => (
+                  <>
+                    <div className="mx-6">
+                      <h3 className="title-text">
+                        DEPARTURE:{" "}
+                        {bookingResponse &&
+                          format(
+                            new Date(
+                              bookingResponse ? Journey?.Segments[0].STD : ""
+                            ),
+                            "MMMM dd, yyyy"
+                          )}
+                      </h3>
+                    </div>
+                    <section
+                      className="ibe__trip__item checkinView bordered mx-6 my-3"
+                      key={index}
+                    >
+                      <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3 ">
+                        {!productsLoading &&
+                          fare_name(Journey?.Segments[0].Fares[0].ProductClass)}
+                      </p>
+                      <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
+                        <p className="tripType self-center">Direct Flight</p>
+                        <div className="flex justify-between">
+                          <div className="flex flex-col">
+                            <h5 className="tripType">
+                              {bookingResponse &&
+                                format(
+                                  new Date(Journey.Segments[0].STD),
+                                  "HH:mm"
+                                )}
+                            </h5>
+                            <p className="tripCity">
+                              {!locationLoading &&
+                                resolveAbbreviation(
+                                  Journey?.Segments[0]?.ArrivalStation
+                                )}
+                            </p>
+                          </div>
+                          <div className="tripIconPath">
+                            <DottedLine className="dotted-svg" />
+                            <AeroIcon className="aero-svg" />
+                            <DottedLine className="dotted-svg" />
+                          </div>
+                          <div className="flex flex-col  items-end">
+                            <h5 className="tripType right-text">
+                              {bookingResponse &&
+                                format(
+                                  new Date(Journey.Segments[0].STA),
+                                  "HH:mm"
+                                )}
+                            </h5>
+                            <p className="tripCity right-text">
+                              {!locationLoading &&
+                                resolveAbbreviation(
+                                  Journey?.Segments[0]?.DepartureStation
+                                )}
+                            </p>
+                          </div>
+                        </div>
+                        <p className="tripTime self-center">
                           {bookingResponse &&
-                            format(
-                              new Date(
-                                bookingResponse?.Booking?.Journeys[0].Segments[0].STD
-                              ),
-                              "HH:mm"
+                            formatDistanceStrict(
+                              new Date(Journey?.Segments[0]?.STD),
+                              new Date(Journey?.Segments[0]?.STA)
                             )}
-                        </h5>
-                        <p className="tripCity">
-                          Lagos (
-                          {
-                            bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                              ?.ArrivalStation
-                          }
-                          )
                         </p>
                       </div>
-                      <div className="tripIconPath">
-                        <DottedLine className="dotted-svg" />
-                        <AeroIcon className="aero-svg" />
-                        <DottedLine className="dotted-svg" />
-                      </div>
-                      <div className="flex flex-col  items-end">
-                        <h5 className="tripType right-text">
-                          {bookingResponse &&
-                            format(
-                              new Date(
-                                bookingResponse?.Booking?.Journeys[0].Segments[0].STA
-                              ),
-                              "HH:mm"
-                            )}
-                        </h5>
-                        <p className="tripCity right-text">
-                          Abuja (
-                          {
-                            bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                              ?.DepartureStation
-                          }
-                          )
-                        </p>
-                      </div>
-                    </div>
-                    <p className="tripTime self-center">
-                      {bookingResponse &&
-                        formatDistanceStrict(
-                          new Date(
-                            bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.STD
-                          ),
-                          new Date(
-                            bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.STA
-                          )
-                        )}
-                    </p>
-                  </div>
 
-                  <div className="trip-details">
-                    <div className="trip-details-item">
-                      <h6>FLIGHT NUMBER</h6>
-                      <h5>
-                        {
-                          bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                            ?.FlightDesignator.CarrierCode
-                        }{" "}
-                        {
-                          bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                            ?.FlightDesignator.FlightNumber
-                        }
-                      </h5>
-                    </div>
-                  </div>
-                </section>
+                      <div className="trip-details">
+                        <div className="trip-details-item">
+                          <h6>FLIGHT NUMBER</h6>
+                          <h5>
+                            {
+                              bookingResponse?.Booking?.Journeys[0]?.Segments[0]
+                                ?.FlightDesignator.CarrierCode
+                            }{" "}
+                            {
+                              bookingResponse?.Booking?.Journeys[0]?.Segments[0]
+                                ?.FlightDesignator.FlightNumber
+                            }
+                          </h5>
+                        </div>
+                      </div>
+                    </section>
+                    <section className="mx-6">
+                      <h3 className="title-text">PASSENGERS</h3>
+                    </section>
+
+                    {bookingResponse?.Booking.Passengers.map(
+                      (passenger, index) => (
+                        <section
+                          className="ibe__trip__passengers checkinView mx-6 mb-3"
+                          key={index}
+                        >
+                          <div className="md:flex bordered p-4">
+                            <label className="md:w-2/3 block font-bold">
+                              <input
+                                className="mr-2 leading-tight"
+                                type="checkbox"
+                              />
+                              <span className="text-sm">
+                                {passenger.Names[0].FirstName}{" "}
+                                {passenger.Names[0].LastName}
+                              </span>
+                            </label>
+                          </div>
+
+                          <div className="trip-details">
+                            <div className="trip-details-item">
+                              <h6>SEAT NUMBER</h6>
+                              {Journey.Segments[0].PaxSeats.length > 0 ? (
+                                <h5 className="flex items-center">
+                                  <span>
+                                    {
+                                      Journey.Segments[0].PaxSeats[index]
+                                        .UnitDesignator
+                                    }
+                                  </span>
+                                  <Link href={`/checkin/seat-selection/?`}>
+                                    <button className="btn btn-outline ml-4">
+                                      Edit
+                                    </button>
+                                  </Link>
+                                </h5>
+                              ) : (
+                                <h5 className="flex items-center">
+                                  <span>{""}</span>
+                                  <Link href={`/checkin/seat-selection/?`}>
+                                    <button className="btn btn-outline ml-4">
+                                      Add
+                                    </button>
+                                  </Link>
+                                </h5>
+                              )}
+                            </div>
+                            {PassengerBags(passenger)}
+                          </div>
+                        </section>
+                      )
+                    )}
+                  </>
+                ))}
                 {/* Trip Itenary */}
                 {/* Checkin Info*/}
-                <section className="checkin__info mx-6 my-3">
+                {/* <section className="checkin__info mx-6 my-3">
                   <p>
                     You added some new services so your fare has been updated
                     with additional fees
@@ -237,9 +313,9 @@ const CheckInDetails = () => {
 
                 <section className="mx-6">
                   <h3 className="title-text">PASSENGERS</h3>
-                </section>
+                </section> */}
 
-                {bookingResponse?.Booking.Passengers.map((passenger, index) => (
+                {/* {bookingResponse?.Booking.Passengers.map((passenger, index) => (
                   <section
                     className="ibe__trip__passengers checkinView mx-6 mb-3"
                     key={index}
@@ -286,11 +362,11 @@ const CheckInDetails = () => {
                       {PassengerBags(passenger)}
                     </div>
                   </section>
-                ))}
+                ))} */}
 
                 {/* Checkin Info*/}
                 <div className="flex mx-6 mt-5">
-                  {bookingResponse.Booking.BookingSum.BalanceDue > 0 ? (
+                  {bookingResponse?.Booking.BookingSum.BalanceDue > 0 ? (
                     <Link href="/checkin/pay">
                       <a className="btn btn-primary">Pay & Check In </a>
                     </Link>
