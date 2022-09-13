@@ -10,7 +10,6 @@ import Seatslegend from "containers/Seats/SeatPopUp";
 import SeatWrapper from "containers/Seats/SeatWrapper";
 import LogoIcon from "assets/svgs/logo.svg";
 
-
 import InfoIcon from "assets/svgs/seats/info.svg";
 import { useGetLocationsQuery } from "services/widgetApi.js";
 
@@ -68,17 +67,15 @@ const SeatSelection = () => {
     dispatch(tryAssignSeat({ ticketIndex }));
   };
 
-<<<<<<< HEAD
   const goBackToHome = async () => {
     window.location.assign("https://dev-website.gadevenv.com/");
-=======
+  };
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation
     );
 
     return `${name} (${code})`;
->>>>>>> 8b49fd47efa6817f3bfa07f90214625056948f83
   };
 
   return (

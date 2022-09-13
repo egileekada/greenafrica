@@ -17,6 +17,8 @@ import {
   retrieveBookingFromState,
 } from "redux/reducers/session";
 import Spinner from "components/Spinner";
+import LogoIcon from "assets/svgs/logo.svg";
+
 
 // TO DO
 // Create sessionReturnSSRs
