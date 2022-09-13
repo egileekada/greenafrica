@@ -29,8 +29,8 @@ const _sig =
 
 const initialState = {
   isLoading: false,
-  // signature: null,
-  signature: _sig,
+  signature: null,
+  // signature: _sig,
   sessionLoading: false,
   lowFareAvailabilityLoading: false,
   lowFareAvailabilityResponse: null,
@@ -61,7 +61,7 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   bookingResponse: null,
-  bookingResponse: bookingResponse,
+  // bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,
