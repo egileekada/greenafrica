@@ -25,12 +25,12 @@ import addDays from "date-fns/addDays";
 import { bookingResponse } from "./data";
 
 const _sig =
-  "evvMITkS66k=|g6x/dRNRkxY5PCxI9b+JfAOuL4VBljSZ3s9bNbeZGtLbeW6PGf30nEKn6L9z28x0Ap/sKKQqN63mUemlUOMPdvL7OSSZr0uoXEOj+nibyi35zaGmdzszVfDGCk9GjKY77fJJofLvYJY=";
+  "gFV5dNgrFTg=|6uD//gcMzQTvIeiRAY1hvFNpELgg8WcjJBvEKhhk04I6br9DKn1Sy7JHgXAezcXSGSOsqiW1Mq71EoMtQMCgK/wTNkHidwlQalamig9EnHEzQebg8Py4xktJnOl7DdIkBnT57TfAn9o=";
 
 const initialState = {
   isLoading: false,
-  signature: null,
-  // signature: _sig,
+  // signature: null,
+  signature: _sig,
   sessionLoading: false,
   lowFareAvailabilityLoading: false,
   lowFareAvailabilityResponse: null,
@@ -61,7 +61,7 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   bookingResponse: null,
-  // bookingResponse: bookingResponse,
+  bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,
@@ -72,7 +72,6 @@ const initialState = {
   bookingState: null,
   sessionStateLoading: false,
   sessionStateResponse: null,
-  // sessionStateResponse: bookingState,
   seats: [],
 };
 
@@ -493,10 +492,10 @@ export const returnLowFareAvailability = (payload) => async (dispatch) => {
     const Response = await GetLowFareAvailability(requestPayload);
     await dispatch(setReturnFareAvailabilityResponse(Response.data));
   } catch (err) {
-    notification.error({
-      message: "Error",
-      description: "Fetch Return Low Fares failed",
-    });
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Return Low Fares failed",
+    // });
   }
   dispatch(setReturnFareAvailabilityLoading(false));
 };

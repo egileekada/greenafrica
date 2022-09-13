@@ -39,7 +39,7 @@ const IbeHeader = () => {
   //   setLength(width > 1200 ? 7 : 3);
   // }, [width]);
 
-  const _length = width > 1200 ? 7 : 3;
+  const _length = window.innerWidth > 1200 ? 7 : 3;
 
   var indexOfLastPost = currentPage * length;
   var indexOfFirstPost = indexOfLastPost - length;

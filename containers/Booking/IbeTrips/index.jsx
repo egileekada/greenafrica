@@ -10,6 +10,7 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
   const { tripParams, returnParams, manageFlightAvailabilityLoading } =
     useSelector(bookingSelector);
 
+  
   return (
     <section className="ibe__flight__trips">
       <h2 className="text-primary-main font-extrabold text-base mb-8 uppercase">

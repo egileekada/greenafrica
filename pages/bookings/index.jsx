@@ -154,20 +154,20 @@ const ManageBookings = () => {
         : (_JourneyOneTax = _JourneyOneTax + parseInt(_serviceCharge?.Amount));
     });
 
+    const _STD = format(
+      new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STD),
+      "yyyy-MM-dd"
+    );
     const tripPayload = {
       departureStation:
         bookingResponse?.Booking?.Journeys[0].Segments[0].DepartureStation,
       arrivalStation:
         bookingResponse?.Booking?.Journeys[0].Segments[0].ArrivalStation,
-      beginDate: format(
-        new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STA),
-        "yyyy-MM-dd"
-      ),
-      endDate: format(
-        new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STD),
-        "yyyy-MM-dd"
-      ),
+      beginDate: _STD,
+      endDate: _STD,
       returnDate: null,
+      goStd: _STD,
+      returnSTD: null,
       isRoundTrip: bookingResponse?.Booking?.Journeys.length > 1 ? true : false,
       totalPaxCount: bookingResponse?.Booking?.Passengers.length,
       taxAmount: _JourneyOneTax,
@@ -175,7 +175,10 @@ const ManageBookings = () => {
       serviceBundleItem:
         bookingResponse?.Booking?.Journeys[0].Segments[0].Fares[0].RuleNumber,
       scheduleIndex: 0,
+      currentDate: new Date(),
     };
+
+    // const goStd = bookingResponse?.Booking?.Journeys[0].Segments[0].STD;
 
     if (bookingResponse?.Booking?.Journeys.length > 1) {
       let _JourneyTwoTax = 0;
@@ -192,23 +195,26 @@ const ManageBookings = () => {
               _JourneyTwoTax + parseInt(_serviceCharge?.Amount));
       });
 
+      const _beginSTD = format(
+        new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STD),
+        "yyyy-MM-dd"
+      );
+
+      const _returnSTD = format(
+        new Date(bookingResponse?.Booking?.Journeys[1].Segments[0].STD),
+        "yyyy-MM-dd"
+      );
+
       const returnPayload = {
         departureStation:
           bookingResponse?.Booking?.Journeys[1].Segments[0].DepartureStation,
         arrivalStation:
           bookingResponse?.Booking?.Journeys[1].Segments[0].ArrivalStation,
-        beginDate: format(
-          new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STA),
-          "yyyy-MM-dd"
-        ),
-        endDate: format(
-          new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STD),
-          "yyyy-MM-dd"
-        ),
-        returnDate: format(
-          new Date(bookingResponse?.Booking?.Journeys[1].Segments[0].STD),
-          "yyyy-MM-dd"
-        ),
+        beginDate: _beginSTD,
+        endDate: _beginSTD,
+        returnDate: _returnSTD,
+        goStd: _beginSTD,
+        returnSTD: _returnSTD,
         isRoundTrip: true,
         totalPaxCount: bookingResponse?.Booking?.Passengers.length,
         taxAmount: _JourneyTwoTax,
@@ -216,7 +222,9 @@ const ManageBookings = () => {
         serviceBundleItem:
           bookingResponse?.Booking?.Journeys[1].Segments[0].Fares[0].RuleNumber,
         scheduleIndex: 1,
+        currentDate: new Date(),
       };
+
       dispatch(saveTripParams(tripPayload));
       dispatch(saveReturnParams(returnPayload));
       // console.log("tripParams", tripPayload);

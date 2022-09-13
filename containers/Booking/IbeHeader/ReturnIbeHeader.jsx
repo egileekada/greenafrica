@@ -8,36 +8,33 @@ import useDeviceSize from "hooks/useWindowSize";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  sessionSelector,
+  bookingSelector,
   returnLowFareAvailability,
-  setFlightRequest,
   fetchFlightAvailability,
-} from "redux/reducers/session";
+  setReturnParams,
+} from "redux/reducers/booking";
 import { format } from "date-fns";
+import isBefore from "date-fns/isBefore";
+import { notification } from "antd";
 
-const ReturnIbeHeader = () => {
+const ReturnBookingIbeHeader = () => {
   const dispatch = useDispatch();
-  const [width] = useDeviceSize();
 
-  const [dateList, setDateList] = useState([]); //original Response
-  const [fareDateList, setFareDateList] = useState([]); //formatted Response
+  const [dateList, setDateList] = useState([]);
+  const [fareDateList, setFareDateList] = useState([]);
   //Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  // const [length, setLength] = useState(width > 1200 ? 7 : 3);
   const [currentFDateList, setCurrFDates] = useState([]);
   const [recurrent, setRecurrent] = useState(false);
 
   const {
+    tripParams,
+    returnParams,
     returnFareAvailabilityLoading,
     returnFareAvailabilityResponse,
-    flightParams,
-  } = useSelector(sessionSelector);
+  } = useSelector(bookingSelector);
 
-  // useEffect(() => {
-  //   setLength(width > 1200 ? 7 : 3);
-  // }, [width]);
-
-  const _length = width > 1200 ? 7 : 3;
+  const _length = window.innerWidth > 1200 ? 7 : 3;
 
   var indexOfLastPost = currentPage * length;
   var indexOfFirstPost = indexOfLastPost - length;
@@ -64,8 +61,8 @@ const ReturnIbeHeader = () => {
       });
       setFareDateList([..._fareDateList]);
 
-      if (flightParams?.recurrent) {
-        const _selectedDate = new Date(flightParams?.returnDate);
+      if (returnParams?.recurrent) {
+        const _selectedDate = new Date(returnParams?.returnDate);
         let _dateIndex = _fareDateList.findIndex((object) => {
           return (
             format(new Date(object.date), "yyyy-MM-dd") ===
@@ -87,7 +84,7 @@ const ReturnIbeHeader = () => {
         if (recurrent) {
           paginate(1, _fareDateList);
         } else {
-          const selectedDate = new Date(flightParams?.beginDate);
+          const selectedDate = new Date(returnParams?.beginDate);
           let dateIndex = _fareDateList.findIndex((object) => {
             return (
               format(new Date(object.date), "yyyy-MM-dd") ===
@@ -126,7 +123,7 @@ const ReturnIbeHeader = () => {
       const lastDate = new Date(fareDateList[fareDateList.length - 1]?.date);
 
       const newFlightRequest = {
-        ...flightParams,
+        ...returnParams,
         currentDate: lastDate,
       };
       setRecurrent(true);
@@ -149,24 +146,39 @@ const ReturnIbeHeader = () => {
   };
 
   const FetchNewTrips = (_dateItem) => {
-    const flightRequest = {
-      ...flightParams,
-      returnDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
-      recurrent: true,
-      isRoundTrip: 1,
-    };
-    dispatch(setFlightRequest(flightRequest));
-    dispatch(fetchFlightAvailability(flightRequest));
+    const _newDate = new Date(_dateItem?.date);
+    const _check = isBefore(_newDate, new Date(tripParams?.goStd));
+
+    console.log("_newDate", _newDate);
+    console.log("go departure date", new Date(tripParams?.goStd));
+
+    if (_check) {
+      notification.error({
+        message: "Error",
+        description:
+          "You can't change date to a date that is before the original trip departure's date",
+      });
+    } else {
+      console.log("not isBefore");
+      const flightRequest = {
+        ...returnParams,
+        returnDate: format(_newDate, "yyyy-MM-dd"),
+        recurrent: true,
+        isRoundTrip: 1,
+      };
+      dispatch(setReturnParams(flightRequest));
+      dispatch(fetchFlightAvailability(tripParams, flightRequest));
+    }
   };
 
   return (
     <section className="ibe__flight__info mt-20" id="returnContainer">
       <section className="ibe__flight__info__destination">
-        <p className="mx-4">{flightParams?.arrivalStation}</p>
+        <p className="mx-4">{returnParams?.departureStation}</p>
         <figure>
           <ArrowTo />
         </figure>
-        <p className="mx-4">{flightParams?.departureStation}</p>
+        <p className="mx-4">{returnParams?.arrivalStation}</p>
 
         {/* {currentPage && <p> currentPage:: {currentPage}</p>} */}
 
@@ -197,12 +209,12 @@ const ReturnIbeHeader = () => {
                         i === currentFDateList.length - 1 ? "b-r-none" : ""
                       }`}
                     >
-                      {flightParams && (
+                      {returnParams && (
                         <button
                           className={`${
                             format(new Date(_dateItem?.date), "yyyy-MM-dd") ===
                             format(
-                              new Date(flightParams?.returnDate),
+                              new Date(returnParams?.returnDate),
                               "yyyy-MM-dd"
                             )
                               ? "active"
@@ -241,4 +253,4 @@ const ReturnIbeHeader = () => {
   );
 };
 
-export default ReturnIbeHeader;
+export default ReturnBookingIbeHeader;

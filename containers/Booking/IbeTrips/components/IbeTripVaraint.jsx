@@ -3,14 +3,8 @@ import BriefcaseIcon from "assets/svgs/briefcase.svg";
 import PackageIcon from "assets/svgs/package.svg";
 import SeatIcon from "assets/svgs/seat.svg";
 import { Fragment, useState } from "react";
-// import IbeTripPopup from "./IbeTripPopup";
-import IbeTripPopup from "./UpsellTripPopup";
 import { useDispatch, useSelector } from "react-redux";
-
-import {
-  sessionSelector,
-  setSelectedSessionFare,
-} from "redux/reducers/session";
+import { setGoTrip, setReturnTrip } from "redux/reducers/booking";
 
 const IbeTripVariant = ({
   fare,
@@ -24,9 +18,6 @@ const IbeTripVariant = ({
   segment,
 }) => {
   const dispatch = useDispatch();
-  const { flightParams, selectedSessionFare } = useSelector(sessionSelector);
-  const [showPopUp, setShow] = useState(false);
-  const [selected, setSelected] = useState(null);
 
   const fare_variant =
     fare?.RuleNumber.toLowerCase() === "flex"
@@ -48,47 +39,40 @@ const IbeTripVariant = ({
   );
 
   const handleBtnClick = (_fare) => {
-    //SellKey is Journey SellKey
-    setSelected({
-      ..._fare,
-      sellKey,
-    });
-    setShow(true);
-
-    // if (flightParams?.isRoundTrip === 1) {
-    //   const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
-    //   const _cleanedFares = existingFares.filter((_item) => {
-    //     const _ruleBasis =
-    //       parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
-    //     return !_ruleBasis;
-    //   });
-
-    //   const _newFare = {
-    //     ..._fare,
-    //     sellKey,
-    //     schedueIndex,
-    //   };
-
-    //   const _newFares = [..._cleanedFares, _newFare];
-    //   dispatch(setSelectedSessionFare([..._newFares]));
-    //   setShow(true);
-    // } else {
-    //   dispatch(
-    //     setSelectedSessionFare([
-    //       {
-    //         ..._fare,
-    //         sellKey,
-    //         schedueIndex,
-    //       },
-    //     ])
-    //   );
-    //   setShow(true);
-    // }
-  };
-
-  const closePopUp = () => {
-    setShow(false);
-    setSelected(null);
+    // cons
+    if (schedueIndex === 0) {
+      // Set Go Trip Details
+      const _goTrip = {
+        journey,
+        fare: _fare,
+        segment: {
+          ...segment,
+          schedueIndex,
+          sellKey,
+          segmentStd,
+          segmentFlightNumber,
+          segmentCarrierCode,
+        },
+      };
+      dispatch(setGoTrip(_goTrip));
+      // setIsVisible(false);
+    } else {
+      // Set Retrun Trip Details
+      const _returnTrip = {
+        journey,
+        fare: _fare,
+        segment: {
+          ...segment,
+          schedueIndex,
+          sellKey,
+          segmentStd,
+          segmentFlightNumber,
+          segmentCarrierCode,
+        },
+      };
+      dispatch(setReturnTrip(_returnTrip));
+    }
+    setIsVisible(false);
   };
 
   return (
@@ -179,20 +163,6 @@ const IbeTripVariant = ({
           )}
         </div>
       </section>
-      <IbeTripPopup
-        selected={selected}
-        setSelected={setSelected}
-        showPopUp={showPopUp}
-        closePopUp={closePopUp}
-        sellKey={sellKey}
-        segmentStd={segmentStd}
-        segmentFlightNumber={segmentFlightNumber}
-        segmentCarrierCode={segmentCarrierCode}
-        journey={journey}
-        schedueIndex={schedueIndex}
-        setIsVisible={setIsVisible}
-        segment={segment}
-      />
     </Fragment>
   );
 };

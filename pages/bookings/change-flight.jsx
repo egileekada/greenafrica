@@ -5,19 +5,23 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import {
   bookingSelector,
+  fetchFlightAvailability,
   fetchLowFareAvailability,
   returnLowFareAvailability,
-  fetchFlightAvailability,
 } from "redux/reducers/booking";
 import { sessionSelector } from "redux/reducers/session";
 import SkeletonLoader from "components/SkeletonLoader";
 import IbeTrips from "containers/Booking/IbeTrips";
-// import Ibe
+import BookingIbeHeader from "containers/Booking/IbeHeader";
+import ReturnBookingIbeHeader from "containers/Booking/IbeHeader/ReturnIbeHeader";
+import { notification } from "antd";
 
 const ManageUpdateItenary = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const {
+    goTrip,
+    returnTrip,
     tripParams,
     returnParams,
     manageFlightAvailabilityLoading,
@@ -34,19 +38,31 @@ const ManageUpdateItenary = () => {
           router.back();
         } else {
           bookingResponse?.Booking?.Journeys.length > 1 && setIsRoundTrip(true);
-          /** Get trip params and return params and use it for low fare and fetch Flight isRoud true */
           dispatch(fetchFlightAvailability(tripParams, returnParams));
+          dispatch(fetchLowFareAvailability(tripParams));
+          dispatch(returnLowFareAvailability(returnParams));
         }
       } else {
         // One Way
         !tripParams && router.back();
         dispatch(fetchFlightAvailability(tripParams, flightParams));
-        /** Get trip params and use it for low fare and fetch Flight isRound false */
+        dispatch(fetchLowFareAvailability(tripParams, returnParams));
       }
     } else {
       router.back();
     }
   }, [bookingResponse]);
+
+  const proceedToTripView = () => {
+    if (goTrip?.journey || returnTrip?.journey) {
+      router.push("/bookings/view");
+    } else {
+      notification.error({
+        message: "Error",
+        description: "Please make a change",
+      });
+    }
+  };
 
   return (
     <BaseLayout>
@@ -71,11 +87,12 @@ const ManageUpdateItenary = () => {
                           (_schedule, _schedueIndex) => {
                             return (
                               <>
-                                {/* {_schedueIndex === 0 ? (
-                                  <IbeHeader />
+                                {_schedueIndex === 0 ? (
+                                  <BookingIbeHeader />
                                 ) : (
-                                  <ReturnIbeHeader />
-                                )} */}
+                                  <ReturnBookingIbeHeader />
+                                )}
+
                                 <IbeTrips
                                   flightSchedule={_schedule}
                                   schedueIndex={_schedueIndex}
@@ -87,10 +104,20 @@ const ManageUpdateItenary = () => {
                         {manageFlightAvailabilityResponse?.Schedules.length >
                           1 && (
                           <div className="flex items-center">
-                            <button className="btn btn-outline mr-2">
+                            <button
+                              onClick={() => router.back()}
+                              className="btn btn-outline mr-2"
+                            >
                               Go Back
                             </button>
-                            <button className="btn btn-primary">
+                            <button
+                              onClick={proceedToTripView}
+                              className={`btn btn-primary ${
+                                goTrip?.journey || returnTrip?.journey
+                                  ? ""
+                                  : "pointer-events-none cursor-none disabled"
+                              } `}
+                            >
                               Continue
                             </button>
                           </div>

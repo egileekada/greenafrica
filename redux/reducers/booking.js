@@ -6,6 +6,8 @@ import {
 import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
 import { PURGE } from "redux-persist";
+import format from "date-fns/format";
+import addDays from "date-fns/addDays";
 
 const initialState = {
   testBooking: "tee",
@@ -17,6 +19,9 @@ const initialState = {
   returnFareAvailabilityResponse: null,
   manageFlightAvailabilityLoading: false,
   manageFlightAvailabilityResponse: null,
+
+  goTrip: null,
+  returnTrip:null
 };
 
 export const bookingSlice = createSlice({
@@ -49,6 +54,13 @@ export const bookingSlice = createSlice({
     setManageFlightAvailabilityResponse: (state, { payload }) => {
       state.manageFlightAvailabilityResponse = payload;
     },
+
+    setGoTrip: (state, { payload }) => {
+      state.goTrip = payload;
+    },
+    setReturnTrip: (state, { payload }) => {
+      state.returnTrip = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState);
@@ -64,6 +76,8 @@ export const {
   setReturnFareAvailabilityResponse,
   setManageFlightAvailabilityLoading,
   setManageFlightAvailabilityResponse,
+  setGoTrip,
+  setReturnTrip,
 } = bookingSlice.actions;
 export const bookingSelector = (state) => state.booking;
 export default bookingSlice.reducer;
@@ -76,197 +90,151 @@ export const saveReturnParams = (payload) => async (dispatch) => {
   dispatch(setReturnParams(payload));
 };
 
-export const fetchLowFareAvailability = (payload) => async (dispatch) => {
-  dispatch(setLowFareAvailabilityLoading(true));
+export const fetchLowFareAvailability =
+  (payload) => async (dispatch, getState) => {
+    const currentState = getState().session;
+    dispatch(setLowFareAvailabilityLoading(true));
 
-  const {
-    departureStation,
-    arrivalStation,
-    beginDate,
-    endDate,
-    signature,
-    promoCode,
-  } = payload;
+    const {
+      departureStation,
+      arrivalStation,
+      currentDate,
+      taxAmount,
+      minimumFarePrice,
+    } = payload;
 
-  const requestPayload = {
-    signature: signature,
-    messageContractVersion: "",
-    enableExceptionStackTrace: true,
-    contractVersion: 0,
-    availabilityRequest: {
-      departureStation: departureStation,
-      arrivalStation: arrivalStation,
-      beginDate: beginDate,
-      beginDateSpecified: true,
-      endDate: endDate,
-      endDateSpecified: true,
-      carrierCode: "Q9",
-      flightNumber: "",
-      flightType: 0,
-      flightTypeSpecified: true,
-      paxCount: 0,
-      paxCountSpecified: true,
-      dow: 0,
-      dowSpecified: true,
-      currencyCode: "string",
-      displayCurrencyCode: "string",
-      discountCode: "string",
-      promotionCode: promoCode,
-      availabilityType: 0,
-      availabilityTypeSpecified: true,
-      sourceOrganization: "string",
-      maximumConnectingFlights: 0,
-      maximumConnectingFlightsSpecified: true,
-      availabilityFilter: 0,
-      availabilityFilterSpecified: true,
-      fareClassControl: 0,
-      fareClassControlSpecified: true,
-      minimumFarePrice: 0,
-      minimumFarePriceSpecified: true,
-      maximumFarePrice: 0,
-      maximumFarePriceSpecified: true,
-      productClassCode: "string",
-      ssrCollectionsMode: 0,
-      ssrCollectionsModeSpecified: true,
-      inboundOutbound: 0,
-      inboundOutboundSpecified: true,
-      nightsStay: 0,
-      nightsStaySpecified: true,
-      includeAllotments: true,
-      includeAllotmentsSpecified: true,
-      beginTime: {
-        totalMinutes: 0,
-        totalMinutesSpecified: true,
+    const requestPayload = {
+      signature: currentState.signature,
+      messageContractVersion: "",
+      enableExceptionStackTrace: true,
+      contractVersion: 0,
+      lowFareTripAvailabilityRequest: {
+        bypassCache: false,
+        bypassCacheSpecified: true,
+        includeTaxesAndFees: true,
+        includeTaxesAndFeesSpecified: true,
+        groupBydate: false,
+        groupBydateSpecified: true,
+        parameterSetID: 0,
+        parameterSetIDSpecified: true,
+        currencyCode: "NGN",
+        lowFareAvailabilityRequestList: [
+          {
+            departureStationList: [departureStation],
+            arrivalStationList: [arrivalStation],
+            beginDate: format(new Date(currentDate), "yyyy-MM-dd"),
+            beginDateSpecified: true,
+            endDate: format(addDays(new Date(currentDate), 27), "yyyy-MM-dd"),
+            endDateSpecified: true,
+          },
+        ],
+        productClassList: [],
+        loyaltyFilter: 0,
+        loyaltyFilterSpecified: true,
+        flightFilter: 0,
+        flightFilterSpecified: true,
+        getAllDetails: false,
+        getAllDetailsSpecified: true,
+        paxCount: 1,
+        paxCountSpecified: true,
+        paxPriceTypeList: [
+          {
+            paxType: "ADT",
+            paxCount: 1,
+            paxCountSpecified: true,
+          },
+        ],
+        maximumConnectingFlights: 20,
+        maximumConnectingFlightsSpecified: true,
+        minimumFarePrice: parseInt(minimumFarePrice),
+        taxAmount: parseInt(taxAmount),
       },
-      endTime: {
-        totalMinutes: 0,
-        totalMinutesSpecified: true,
-      },
-      departureStations: ["string"],
-      arrivalStations: ["string"],
-      fareTypes: ["string"],
-      productClasses: ["string"],
-      fareClasses: ["string"],
-      paxPriceTypes: [
-        {
-          paxType: "",
-          paxDiscountCode: "",
-          paxCount: 0,
-          paxCountSpecified: true,
-        },
-      ],
-      journeySortKeys: [0],
-      travelClassCodes: [0],
-      includeTaxesAndFees: true,
-      includeTaxesAndFeesSpecified: true,
-      fareRuleFilter: 0,
-      fareRuleFilterSpecified: true,
-      loyaltyFilter: 0,
-      loyaltyFilterSpecified: true,
-      paxResidentCountry: "string",
-      travelClassCodeList: ["string"],
-      systemCode: "string",
-      currentSourceOrganization: "string",
-      paxPriceDetailList: [
-        {
-          paxType: "string",
-          paxDiscountCode: "string",
-          dateOfBirth: "2022-08-16T03:50:30.607Z",
-          dateOfBirthSpecified: true,
-          nationality: "string",
-          residentCountry: "string",
-          programCode: "string",
-          programLevel: "string",
-        },
-      ],
-      serviceBundleControl: 0,
-      serviceBundleControlSpecified: true,
-      bookingStatus: 0,
-      bookingStatusSpecified: true,
-      baggagePricingSystemCode: "string",
-      optimizationInputParameterList: [
-        {
-          code: "string",
-          value: "string",
-        },
-      ],
-    },
+    };
+
+    try {
+      const Response = await GetLowFareAvailability(requestPayload);
+      await dispatch(setLowFareAvailabilityResponse(Response.data));
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Fetch Low Fares failed",
+      });
+    }
+    dispatch(setLowFareAvailabilityLoading(false));
   };
 
-  try {
-    const Response = await GetLowFareAvailability(requestPayload);
-    await dispatch(setLowFareAvailabilityResponse(Response.data));
-  } catch (err) {
-    notification.error({
-      message: "Error",
-      description: "Fetch Low Fares failed",
-    });
-  }
-  dispatch(setLowFareAvailabilityLoading(false));
-};
+export const returnLowFareAvailability =
+  (payload) => async (dispatch, getState) => {
+    const currentState = getState().session;
+    dispatch(setReturnFareAvailabilityLoading(true));
 
-export const returnLowFareAvailability = (payload) => async (dispatch) => {
-  dispatch(setReturnFareAvailabilityLoading(true));
+    const {
+      departureStation,
+      arrivalStation,
+      currentDate,
+      taxAmount,
+      minimumFarePrice,
+    } = payload;
 
-  const { departureStation, arrivalStation, signature, currentDate } = payload;
+    const requestPayload = {
+      signature: currentState.signature,
+      messageContractVersion: "",
+      enableExceptionStackTrace: true,
+      contractVersion: 0,
+      lowFareTripAvailabilityRequest: {
+        bypassCache: false,
+        bypassCacheSpecified: true,
+        includeTaxesAndFees: true,
+        includeTaxesAndFeesSpecified: true,
+        groupBydate: false,
+        groupBydateSpecified: true,
+        parameterSetID: 0,
+        parameterSetIDSpecified: true,
+        currencyCode: "NGN",
+        lowFareAvailabilityRequestList: [
+          {
+            departureStationList: [arrivalStation],
+            arrivalStationList: [departureStation],
+            beginDate: format(new Date(currentDate), "yyyy-MM-dd"),
+            beginDateSpecified: true,
+            endDate: format(addDays(new Date(currentDate), 27), "yyyy-MM-dd"),
+            endDateSpecified: true,
+          },
+        ],
+        productClassList: [],
+        loyaltyFilter: 0,
+        loyaltyFilterSpecified: true,
+        flightFilter: 0,
+        flightFilterSpecified: true,
+        getAllDetails: false,
+        getAllDetailsSpecified: true,
+        paxCount: 1,
+        paxCountSpecified: true,
+        paxPriceTypeList: [
+          {
+            paxType: "ADT",
+            paxCount: 1,
+            paxCountSpecified: true,
+          },
+        ],
+        maximumConnectingFlights: 20,
+        maximumConnectingFlightsSpecified: true,
+        minimumFarePrice: parseInt(minimumFarePrice),
+        taxAmount: parseInt(taxAmount),
+      },
+    };
 
-  const requestPayload = {
-    signature: signature,
-    messageContractVersion: "",
-    enableExceptionStackTrace: true,
-    contractVersion: 0,
-    lowFareTripAvailabilityRequest: {
-      bypassCache: false,
-      bypassCacheSpecified: true,
-      includeTaxesAndFees: true,
-      includeTaxesAndFeesSpecified: true,
-      groupBydate: false,
-      groupBydateSpecified: true,
-      parameterSetID: 0,
-      parameterSetIDSpecified: true,
-      currencyCode: "NGN",
-      lowFareAvailabilityRequestList: [
-        {
-          departureStationList: [arrivalStation],
-          arrivalStationList: [departureStation],
-          beginDate: format(currentDate, "yyyy-MM-dd"),
-          beginDateSpecified: true,
-          endDate: format(addDays(currentDate, 27), "yyyy-MM-dd"),
-          endDateSpecified: true,
-        },
-      ],
-      productClassList: [],
-      loyaltyFilter: 0,
-      loyaltyFilterSpecified: true,
-      flightFilter: 0,
-      flightFilterSpecified: true,
-      getAllDetails: false,
-      getAllDetailsSpecified: true,
-      paxCount: 1,
-      paxCountSpecified: true,
-      paxPriceTypeList: [
-        {
-          paxType: "ADT",
-          paxCount: 1,
-          paxCountSpecified: true,
-        },
-      ],
-      maximumConnectingFlights: 20,
-      maximumConnectingFlightsSpecified: true,
-    },
+    try {
+      const Response = await GetLowFareAvailability(requestPayload);
+      await dispatch(setReturnFareAvailabilityResponse(Response.data));
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Fetch Return Low Fares failed",
+      });
+    }
+    dispatch(setReturnFareAvailabilityLoading(false));
   };
-
-  try {
-    const Response = await GetLowFareAvailability(requestPayload);
-    await dispatch(setReturnFareAvailabilityResponse(Response.data));
-  } catch (err) {
-    notification.error({
-      message: "Error",
-      description: "Fetch Return Low Fares failed",
-    });
-  }
-  dispatch(setReturnFareAvailabilityLoading(false));
-};
 
 export const fetchFlightAvailability =
   (tripPayload, returnPayload = {}) =>
@@ -440,10 +408,6 @@ export const fetchFlightAvailability =
     try {
       const flightAvalaibilty = await GetAvailability(requestPayload);
       const availabilityResponse = flightAvalaibilty.data;
-      console.log(
-        "availabulty Res",
-        availabilityResponse?.GetTripAvailabilityResponse
-      );
       await dispatch(
         setManageFlightAvailabilityResponse(
           availabilityResponse?.GetTripAvailabilityResponse
