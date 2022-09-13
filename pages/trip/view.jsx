@@ -115,13 +115,14 @@ const TripView = () => {
   };
 
   const ChangeFlight = async () => {
-    if (roundTripEnabled) {
-      const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&return=${flightParams?.returnDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}&round=1`;
-      router.push(query);
-    } else {
-      const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
-      router.push(query);
-    }
+    // if (roundTripEnabled) {
+    //   const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&return=${flightParams?.returnDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}&round=1`;
+    //   router.push(query);
+    // } else {
+    //   const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
+    //   router.push(query);
+    // }
+    window.location.assign("https://dev-website.gadevenv.com/");
   };
 
   return (

@@ -13,6 +13,8 @@ import Popup from "components/Popup";
 import Seatslegend from "containers/Seats/SeatPopUp";
 import PlaneSeats from "containers/Seats/PlaneSeats";
 import SeatWrapper from "containers/Seats/SeatWrapper";
+import LogoIcon from "assets/svgs/logo.svg";
+
 
 import InfoIcon from "assets/svgs/seats/info.svg";
 
@@ -93,9 +95,20 @@ const SeatSelection = () => {
     dispatch(tryAssignSeat({ ticketIndex }));
   };
 
+  const goBackToHome = async () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   return (
     <>
       <BaseLayout>
+        <nav className="top__bar logo-holder">
+          <button onClick={goBackToHome}>
+            <figure className="cursor-pointer">
+              <LogoIcon />
+            </figure>
+          </button>
+        </nav>
         <section className="w-full checkin">
           <section className="ga__section bg-normal">
             <div className="ga__section__main standalone">

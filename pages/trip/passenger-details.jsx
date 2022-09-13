@@ -129,8 +129,19 @@ const PassengerDetails = () => {
     retrieveBooking();
   }, []);
 
+  const GO_BACK = async () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   return (
     <BaseLayout>
+      <nav className="top__bar logo-holder">
+        <button onClick={GO_BACK}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
       <section className="w-full">
         <section className="ga__section">
           <div className="ga__section__main">

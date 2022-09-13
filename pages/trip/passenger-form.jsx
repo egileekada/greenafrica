@@ -193,8 +193,7 @@ const PassengerForm = () => {
   };
 
   const goBackToHome = async () => {
-    const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
-    router.push(query);
+    window.location.assign("https://dev-website.gadevenv.com/");
   };
 
   const enableCopy =
