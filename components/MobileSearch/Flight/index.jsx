@@ -89,7 +89,14 @@ const Flight = ({
             tileContent={hasContent}
             format={"d/M/y"}
             name="departure"
-            onChange={(value) => setDate(value)}
+            onChange={(value) => {
+              setDate(value);
+              if (value?.length === 2) {
+                setTimeout(() => {
+                  setScreen(4);
+                }, 400);
+              }
+            }}
             value={flightDate}
             selectRange={returnFlight}
             minDate={new Date()}
@@ -100,7 +107,7 @@ const Flight = ({
             You need to select a return date
           </p>
         )}
-        <div className="w-full max-w-[400px] px-4">
+        {/*<div className="w-full max-w-[400px] px-4">
           <button
             className="btn btn-primary !text-white border-white border w-full md:w-auto font-title block h-full"
             onClick={() =>
@@ -112,6 +119,7 @@ const Flight = ({
             Continue
           </button>
         </div>
+				*/}
       </div>
     </div>
   );

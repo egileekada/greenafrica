@@ -727,6 +727,12 @@ select:focus {
   }
 
   .react-calendar__tile--active {
+    background: rgba(71, 255, 90, 0.07) !important;
+    // color: #26205e !important;
+  }
+
+  .react-calendar__tile--rangeStart,
+  .react-calendar__tile--rangeEnd {
     background: #47ff5a !important;
     color: #26205e !important;
 
