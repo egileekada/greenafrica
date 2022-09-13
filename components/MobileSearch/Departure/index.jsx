@@ -1,5 +1,5 @@
 import Calendar from "react-calendar";
-import { format } from "date-fns";
+import { format, setSeconds } from "date-fns";
 import { lowfare } from "../../../utils/calendar";
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
@@ -34,19 +34,13 @@ const Departure = ({ setDepartureDate, departureDate, setScreen }) => {
             name="departure"
             onChange={(value) => {
               setDepartureDate(value);
-              // console.log(value);
+              setTimeout(() => {
+                setScreen(4);
+              }, 400);
             }}
             value={departureDate}
             minDate={new Date()}
           />
-        </div>
-        <div className="w-full max-w-[400px] px-4">
-          <button
-            className="btn btn-primary !text-white border-white border w-full md:w-auto font-title block h-full"
-            onClick={() => setScreen(4)}
-          >
-            Continue
-          </button>
         </div>
       </div>
     </div>

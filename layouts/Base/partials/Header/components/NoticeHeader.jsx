@@ -52,7 +52,7 @@ const NoticeHeader = () => {
                 }}
                 className="text-white text-sm underline cursor-pointer ml-2"
               >
-                Cancel
+                Close
               </p>
             </div>
           </div>
