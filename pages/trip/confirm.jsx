@@ -16,6 +16,7 @@ import ReactToPrint from "react-to-print";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
 import { useGetLocationsQuery } from "services/widgetApi.js";
+import SkeletonLoader from "components/SkeletonLoader";
 
 const TripConfirm = () => {
   const router = useRouter();
@@ -226,7 +227,7 @@ const TripConfirm = () => {
       </nav>
       <section className="w-full">
         {bookingResponseLoading ? (
-          <Spinner />
+          <SkeletonLoader />
         ) : (
           <section className="ga__section">
             {bookingResponse ? (

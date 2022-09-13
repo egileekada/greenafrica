@@ -429,10 +429,10 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
     const Response = await GetLowFareAvailability(requestPayload);
     await dispatch(setLowFareAvailabilityResponse(Response.data));
   } catch (err) {
-    notification.error({
-      message: "Error",
-      description: "Fetch Low Fares failed",
-    });
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Low Fares failed",
+    // });
   }
   dispatch(setLowFareAvailabilityLoading(false));
 };
@@ -689,10 +689,10 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
     errMsg &&
       errMsg.toLowerCase() === PROMO_ERROR.toLowerCase() &&
       dispatch(setPromoWidgetVisible(true));
-    notification.error({
-      message: "Error",
-      description: "Fetch Flights failed",
-    });
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Flights failed",
+    // });
   }
   dispatch(setFlightAvailabilityLoading(false));
 };

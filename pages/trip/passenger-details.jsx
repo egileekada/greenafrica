@@ -16,9 +16,8 @@ import {
   FetchSSRAvailabilityForBooking,
   retrieveBookingFromState,
 } from "redux/reducers/session";
-import Spinner from "components/Spinner";
+import SkeletonLoader from "components/SkeletonLoader";
 import LogoIcon from "assets/svgs/logo.svg";
-
 
 // TO DO
 // Create sessionReturnSSRs
@@ -153,7 +152,7 @@ const PassengerDetails = () => {
 
             {SSRAvailabilityLoading ? (
               <section className="flex flex-col">
-                <Spinner />
+                <SkeletonLoader />
               </section>
             ) : SSRAvailabilityResponse ? (
               <>

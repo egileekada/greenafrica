@@ -18,6 +18,7 @@ import {
 
 import { retrieveBookingFromState } from "redux/reducers/session";
 import Spinner from "components/Spinner";
+import SkeletonLoader from "components/SkeletonLoader";
 import { notification } from "antd";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
@@ -136,7 +137,7 @@ const TripPayment = () => {
         {bookingCommitLoading && <p>Saving booking details...</p>}
         {gatewaysLoading ? (
           <section className="py-10 pl-12">
-            <Spinner />
+            <SkeletonLoader />
           </section>
         ) : (
           <section className="ga__section">
