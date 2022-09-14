@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   GetLowFareAvailability,
   GetAvailability,
+  BookingSell,
+  CancelSSR,
 } from "services/bookingService";
 import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
@@ -21,7 +23,7 @@ const initialState = {
   manageFlightAvailabilityResponse: null,
 
   goTrip: null,
-  returnTrip:null
+  returnTrip: null,
 };
 
 export const bookingSlice = createSlice({
@@ -146,8 +148,10 @@ export const fetchLowFareAvailability =
         ],
         maximumConnectingFlights: 20,
         maximumConnectingFlightsSpecified: true,
-        minimumFarePrice: parseInt(minimumFarePrice),
-        taxAmount: parseInt(taxAmount),
+        // minimumFarePrice: parseInt(minimumFarePrice),
+        // taxAmount: parseInt(taxAmount),
+        totalAmount: parseInt(minimumFarePrice),
+        totalTaxAmount: parseInt(taxAmount),
       },
     };
 
@@ -219,8 +223,10 @@ export const returnLowFareAvailability =
         ],
         maximumConnectingFlights: 20,
         maximumConnectingFlightsSpecified: true,
-        minimumFarePrice: parseInt(minimumFarePrice),
-        taxAmount: parseInt(taxAmount),
+        // minimumFarePrice: parseInt(minimumFarePrice),
+        // taxAmount: parseInt(taxAmount),
+        totalAmount: parseInt(minimumFarePrice),
+        totalTaxAmount: parseInt(taxAmount),
       },
     };
 
@@ -302,9 +308,9 @@ export const fetchFlightAvailability =
       let _returnRequest = {
         departureStation: returnPayload?.departureStation,
         arrivalStation: returnPayload?.arrivalStation,
-        beginDate: returnPayload?.beginDate,
+        beginDate: returnPayload?.returnDate,
         beginDateSpecified: true,
-        endDate: returnPayload?.endDate,
+        endDate: returnPayload?.returnDate,
         endDateSpecified: true,
         carrierCode: "Q9",
         flightNumber: "",
@@ -407,6 +413,7 @@ export const fetchFlightAvailability =
 
     try {
       const flightAvalaibilty = await GetAvailability(requestPayload);
+      // const flightAvalaibilty = await GetAvailabilityRequest(requestPayload);
       const availabilityResponse = flightAvalaibilty.data;
       await dispatch(
         setManageFlightAvailabilityResponse(
@@ -414,16 +421,276 @@ export const fetchFlightAvailability =
         )
       );
     } catch (err) {
-      const errMsg = err?.response?.data?.Error?.ErrorText;
-      const PROMO_ERROR = "PssPromoCodeNotFoundException";
-      errMsg &&
-        errMsg.toLowerCase() === PROMO_ERROR.toLowerCase() &&
-        dispatch(setPromoWidgetVisible(true));
-      notification.error({
-        message: "Error",
-        description: "Fetch Flights failed",
-      });
+      // notification.error({
+      //   message: "Error",
+      //   description: "Fetch Flights rt failed",
+      // });
       console.log("er", err.response);
     }
     dispatch(setManageFlightAvailabilityLoading(false));
   };
+
+export const ResellNewJourney = () => async (dispatch, getState) => {
+  // dispatch(setSellFlightLoading(true));
+  const currentSession = getState().session;
+  const currentBooking = getState().booking;
+
+  const paxPriceTypes = [];
+  const _serviceBundleList = [];
+
+  const ADULT_COUNT =
+    currentSession?.bookingResponse?.Booking?.Passengers.filter((_pax) => {
+      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "adt";
+    }).length;
+
+  const CHILD_COUNT =
+    currentSession?.bookingResponse?.Booking?.Passengers.filter((_pax) => {
+      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "chd";
+    }).length;
+  const INFANT_COUNT = 0;
+
+  const totalPaxCount =
+    currentSession?.bookingResponse?.Booking?.Passengers?.length;
+
+  if (ADULT_COUNT > 0) {
+    const _newPType = {
+      paxType: "ADT",
+      paxDiscountCode: "",
+      paxCount: ADULT_COUNT,
+      paxCountSpecified: true,
+    };
+    paxPriceTypes.push(_newPType);
+  }
+
+  if (CHILD_COUNT > 0) {
+    const _newPType = {
+      paxType: "CHD",
+      paxDiscountCode: "",
+      paxCount: CHILD_COUNT,
+      paxCountSpecified: true,
+    };
+    paxPriceTypes.push(_newPType);
+  }
+
+  const _journeySellKeys = [];
+  // SSR RELATED
+  let JourneyOneSegmentSSRRequest = null;
+  let JourneyTwoSegmentSSRRequest = null;
+  let JourneyOne = null;
+  let JourneyTwo = null;
+  // SSR RELATED
+
+  if (currentBooking?.goTrip) {
+    let newObj = {
+      JourneySellKey: currentBooking?.goTrip?.journey?.JourneySellKey,
+      FareSellKey: currentBooking?.goTrip?.fare?.FareSellKey,
+      standbyPriorityCode: "",
+      packageIndicator: "",
+    };
+    _journeySellKeys.push(newObj);
+    _serviceBundleList.push(currentBooking?.goTrip?.fare?.RuleNumber);
+
+    const JourneyOneSSRsExSeat =
+      currentSession?.bookingResponse?.Booking?.Journeys[0].Segments[0].PaxSSRs;
+
+    JourneyOneSegmentSSRRequest = {
+      flightDesignator: {
+        carrierCode:
+          currentBooking?.goTrip?.segment?.FlightDesignator?.CarrierCode,
+        flightNumber:
+          currentBooking?.goTrip?.segment?.FlightDesignator?.FlightNumber,
+        opSuffix: "",
+      },
+      std: currentBooking?.goTrip?.segment?.STD,
+      stdSpecified: true,
+      departureStation: currentBooking?.goTrip?.segment?.DepartureStation,
+      arrivalStation: currentBooking?.goTrip?.segment?.ArrivalStation,
+      paxSSRs: [...JourneyOneSSRsExSeat],
+    };
+    // JourneyOne = currentBooking?.goTrip?.journey;
+    JourneyOne = {
+      ...currentSession?.bookingResponse?.Booking?.Journeys[0],
+      State: 0,
+    };
+
+    console.log("new Journey succc", currentBooking?.goTrip?.journey);
+    console.log(
+      "old journey fail",
+      currentSession?.bookingResponse?.Booking?.Journeys[0]
+    );
+  }
+
+  if (currentBooking?.returnTrip) {
+    let newObj = {
+      JourneySellKey: currentBooking?.returnTrip?.journey?.JourneySellKey,
+      FareSellKey: currentBooking?.returnTrip?.fare?.FareSellKey,
+      standbyPriorityCode: "",
+      packageIndicator: "",
+    };
+    _journeySellKeys.push(newObj);
+    _serviceBundleList.push(currentBooking?.returnTrip?.fare?.RuleNumber);
+
+    const JourneyTwoSSRsExSeat =
+      currentSession?.bookingResponse?.Booking?.Journeys[1].Segments[0].PaxSSRs;
+
+    JourneyTwoSegmentSSRRequest = {
+      flightDesignator: {
+        carrierCode:
+          currentBooking?.returnTrip?.segment?.FlightDesignator?.CarrierCode,
+        flightNumber:
+          currentBooking?.returnTrip?.segment?.FlightDesignator?.FlightNumber,
+        opSuffix: "",
+      },
+      std: currentBooking?.returnTrip?.segment?.STD,
+      stdSpecified: true,
+      departureStation: currentBooking?.returnTrip?.segment?.DepartureStation,
+      arrivalStation: currentBooking?.returnTrip?.segment?.ArrivalStation,
+      paxSSRs: [...JourneyTwoSSRsExSeat],
+    };
+
+    // JourneyTwo = currentBooking?.returnTrip?.journey;
+    JourneyTwo = {
+      ...currentSession?.bookingResponse?.Booking?.Journeys[1],
+      State: 0,
+    };
+
+    console.log("new Journey 2 succc", currentBooking?.returnTrip?.journey);
+    console.log(
+      "old journey  2 fail",
+      currentSession?.bookingResponse?.Booking?.Journeys[1]
+    );
+  }
+
+  const requestPayload = {
+    header: {
+      signature: currentSession.signature,
+      messageContractVersion: "",
+      enableExceptionStackTrace: false,
+      contractVersion: 0,
+    },
+    sellRequestDto: {
+      sellRequest: {
+        sellRequestData: {
+          sellBy: 0,
+          sellBySpecified: true,
+          sellJourneyByKeyRequest: {
+            sellJourneyByKeyRequestData: {
+              actionStatusCode: "NN",
+              journeySellKeys: [..._journeySellKeys],
+              paxPriceType: [...paxPriceTypes],
+              currencyCode: "NGN",
+              paxCount: totalPaxCount,
+              paxCountSpecified: true,
+              loyaltyFilter: 0,
+              loyaltyFilterSpecified: true,
+              isAllotmentMarketFare: false,
+              isAllotmentMarketFareSpecified: true,
+              preventOverLap: false,
+              preventOverLapSpecified: true,
+              replaceAllPassengersOnUpdate: false,
+              replaceAllPassengersOnUpdateSpecified: true,
+              serviceBundleList: [..._serviceBundleList],
+              applyServiceBundle: 1,
+              applyServiceBundleSpecified: true,
+            },
+          },
+        },
+      },
+    },
+  };
+
+  try {
+    await BookingSell(requestPayload);
+    try {
+      const segmentSSRRequests = [];
+
+      JourneyOneSegmentSSRRequest &&
+        segmentSSRRequests.push(JourneyOneSegmentSSRRequest);
+      JourneyTwoSegmentSSRRequest &&
+        segmentSSRRequests.push(JourneyTwoSegmentSSRRequest);
+      const sellSSRRequest = {
+        header: {
+          signature: currentSession.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: false,
+          contractVersion: 0,
+        },
+        sellRequestDto: {
+          sellRequest: {
+            sellRequestData: {
+              sellBy: 2,
+              sellBySpecified: true,
+              sellSSR: {
+                ssrRequest: {
+                  segmentSSRRequests: [...segmentSSRRequests],
+                  currencyCode: "NGN",
+                  cancelFirstSSR: true,
+                  cancelFirstSSRSpecified: true,
+                  ssrFeeForceWaiveOnSell: false,
+                  ssrFeeForceWaiveOnSellSpecified: true,
+                  sellSSRMode: 0,
+                  sellSSRModeSpecified: true,
+                  feePricingMode: 0,
+                  feePricingModeSpecified: true,
+                },
+              },
+            },
+          },
+        },
+      };
+      await BookingSell(sellSSRRequest);
+      const _journeys = [];
+
+      JourneyOne && _journeys.push(JourneyOne);
+      JourneyTwo && _journeys.push(JourneyTwo);
+      const cancelSSRRequest = {
+        signature: currentSession.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: true,
+        contractVersion: 0,
+        cancelRequestData: {
+          cancelBy: 0,
+          cancelBySpecified: true,
+          cancelJourney: {
+            cancelJourneyRequest: {
+              journeys: [..._journeys],
+              waivePenaltyFee: false,
+              waivePenaltyFeeSpecified: true,
+              waiveSpoilageFee: false,
+              waiveSpoilageFeeSpecified: true,
+              preventReprice: false,
+              preventRepriceSpecified: true,
+              forceRefareForItineraryIntegrity: false,
+              forceRefareForItineraryIntegritySpecified: true,
+            },
+          },
+        },
+      };
+      try {
+        await CancelSSR(cancelSSRRequest);
+        // window.location.assign(
+        //   `/bookings?pnr=${currentSession?.bookingResponse?.Booking?.RecordLocator}`
+        // );
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: "Cancel Sell Services failed",
+        });
+      }
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Sell Services failed",
+      });
+    }
+  } catch (err) {
+    const errText =
+      err?.response?.data?.BookingUpdateResponseData?.Error?.ErrorText;
+    notification.error({
+      message: "Error",
+      description: errText ? errText : "Sell Request failed",
+    });
+  }
+
+  // dispatch(setSellFlightLoading(false));
+};

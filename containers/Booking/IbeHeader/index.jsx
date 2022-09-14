@@ -12,6 +12,7 @@ import {
   fetchLowFareAvailability,
   fetchFlightAvailability,
   setTripParams,
+  setGoTrip,
 } from "redux/reducers/booking";
 
 import { format } from "date-fns";
@@ -154,9 +155,6 @@ const BookingIbeHeader = () => {
     const _newDate = new Date(_dateItem?.date);
     const _check = isAfter(_newDate, new Date(returnParams?.returnSTD));
 
-    console.log("_newDate", _newDate);
-    console.log("return departure date", new Date(returnParams?.returnSTD));
-
     if (_check) {
       notification.error({
         message: "Error",
@@ -170,6 +168,7 @@ const BookingIbeHeader = () => {
         endDate: format(_newDate, "yyyy-MM-dd"),
         recurrent: true,
       };
+      dispatch(setGoTrip(null));
       dispatch(setTripParams(flightRequest));
       dispatch(fetchFlightAvailability(flightRequest, returnParams));
     }

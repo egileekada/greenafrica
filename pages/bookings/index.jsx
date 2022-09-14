@@ -11,8 +11,10 @@ import Spinner from "components/Spinner";
 import SkeletonLoader from "components/SkeletonLoader";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  startSession,
   sessionSelector,
   GetBookingDetailsWithPNR,
+  FetchStateFromServer,
 } from "redux/reducers/session";
 import {
   saveTripParams,
@@ -30,22 +32,35 @@ const ManageBookings = () => {
   const router = useRouter();
   const [selectedPaxs] = useState([]);
   const dispatch = useDispatch();
-  const { bookingResponseLoading, bookingResponse } =
+  const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
   const { pnr } = router.query;
   const [isRoundTrip, setIsRoundTrip] = useState(false);
 
   useEffect(() => {
+    async function checkParams() {
+      // if (!signature) {
+      dispatch(startSession());
+      // }
+    }
+    checkParams();
+  }, []);
+
+  useEffect(() => {
     async function fetchBookingDetails() {
-      if (pnr) {
-        const payload = {
-          pnr,
-        };
-        dispatch(GetBookingDetailsWithPNR(payload));
+      if (signature) {
+        if (pnr) {
+          const payload = {
+            pnr,
+          };
+          dispatch(GetBookingDetailsWithPNR(payload));
+        } else {
+          dispatch(FetchStateFromServer());
+        }
       }
     }
     fetchBookingDetails();
-  }, [router]);
+  }, [signature, router]);
 
   useEffect(() => {
     if (bookingResponse) {
@@ -129,8 +144,9 @@ const ManageBookings = () => {
               <SingleJourneyItem journey={_journey} journeyIndex={_index} />
             ))}
             <PageInfo />
-            <PassengersSection />
             <PageCTA />
+            <PassengersSection />
+            {/* <PageCTA /> */}
             <PageFares />
           </>
         ) : (
@@ -312,13 +328,21 @@ const ManageBookings = () => {
 
   return (
     <Fragment>
-      <nav className="manage-booking-bar">
-        <p className="font-display text-base text-primary-main">
-          You made a few changes to your booking and additional charges have
-          been added
-        </p>
-        <button className="btn btn-primary">Pay ₦26,501</button>
-      </nav>
+      {bookingResponse &&
+      parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0 ? (
+        <nav className="manage-booking-bar">
+          <p className="font-display text-base text-primary-main">
+            You made a few changes to your booking and additional charges have
+            been added
+          </p>
+          <button className="btn btn-primary">
+            Pay ₦
+            {parseInt(
+              bookingResponse?.Booking?.BookingSum?.BalanceDue
+            ).toLocaleString("NGN")}
+          </button>
+        </nav>
+      ) : null}
       <BaseLayout>
         <section className="w-full checkin">
           {bookingResponseLoading ? (
@@ -326,9 +350,12 @@ const ManageBookings = () => {
               <SkeletonLoader />
             </div>
           ) : (
-            <section className="ga__section">
+            <section className="ga__section relative">
+              {/* <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
+                <p>Boarding pass has been emailed to test@greenafrica.net</p>
+              </div> */}
               <div className="ga__section__main">
-                <div className="mb-8 mt-16 xlg:mt-0">
+                <div className="mb-8 mt-16 xlg:mt-3">
                   <h2 className="text-black font-bold text-2xl mb-2">
                     Booking
                   </h2>

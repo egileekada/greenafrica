@@ -111,6 +111,15 @@ export const ResellSSR = async (payload) => {
   });
 };
 
+export const CancelSSR = async (payload) => {
+  let request = axios.post(`${BOOKING}Cancel`, payload);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
 export const AssignSeats = async (payload) => {
   let request = axios.post(`${BOOKING}AssignSeats`, payload);
   return request.then((response) => {

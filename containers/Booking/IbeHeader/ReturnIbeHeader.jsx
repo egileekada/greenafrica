@@ -12,6 +12,7 @@ import {
   returnLowFareAvailability,
   fetchFlightAvailability,
   setReturnParams,
+  setReturnTrip,
 } from "redux/reducers/booking";
 import { format } from "date-fns";
 import isBefore from "date-fns/isBefore";
@@ -149,8 +150,8 @@ const ReturnBookingIbeHeader = () => {
     const _newDate = new Date(_dateItem?.date);
     const _check = isBefore(_newDate, new Date(tripParams?.goStd));
 
-    console.log("_newDate", _newDate);
-    console.log("go departure date", new Date(tripParams?.goStd));
+    // console.log("_newDate", _newDate);
+    // console.log("go departure date", new Date(tripParams?.goStd));
 
     if (_check) {
       notification.error({
@@ -159,13 +160,15 @@ const ReturnBookingIbeHeader = () => {
           "You can't change date to a date that is before the original trip departure's date",
       });
     } else {
-      console.log("not isBefore");
+      // console.log("not isBefore");
       const flightRequest = {
         ...returnParams,
         returnDate: format(_newDate, "yyyy-MM-dd"),
         recurrent: true,
         isRoundTrip: 1,
       };
+
+      dispatch(setReturnTrip(null));
       dispatch(setReturnParams(flightRequest));
       dispatch(fetchFlightAvailability(tripParams, flightRequest));
     }

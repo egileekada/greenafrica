@@ -45,8 +45,8 @@ const ManageUpdateItenary = () => {
       } else {
         // One Way
         !tripParams && router.back();
-        dispatch(fetchFlightAvailability(tripParams, flightParams));
-        dispatch(fetchLowFareAvailability(tripParams, returnParams));
+        dispatch(fetchFlightAvailability(tripParams));
+        dispatch(fetchLowFareAvailability(tripParams));
       }
     } else {
       router.back();

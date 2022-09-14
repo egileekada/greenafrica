@@ -15,7 +15,7 @@ import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { bookingSelector } from "redux/reducers/booking";
+import { bookingSelector, ResellNewJourney } from "redux/reducers/booking";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 
@@ -23,7 +23,8 @@ const TripView = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const { goTrip, returnTrip } = useSelector(bookingSelector);
+  const { goTrip, returnTrip, tripParams, returnParams } =
+    useSelector(bookingSelector);
 
   const onCheckChange = (e) => {
     setChecked(e.target.checked);
@@ -53,8 +54,11 @@ const TripView = () => {
     return (
       <section className="flex flex-col mb-8">
         <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
-          {trip?.segment?.schedueIndex === 1 && "RETURN"} TRIP TO{" "}
-          {trip?.segment?.ArrivalStation}
+          {trip?.segment?.schedueIndex === 1 && "Return"} Trip To{" "}
+          {trip?.segment?.ArrivalStation} On{" "}
+          {trip?.segment?.schedueIndex === 1
+            ? format(new Date(returnParams?.returnDate), "EEEE, LLLL dd yyyy")
+            : format(new Date(tripParams?.beginDate), "EEEE, LLLL dd yyyy")}
         </h2>
 
         {/* TripHeader */}
@@ -162,8 +166,8 @@ const TripView = () => {
   };
 
   const resellJourney = () => {
-    
-  }
+    dispatch(ResellNewJourney());
+  };
 
   return (
     <BaseLayout>

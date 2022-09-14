@@ -82,6 +82,7 @@ const IbeTripVariant = ({
           <div className="type-header">
             <h2 className="text-center font-display font-extrabold text-3xl text-white my-2">
               g{fare_name}
+              {/* {journey?.JourneySellKey} */}
             </h2>
             <p className="text-white font-normal text-center mb-1">
               {fare?.RuleNumber.toLowerCase() === "savr" ? (

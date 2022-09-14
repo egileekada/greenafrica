@@ -17,7 +17,6 @@ import {
 } from "redux/reducers/payment";
 
 import { retrieveBookingFromState } from "redux/reducers/session";
-import Spinner from "components/Spinner";
 import SkeletonLoader from "components/SkeletonLoader";
 import { notification } from "antd";
 import { useRouter } from "next/router";

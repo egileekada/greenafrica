@@ -1,14 +1,52 @@
 /* eslint-disable @next/next/no-img-element */
+import { useState, useEffect } from "react";
 import BaseLayout from "layouts/Base";
-import IbeSidebar from "containers/IbeSidebar";
-import PassengerAccordion from "components/PassengerAccordion";
-import DetailsAccordion from "components/DetailsAccordion";
-
-import { Checkbox } from "antd";
-import PassengerBaggage from "containers/Passenger/PassengerBaggage";
-import PassengerMeal from "containers/Passenger/PassengeMeal";
+import {
+  paymentSelector,
+  FetchPaymentGateways,
+  InitializeGatewayPayment,
+} from "redux/reducers/payment";
+import { retrieveBookingFromState } from "redux/reducers/session";
+import { useDispatch, useSelector } from "react-redux";
+import SkeletonLoader from "components/SkeletonLoader";
+import PaymentMark from "assets/svgs/payment-mark.svg";
+import PaymentOutline from "assets/svgs/payment-outline.svg";
 
 const PassengerDetails = () => {
+  const dispatch = useDispatch();
+  const [selected, setSelected] = useState(1);
+
+  const { gatewaysLoading, gatewaysResponse, paymentLoading } =
+    useSelector(paymentSelector);
+
+  useEffect(() => {
+    async function fetchGateways() {
+      dispatch(FetchPaymentGateways());
+      dispatch(retrieveBookingFromState());
+    }
+    fetchGateways();
+  }, []);
+
+  const handlePayment = async () => {
+    // if (bookingCommitResponse) {
+    //   const payload = {
+    //     customer_name: sessionContact?.firstName,
+    //     customer_email: sessionContact?.email,
+    //     amount: totalFare * 100,
+    //     pnr: bookingCommitResponse?.BookingUpdateResponseData?.Success
+    //       ?.RecordLocator,
+    //     gateway_type_id: selected,
+    //     payment_origin: "booking",
+    //   };
+    //   dispatch(InitializeGatewayPayment(payload));
+    // } else {
+    //   notification.error({
+    //     message: "Error",
+    //     description: "PNR Code Unavailable",
+    //   });
+    // }
+  };
+
   const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
   };
@@ -22,11 +60,77 @@ const PassengerDetails = () => {
               Payment
             </h2>
 
-            <section className="flex flex-col bg-white rounded-xl pb-12">
-              <div className="flex items-center px-10">
+            <section className="flex flex-col rounded-xl pb-12">
+              {gatewaysLoading ? (
+                <section className="py-10 pl-12">
+                  <SkeletonLoader />
+                </section>
+              ) : (
+                <div className="payment-section">
+                  {gatewaysResponse ? (
+                    <>
+                      <section className="flex flex-col ">
+                        {gatewaysResponse?.data?.items?.length > 0 ? (
+                          gatewaysResponse?.data?.items.map((_gateway, _i) => {
+                            return (
+                              <div
+                                className={`payment-card ${
+                                  selected === _gateway?.id ? "active" : ""
+                                } `}
+                                onClick={() => setSelected(_gateway?.id)}
+                              >
+                                {selected === _gateway?.id ? (
+                                  <figure className="check-payment">
+                                    <PaymentMark />
+                                  </figure>
+                                ) : (
+                                  <figure className="check-payment">
+                                    <PaymentOutline />
+                                  </figure>
+                                )}
+                                <div className="flex flex-col pointer-events-none">
+                                  <figure className="mb-2">
+                                    <img src={_gateway?.logo_url} alt="" />
+                                  </figure>
+                                  <h2 className="mb-3">{_gateway?.name}</h2>
+                                  <p>
+                                    You will be redirected to our secure payment
+                                    checkout.
+                                  </p>
+                                </div>
+                                <div className="flex flex-col items-end pointer-events-none basis-[40%]">
+                                  <h6 className="mb-2 md:mb-[10px]">
+                                    AMOUNT DUE
+                                  </h6>
+                                  {/* <h5> ₦ {totalFare?.toLocaleString()}</h5> */}
+                                </div>
+                              </div>
+                            );
+                          })
+                        ) : (
+                          <p>No Gateways</p>
+                        )}
+
+                        <div className="flex justify-end">
+                          <button
+                            type="button"
+                            onClick={handlePayment}
+                            className="btn btn-primary"
+                          >
+                            {paymentLoading ? "Paying" : "Pay"}
+                          </button>
+                        </div>
+                      </section>
+                    </>
+                  ) : (
+                    <p>No response from gateway</p>
+                  )}
+                </div>
+              )}
+              {/* <div className="flex items-center px-10">
                 <button className="btn btn-outline mr-2">Go Back</button>
                 <button className="btn btn-primary">Continue</button>
-              </div>
+              </div> */}
             </section>
           </div>
         </section>
