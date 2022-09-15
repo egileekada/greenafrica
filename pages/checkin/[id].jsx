@@ -359,15 +359,15 @@ const CheckInDetails = () => {
                 ))}
                 {/* Checkin Info*/}
                 <div className="flex mx-6 mt-5">
-                  {bookingResponse?.Booking?.BookingSum.BalanceDue > 0 ? (
+                  {/* {bookingResponse?.Booking?.BookingSum.BalanceDue > 0 ? (
                     <Link href="/checkin/pay">
                       <a className="btn btn-primary">Pay & Check In </a>
                     </Link>
-                  ) : (
+                  ) : ( */}
                     <button className="btn btn-primary" onClick={tryCheckIn}>
                       Check In
                     </button>
-                  )}
+                  {/* )} */}
                 </div>
               </section>
             </div>
