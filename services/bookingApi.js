@@ -68,7 +68,7 @@ export const bookingApi = createApi({
           checkInPassengersRequestDto: {
             checkInPassengersRequest: {
               checkInMultiplePassengersRequest: {
-                checkInMultiplePassengerRequestList: [...body],
+                checkInMultiplePassengerRequestList: [body],
               },
             },
           },

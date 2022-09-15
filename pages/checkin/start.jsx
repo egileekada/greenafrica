@@ -36,7 +36,7 @@ const CheckIn = () => {
       findBooking(values)
         .unwrap()
         .then((data) => {
-          dispatch(retrieveBooking(values.pnr));
+          dispatch(retrieveBooking({ id: values.pnr }));
           router.push(`/checkin/${values.pnr}`);
         })
         .catch((error) => {

@@ -1625,3 +1625,9 @@ select:focus {
     }
   }
 }
+
+button:disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+}

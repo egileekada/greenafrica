@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
@@ -24,7 +24,6 @@ const CheckinPayment = () => {
   const dispatch = useDispatch();
   const {
     bookingCommitLoading,
-    bookingCommitResponse,
     bookingResponse,
     bookingState,
     checkInSelection,
@@ -49,7 +48,8 @@ const CheckinPayment = () => {
   const [selected, setSelected] = useState(1);
 
   const onSuccess = (reference) => {
-    startCheckin(...checkInSelection)
+    console.log(reference);
+    startCheckin(checkInSelection)
       .unwrap()
       .then((data) => {
         window.location.assign(reference?.redirecturl);
@@ -70,13 +70,12 @@ const CheckinPayment = () => {
   }, []);
 
   const handlePayment = async () => {
-    if (bookingCommitResponse) {
+    if (bookingState) {
       const payload = {
-        customer_name: `${bookingResponse?.Booking.BookingContacts[0].Names[0].FirstName} ${bookingResponse?.Booking.BookingContacts[0].Names[0].LastName}`,
-        customer_email:
-          bookingResponse?.Booking?.BookingContacts[0].EmailAddress,
+        customer_name: `${bookingState.BookingContacts[0].Names[0].FirstName} ${bookingState?.BookingContacts[0].Names[0].LastName}`,
+        customer_email: bookingState?.BookingContacts[0].EmailAddress,
         amount: totalFare * 100,
-        pnr: bookingResponse?.Booking.RecordLocator,
+        pnr: bookingState?.RecordLocator,
         gateway_type_id: selected,
         payment_origin: "checkin",
       };
@@ -92,13 +91,13 @@ const CheckinPayment = () => {
             ...config,
             tx_ref: data?.data?.reference,
             amount: totalFare * 100,
-            email: bookingResponse?.Booking?.BookingContacts[0].EmailAddress,
+            email: bookingState?.BookingContacts[0].EmailAddress,
             publicKey: gateway[0].public_key,
             public_key: gateway[0].public_key,
             reference: data?.data?.reference,
             currency: "NGN",
             customer: {
-              email: bookingResponse?.Booking?.BookingContacts[0].EmailAddress,
+              email: bookingState?.BookingContacts[0].EmailAddress,
             },
           });
         })
@@ -119,7 +118,7 @@ const CheckinPayment = () => {
       (gate) => gate.id === selected
     );
 
-    if (gateway[0].code === "PS") {
+    if (gateway[0]?.code === "PS") {
       initializePayment(onSuccess, onClose);
     } else {
       handleFlutterPayment({
@@ -132,8 +131,15 @@ const CheckinPayment = () => {
     }
   };
 
+  let storageRef = useRef(true);
+
   useEffect(() => {
-    triggerPaystack();
+    if (!storageRef.current) {
+      triggerPaystack();
+    }
+    return () => {
+      storageRef.current = false;
+    };
   }, [config]);
 
   return (

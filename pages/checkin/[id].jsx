@@ -364,9 +364,13 @@ const CheckInDetails = () => {
                       <a className="btn btn-primary">Pay & Check In </a>
                     </Link>
                   ) : ( */}
-                    <button className="btn btn-primary" onClick={tryCheckIn}>
-                      Check In
-                    </button>
+                  <button
+                    className="btn btn-primary"
+                    disabled={passengers.length < 1}
+                    onClick={tryCheckIn}
+                  >
+                    Check In
+                  </button>
                   {/* )} */}
                 </div>
               </section>

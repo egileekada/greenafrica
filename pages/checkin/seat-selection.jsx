@@ -97,6 +97,14 @@ const SeatSelection = () => {
     retrieveState();
   }, []);
 
+  const skipSeatSelection = () => {
+    if (parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0) {
+      router.push("/checkin/pay");
+    } else {
+      router.push("/checkin/confirm");
+    }
+  };
+
   return (
     <>
       <BaseLayout>
@@ -169,11 +177,13 @@ const SeatSelection = () => {
 
         <div className="sticky bottom-0 border border-t-2 border-[#dadce0] z-40 bg-[#fff] p-6 w-full">
           <div className="flex md:justify-items-end gap-2">
-            <Link href="/trip/payment">
-              <a className="btn btn-outline text-center mr-4 w-1/2 md:w-1/6 md:ml-auto">
-                Skip
-              </a>
-            </Link>
+            <button
+              onClick={skipSeatSelection}
+              className="btn btn-outline text-center mr-4 w-1/2 md:w-1/6 md:ml-auto"
+            >
+              Skip
+            </button>
+
             {seats.length > 0 && (
               <button
                 className="btn btn-primary w-1/2 md:w-1/6"
