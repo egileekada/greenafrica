@@ -10,12 +10,9 @@ import ArrowIcon from "assets/svgs/small-arrow.svg";
 import Spinner from "components/Spinner";
 import SkeletonLoader from "components/SkeletonLoader";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  startSession,
-  sessionSelector,
-  FetchStateFromServer,
-} from "redux/reducers/session";
+import { sessionSelector, FetchStateFromServer } from "redux/reducers/session";
 import { saveTripParams, saveReturnParams } from "redux/reducers/booking";
+import { bookingSelector } from "redux/reducers/booking";
 import { useRouter } from "next/router";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
@@ -28,6 +25,7 @@ const ConfirmManageBooking = () => {
   const dispatch = useDispatch();
   const { sessionStateLoading, sessionStateResponse, signature } =
     useSelector(sessionSelector);
+  const { tripModified } = useSelector(bookingSelector);
 
   // useEffect(() => {
   //   async function checkParams() {
@@ -353,9 +351,11 @@ const ConfirmManageBooking = () => {
             </div>
           ) : (
             <section className="ga__section relative">
-              {/* <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
-                <p>Boarding pass has been emailed to test@greenafrica.net</p>
-              </div> */}
+              {tripModified && (
+                <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
+                  <p>Boarding pass has been emailed to test@greenafrica.net</p>
+                </div>
+              )}
               <div className="ga__section__main">
                 <div className="mb-8 mt-16 xlg:mt-3">
                   {sessionStateResponse?.BookingData ? (

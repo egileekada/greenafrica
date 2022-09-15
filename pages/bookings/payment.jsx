@@ -87,7 +87,7 @@ const PassengerDetails = () => {
         amount: totalFare * 100,
         pnr: bookingState?.RecordLocator,
         gateway_type_id: selected,
-        payment_origin: "checkin",
+        payment_origin: "manage",
       };
 
       console.log("payload", payload);
