@@ -1,29 +1,67 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import BaseLayout from "layouts/Base";
 import {
   paymentSelector,
   FetchPaymentGateways,
-  InitializeGatewayPayment,
+  VerifyManageBookingPayment,
 } from "redux/reducers/payment";
 import {
   retrieveBookingFromState,
   sessionSelector,
 } from "redux/reducers/session";
+import { bookingSelector, setTripModified } from "redux/reducers/booking";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonLoader from "components/SkeletonLoader";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 
+import { notification } from "antd";
+import { useRouter } from "next/router";
+import { usePaystackPayment } from "react-paystack";
+import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
+import { useInitiatePaymentMutation } from "services/widgetApi";
+
 const PassengerDetails = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [totalFare, setTotalFare] = useState();
 
-  const { bookingState, bookingResponse } = useSelector(sessionSelector);
-
-  const { gatewaysLoading, gatewaysResponse, paymentLoading } =
+  const { bookingState } = useSelector(sessionSelector);
+  const { gatewaysLoading, gatewaysResponse, verifyManageBookingLoading } =
     useSelector(paymentSelector);
+
+  const [config, setConfig] = useState({
+    reference: "",
+    email: "",
+    amount: null,
+    publicKey: "",
+    text: "",
+  });
+  const initializePayment = usePaystackPayment(config);
+  const handleFlutterPayment = useFlutterwave(config);
+
+  const [initPayment] = useInitiatePaymentMutation();
+
+  const onSuccess = (reference) => {
+    console.log("success", reference);
+    if (
+      reference?.status.toLowerCase() === "success" &&
+      reference?.message.toLowerCase() === "approved"
+    ) {
+      dispatch(
+        VerifyManageBookingPayment({
+          ref: reference?.reference,
+        })
+      );
+    }
+  };
+
+  const onClose = () => {
+    console.log("closed");
+  };
 
   useEffect(() => {
     async function fetchGateways() {
@@ -41,30 +79,83 @@ const PassengerDetails = () => {
   }, [bookingState]);
 
   const handlePayment = async () => {
-    if (bookingResponse) {
+    if (bookingState) {
+      setLoading(true);
       const payload = {
-        customer_name:
-          bookingResponse?.Booking?.BookingContacts[0]?.Names[0]?.FirstName,
-        customer_email:
-          bookingResponse?.Booking?.BookingContacts[0]?.EmailAddress,
+        customer_name: `${bookingState.BookingContacts[0].Names[0].FirstName} ${bookingState?.BookingContacts[0].Names[0].LastName}`,
+        customer_email: bookingState?.BookingContacts[0].EmailAddress,
         amount: totalFare * 100,
-        pnr: bookingResponse?.Booking?.RecordLocator,
+        pnr: bookingState?.RecordLocator,
         gateway_type_id: selected,
-        payment_origin: "booking",
+        payment_origin: "checkin",
       };
+
       console.log("payload", payload);
-      // dispatch(InitializeGatewayPayment(payload));
+
+      const gateway = gatewaysResponse?.data?.items.filter(
+        (gate) => gate.id === selected
+      );
+
+      await initPayment(payload)
+        .unwrap()
+        .then((data) => {
+          setConfig({
+            ...config,
+            tx_ref: data?.data?.reference,
+            amount: totalFare * 100,
+            email: bookingState?.BookingContacts[0].EmailAddress,
+            publicKey: gateway[0].public_key,
+            public_key: gateway[0].public_key,
+            reference: data?.data?.reference,
+            currency: "NGN",
+            customer: {
+              email: bookingState?.BookingContacts[0].EmailAddress,
+            },
+          });
+        })
+        .catch((error) => {
+          console.log("error here", error?.data);
+        });
+      setLoading(false);
     } else {
       notification.error({
         message: "Error",
-        description: "PNR Code Unavailable",
+        description: "PNR Code Unavailable, Redirecting in 3s",
+      });
+      setTimeout(() => {
+        router.push("/");
+      }, 3000);
+    }
+  };
+
+  const triggerPaystack = () => {
+    const gateway = gatewaysResponse?.data?.items.filter(
+      (gate) => gate.id === selected
+    );
+
+    if (gateway[0]?.code === "PS") {
+      initializePayment(onSuccess, onClose);
+    } else {
+      handleFlutterPayment({
+        callback: (response) => {
+          console.log(response);
+          closePaymentModal(); // this will close the modal programmatically
+        },
+        onClose: () => {},
       });
     }
   };
 
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
+  let storageRef = useRef(true);
+
+  useEffect(() => {
+    if (!storageRef.current) {
+      triggerPaystack();
+    }
+    return () => {
+      storageRef.current = false;
+    };
+  }, [config]);
 
   return (
     <BaseLayout>
@@ -76,7 +167,7 @@ const PassengerDetails = () => {
             </h2>
 
             <section className="flex flex-col rounded-xl pb-12">
-              {gatewaysLoading ? (
+              {gatewaysLoading || verifyManageBookingLoading ? (
                 <section className="py-10 pl-12">
                   <SkeletonLoader />
                 </section>
@@ -132,7 +223,7 @@ const PassengerDetails = () => {
                             onClick={handlePayment}
                             className="btn btn-primary"
                           >
-                            {paymentLoading ? "Paying" : "Pay"}
+                            {loading ? "Paying" : "Pay"}
                           </button>
                         </div>
                       </section>
@@ -142,10 +233,6 @@ const PassengerDetails = () => {
                   )}
                 </div>
               )}
-              {/* <div className="flex items-center px-10">
-                <button className="btn btn-outline mr-2">Go Back</button>
-                <button className="btn btn-primary">Continue</button>
-              </div> */}
             </section>
           </div>
         </section>

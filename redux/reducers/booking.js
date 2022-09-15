@@ -23,6 +23,7 @@ const initialState = {
   resellLoading: false,
   goTrip: null,
   returnTrip: null,
+  tripModified: false,
 };
 
 export const bookingSlice = createSlice({
@@ -66,6 +67,9 @@ export const bookingSlice = createSlice({
     setReturnTrip: (state, { payload }) => {
       state.returnTrip = payload;
     },
+    setTripModified: (state, { payload }) => {
+      state.tripModified = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState);
@@ -84,6 +88,7 @@ export const {
   setResellLoading,
   setGoTrip,
   setReturnTrip,
+  setTripModified,
 } = bookingSlice.actions;
 export const bookingSelector = (state) => state.booking;
 export default bookingSlice.reducer;
