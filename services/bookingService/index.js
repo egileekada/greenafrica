@@ -166,3 +166,13 @@ export const GetSeatAvailabilityForBooking = async (payload) => {
     }
   });
 };
+
+export const CheckInPassengers = async (payload) => {
+  let request = axios.post(`Operation/CheckInPassengers`, payload);
+
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
