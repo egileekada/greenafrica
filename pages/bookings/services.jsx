@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { useEffect } from "react";
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import PassengerAccordion from "components/PassengerAccordion";
@@ -6,9 +7,25 @@ import DetailsAccordion from "components/DetailsAccordion";
 
 import { Checkbox } from "antd";
 import PassengerBaggage from "containers/Passenger/PassengerBaggage";
-import PassengerMeal from "containers/Passenger/PassengeMeal";
+
+import { useDispatch, useSelector } from "react-redux";
+import SkeletonLoader from "components/SkeletonLoader";
+import {
+  retrieveBookingFromState,
+  sessionSelector,
+} from "redux/reducers/session";
 
 const PassengerDetails = () => {
+  const dispatch = useDispatch();
+  const { bookingState } = useSelector(sessionSelector);
+
+  useEffect(() => {
+    async function fetchState() {
+      dispatch(retrieveBookingFromState());
+    }
+    fetchState();
+  }, []);
+
   const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
   };
@@ -22,23 +39,8 @@ const PassengerDetails = () => {
               Additional Services
             </h2>
 
-            <section className="flex flex-col bg-white rounded-xl pb-12">
-              <PassengerAccordion title="Michael Johnson">
-                <div className="flex flex-col">
-                  <h2 className="title-text mb-2">INSURANCE</h2>
-                  <div className="flex items-center primary-checkbox">
-                    <Checkbox onChange={onChange}>
-                      <label className="check-label">
-                        <p className="ml-2">Travel Insurance (N2,000)</p>
-                      </label>
-                    </Checkbox>
-                  </div>
-                </div>
-              </PassengerAccordion>
-
-              <DetailsAccordion title="Request Meal?">
-                <PassengerMeal />
-              </DetailsAccordion>
+            <section className="flex flex-col bg-red-500 rounded-xl pb-12">
+              <PassengerAccordion title="Michael Johnson"></PassengerAccordion>
 
               <div className="flex items-center px-10">
                 <button className="btn btn-outline mr-2">Go Back</button>

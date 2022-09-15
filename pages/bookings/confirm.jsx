@@ -13,13 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   startSession,
   sessionSelector,
-  GetBookingDetailsWithPNR,
   FetchStateFromServer,
 } from "redux/reducers/session";
 import {
   saveTripParams,
   saveReturnParams,
-  bookingSelector,
 } from "redux/reducers/booking";
 import { useRouter } from "next/router";
 import { format, differenceInMinutes } from "date-fns";
@@ -27,13 +25,12 @@ import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import PageFares from "./components/PageFares";
 
-const ManageBookings = () => {
+const ConfirmManageBooking = () => {
   const router = useRouter();
   const [selectedPaxs] = useState([]);
   const dispatch = useDispatch();
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
-  const { pnr } = router.query;
 
   useEffect(() => {
     async function checkParams() {
@@ -45,12 +42,7 @@ const ManageBookings = () => {
   useEffect(() => {
     async function fetchBookingDetails() {
       if (signature) {
-        if (router?.query?.pnr) {
-          const payload = {
-            pnr,
-          };
-          dispatch(GetBookingDetailsWithPNR(payload));
-        }
+        dispatch(FetchStateFromServer());
       }
     }
     fetchBookingDetails();
@@ -384,4 +376,4 @@ const ManageBookings = () => {
   );
 };
 
-export default ManageBookings;
+export default ConfirmManageBooking;

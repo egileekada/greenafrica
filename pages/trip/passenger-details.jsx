@@ -193,7 +193,8 @@ const PassengerDetails = () => {
                       {sellSSRLoading ? "Saving..." : "Continue"}
                     </button>
                   </section>
-                )}
+                  )}
+                  
               </>
             ) : (
               <p className="errorText text-2xl">No SSR Available</p>

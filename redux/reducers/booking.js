@@ -661,9 +661,7 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
         await CancelSSR(cancelSSRRequest);
         dispatch(setGoTrip(null));
         dispatch(setReturnTrip(null));
-        window.location.assign(
-          `/bookings?pnr=${currentSession?.bookingResponse?.Booking?.RecordLocator}`
-        );
+        window.location.assign(`/bookings/confirm`);
       } catch (err) {
         notification.error({
           message: "Error",
