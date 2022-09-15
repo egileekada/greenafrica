@@ -7,9 +7,7 @@ import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
-import ProfileIcon from "assets/svgs/profile.svg";
 import Spinner from "components/Spinner";
-import CheckInCard from "components/Cards/checkin";
 import IbeAdbar from "containers/IbeAdbar";
 
 import {
@@ -22,6 +20,8 @@ import {
   sessionSelector,
   startSession,
   retrieveBooking,
+  startCheckin,
+  saveCheckInSelection,
 } from "redux/reducers/session";
 
 const CheckInDetails = () => {
@@ -29,6 +29,8 @@ const CheckInDetails = () => {
   const { id } = router.query;
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
+  const [passengers, setPassengers] = useState([]);
+
   const dispatch = useDispatch();
   const {
     signature,
@@ -76,22 +78,10 @@ const CheckInDetails = () => {
           <span>
             {_Baggages.length > 0 ? `${_Baggages.length}` : "No Baggage"}
           </span>
-          {_Baggages.length > 0 ? (
-            <Link href={`/checkin/baggage/?`}>
-              <button className="btn btn-outline ml-4">Edit</button>
-            </Link>
-          ) : (
-            <Link href={`/checkin/baggage/?`}>
-              <button className="btn btn-outline ml-4">Add</button>
-            </Link>
-          )}
         </h5>
       </div>
     );
   };
-
-  console.log(bookingResponse);
-  console.log(bookingResponse);
 
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = data?.data?.items.filter(
@@ -106,6 +96,90 @@ const CheckInDetails = () => {
       (product) => product.code === value
     );
     return `${name}`;
+  };
+
+  const addPassengers = (event, passenger, journey) => {
+    const isChecked = event.target.checked;
+
+    const data = { ...passenger, journey };
+
+    if (isChecked) {
+      setPassengers([...passengers, data]);
+    } else {
+      setPassengers(
+        passengers.filter((currentPassenger) => {
+          return (
+            currentPassenger.PassengerNumber !== passenger.PassengerNumber ||
+            currentPassenger.journey !== journey
+          );
+        })
+      );
+    }
+  };
+
+  const tryCheckIn = () => {
+    const newData = bookingResponse?.Booking?.Journeys.map((Journey, index) => {
+      return {
+        recordLocator: bookingResponse?.Booking?.RecordLocator,
+        inventoryLegKey: {
+          carrierCode: Journey.Segments[0].FlightDesignator.CarrierCode,
+          flightNumber: Journey.Segments[0].FlightDesignator.FlightNumber,
+          departureDate: Journey.Segments[0].STD,
+          departureDateSpecified: true,
+          departureStation: Journey.Segments[0].DepartureStation,
+          arrivalStation: Journey.Segments[0].ArrivalStation,
+        },
+        liftStatus: 1,
+        liftStatusSpecified: true,
+        bySegment: false,
+        bySegmentSpecified: true,
+        checkSameDayReturn: false,
+        checkSameDayReturnSpecified: true,
+        skipSecurityChecks: false,
+        skipSecurityChecksSpecified: true,
+        seatRequired: false,
+        seatRequiredSpecified: true,
+        retrieveBoardingZone: false,
+        retrieveBoardingZoneSpecified: true,
+        allowPartialCheckIn: false,
+        allowPartialCheckInSpecified: true,
+        otherAirlineCheckin: false,
+        otherAirlineCheckinSpecified: true,
+        checkInDestination: Journey.Segments[0].ArrivalStation,
+        returnDownlineSegments: true,
+        returnDownlineSegmentsSpecified: true,
+        inventoryLegKeyDepartureDateTime: Journey.Segments[0].STD,
+        inventoryLegKeyDepartureDateTimeSpecified: true,
+        processDownlineIATCI: true,
+        processDownlineIATCISpecified: true,
+        checkInPaxRequestList: [
+          ...passengers
+            .filter((data) => {
+              return data.journey === index;
+            })
+            .map((passenger) => {
+              return {
+                name: {
+                  title: passenger.Names[0].Title,
+                  firstName: passenger.Names[0].FirstName,
+                  lastName: passenger.Names[0].LastName,
+                },
+                verifiedID: false,
+                verifiedIDSpecified: true,
+                passengerID: passenger.PassengerNumber,
+                passengerIDSpecified: true,
+                processAPPS: false,
+                processAPPSSpecified: true,
+                appsTransitType: 0,
+                appsTransitTypeSpecified: true,
+              };
+            }),
+        ],
+      };
+    });
+
+    dispatch(saveCheckInSelection(newData));
+    router.push("/checkin/seat-selection");
   };
 
   return (
@@ -130,33 +204,12 @@ const CheckInDetails = () => {
                 {/* TripHeader */}
                 <section className="ibe__flight__info__destination">
                   <p className="text-normal">
-                    Booking Code: {bookingResponse?.Booking.RecordLocator}
+                    Booking Code: {bookingResponse?.Booking?.RecordLocator}
                   </p>
-                  {/* <figure className="absolute -left-6"> */}
                   <figure className="flightCircle">
                     <FlightIcon />
                   </figure>
                 </section>
-                {/* TripHeader*/}
-                {/* Trip Itenary */}
-                {/* <div className="mx-6 mt-12 flex flex-col">
-                  <h3 className="title-text">PASSENGER DETAILS</h3>
-                  <div className="flex mb-6 mt-4">
-                    <div className="flex flex-col w-[53px] mr-4">
-                      <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
-                        <ProfileIcon />
-                      </div>
-                    </div>
-                    <div className="flex flex-col">
-                      <h5 className="text-sm font-extrabold text-primary-main font-display mb-2">
-                        Michael Johnson
-                      </h5>
-                      <h6 className="text-[12px] text-[#9692B8] font-title">
-                        DOB: June 22, 1998
-                      </h6>
-                    </div>
-                  </div>
-                </div> */}
 
                 {bookingResponse?.Booking?.Journeys.map((Journey, index) => (
                   <>
@@ -176,12 +229,21 @@ const CheckInDetails = () => {
                       className="ibe__trip__item checkinView bordered mx-6 my-3"
                       key={index}
                     >
-                      <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3 ">
+                      <p className="bg-primary-main text-green py-1 px-4 rounded-[4px] absolute left-6 top-5">
                         {!productsLoading &&
                           fare_name(Journey?.Segments[0].Fares[0].ProductClass)}
                       </p>
-                      <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
-                        <p className="tripType self-center">Direct Flight</p>
+                      <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10 mt-5">
+                        <p className="tripType self-center">
+                          {
+                            bookingResponse?.Booking?.Journeys[0]?.Segments[0]
+                              ?.FlightDesignator.CarrierCode
+                          }
+                          {
+                            bookingResponse?.Booking?.Journeys[0]?.Segments[0]
+                              ?.FlightDesignator.FlightNumber
+                          }
+                        </p>
                         <div className="flex justify-between">
                           <div className="flex flex-col">
                             <h5 className="tripType">
@@ -227,71 +289,64 @@ const CheckInDetails = () => {
                             )}
                         </p>
                       </div>
-
-                      <div className="trip-details">
-                        <div className="trip-details-item">
-                          <h6>FLIGHT NUMBER</h6>
-                          <h5>
-                            {
-                              bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                                ?.FlightDesignator.CarrierCode
-                            }{" "}
-                            {
-                              bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                                ?.FlightDesignator.FlightNumber
-                            }
-                          </h5>
-                        </div>
-                      </div>
                     </section>
                     <section className="mx-6">
-                      <h3 className="title-text">PASSENGERS</h3>
+                      <h3 className="title-text no-mb">PASSENGERS</h3>
                     </section>
 
-                    {bookingResponse?.Booking.Passengers.map(
-                      (passenger, index) => (
+                    {bookingResponse?.Booking?.Passengers.map(
+                      (passenger, pIndex) => (
                         <section
                           className="ibe__trip__passengers checkinView mx-6 mb-3"
-                          key={index}
+                          key={pIndex}
                         >
                           <div className="md:flex bordered p-4">
-                            <label className="md:w-2/3 block font-bold">
-                              <input
-                                className="mr-2 leading-tight"
-                                type="checkbox"
-                              />
-                              <span className="text-sm">
+                            <div class="flex items-center w-full">
+                              <label
+                                htmlFor={`passenger-${index}-${pIndex}`}
+                                class="ml-2 text-lg font-semibold capitalize w-full flex items-center"
+                              >
+                                <input
+                                  class="w-5 h-5 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2 mr-3"
+                                  type="checkbox"
+                                  id={`passenger-${index}-${pIndex}`}
+                                  value={passenger}
+                                  name={`passenger-${index}-${pIndex}`}
+                                  onChange={(e) =>
+                                    addPassengers(e, passenger, index)
+                                  }
+                                />
                                 {passenger.Names[0].FirstName}{" "}
                                 {passenger.Names[0].LastName}
-                              </span>
-                            </label>
+                              </label>
+                            </div>
                           </div>
 
                           <div className="trip-details">
                             <div className="trip-details-item">
                               <h6>SEAT NUMBER</h6>
                               {Journey.Segments[0].PaxSeats.length > 0 ? (
-                                <h5 className="flex items-center">
+                                <h5 className="flex items-center text-center">
                                   <span>
                                     {
-                                      Journey.Segments[0].PaxSeats[index]
+                                      Journey.Segments[0].PaxSeats[pIndex]
                                         .UnitDesignator
                                     }
                                   </span>
-                                  <Link href={`/checkin/seat-selection/?`}>
+                                  {/* <Link href={`/checkin/seat-selection/?`}>
                                     <button className="btn btn-outline ml-4">
                                       Edit
                                     </button>
-                                  </Link>
+                                  </Link> */}
                                 </h5>
                               ) : (
                                 <h5 className="flex items-center">
-                                  <span>{""}</span>
-                                  <Link href={`/checkin/seat-selection/?`}>
+                                  <span>None</span>
+                                  {/* <Link href={`/checkin/seat-selection/?`}>
                                     <button className="btn btn-outline ml-4">
                                       Add
                                     </button>
-                                  </Link>
+                                  </Link> */}
                                 </h5>
                               )}
                             </div>
@@ -302,76 +357,16 @@ const CheckInDetails = () => {
                     )}
                   </>
                 ))}
-                {/* Trip Itenary */}
-                {/* Checkin Info*/}
-                {/* <section className="checkin__info mx-6 my-3">
-                  <p>
-                    You added some new services so your fare has been updated
-                    with additional fees
-                  </p>
-                </section>
-
-                <section className="mx-6">
-                  <h3 className="title-text">PASSENGERS</h3>
-                </section> */}
-
-                {/* {bookingResponse?.Booking.Passengers.map((passenger, index) => (
-                  <section
-                    className="ibe__trip__passengers checkinView mx-6 mb-3"
-                    key={index}
-                  >
-                    <div className="md:flex bordered p-4">
-                      <label className="md:w-2/3 block font-bold">
-                        <input className="mr-2 leading-tight" type="checkbox" />
-                        <span className="text-sm">
-                          {passenger.Names[0].FirstName}{" "}
-                          {passenger.Names[0].LastName}
-                        </span>
-                      </label>
-                    </div>
-
-                    <div className="trip-details">
-                      <div className="trip-details-item">
-                        <h6>SEAT NUMBER</h6>
-                        {bookingResponse?.Booking?.Journeys[0].Segments[0]
-                          .PaxSeats.length > 0 ? (
-                          <h5 className="flex items-center">
-                            <span>
-                              {
-                                bookingResponse?.Booking?.Journeys[0]
-                                  .Segments[0].PaxSeats[index].UnitDesignator
-                              }
-                            </span>
-                            <Link href={`/checkin/seat-selection/?`}>
-                              <button className="btn btn-outline ml-4">
-                                Edit
-                              </button>
-                            </Link>
-                          </h5>
-                        ) : (
-                          <h5 className="flex items-center">
-                            <span>{""}</span>
-                            <Link href={`/checkin/seat-selection/?`}>
-                              <button className="btn btn-outline ml-4">
-                                Add
-                              </button>
-                            </Link>
-                          </h5>
-                        )}
-                      </div>
-                      {PassengerBags(passenger)}
-                    </div>
-                  </section>
-                ))} */}
-
                 {/* Checkin Info*/}
                 <div className="flex mx-6 mt-5">
-                  {bookingResponse?.Booking.BookingSum.BalanceDue > 0 ? (
+                  {bookingResponse?.Booking?.BookingSum.BalanceDue > 0 ? (
                     <Link href="/checkin/pay">
                       <a className="btn btn-primary">Pay & Check In </a>
                     </Link>
                   ) : (
-                    <button className="btn btn-primary">Check In</button>
+                    <button className="btn btn-primary" onClick={tryCheckIn}>
+                      Check In
+                    </button>
                   )}
                 </div>
               </section>

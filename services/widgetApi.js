@@ -29,6 +29,13 @@ export const widgetApi = createApi({
     getFareconfigs: builder.query({
       query: () => `/fareconfigs`,
     }),
+    initiatePayment: builder.mutation({
+      query: (body) => ({
+        url: "payments/initialize",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -44,4 +51,5 @@ export const {
   useGetSalutationsQuery,
   useGetSpecialAssistancesQuery,
   useGetFareconfigsQuery,
+  useInitiatePaymentMutation
 } = widgetApi;

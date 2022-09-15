@@ -14,77 +14,60 @@ import {
 import Spinner from "components/Spinner";
 import { notification } from "antd";
 import { useRouter } from "next/router";
+import { usePaystackPayment } from "react-paystack";
+import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
+import { useInitiatePaymentMutation } from "services/widgetApi";
+import { useStartCheckInMutation } from "services/bookingApi";
 
 const CheckinPayment = () => {
   const router = useRouter();
-
   const dispatch = useDispatch();
-  const [totalFare, setTotalFare] = useState();
-  const [selected, setSelected] = useState(1);
   const {
     bookingCommitLoading,
     bookingCommitResponse,
-    sessionContact,
-    contactsResponse,
-    sellSSRResponse,
     bookingResponse,
-    assignSeatResponse,
+    bookingState,
+    checkInSelection,
   } = useSelector(sessionSelector);
 
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
     useSelector(paymentSelector);
-  //
-  console.log(assignSeatResponse.Success.PNRAmount.BalanceDue);
-  //   useEffect(() => {
-  //     async function _getBookingCommit() {
-  //       if (sellSSRResponse) {
-  //         const _recordLocator =
-  //           bookingCommitResponse?.BookingUpdateResponseData?.Success
-  //             ?.RecordLocator;
-  //         console.log("record locator", _recordLocator);
-  //         if (!_recordLocator || _recordLocator?.length < 1) {
-  //           dispatch(GetBookingCommit());
-  //         }
-  //       }
-  //     }
-  //     _getBookingCommit();
-  //   }, [sellSSRResponse]);
+
+  const [config, setConfig] = useState({
+    reference: "",
+    email: "",
+    amount: null,
+    publicKey: "",
+    text: "",
+  });
+  const initializePayment = usePaystackPayment(config);
+  const handleFlutterPayment = useFlutterwave(config);
+
+  const [initPayment] = useInitiatePaymentMutation();
+  const [startCheckin] = useStartCheckInMutation();
+  const [totalFare, setTotalFare] = useState();
+  const [selected, setSelected] = useState(1);
+
+  const onSuccess = (reference) => {
+    startCheckin(...checkInSelection)
+      .unwrap()
+      .then((data) => {
+        window.location.assign(reference?.redirecturl);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const onClose = () => {
+    console.log("closed");
+  };
 
   useEffect(() => {
     async function fetchGateways() {
+      setTotalFare(parseInt(bookingState?.BookingSum?.BalanceDue));
       dispatch(FetchPaymentGateways());
     }
     fetchGateways();
   }, []);
-
-  //   useEffect(() => {
-  //     async function computeTotalFare() {
-  //       if (sellSSRResponse) {
-  //         setTotalFare(
-  //           parseInt(
-  //             sellSSRResponse?.BookingUpdateResponseData?.Success?.PNRAmount
-  //               ?.BalanceDue
-  //           )
-  //         );
-  //       } else if (contactsResponse) {
-  //         setTotalFare(
-  //           parseInt(
-  //             contactsResponse?.BookingUpdateResponseData?.Success?.PNRAmount
-  //               ?.BalanceDue
-  //           )
-  //         );
-  //       } else {
-  //         notification.error({
-  //           message: "Error",
-  //           description: "Unable to fetch total flight cost, Redirecting in 3s",
-  //         });
-  //         // setTimeout(() => {
-  //         //   router.push("/");
-  //         // }, 3000);
-  //       }
-  //     }
-  //     computeTotalFare();
-  //   }, [sellSSRResponse, contactsResponse]);
 
   const handlePayment = async () => {
     if (bookingCommitResponse) {
@@ -97,7 +80,29 @@ const CheckinPayment = () => {
         gateway_type_id: selected,
         payment_origin: "checkin",
       };
-      dispatch(InitializeGatewayPayment(payload));
+
+      const gateway = gatewaysResponse?.data?.items.filter(
+        (gate) => gate.id === selected
+      );
+
+      await initPayment(payload)
+        .unwrap()
+        .then((data) => {
+          setConfig({
+            ...config,
+            tx_ref: data?.data?.reference,
+            amount: totalFare * 100,
+            email: bookingResponse?.Booking?.BookingContacts[0].EmailAddress,
+            publicKey: gateway[0].public_key,
+            public_key: gateway[0].public_key,
+            reference: data?.data?.reference,
+            currency: "NGN",
+            customer: {
+              email: bookingResponse?.Booking?.BookingContacts[0].EmailAddress,
+            },
+          });
+        })
+        .catch((error) => console.log(error));
     } else {
       notification.error({
         message: "Error",
@@ -108,6 +113,28 @@ const CheckinPayment = () => {
       }, 3000);
     }
   };
+
+  const triggerPaystack = () => {
+    const gateway = gatewaysResponse?.data?.items.filter(
+      (gate) => gate.id === selected
+    );
+
+    if (gateway[0].code === "PS") {
+      initializePayment(onSuccess, onClose);
+    } else {
+      handleFlutterPayment({
+        callback: (response) => {
+          console.log(response);
+          closePaymentModal(); // this will close the modal programmatically
+        },
+        onClose: () => {},
+      });
+    }
+  };
+
+  useEffect(() => {
+    triggerPaystack();
+  }, [config]);
 
   return (
     <BaseLayout>
@@ -138,7 +165,7 @@ const CheckinPayment = () => {
                               selected === _gateway?.id ? "active" : ""
                             } `}
                             key={_i}
-                            onClick={() => setSelected(_gateway?.id)}
+                            onClick={() => setSelected(_gateway.id)}
                           >
                             {selected === _gateway?.id ? (
                               <figure className="check-payment">

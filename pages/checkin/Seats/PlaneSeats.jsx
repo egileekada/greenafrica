@@ -48,6 +48,7 @@ const PlaneSeats = forwardRef(
     const [selected, setSelected] = useState(0);
 
     const setSeat = async (seat) => {
+      console.log(ticketIndex);
       //TODO pass journey type to this component
       //TODO watch for situation where not all users select seat
 
@@ -76,16 +77,18 @@ const PlaneSeats = forwardRef(
             const newItem = {
               ...item,
               flightDesignator: {
-                ...bookingState?.Journeys[ticketIndex].Segments[0]
+                ...bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0]
                   .FlightDesignator,
               },
               unitDesignator: SeatDesignator,
-              std: bookingState?.Journeys[ticketIndex].Segments[0].STD,
+              std: bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0]
+                .STD,
               departureStation:
-                bookingState?.Journeys[ticketIndex].Segments[0]
+                bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0]
                   .DepartureStation,
               arrivalStation:
-                bookingState?.Journeys[ticketIndex].Segments[0].ArrivalStation,
+                bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0]
+                  .ArrivalStation,
               passengerSeatPreferences: [
                 {
                   ...item.passengerSeatPreferences[0],
@@ -254,7 +257,6 @@ const PlaneSeats = forwardRef(
         if (
           propertylist.filter((list) => list.TypeCode === "RESTRICT").length >
             0 ||
-          seatAvailability === 12 ||
           seatAvailability === 1 ||
           seatAvailability === 8
         ) {
@@ -287,10 +289,24 @@ const PlaneSeats = forwardRef(
     };
 
     const mapSeatSelection = () => {
+      console.log("hi");
+      console.log(pasengerCount);
       let i = 0;
       const newArray = [];
       for (i = 0; i < pasengerCount; i++) {
-        newArray.push({ passengerNumber: i, seatDesignator: "" });
+        if (
+          bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0].PaxSeats
+            .length > 0
+        ) {
+          newArray.push({
+            passengerNumber: i,
+            seatDesignator:
+              bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0]
+                .PaxSeats[i].UnitDesignator,
+          });
+        } else {
+          newArray.push({ passengerNumber: i, seatDesignator: "" });
+        }
       }
 
       setSelectedSeat(newArray);

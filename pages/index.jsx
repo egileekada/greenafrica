@@ -29,6 +29,7 @@ import SkeletonLoader from "components/SkeletonLoader";
 
 const Home = () => {
   const [showPopUp, setShow] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
   const [roundTripEnabled, setRoundTripEnabled] = useState(false);
   const dispatch = useDispatch();
   const {
@@ -42,6 +43,7 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log(Date.now());
     resetStore();
     async function checkParams() {
       const ibeQuery = new URLSearchParams(window.location.search);
@@ -49,6 +51,7 @@ const Home = () => {
       if (flightOrigin) {
         dispatch(hideWidget());
         dispatch(startSession());
+        setIsStarted(true);
       } else {
         dispatch(showWidget());
       }
@@ -57,6 +60,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    console.log(Date.now());
     async function checkSigInit() {
       const ibeQuery = new URLSearchParams(window.location.search);
       const flightOrigin = ibeQuery.get("origin");
@@ -88,7 +92,7 @@ const Home = () => {
       }
     }
     checkSigInit();
-  }, [signature]);
+  }, [signature, isStarted]);
 
   useEffect(() => {
     async function checkRoundEnabled() {

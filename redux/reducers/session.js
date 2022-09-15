@@ -16,6 +16,7 @@ import {
   GetSeatAvailabilityForBooking,
   AssignSeats,
   GetSSRAvailabilityForBooking,
+  CheckInPassengers,
 } from "services/bookingService";
 import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
@@ -68,6 +69,7 @@ const initialState = {
   sessionStateLoading: false,
   sessionStateResponse: null,
   seats: [],
+  checkInSelection: [],
 };
 
 export const sessionSlice = createSlice({
@@ -253,6 +255,12 @@ export const sessionSlice = createSlice({
         };
       }
     },
+    resetSeat: (state) => {
+      state.seats = [];
+    },
+    setCheckInSelection: (state, { payload }) => {
+      state.checkInSelection = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState); // THIS LINE
@@ -305,6 +313,8 @@ export const {
   setSessionStateLoading,
   setSessionStateResponse,
   setSeats,
+  resetSeat,
+  setCheckInSelection,
 } = sessionSlice.actions;
 export const sessionSelector = (state) => state.session;
 export default sessionSlice.reducer;
@@ -1966,6 +1976,84 @@ export const retrieveSeatAvailability =
     dispatch(setSeatResponseLoading(false));
   };
 
+export const retrieveCheckinSeatAvailability =
+  (payload) => async (dispatch, getState) => {
+    dispatch(setSeatResponseLoading(true));
+    const currentState = getState().session;
+
+    const requestPayload = {
+      header: {
+        signature: currentState.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: false,
+        contractVersion: 0,
+      },
+      getSeatAvailabilityRequestDto: {
+        getSeatAvailabilityRequest: {
+          seatAvailabilityRequest: {
+            std: currentState?.bookingResponse?.Booking?.Journeys[
+              payload.ticketIndex
+            ].Segments[0].STD,
+            stdSpecified: true,
+            departureStation:
+              currentState.bookingResponse?.Booking?.Journeys[
+                payload.ticketIndex
+              ].Segments[0].DepartureStation,
+            arrivalStation:
+              currentState.bookingResponse?.Booking?.Journeys[
+                payload.ticketIndex
+              ].Segments[0].ArrivalStation,
+            includeSeatFees: true,
+            includeSeatFeesSpecified: false,
+            seatAssignmentMode: 2,
+            seatAssignmentModeSpecified: true,
+            flightNumber:
+              currentState.bookingResponse?.Booking?.Journeys[
+                payload.ticketIndex
+              ].Segments[0].FlightDesignator.FlightNumber,
+            carrierCode:
+              currentState.bookingResponse?.Booking?.Journeys[
+                payload.ticketIndex
+              ].Segments[0].FlightDesignator.CarrierCode,
+            compressProperties: false,
+            compressPropertiesSpecified: false,
+            enforceSeatGroupRestrictions: true,
+            enforceSeatGroupRestrictionsSpecified: false,
+            passengerIDs: [0, 1],
+            passengerNumbers: [0, 1],
+            seatGroup: 1,
+            seatGroupSpecified: false,
+            seatGroupSettings: [3],
+            includePropertyLookup: true,
+            includePropertyLookupSpecified: true,
+            overrideCarrierCode: "",
+            overrideFlightNumber: "",
+            overrideOpSuffix: "",
+            overrideSTD: "0001-01-01T00:00:00",
+            overrideSTDSpecified: false,
+            overrideDepartureStation: "",
+            overrideArrivalStation: "",
+            collectedCurrencyCode: "",
+            excludeEquipmentConfiguration: false,
+            excludeEquipmentConfigurationSpecified: true,
+            feePricingMode: 0,
+            feePricingModeSpecified: true,
+            opSuffix: "",
+          },
+        },
+      },
+    };
+    try {
+      const Response = await GetSeatAvailabilityForBooking(requestPayload);
+      await dispatch(
+        setSeatAvailabilityResponse(Response.data.SeatAvailabilityResponse)
+      );
+    } catch (err) {
+      console.log("Update passenger Request error", err.response);
+    }
+    dispatch(setSeatResponseLoading(false));
+  };
+
 export const startBookingCommit = (payload) => async (dispatch, getState) => {
   dispatch(setLoading(true));
   const currentState = getState().session;
@@ -2086,102 +2174,22 @@ export const startCheckin = (payload) => async (dispatch, getState) => {
     checkInPassengersRequestDto: {
       checkInPassengersRequest: {
         checkInMultiplePassengersRequest: {
-          checkInMultiplePassengerRequestList: [
-            {
-              recordLocator:
-                currentState.bookingResponse?.Booking?.RecordLocator,
-              inventoryLegKey: {
-                carrierCode:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].FlightDesignator.CarrierCodes,
-                flightNumber:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].FlightDesignator.FlightNumber,
-                departureDate:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].STD,
-                departureDateSpecified: true,
-                departureStation:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].DepartureStation,
-                arrivalStation:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].ArrivalStation,
-              },
-              liftStatus: 1,
-              liftStatusSpecified: true,
-              bySegment: false,
-              bySegmentSpecified: true,
-              checkSameDayReturn: false,
-              checkSameDayReturnSpecified: true,
-              skipSecurityChecks: false,
-              skipSecurityChecksSpecified: true,
-              seatRequired: false,
-              seatRequiredSpecified: true,
-              retrieveBoardingZone: false,
-              retrieveBoardingZoneSpecified: true,
-              allowPartialCheckIn: false,
-              allowPartialCheckInSpecified: true,
-              otherAirlineCheckin: false,
-              otherAirlineCheckinSpecified: true,
-              checkInDestination:
-                currentState.bookingResponse?.Booking?.Journeys[
-                  payload.ticketIndex
-                ].Segments[0].ArrivalStation,
-              returnDownlineSegments: true,
-              returnDownlineSegmentsSpecified: true,
-              inventoryLegKeyDepartureDateTime:
-                currentState.bookingResponse?.Booking?.Journeys[
-                  payload.ticketIndex
-                ].Segments[0].STD,
-              inventoryLegKeyDepartureDateTimeSpecified: true,
-              processDownlineIATCI: true,
-              processDownlineIATCISpecified: true,
-              checkInPaxRequestList: [
-                {
-                  name: {
-                    title: "MR",
-                    firstName: "Taiwo",
-                    lastName: "Aiyerin",
-                  },
-                  verifiedID: false,
-                  verifiedIDSpecified: true,
-                  passengerID: 0,
-                  passengerIDSpecified: true,
-                  processAPPS: false,
-                  processAPPSSpecified: true,
-                  appsTransitType: 0,
-                  appsTransitTypeSpecified: true,
-                },
-              ],
-            },
-          ],
+          checkInMultiplePassengerRequestList: [...payload],
         },
       },
     },
   };
 
   try {
-    const Response = await AssignSeats(requestPayload);
-    await dispatch(
-      setAssignSeatResponse(Response.data.BookingUpdateResponseData)
-    );
-
-    await dispatch(
-      startBookingCommit({
-        recordLocator:
-          Response.data.BookingUpdateResponseData.Success.RecordLocator,
-      })
-    );
+    const Response = await CheckInPassengers(requestPayload);
+    // await dispatch(
+    //   setAssignSeatResponse(Response.data.BookingUpdateResponseData)
+    // );
   } catch (err) {
     notification.error({
       message: "Error",
-      description: err.response.data.BookingUpdateResponseData.Error.ErrorText,
+      description:
+        "err.response.data.BookingUpdateResponseData.Error.ErrorText",
     });
   }
   dispatch(setLoading(false));
@@ -2225,5 +2233,17 @@ export const trySaveSeat = (payload) => async (dispatch, getState) => {
   //     description: "Get Booking Details failed",
   //   });
   // }
+  dispatch(setLoading(false));
+};
+
+export const tryClearSeat = (payload) => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  await dispatch(resetSeat());
+  dispatch(setLoading(false));
+};
+
+export const saveCheckInSelection = (payload) => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  await dispatch(setCheckInSelection(...payload));
   dispatch(setLoading(false));
 };
