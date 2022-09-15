@@ -26,7 +26,6 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import PageFares from "./components/PageFares";
-// import ManagePassengerFares from "containers/Booking/components/Fares";
 
 const ManageBookings = () => {
   const router = useRouter();
@@ -35,13 +34,10 @@ const ManageBookings = () => {
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
   const { pnr } = router.query;
-  const [isRoundTrip, setIsRoundTrip] = useState(false);
 
   useEffect(() => {
     async function checkParams() {
-      // if (!signature) {
       dispatch(startSession());
-      // }
     }
     checkParams();
   }, []);
@@ -49,24 +45,16 @@ const ManageBookings = () => {
   useEffect(() => {
     async function fetchBookingDetails() {
       if (signature) {
-        if (pnr) {
+        if (router?.query?.pnr) {
           const payload = {
             pnr,
           };
           dispatch(GetBookingDetailsWithPNR(payload));
-        } else {
-          dispatch(FetchStateFromServer());
         }
       }
     }
     fetchBookingDetails();
   }, [signature, router]);
-
-  useEffect(() => {
-    if (bookingResponse) {
-      bookingResponse?.Booking?.Journeys.length > 1 && setIsRoundTrip(true);
-    }
-  }, [bookingResponse]);
 
   const TripHeader = () => {
     return (
@@ -268,7 +256,7 @@ const ManageBookings = () => {
               return (
                 <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3">
                   {_fare?.RuleNumber.toLowerCase() === "savr" && "gSaver"}
-                  {_fare?.RuleNumber.toLowerCase() === "flexi" && "gFlex"}
+                  {_fare?.RuleNumber.toLowerCase() === "flex" && "gFlex"}
                   {_fare?.RuleNumber.toLowerCase() === "clsc" && "gClassic"}
                 </p>
               );
@@ -335,7 +323,10 @@ const ManageBookings = () => {
             You made a few changes to your booking and additional charges have
             been added
           </p>
-          <button className="btn btn-primary">
+          <button
+            className="btn btn-primary"
+            onClick={() => router.push("/bookings/payment")}
+          >
             Pay ₦
             {parseInt(
               bookingResponse?.Booking?.BookingSum?.BalanceDue
@@ -356,22 +347,29 @@ const ManageBookings = () => {
               </div> */}
               <div className="ga__section__main">
                 <div className="mb-8 mt-16 xlg:mt-3">
-                  <h2 className="text-black font-bold text-2xl mb-2">
-                    Booking
-                  </h2>
-                  <p>
-                    Kindly confirm that the information below is correct before
-                    checking in
-                  </p>
+                  {bookingResponse?.Booking ? (
+                    <>
+                      <h2 className="text-black font-bold text-2xl mb-2">
+                        Booking
+                      </h2>
+                      <p>
+                        Kindly confirm that the information below is correct
+                        before checking in
+                      </p>
+                    </>
+                  ) : null}
                 </div>
 
-                {bookingResponse ? (
+                {bookingResponse?.Booking ? (
                   <section className="flex flex-col bg-white pb-24">
                     <TripHeader />
                     <TabContent />
                   </section>
-                ) : null}
+                ) : (
+                  <p className="errorText text-lg">Error occured flight</p>
+                )}
               </div>
+
               <div className="ga__section__side">
                 <IbeAdbar />
               </div>

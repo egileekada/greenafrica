@@ -6,7 +6,6 @@ import {
   CancelSSR,
 } from "services/bookingService";
 import { notification } from "antd";
-import { setPromoWidgetVisible } from "./general";
 import { PURGE } from "redux-persist";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
@@ -21,7 +20,7 @@ const initialState = {
   returnFareAvailabilityResponse: null,
   manageFlightAvailabilityLoading: false,
   manageFlightAvailabilityResponse: null,
-
+  resellLoading: false,
   goTrip: null,
   returnTrip: null,
 };
@@ -57,6 +56,10 @@ export const bookingSlice = createSlice({
       state.manageFlightAvailabilityResponse = payload;
     },
 
+    setResellLoading: (state, { payload }) => {
+      state.resellLoading = payload;
+    },
+
     setGoTrip: (state, { payload }) => {
       state.goTrip = payload;
     },
@@ -78,6 +81,7 @@ export const {
   setReturnFareAvailabilityResponse,
   setManageFlightAvailabilityLoading,
   setManageFlightAvailabilityResponse,
+  setResellLoading,
   setGoTrip,
   setReturnTrip,
 } = bookingSlice.actions;
@@ -431,7 +435,7 @@ export const fetchFlightAvailability =
   };
 
 export const ResellNewJourney = () => async (dispatch, getState) => {
-  // dispatch(setSellFlightLoading(true));
+  dispatch(setResellLoading(true));
   const currentSession = getState().session;
   const currentBooking = getState().booking;
 
@@ -447,7 +451,6 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
     currentSession?.bookingResponse?.Booking?.Passengers.filter((_pax) => {
       return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "chd";
     }).length;
-  const INFANT_COUNT = 0;
 
   const totalPaxCount =
     currentSession?.bookingResponse?.Booking?.Passengers?.length;
@@ -507,17 +510,10 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
       arrivalStation: currentBooking?.goTrip?.segment?.ArrivalStation,
       paxSSRs: [...JourneyOneSSRsExSeat],
     };
-    // JourneyOne = currentBooking?.goTrip?.journey;
     JourneyOne = {
       ...currentSession?.bookingResponse?.Booking?.Journeys[0],
       State: 0,
     };
-
-    console.log("new Journey succc", currentBooking?.goTrip?.journey);
-    console.log(
-      "old journey fail",
-      currentSession?.bookingResponse?.Booking?.Journeys[0]
-    );
   }
 
   if (currentBooking?.returnTrip) {
@@ -548,17 +544,10 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
       paxSSRs: [...JourneyTwoSSRsExSeat],
     };
 
-    // JourneyTwo = currentBooking?.returnTrip?.journey;
     JourneyTwo = {
       ...currentSession?.bookingResponse?.Booking?.Journeys[1],
       State: 0,
     };
-
-    console.log("new Journey 2 succc", currentBooking?.returnTrip?.journey);
-    console.log(
-      "old journey  2 fail",
-      currentSession?.bookingResponse?.Booking?.Journeys[1]
-    );
   }
 
   const requestPayload = {
@@ -662,15 +651,19 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
               preventRepriceSpecified: true,
               forceRefareForItineraryIntegrity: false,
               forceRefareForItineraryIntegritySpecified: true,
+              recordLocator:
+                currentSession?.bookingResponse?.Booking?.RecordLocator,
             },
           },
         },
       };
       try {
         await CancelSSR(cancelSSRRequest);
-        // window.location.assign(
-        //   `/bookings?pnr=${currentSession?.bookingResponse?.Booking?.RecordLocator}`
-        // );
+        dispatch(setGoTrip(null));
+        dispatch(setReturnTrip(null));
+        window.location.assign(
+          `/bookings?pnr=${currentSession?.bookingResponse?.Booking?.RecordLocator}`
+        );
       } catch (err) {
         notification.error({
           message: "Error",
@@ -692,5 +685,5 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
     });
   }
 
-  // dispatch(setSellFlightLoading(false));
+  dispatch(setResellLoading(false));
 };

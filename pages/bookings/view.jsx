@@ -23,7 +23,7 @@ const TripView = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const { goTrip, returnTrip, tripParams, returnParams } =
+  const { goTrip, returnTrip, tripParams, returnParams, resellLoading } =
     useSelector(bookingSelector);
 
   const onCheckChange = (e) => {
@@ -222,8 +222,9 @@ const TripView = () => {
                       checked ? "" : "opacity-50 pointer-events-none"
                     }`}
                     onClick={resellJourney}
+                    disabled={resellLoading}
                   >
-                    Continue
+                    {resellLoading ? "Saving...." : "Continue"}
                   </button>
                 </div>
                 {/* Terms */}

@@ -6,7 +6,10 @@ import {
   FetchPaymentGateways,
   InitializeGatewayPayment,
 } from "redux/reducers/payment";
-import { retrieveBookingFromState } from "redux/reducers/session";
+import {
+  retrieveBookingFromState,
+  sessionSelector,
+} from "redux/reducers/session";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonLoader from "components/SkeletonLoader";
 import PaymentMark from "assets/svgs/payment-mark.svg";
@@ -15,6 +18,9 @@ import PaymentOutline from "assets/svgs/payment-outline.svg";
 const PassengerDetails = () => {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(1);
+  const [totalFare, setTotalFare] = useState();
+
+  const { bookingState, bookingResponse } = useSelector(sessionSelector);
 
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
     useSelector(paymentSelector);
@@ -27,24 +33,33 @@ const PassengerDetails = () => {
     fetchGateways();
   }, []);
 
+  useEffect(() => {
+    async function computeTotalFare() {
+      setTotalFare(parseInt(bookingState?.BookingSum?.BalanceDue));
+    }
+    computeTotalFare();
+  }, [bookingState]);
+
   const handlePayment = async () => {
-    // if (bookingCommitResponse) {
-    //   const payload = {
-    //     customer_name: sessionContact?.firstName,
-    //     customer_email: sessionContact?.email,
-    //     amount: totalFare * 100,
-    //     pnr: bookingCommitResponse?.BookingUpdateResponseData?.Success
-    //       ?.RecordLocator,
-    //     gateway_type_id: selected,
-    //     payment_origin: "booking",
-    //   };
-    //   dispatch(InitializeGatewayPayment(payload));
-    // } else {
-    //   notification.error({
-    //     message: "Error",
-    //     description: "PNR Code Unavailable",
-    //   });
-    // }
+    if (bookingResponse) {
+      const payload = {
+        customer_name:
+          bookingResponse?.Booking?.BookingContacts[0]?.Names[0]?.FirstName,
+        customer_email:
+          bookingResponse?.Booking?.BookingContacts[0]?.EmailAddress,
+        amount: totalFare * 100,
+        pnr: bookingResponse?.Booking?.RecordLocator,
+        gateway_type_id: selected,
+        payment_origin: "booking",
+      };
+      console.log("payload", payload);
+      // dispatch(InitializeGatewayPayment(payload));
+    } else {
+      notification.error({
+        message: "Error",
+        description: "PNR Code Unavailable",
+      });
+    }
   };
 
   const onChange = (e) => {
@@ -102,7 +117,7 @@ const PassengerDetails = () => {
                                   <h6 className="mb-2 md:mb-[10px]">
                                     AMOUNT DUE
                                   </h6>
-                                  {/* <h5> ₦ {totalFare?.toLocaleString()}</h5> */}
+                                  <h5> ₦ {totalFare?.toLocaleString()}</h5>
                                 </div>
                               </div>
                             );
