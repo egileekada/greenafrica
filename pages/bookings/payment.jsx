@@ -64,13 +64,6 @@ const PassengerDetails = () => {
   };
 
   useEffect(() => {
-    async function _resetTripModified() {
-      dispatch(setTripModified(false));
-    }
-    _resetTripModified();
-  }, []);
-
-  useEffect(() => {
     async function _getBookingCommit() {
       if (bookingState) {
         dispatch(CommitBookingWithPNR(bookingState?.RecordLocator));
