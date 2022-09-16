@@ -20,6 +20,7 @@ import {
   saveReturnParams,
   bookingSelector,
 } from "redux/reducers/booking";
+import { paymentSelector } from "redux/reducers/payment";
 import { useRouter } from "next/router";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
@@ -28,11 +29,13 @@ import PageFares from "./components/PageFares";
 
 const ManageBookings = () => {
   const router = useRouter();
+  const [statePNR, setStatePnr] = useState("");
   const [selectedPaxs] = useState([]);
   const dispatch = useDispatch();
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
   const { tripModified } = useSelector(bookingSelector);
+  const { verifyManageBookingResponse } = useSelector(paymentSelector);
   const { pnr } = router.query;
 
   useEffect(() => {
@@ -46,6 +49,7 @@ const ManageBookings = () => {
     async function fetchBookingDetails() {
       if (signature) {
         if (router?.query?.pnr) {
+          setStatePnr(pnr);
           const payload = {
             pnr,
           };
@@ -345,11 +349,13 @@ const ManageBookings = () => {
             </div>
           ) : (
             <section className="ga__section relative">
-              {tripModified && (
+              {verifyManageBookingResponse &&
+              verifyManageBookingResponse?.pnr.toLowerCase() ===
+                statePNR.toLowerCase() ? (
                 <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
                   <p>Boarding pass has been emailed to test@greenafrica.net</p>
                 </div>
-              )}
+              ) : null}
               <div className="ga__section__main">
                 <div className="mb-8 mt-16 xlg:mt-3">
                   {bookingResponse?.Booking ? (

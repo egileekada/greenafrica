@@ -1496,7 +1496,7 @@ export const CommitBookingWithPNR = (pnr) => async (dispatch, getState) => {
     enableExceptionStackTrace: true,
     contractVersion: 0,
     bookingCommitRequestData: {
-      state: 0,
+      state: 2,
       recordLocator: pnr,
       paxCount: 0,
       bookingID: 0,

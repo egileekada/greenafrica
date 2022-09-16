@@ -101,8 +101,7 @@ const ManageUpdateItenary = () => {
                             );
                           }
                         )}
-                        {manageFlightAvailabilityResponse?.Schedules.length >
-                          1 && (
+                        {goTrip?.journey || returnTrip?.journey ? (
                           <div className="flex items-center">
                             <button
                               onClick={() => router.back()}
@@ -121,7 +120,7 @@ const ManageUpdateItenary = () => {
                               Continue
                             </button>
                           </div>
-                        )}
+                        ) : null}
                       </>
                     ) : (
                       <div className="flex items-center p-10">

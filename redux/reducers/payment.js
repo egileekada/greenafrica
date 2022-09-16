@@ -6,7 +6,6 @@ import {
 } from "services/paymentService";
 import { notification } from "antd";
 import { PURGE } from "redux-persist";
-import { setTripModified } from "./booking";
 
 const initialState = {
   gatewaysLoading: false,
@@ -121,7 +120,8 @@ export const VerifyManageBookingPayment = (payload) => async (dispatch) => {
 
   try {
     const Response = await VerifyPayment(payload.ref);
-    dispatch(setTripModified(true));
+    dispatch(setVerifyManageBookingResponse(Response?.data?.data));
+    console.log(Response?.data?.data);
     if (Response?.data?.data?.pnr) {
       window.location.assign(`/bookings?pnr=${Response?.data?.data?.pnr}`);
     }
