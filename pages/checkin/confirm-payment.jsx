@@ -12,8 +12,8 @@ import LogoIcon from "assets/svgs/logo.svg";
 const ConfirmTripPayment = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { signature } = useSelector(sessionSelector);
-  const { verifyPaymentLoading, verifyPaymentResponse, checkInSelection } =
+  const { signature, checkInSelection } = useSelector(sessionSelector);
+  const { verifyPaymentLoading, verifyPaymentResponse } =
     useSelector(paymentSelector);
   const [startCheckin] = useStartCheckInMutation();
   const ScrollToTop = () => {
