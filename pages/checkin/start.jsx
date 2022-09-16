@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
 
 const CheckIn = () => {
   const router = useRouter();
-  const [findBooking] = useFindBookingMutation();
+  const [findBooking, { isLoading }] = useFindBookingMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -174,9 +174,10 @@ const CheckIn = () => {
                   <div className="my-3 lg:ml-auto">
                     <button
                       type="submit"
+                      disabled={isLoading}
                       className="btn btn-primary font-bold h-full block w-full"
                     >
-                      Confirm
+                      {isLoading ? "Processing.." : "Confirm"}
                     </button>
                   </div>
                 </div>

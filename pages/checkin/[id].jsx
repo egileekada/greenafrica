@@ -332,8 +332,7 @@ const CheckInDetails = () => {
                                 <h5 className="flex items-center text-center">
                                   <span>
                                     {
-                                      Journey.Segments[0].PaxSeats[pIndex]
-                                        .UnitDesignator
+                                      Journey.Segments[0].PaxSeats[pIndex]?.UnitDesignator
                                     }
                                   </span>
                                 </h5>

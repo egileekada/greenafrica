@@ -15,7 +15,7 @@ const ConfirmTripPayment = () => {
   const { signature } = useSelector(sessionSelector);
   const { verifyPaymentLoading, verifyPaymentResponse, checkInSelection } =
     useSelector(paymentSelector);
-
+  const [startCheckin] = useStartCheckInMutation();
   const ScrollToTop = () => {
     window.scrollTo({
       top: 0,

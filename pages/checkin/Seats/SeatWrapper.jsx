@@ -51,7 +51,10 @@ const SeatWrapper = ({ ticketIndex, setShow }) => {
                     e.PassengerNumber === passenger.PassengerNumber &&
                     e.journey === ticketIndex
                 )[0] && (
-                  <div className="flex items-center mb-4" key={index}>
+                  <div
+                    className="flex items-center mb-4"
+                    key={index - Math.random()}
+                  >
                     <input
                       id={`passenger-${index}-${ticketIndex}`}
                       type="radio"
@@ -78,8 +81,8 @@ const SeatWrapper = ({ ticketIndex, setShow }) => {
                             {passenger.Names[0].LastName}
                           </h5>
                           <h6 className="text-base text-[#261F5E] font-title">
-                            {selectedSeat[index]?.seatDesignator.length > 0
-                              ? `Seat Number: ${selectedSeat[index].seatDesignator}`
+                            {selectedSeat[index]?.seatDesignator?.length > 0
+                              ? `Seat Number: ${selectedSeat[index]?.seatDesignator}`
                               : "No Seat Selected"}
                           </h6>
                         </div>
