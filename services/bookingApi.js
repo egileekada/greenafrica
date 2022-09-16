@@ -154,7 +154,8 @@ export const bookingApi = createApi({
     }),
     bookingState: builder.mutation({
       query: () => ({
-        url: "",
+        url: "/Booking/GetBookingFromState",
+        method: "POST",
         body: {
           header: {
             signature: store.getState().session.signature,
@@ -168,6 +169,7 @@ export const bookingApi = createApi({
     getBooking: builder.mutation({
       query: (pnr) => ({
         url: "Booking/GetBooking",
+        method: "POST",
         body: {
           header: {
             signature: store.getState().session.signature,
