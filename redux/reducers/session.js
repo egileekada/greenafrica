@@ -1486,6 +1486,48 @@ export const GetBookingCommit = () => async (dispatch, getState) => {
   dispatch(setBookingCommitLoading(false));
 };
 
+export const CommitBookingWithPNR = (pnr) => async (dispatch, getState) => {
+  dispatch(setBookingCommitLoading(true));
+  const currentState = getState().session;
+
+  const requestPayload = {
+    signature: currentState.signature,
+    messageContractVersion: "",
+    enableExceptionStackTrace: true,
+    contractVersion: 0,
+    bookingCommitRequestData: {
+      state: 0,
+      recordLocator: pnr,
+      paxCount: 0,
+      bookingID: 0,
+      bookingParentID: 0,
+      restrictionOverride: false,
+      changeHoldDateTime: false,
+      changeHoldDateTimeSpecified: false,
+      waiveNameChangeFee: false,
+      waiveNameChangeFeeSpecified: true,
+      waivePenaltyFee: false,
+      waivePenaltyFeeSpecified: true,
+      waiveSpoilageFee: false,
+      waiveSpoilageFeeSpecified: true,
+      distributeToContacts: true,
+      distributeToContactsSpecified: true,
+    },
+  };
+
+  try {
+    const Response = await BookingCommit(requestPayload);
+    await dispatch(setBookingCommitResponse(Response.data));
+    await dispatch(FetchStateFromServer());
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Get Booking failed",
+    });
+  }
+  dispatch(setBookingCommitLoading(false));
+};
+
 export const GetBookingDetails = () => async (dispatch, getState) => {
   dispatch(setBookingResponseLoading(true));
   const currentState = getState().session;

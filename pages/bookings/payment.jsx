@@ -9,8 +9,9 @@ import {
 import {
   retrieveBookingFromState,
   sessionSelector,
+  CommitBookingWithPNR,
 } from "redux/reducers/session";
-import { bookingSelector, setTripModified } from "redux/reducers/booking";
+import { setTripModified } from "redux/reducers/booking";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonLoader from "components/SkeletonLoader";
 import PaymentMark from "assets/svgs/payment-mark.svg";
@@ -29,7 +30,7 @@ const PassengerDetails = () => {
   const [loading, setLoading] = useState(false);
   const [totalFare, setTotalFare] = useState();
 
-  const { bookingState } = useSelector(sessionSelector);
+  const { bookingState, bookingCommitLoading } = useSelector(sessionSelector);
   const { gatewaysLoading, gatewaysResponse, verifyManageBookingLoading } =
     useSelector(paymentSelector);
 
@@ -46,7 +47,6 @@ const PassengerDetails = () => {
   const [initPayment] = useInitiatePaymentMutation();
 
   const onSuccess = (reference) => {
-    console.log("success", reference);
     if (
       reference?.status.toLowerCase() === "success" &&
       reference?.message.toLowerCase() === "approved"
@@ -62,6 +62,22 @@ const PassengerDetails = () => {
   const onClose = () => {
     console.log("closed");
   };
+
+  useEffect(() => {
+    async function _resetTripModified() {
+      dispatch(setTripModified(false));
+    }
+    _resetTripModified();
+  }, []);
+
+  useEffect(() => {
+    async function _getBookingCommit() {
+      if (bookingState) {
+        dispatch(CommitBookingWithPNR(bookingState?.RecordLocator));
+      }
+    }
+    _getBookingCommit();
+  }, [bookingState]);
 
   useEffect(() => {
     async function fetchGateways() {
@@ -167,6 +183,7 @@ const PassengerDetails = () => {
             </h2>
 
             <section className="flex flex-col rounded-xl pb-12">
+              {bookingCommitLoading && <p>Saving booking details...</p>}
               {gatewaysLoading || verifyManageBookingLoading ? (
                 <section className="py-10 pl-12">
                   <SkeletonLoader />
