@@ -307,9 +307,16 @@ const CheckInDetails = () => {
                             <div className="flex items-center w-full">
                               <label
                                 htmlFor={`passenger-${index}-${pIndex}`}
-                                className="ml-2 text-lg font-semibold capitalize w-full flex items-center"
+                                className={`${
+                                  Journey?.Segments[0]?.PaxSegments[pIndex]
+                                    ?.LiftStatus === 1 && "text-gray-300"
+                                } ml-2 text-lg font-semibold capitalize w-full flex items-center`}
                               >
                                 <input
+                                  disabled={
+                                    Journey?.Segments[0]?.PaxSegments[pIndex]
+                                      .LiftStatus
+                                  }
                                   className="w-5 h-5 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2 mr-3"
                                   type="checkbox"
                                   id={`passenger-${index}-${pIndex}`}
@@ -332,7 +339,11 @@ const CheckInDetails = () => {
                                 <h5 className="flex items-center text-center">
                                   <span>
                                     {
-                                      Journey.Segments[0].PaxSeats[pIndex]?.UnitDesignator
+                                      Journey.Segments[0].PaxSeats.filter(
+                                        (seat) =>
+                                          seat.PassengerNumber ==
+                                          passenger.PassengerNumber
+                                      )[0]?.UnitDesignator
                                     }
                                   </span>
                                 </h5>
