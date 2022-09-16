@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { format, formatDistanceStrict } from "date-fns";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
@@ -20,8 +19,9 @@ import {
   sessionSelector,
   startSession,
   retrieveBooking,
-  startCheckin,
   saveCheckInSelection,
+  saveCheckInPassengerSelection,
+  resetSelectedPassengers,
 } from "redux/reducers/session";
 
 const CheckInDetails = () => {
@@ -45,8 +45,7 @@ const CheckInDetails = () => {
       async function initSession() {
         if (id) {
           dispatch(startSession());
-        } else {
-          console.log("Something went wrong");
+          dispatch(resetSelectedPassengers());
         }
       }
       initSession();
@@ -62,13 +61,14 @@ const CheckInDetails = () => {
     getBooking();
   }, [signature]);
 
-  const PassengerBags = (_passenger) => {
-    const _Baggages = _passenger.PassengerFees.filter((pax) => {
-      return (
-        pax.FeeCode === "XBAG20" ||
-        pax.FeeCode === "XBAG15" ||
-        pax.FeeCode === "XBAG10"
-      );
+  const PassengerBags = (_passenger, PassengerNumber) => {
+    const _Baggages = _passenger.filter((pax) => {
+      if (pax.PassengerNumber == PassengerNumber)
+        return (
+          pax.FeeCode === "XBAG20" ||
+          pax.FeeCode === "XBAG15" ||
+          pax.FeeCode === "XBAG10"
+        );
     });
 
     return (
@@ -118,6 +118,8 @@ const CheckInDetails = () => {
   };
 
   const tryCheckIn = () => {
+    dispatch(saveCheckInPassengerSelection(passengers));
+
     const newData = bookingResponse?.Booking?.Journeys.map((Journey, index) => {
       return {
         recordLocator: bookingResponse?.Booking?.RecordLocator,
@@ -179,6 +181,7 @@ const CheckInDetails = () => {
     });
 
     dispatch(saveCheckInSelection(newData));
+
     router.push("/checkin/seat-selection");
   };
 
@@ -212,7 +215,7 @@ const CheckInDetails = () => {
                 </section>
 
                 {bookingResponse?.Booking?.Journeys.map((Journey, index) => (
-                  <>
+                  <div key={index}>
                     <div className="mx-6">
                       <h3 className="title-text">
                         DEPARTURE:{" "}
@@ -256,7 +259,7 @@ const CheckInDetails = () => {
                             <p className="tripCity">
                               {!locationLoading &&
                                 resolveAbbreviation(
-                                  Journey?.Segments[0]?.ArrivalStation
+                                  Journey?.Segments[0]?.DepartureStation
                                 )}
                             </p>
                           </div>
@@ -276,7 +279,7 @@ const CheckInDetails = () => {
                             <p className="tripCity right-text">
                               {!locationLoading &&
                                 resolveAbbreviation(
-                                  Journey?.Segments[0]?.DepartureStation
+                                  Journey?.Segments[0]?.ArrivalStation
                                 )}
                             </p>
                           </div>
@@ -301,13 +304,13 @@ const CheckInDetails = () => {
                           key={pIndex}
                         >
                           <div className="md:flex bordered p-4">
-                            <div class="flex items-center w-full">
+                            <div className="flex items-center w-full">
                               <label
                                 htmlFor={`passenger-${index}-${pIndex}`}
-                                class="ml-2 text-lg font-semibold capitalize w-full flex items-center"
+                                className="ml-2 text-lg font-semibold capitalize w-full flex items-center"
                               >
                                 <input
-                                  class="w-5 h-5 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2 mr-3"
+                                  className="w-5 h-5 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2 mr-3"
                                   type="checkbox"
                                   id={`passenger-${index}-${pIndex}`}
                                   value={passenger}
@@ -333,29 +336,26 @@ const CheckInDetails = () => {
                                         .UnitDesignator
                                     }
                                   </span>
-                                  {/* <Link href={`/checkin/seat-selection/?`}>
-                                    <button className="btn btn-outline ml-4">
-                                      Edit
-                                    </button>
-                                  </Link> */}
                                 </h5>
                               ) : (
                                 <h5 className="flex items-center">
                                   <span>None</span>
-                                  {/* <Link href={`/checkin/seat-selection/?`}>
-                                    <button className="btn btn-outline ml-4">
-                                      Add
-                                    </button>
-                                  </Link> */}
                                 </h5>
                               )}
                             </div>
-                            {PassengerBags(passenger)}
+                            {Journey.Segments[0].PaxSSRs.length > 0 && (
+                              <>
+                                {PassengerBags(
+                                  Journey.Segments[0].PaxSSRs,
+                                  passenger.PassengerNumber
+                                )}
+                              </>
+                            )}
                           </div>
                         </section>
                       )
                     )}
-                  </>
+                  </div>
                 ))}
                 {/* Checkin Info*/}
                 <div className="flex mx-6 mt-5">

@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import { notification } from "antd";
 import { useRouter } from "next/router";
 import { format } from "date-fns";
@@ -37,10 +36,8 @@ const SeatSelection = () => {
   const [showPopUp, setShow] = useState(false);
   const [ticketIndex, setTicketIndex] = useState(0);
   const [showEmergency, setEmergency] = useState(false);
-  const [pasengerState, setPassengerState] = useState(null);
-  const [pasengerNumber, setPasengerNumber] = useState(null);
 
-  const { signature, seatAvailability, isLoading, bookingResponse, seats } =
+  const { signature, isLoading, bookingResponse, seats } =
     useSelector(sessionSelector);
 
   const { TabPane } = Tabs;
@@ -69,7 +66,6 @@ const SeatSelection = () => {
     await assignUserseat()
       .unwrap()
       .then((data) => {
-        console.log(data);
         notification.success({
           message: "Success",
           description: "Seat Assignment successful",
@@ -169,9 +165,6 @@ const SeatSelection = () => {
                 </Tabs>
               </section>
             </div>
-            {/* <div className="ga__section__side">
-              <IbeAdbar />
-            </div> */}
           </section>
         </section>
 

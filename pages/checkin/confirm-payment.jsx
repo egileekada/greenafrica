@@ -6,13 +6,14 @@ import { paymentSelector, VerifyGatewayPayment } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
 import { useRouter } from "next/router";
 import { sessionSelector, startSession } from "redux/reducers/session";
+import { useStartCheckInMutation } from "services/bookingApi";
 import LogoIcon from "assets/svgs/logo.svg";
 
 const ConfirmTripPayment = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { signature } = useSelector(sessionSelector);
-  const { verifyPaymentLoading, verifyPaymentResponse } =
+  const { verifyPaymentLoading, verifyPaymentResponse, checkInSelection } =
     useSelector(paymentSelector);
 
   const ScrollToTop = () => {
@@ -47,8 +48,14 @@ const ConfirmTripPayment = () => {
     async function _checkVerifyPayment() {
       if (verifyPaymentResponse) {
         dispatch(startSession());
+
         if (signature) {
-          router.push("/checkin/confirm");
+          startCheckin(checkInSelection)
+            .unwrap()
+            .then((data) => {
+              router.push("/checkin/confirm");
+            })
+            .catch((error) => console.log(error));
         }
       }
     }

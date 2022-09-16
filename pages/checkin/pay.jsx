@@ -22,12 +22,7 @@ import { useStartCheckInMutation } from "services/bookingApi";
 const CheckinPayment = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const {
-    bookingCommitLoading,
-    bookingResponse,
-    bookingState,
-    checkInSelection,
-  } = useSelector(sessionSelector);
+  const { bookingCommitLoading, bookingState } = useSelector(sessionSelector);
 
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
     useSelector(paymentSelector);
@@ -43,18 +38,11 @@ const CheckinPayment = () => {
   const handleFlutterPayment = useFlutterwave(config);
 
   const [initPayment] = useInitiatePaymentMutation();
-  const [startCheckin] = useStartCheckInMutation();
   const [totalFare, setTotalFare] = useState();
   const [selected, setSelected] = useState(1);
 
   const onSuccess = (reference) => {
-    console.log(reference);
-    startCheckin(checkInSelection)
-      .unwrap()
-      .then((data) => {
-        window.location.assign(reference?.redirecturl);
-      })
-      .catch((error) => console.log(error));
+    window.location.assign(reference?.redirecturl);
   };
 
   const onClose = () => {

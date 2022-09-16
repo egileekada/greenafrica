@@ -48,7 +48,6 @@ const PlaneSeats = forwardRef(
     const [selected, setSelected] = useState(0);
 
     const setSeat = async (seat) => {
-      console.log(ticketIndex);
       //TODO pass journey type to this component
       //TODO watch for situation where not all users select seat
 
@@ -289,8 +288,6 @@ const PlaneSeats = forwardRef(
     };
 
     const mapSeatSelection = () => {
-      console.log("hi");
-      console.log(pasengerCount);
       let i = 0;
       const newArray = [];
       for (i = 0; i < pasengerCount; i++) {
