@@ -27,8 +27,7 @@ const CheckInDetails = () => {
   const [initGetBooking, { isLoading, error, isError }] =
     useGetBookingMutation();
 
-  const { bookingResponseLoading, bookingResponse, signature } =
-    useSelector(sessionSelector);
+  const { bookingResponse, bookingState } = useSelector(sessionSelector);
 
   const { verifyPaymentResponse } = useSelector(paymentSelector);
 
@@ -61,7 +60,9 @@ const CheckInDetails = () => {
   //Don't re work - it currently breaks code
   useEffect(() => {
     async function fetchBookingDetails() {
-      initGetBooking(verifyPaymentResponse?.data?.pnr)
+      initGetBooking(
+        verifyPaymentResponse?.data?.pnr || bookingState.RecordLocator
+      )
         .unwrap()
         .then((data) => {})
         .catch((error) => console.log(error));
