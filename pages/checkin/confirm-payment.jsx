@@ -2,20 +2,24 @@
 import { useEffect } from "react";
 import BaseLayout from "layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
-import { paymentSelector, VerifyGatewayPayment } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
 import { useRouter } from "next/router";
 import { sessionSelector, startSession } from "redux/reducers/session";
 import { useStartCheckInMutation } from "services/bookingApi";
+
+import { useVerifyPaymentQuery } from "services/widgetApi";
 import LogoIcon from "assets/svgs/logo.svg";
 
 const ConfirmTripPayment = () => {
   const router = useRouter();
+
   const dispatch = useDispatch();
-  const { signature, checkInSelection } = useSelector(sessionSelector);
-  const { verifyPaymentLoading, verifyPaymentResponse } =
-    useSelector(paymentSelector);
+
+  const { checkInSelection } = useSelector(sessionSelector);
+
   const [startCheckin] = useStartCheckInMutation();
+  const [startVerification, { isLoading }] = useVerifyPaymentQuery();
+
   const ScrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -29,6 +33,7 @@ const ConfirmTripPayment = () => {
 
   useEffect(() => {
     async function redirectFromGateway() {
+      dispatch(startSession());
       const paymentQuery = new URLSearchParams(window.location.search);
 
       const paystackRef = paymentQuery.get("reference");
@@ -36,7 +41,13 @@ const ConfirmTripPayment = () => {
         const payload = {
           ref: paystackRef,
         };
-        dispatch(VerifyGatewayPayment(payload));
+
+        startVerification(payload)
+          .unwrap()
+          .then((data) => {
+            triggerCheckin(data?.data);
+          })
+          .catch((error) => console.log(error));
       } else {
         router.push("/");
       }
@@ -44,23 +55,20 @@ const ConfirmTripPayment = () => {
     redirectFromGateway();
   }, []);
 
-  useEffect(() => {
-    async function _checkVerifyPayment() {
-      if (verifyPaymentResponse) {
-        dispatch(startSession());
-
-        if (signature) {
-          startCheckin(checkInSelection)
-            .unwrap()
-            .then((data) => {
-              router.push("/checkin/confirm");
-            })
-            .catch((error) => console.log(error));
-        }
-      }
-    }
-    _checkVerifyPayment();
-  }, [verifyPaymentResponse, signature]);
+  const triggerCheckin = (paymentData) => {
+    startCheckin(checkInSelection)
+      .unwrap()
+      .then((data) => {
+        router.push(
+          {
+            pathname: "/checkin/confirm",
+            query: { pnr: paymentData?.data?.pnr },
+          },
+          "/checkin/confirm"
+        );
+      })
+      .catch((error) => console.error(error));
+  };
 
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
@@ -76,7 +84,7 @@ const ConfirmTripPayment = () => {
         </button>
       </nav>
       <section className="w-full">
-        {verifyPaymentLoading ? (
+        {isLoading ? (
           <section className="py-32 lg:py-12 px-12">
             <Spinner />
           </section>

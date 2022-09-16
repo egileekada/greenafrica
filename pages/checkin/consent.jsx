@@ -20,7 +20,7 @@ const Consent = () => {
   }, []);
 
   const triggerCheck = () => {
-    if (parseInt(bookingState?.BookingSum?.BalanceDue)) {
+    if (parseInt(bookingState?.BookingSum?.BalanceDue) > 0) {
       router.push("/checkin/pay");
     } else {
       startCheckin(checkInSelection)

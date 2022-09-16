@@ -97,7 +97,7 @@ const SeatSelection = () => {
     if (parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0) {
       router.push("/checkin/pay");
     } else {
-      router.push("/checkin/confirm");
+      router.push("/checkin/consent");
     }
   };
 

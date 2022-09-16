@@ -36,6 +36,9 @@ export const widgetApi = createApi({
         body,
       }),
     }),
+    verifyPayment: builder.query({
+      query: (reference) => `payments/verify/${reference}`,
+    }),
   }),
 });
 
@@ -51,5 +54,6 @@ export const {
   useGetSalutationsQuery,
   useGetSpecialAssistancesQuery,
   useGetFareconfigsQuery,
-  useInitiatePaymentMutation
+  useInitiatePaymentMutation,
+  useVerifyPaymentQuery,
 } = widgetApi;
