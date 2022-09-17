@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import { paymentSelector } from "redux/reducers/payment";
 
-const CheckInDetails = (props) => {
+const CheckInDetails = () => {
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   const [initGetBooking, { isLoading, error, isError, data: bookingData }] =
@@ -58,9 +58,7 @@ const CheckInDetails = (props) => {
 
   useEffect(() => {
     async function fetchBookingDetails() {
-      initGetBooking(
-        props.router.query.pnr || bookingResponse?.Booking?.RecordLocator
-      )
+      initGetBooking(bookingResponse?.Booking?.RecordLocator)
         .unwrap()
         .then((data) => {})
         .catch((error) => console.log(error));
