@@ -43,7 +43,6 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(Date.now());
     resetStore();
     async function checkParams() {
       const ibeQuery = new URLSearchParams(window.location.search);

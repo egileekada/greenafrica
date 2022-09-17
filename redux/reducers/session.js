@@ -71,6 +71,7 @@ const initialState = {
   sessionStateResponse:bookingState,
   seats: [],
   checkInSelection: [],
+  selectedPassengers: [],
 };
 
 export const sessionSlice = createSlice({
@@ -260,7 +261,20 @@ export const sessionSlice = createSlice({
       state.seats = [];
     },
     setCheckInSelection: (state, { payload }) => {
+      // return {
+      //   ...state,
+      //   checkInSelection: state.checkInSelection.concat(payload),
+      // };
       state.checkInSelection = payload;
+    },
+    setSelectedPassengers: (state, { payload }) => {
+      return {
+        ...state,
+        selectedPassengers: state.selectedPassengers.concat(payload),
+      };
+    },
+    resetSelectedPassengers: (state) => {
+      state.selectedPassengers = [];
     },
   },
   extraReducers: (builder) => {
@@ -315,7 +329,9 @@ export const {
   setSessionStateResponse,
   setSeats,
   resetSeat,
+  resetSelectedPassengers,
   setCheckInSelection,
+  setSelectedPassengers,
 } = sessionSlice.actions;
 export const sessionSelector = (state) => state.session;
 export default sessionSlice.reducer;
@@ -2287,6 +2303,13 @@ export const tryClearSeat = (payload) => async (dispatch, getState) => {
 
 export const saveCheckInSelection = (payload) => async (dispatch, getState) => {
   dispatch(setLoading(true));
-  await dispatch(setCheckInSelection(...payload));
+  await dispatch(setCheckInSelection(payload));
   dispatch(setLoading(false));
 };
+
+export const saveCheckInPassengerSelection =
+  (payload) => async (dispatch, getState) => {
+    dispatch(setLoading(true));
+    await dispatch(setSelectedPassengers(payload));
+    dispatch(setLoading(false));
+  };

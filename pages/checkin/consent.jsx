@@ -12,7 +12,7 @@ import { useStartCheckInMutation } from "services/bookingApi";
 const Consent = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { bookingState } = useSelector(sessionSelector);
+  const { bookingState, checkInSelection } = useSelector(sessionSelector);
   const [startCheckin] = useStartCheckInMutation();
 
   useEffect(() => {
@@ -20,10 +20,10 @@ const Consent = () => {
   }, []);
 
   const triggerCheck = () => {
-    if (parseInt(bookingState?.BookingSum?.BalanceDue)) {
+    if (parseInt(bookingState?.BookingSum?.BalanceDue) > 0) {
       router.push("/checkin/pay");
     } else {
-      startCheckin()
+      startCheckin(checkInSelection)
         .unwrap()
         .then((data) => {
           router.push("/checkin/confirm");

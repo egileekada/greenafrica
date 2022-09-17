@@ -48,7 +48,6 @@ const PlaneSeats = forwardRef(
     const [selected, setSelected] = useState(0);
 
     const setSeat = async (seat) => {
-      console.log(ticketIndex);
       //TODO pass journey type to this component
       //TODO watch for situation where not all users select seat
 
@@ -289,8 +288,6 @@ const PlaneSeats = forwardRef(
     };
 
     const mapSeatSelection = () => {
-      console.log("hi");
-      console.log(pasengerCount);
       let i = 0;
       const newArray = [];
       for (i = 0; i < pasengerCount; i++) {
@@ -302,7 +299,7 @@ const PlaneSeats = forwardRef(
             passengerNumber: i,
             seatDesignator:
               bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0]
-                .PaxSeats[i].UnitDesignator,
+                .PaxSeats[i]?.UnitDesignator,
           });
         } else {
           newArray.push({ passengerNumber: i, seatDesignator: "" });
@@ -540,7 +537,7 @@ const PlaneSeats = forwardRef(
 
                   {!isLoading &&
                     legend?.data.items.map((legend, index) => (
-                      <div className="seats__legend__item" key={index}>
+                      <div className="seats__legend__item" key={index * Math.random()}>
                         <figure>
                           <div
                             className={`eat-box bg-[${legend.color_code}]`}

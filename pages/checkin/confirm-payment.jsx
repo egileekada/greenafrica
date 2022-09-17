@@ -1,19 +1,37 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import BaseLayout from "layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
-import { paymentSelector, VerifyGatewayPayment } from "redux/reducers/payment";
-import Spinner from "components/Spinner";
 import { useRouter } from "next/router";
 import { sessionSelector, startSession } from "redux/reducers/session";
+import { useStartCheckInMutation } from "services/bookingApi";
+
+import { useVerifyPaymentQuery } from "services/widgetApi";
 import LogoIcon from "assets/svgs/logo.svg";
+import SkeletonLoader from "components/SkeletonLoader";
+import Spinner from "components/Spinner";
 
 const ConfirmTripPayment = () => {
   const router = useRouter();
+  let statusRef = useRef(true);
   const dispatch = useDispatch();
-  const { signature } = useSelector(sessionSelector);
-  const { verifyPaymentLoading, verifyPaymentResponse } =
-    useSelector(paymentSelector);
+
+  const [skip, setSkip] = useState(true);
+
+  const paymentQuery = new URLSearchParams(window.location.search);
+
+  const paystackRef = paymentQuery.get("reference");
+
+  const { checkInSelection } = useSelector(sessionSelector);
+
+  const [startCheckin] = useStartCheckInMutation();
+
+  const { data, error, isLoading, isSuccess } = useVerifyPaymentQuery(
+    paystackRef,
+    {
+      skip,
+    }
+  );
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -28,32 +46,29 @@ const ConfirmTripPayment = () => {
 
   useEffect(() => {
     async function redirectFromGateway() {
-      const paymentQuery = new URLSearchParams(window.location.search);
-
-      const paystackRef = paymentQuery.get("reference");
-      if (paystackRef && paystackRef.length > 0) {
-        const payload = {
-          ref: paystackRef,
-        };
-        dispatch(VerifyGatewayPayment(payload));
-      } else {
-        router.push("/");
-      }
+      dispatch(startSession());
+      setSkip(false);
     }
     redirectFromGateway();
   }, []);
 
   useEffect(() => {
-    async function _checkVerifyPayment() {
-      if (verifyPaymentResponse) {
-        dispatch(startSession());
-        if (signature) {
-          router.push("/checkin/confirm");
-        }
-      }
+    if (!statusRef.current) {
+      triggerCheckin(data?.data);
     }
-    _checkVerifyPayment();
-  }, [verifyPaymentResponse, signature]);
+    return () => {
+      statusRef.current = false;
+    };
+  }, [isSuccess]);
+
+  const triggerCheckin = () => {
+    startCheckin(checkInSelection)
+      .unwrap()
+      .then((data) => {
+        router.push("/checkin/confirm");
+      })
+      .catch((error) => console.error(error));
+  };
 
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
@@ -69,13 +84,19 @@ const ConfirmTripPayment = () => {
         </button>
       </nav>
       <section className="w-full">
-        {verifyPaymentLoading ? (
+        {isLoading ? (
           <section className="py-32 lg:py-12 px-12">
-            <Spinner />
+            <SkeletonLoader />
+            <SkeletonLoader />
+            <SkeletonLoader />
           </section>
         ) : (
           <section className="py-32 lg:py-12 px-12">
-            <h2>Redirecting</h2>
+            <div className="text-center">
+              <h2>Redirecting</h2>
+            </div>
+            <Spinner />
+            <SkeletonLoader />
           </section>
         )}
       </section>

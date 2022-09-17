@@ -68,7 +68,7 @@ export const bookingApi = createApi({
           checkInPassengersRequestDto: {
             checkInPassengersRequest: {
               checkInMultiplePassengersRequest: {
-                checkInMultiplePassengerRequestList: [body],
+                checkInMultiplePassengerRequestList: [...body],
               },
             },
           },
@@ -154,13 +154,37 @@ export const bookingApi = createApi({
     }),
     bookingState: builder.mutation({
       query: () => ({
-        url: "",
+        url: "/Booking/GetBookingFromState",
+        method: "POST",
         body: {
           header: {
             signature: store.getState().session.signature,
             messageContractVersion: "",
             enableExceptionStackTrace: false,
             contractVersion: 0,
+          },
+        },
+      }),
+    }),
+    getBooking: builder.mutation({
+      query: (pnr) => ({
+        url: "Booking/GetBooking",
+        method: "POST",
+        body: {
+          header: {
+            signature: store.getState().session.signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: false,
+            contractVersion: 0,
+          },
+          getBookingRequestDto: {
+            getBookingRequestData: {
+              getBookingBy: 0,
+              getBookingBySpecified: true,
+              getByRecordLocator: {
+                recordLocator: pnr,
+              },
+            },
           },
         },
       }),
@@ -177,4 +201,5 @@ export const {
   useTryAssignSeatMutation,
   useBookingCommitMutation,
   useBookingStateMutation,
+  useGetBookingMutation,
 } = bookingApi;

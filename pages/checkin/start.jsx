@@ -7,6 +7,7 @@ import { notification } from "antd";
 import { useDispatch } from "react-redux";
 import { useFindBookingMutation } from "services/bookingApi";
 import { startSession, retrieveBooking } from "redux/reducers/session";
+import { resetStore } from "redux/store";
 
 const validationSchema = Yup.object().shape({
   pnr: Yup.string().required("Required"),
@@ -17,10 +18,11 @@ const validationSchema = Yup.object().shape({
 
 const CheckIn = () => {
   const router = useRouter();
-  const [findBooking] = useFindBookingMutation();
+  const [findBooking, { isLoading }] = useFindBookingMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    resetStore();
     dispatch(startSession());
   }, []);
 
@@ -116,7 +118,7 @@ const CheckIn = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
                   <div className="my-3 col-span-2">
                     <div
-                      class={`${
+                      className={`${
                         formik.touched.pnr && formik.errors.pnr
                           ? "border border-[#de0150]"
                           : ""
@@ -125,7 +127,7 @@ const CheckIn = () => {
                       <input
                         type="text"
                         id="pnr"
-                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent  appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent  appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=" "
                         name="pnr"
                         autoFocus
@@ -134,8 +136,8 @@ const CheckIn = () => {
                         onBlur={formik.handleBlur}
                       />
                       <label
-                        for="pnr"
-                        class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 -z-10 origin-[0] peer-focus:left-4 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 uppercase"
+                        htmlFor="pnr"
+                        className="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 -z-10 origin-[0] peer-focus:left-4 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 uppercase"
                       >
                         Booking Reference
                       </label>
@@ -144,7 +146,7 @@ const CheckIn = () => {
 
                   <div className="my-3 col-span-2">
                     <div
-                      class={`${
+                      className={`${
                         formik.touched.email && formik.errors.email
                           ? "border border-[#de0150]"
                           : ""
@@ -153,7 +155,7 @@ const CheckIn = () => {
                       <input
                         type="email"
                         id="email"
-                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent  appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent  appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=" "
                         name="email"
                         onChange={formik.handleChange}
@@ -161,8 +163,8 @@ const CheckIn = () => {
                         value={formik.values.email}
                       />
                       <label
-                        for="email"
-                        class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 -z-10 origin-[0] peer-focus:left-4 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 uppercase"
+                        htmlFor="email"
+                        className="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 -z-10 origin-[0] peer-focus:left-4 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 uppercase"
                       >
                         Email
                       </label>
@@ -172,9 +174,10 @@ const CheckIn = () => {
                   <div className="my-3 lg:ml-auto">
                     <button
                       type="submit"
+                      disabled={isLoading}
                       className="btn btn-primary font-bold h-full block w-full"
                     >
-                      Confirm
+                      {isLoading ? "Processing.." : "Confirm"}
                     </button>
                   </div>
                 </div>
