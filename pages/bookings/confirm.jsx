@@ -25,7 +25,6 @@ const ConfirmManageBooking = () => {
   const dispatch = useDispatch();
   const { sessionStateLoading, sessionStateResponse, signature } =
     useSelector(sessionSelector);
-  const { tripModified } = useSelector(bookingSelector);
 
   useEffect(() => {
     async function fetchBookingDetails() {

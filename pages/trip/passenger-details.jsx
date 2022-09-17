@@ -77,7 +77,6 @@ const PassengerDetails = () => {
       if (sessionReturnSSRs && sessionReturnSSRs.length > 0) {
         setReturnSSRs(sessionReturnSSRs);
       }
-      // dispatch(CancelSSRs(sessionSSRs));
       dispatch(CancelSSRs());
     }
     checkSessionSSRs();

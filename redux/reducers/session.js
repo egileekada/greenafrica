@@ -23,7 +23,7 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
-import { bookingResponse } from "./data";
+import { bookingState} from "./data";
 
 const initialState = {
   isLoading: false,
@@ -68,6 +68,7 @@ const initialState = {
   bookingState: null,
   sessionStateLoading: false,
   sessionStateResponse: null,
+  sessionStateResponse:bookingState,
   seats: [],
   checkInSelection: [],
 };

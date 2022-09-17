@@ -24,24 +24,25 @@ const PassengerAccordion = ({ children, passenger }) => {
     );
   };
 
-  const _passengerName = `${passenger?.firstName}  ${passenger?.lastName} `;
+  const _passengerName = `${passenger?.Names[0]?.FirstName}  ${passenger?.Names[0]?.LastName} `;
 
   const _passengerType =
-    passenger?.type === "ADT"
+    passenger?.PassengerTypeInfo?.PaxType === "ADT"
       ? "ADULT"
-      : passenger?.type === "CHD"
+      : passenger?.PassengerTypeInfo?.PaxType === "CHD"
       ? "CHILD"
       : "INFANT";
 
   return (
-    <section className="basis-full md:basis-[45%] flex flex-col">
+    <section className="basis-full md:basis-[45%] flex flex-col bg-white mb-8 rounded-md">
       <button
-        className={`py-7 flex items-center justify-between w-full px-10 border-b-[1px] border-b-faqss`}
+        className={`py-7 flex items-center justify-between w-full px-10`}
         onClick={toggleAccordion}
       >
         <div className="flex flex-col">
           <p className={`inline-block title-text mb-2 text-[12px]`}>
-            {_passengerType} {passenger?.typeCount}
+            {_passengerType}
+            {/* {passenger?.typeCount} */}
           </p>
           <p
             className={`inline-block text-black font-display text-base font-bold `}
@@ -52,17 +53,17 @@ const PassengerAccordion = ({ children, passenger }) => {
 
         <ArrowIcon className={`w-10 ${rotate}`} />
       </button>
-      <div
-        ref={contentSpace}
-        style={{ maxHeight: `${height}` }}
-        className="overflow-auto transition-max-height duration-700 ease-in-out scrollable"
-      >
-        {/* <div className="px-4 md:px-10 pt-4 md:pt-10"> */}
-        <div className="px-4 md:px-10 pt-4 md:pt-8">
-          {" "}
-          <p className="text-[#4B4F63] font-body text-sm">{children}</p>
+      {active && (
+        <div
+          ref={contentSpace}
+          style={{ maxHeight: `${height}` }}
+          className="overflow-auto transition-max-height duration-700 ease-in-out scrollable"
+        >
+          <div className=" border-b-[1px] border-b-faqss"></div>
+
+          <div className="px-4 md:px-10 py-4">{children}</div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

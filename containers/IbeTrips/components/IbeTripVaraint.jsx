@@ -62,42 +62,11 @@ const IbeTripVariant = ({
   );
 
   const handleBtnClick = (_fare) => {
-    //SellKey is Journey SellKey
     setSelected({
       ..._fare,
       sellKey,
     });
     setShow(true);
-
-    // if (flightParams?.isRoundTrip === 1) {
-    //   const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
-    //   const _cleanedFares = existingFares.filter((_item) => {
-    //     const _ruleBasis =
-    //       parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
-    //     return !_ruleBasis;
-    //   });
-
-    //   const _newFare = {
-    //     ..._fare,
-    //     sellKey,
-    //     schedueIndex,
-    //   };
-
-    //   const _newFares = [..._cleanedFares, _newFare];
-    //   dispatch(setSelectedSessionFare([..._newFares]));
-    //   setShow(true);
-    // } else {
-    //   dispatch(
-    //     setSelectedSessionFare([
-    //       {
-    //         ..._fare,
-    //         sellKey,
-    //         schedueIndex,
-    //       },
-    //     ])
-    //   );
-    //   setShow(true);
-    // }
   };
 
   const closePopUp = () => {
