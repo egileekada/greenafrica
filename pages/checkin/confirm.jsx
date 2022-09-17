@@ -16,9 +16,8 @@ import {
 } from "services/widgetApi.js";
 import { useGetBookingMutation } from "services/bookingApi";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
-import { paymentSelector } from "redux/reducers/payment";
 
 const CheckInDetails = () => {
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
@@ -27,8 +26,6 @@ const CheckInDetails = () => {
     useGetBookingMutation();
 
   const { bookingResponse } = useSelector(sessionSelector);
-
-  const { verifyPaymentResponse } = useSelector(paymentSelector);
 
   const ScrollToTop = () => {
     window.scrollTo({

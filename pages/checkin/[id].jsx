@@ -6,7 +6,7 @@ import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
-import Spinner from "components/Spinner";
+import SkeletonLoader from "components/SkeletonLoader";
 import IbeAdbar from "containers/IbeAdbar";
 
 import {
@@ -190,7 +190,8 @@ const CheckInDetails = () => {
       <section className="w-full checkin">
         {sessionLoading || bookingResponseLoading ? (
           <section className="spinner__container">
-            <Spinner />
+            <SkeletonLoader />
+            <SkeletonLoader />
           </section>
         ) : (
           <section className="ga__section">

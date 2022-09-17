@@ -5,19 +5,14 @@ import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBookingCommit, sessionSelector } from "redux/reducers/session";
-import {
-  paymentSelector,
-  FetchPaymentGateways,
-  InitializeGatewayPayment,
-} from "redux/reducers/payment";
+import { sessionSelector } from "redux/reducers/session";
+import { paymentSelector, FetchPaymentGateways } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
 import { notification } from "antd";
 import { useRouter } from "next/router";
 import { usePaystackPayment } from "react-paystack";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { useInitiatePaymentMutation } from "services/widgetApi";
-import { useStartCheckInMutation } from "services/bookingApi";
 
 const CheckinPayment = () => {
   const router = useRouter();

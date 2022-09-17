@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react";
 import { notification } from "antd";
 import { useRouter } from "next/router";
-import { format } from "date-fns";
 import { Tabs } from "antd";
 import BaseLayout from "layouts/Base";
 
@@ -13,9 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import {
   sessionSelector,
-  startSession,
   retrieveCheckinSeatAvailability,
-  tryAssignSeat,
   tryClearSeat,
   setLoading,
 } from "redux/reducers/session";
@@ -85,7 +82,6 @@ const SeatSelection = () => {
       .catch((error) => console.log(error));
   };
 
-  //TODO change this flow - this is make shift
   useEffect(() => {
     async function retrieveState() {
       dispatch(tryClearSeat());
