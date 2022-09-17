@@ -1,24 +1,37 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import BaseLayout from "layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "components/Spinner";
 import { useRouter } from "next/router";
 import { sessionSelector, startSession } from "redux/reducers/session";
 import { useStartCheckInMutation } from "services/bookingApi";
 
 import { useVerifyPaymentQuery } from "services/widgetApi";
 import LogoIcon from "assets/svgs/logo.svg";
+import SkeletonLoader from "components/SkeletonLoader";
+import Spinner from "components/Spinner";
 
 const ConfirmTripPayment = () => {
   const router = useRouter();
-
+  let statusRef = useRef(true);
   const dispatch = useDispatch();
+
+  const [skip, setSkip] = useState(true);
+
+  const paymentQuery = new URLSearchParams(window.location.search);
+
+  const paystackRef = paymentQuery.get("reference");
 
   const { checkInSelection } = useSelector(sessionSelector);
 
   const [startCheckin] = useStartCheckInMutation();
-  const [startVerification, { isLoading }] = useVerifyPaymentQuery();
+
+  const { data, error, isLoading, isSuccess } = useVerifyPaymentQuery(
+    paystackRef,
+    {
+      skip,
+    }
+  );
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -34,28 +47,21 @@ const ConfirmTripPayment = () => {
   useEffect(() => {
     async function redirectFromGateway() {
       dispatch(startSession());
-      const paymentQuery = new URLSearchParams(window.location.search);
-
-      const paystackRef = paymentQuery.get("reference");
-      if (paystackRef && paystackRef.length > 0) {
-        const payload = {
-          ref: paystackRef,
-        };
-
-        startVerification(payload)
-          .unwrap()
-          .then((data) => {
-            triggerCheckin(data?.data);
-          })
-          .catch((error) => console.log(error));
-      } else {
-        router.push("/");
-      }
+      setSkip(false);
     }
     redirectFromGateway();
   }, []);
 
-  const triggerCheckin = (paymentData) => {
+  useEffect(() => {
+    if (!statusRef.current) {
+      triggerCheckin(data?.data);
+    }
+    return () => {
+      statusRef.current = false;
+    };
+  }, [isSuccess]);
+
+  const triggerCheckin = () => {
     startCheckin(checkInSelection)
       .unwrap()
       .then((data) => {
@@ -80,11 +86,17 @@ const ConfirmTripPayment = () => {
       <section className="w-full">
         {isLoading ? (
           <section className="py-32 lg:py-12 px-12">
-            <Spinner />
+            <SkeletonLoader />
+            <SkeletonLoader />
+            <SkeletonLoader />
           </section>
         ) : (
           <section className="py-32 lg:py-12 px-12">
-            <h2>Redirecting</h2>
+            <div className="text-center">
+              <h2>Redirecting</h2>
+            </div>
+            <Spinner />
+            <SkeletonLoader />
           </section>
         )}
       </section>
