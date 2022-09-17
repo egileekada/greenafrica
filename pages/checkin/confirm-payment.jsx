@@ -59,13 +59,7 @@ const ConfirmTripPayment = () => {
     startCheckin(checkInSelection)
       .unwrap()
       .then((data) => {
-        router.push(
-          {
-            pathname: "/checkin/confirm",
-            query: { pnr: paymentData?.data?.pnr },
-          },
-          "/checkin/confirm"
-        );
+        router.push("/checkin/confirm");
       })
       .catch((error) => console.error(error));
   };
