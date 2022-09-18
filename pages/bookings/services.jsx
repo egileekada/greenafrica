@@ -60,6 +60,9 @@ const PassengerDetails = () => {
                 };
                 _BookingSSRs.push(newObj);
               });
+            if (_SingleJourneySSRs.length > 0) {
+              dispatch(CancelSSRs());
+            }
             setSSRs(_BookingSSRs);
             dispatch(setBookingSessionSSRs(_BookingSSRs));
           } else {
