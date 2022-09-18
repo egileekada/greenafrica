@@ -542,8 +542,12 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
     _journeySellKeys.push(newObj);
     _serviceBundleList.push(currentBooking?.goTrip?.fare?.RuleNumber);
 
+    const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
+
     const JourneyOneSSRsExSeat =
-      currentSession?.bookingResponse?.Booking?.Journeys[0].Segments[0].PaxSSRs;
+      currentSession?.bookingResponse?.Booking?.Journeys[0].Segments[0].PaxSSRs.filter(
+        (ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode)
+      );
 
     JourneyOneSegmentSSRRequest = {
       flightDesignator: {
@@ -590,7 +594,11 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
       stdSpecified: true,
       departureStation: currentBooking?.returnTrip?.segment?.DepartureStation,
       arrivalStation: currentBooking?.returnTrip?.segment?.ArrivalStation,
-      paxSSRs: [...JourneyTwoSSRsExSeat],
+      paxSSRs: [
+        ...JourneyTwoSSRsExSeat.filter((ssrItem) =>
+          ALLOWED__SSRS.includes(ssrItem?.SSRCode)
+        ),
+      ],
     };
 
     JourneyTwo = {
