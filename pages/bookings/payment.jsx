@@ -30,7 +30,8 @@ const PassengerDetails = () => {
   const [loading, setLoading] = useState(false);
   const [totalFare, setTotalFare] = useState();
 
-  const { bookingState, bookingCommitLoading } = useSelector(sessionSelector);
+  const { bookingState, bookingCommitLoading, signature } =
+    useSelector(sessionSelector);
   const { gatewaysLoading, gatewaysResponse, verifyManageBookingLoading } =
     useSelector(paymentSelector);
 
@@ -63,14 +64,14 @@ const PassengerDetails = () => {
     console.log("closed");
   };
 
-  useEffect(() => {
-    async function _getBookingCommit() {
-      if (bookingState) {
-        dispatch(CommitBookingWithPNR(bookingState?.RecordLocator));
-      }
-    }
-    _getBookingCommit();
-  }, [bookingState]);
+  // useEffect(() => {
+  //   async function _getBookingCommit() {
+  //     if (bookingState) {
+  //       dispatch(CommitBookingWithPNR(bookingState?.RecordLocator));
+  //     }
+  //   }
+  //   _getBookingCommit();
+  // }, [bookingState]);
 
   useEffect(() => {
     async function fetchGateways() {
@@ -97,6 +98,7 @@ const PassengerDetails = () => {
         pnr: bookingState?.RecordLocator,
         gateway_type_id: selected,
         payment_origin: "manage",
+        signature
       };
 
       console.log("payload", payload);
