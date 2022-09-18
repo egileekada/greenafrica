@@ -331,7 +331,7 @@ const ManageBookings = () => {
 
   return (
     <Fragment>
-      {bookingResponse &&
+      {/* {bookingResponse &&
       parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0 ? (
         <nav className="manage-booking-bar">
           <p className="font-display text-base text-primary-main">
@@ -348,7 +348,7 @@ const ManageBookings = () => {
             ).toLocaleString("NGN")}
           </button>
         </nav>
-      ) : null}
+      ) : null} */}
       <BaseLayout>
         <section className="w-full checkin">
           {bookingResponseLoading ? (

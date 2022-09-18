@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
-import PageFares from "./components/PageFares";
+import ConfrimPageFares from "./components/ConfrimPageFares";
 
 const ConfirmManageBooking = () => {
   const router = useRouter();
@@ -116,8 +116,7 @@ const ConfirmManageBooking = () => {
             <PageInfo />
             <PageCTA />
             <PassengersSection />
-            {/* <PageCTA /> */}
-            <PageFares />
+            <ConfrimPageFares />
           </>
         ) : (
           <p className="errorText">No Journeys</p>
