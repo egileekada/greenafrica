@@ -17,7 +17,8 @@ import { useInitiatePaymentMutation } from "services/widgetApi";
 const CheckinPayment = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { bookingCommitLoading, bookingState } = useSelector(sessionSelector);
+  const { bookingCommitLoading, bookingState, signature } =
+    useSelector(sessionSelector);
 
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
     useSelector(paymentSelector);
@@ -61,6 +62,7 @@ const CheckinPayment = () => {
         pnr: bookingState?.RecordLocator,
         gateway_type_id: selected,
         payment_origin: "checkin",
+        signature,
       };
 
       const gateway = gatewaysResponse?.data?.items.filter(
