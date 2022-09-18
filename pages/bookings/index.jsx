@@ -15,16 +15,13 @@ import {
   sessionSelector,
   GetBookingDetailsWithPNR,
 } from "redux/reducers/session";
-import {
-  saveTripParams,
-  saveReturnParams,
-  bookingSelector,
-} from "redux/reducers/booking";
+import { saveTripParams, saveReturnParams } from "redux/reducers/booking";
 import { paymentSelector } from "redux/reducers/payment";
 import { useRouter } from "next/router";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
+import { setManageBookingPnr } from "redux/reducers/booking";
 import PageFares from "./components/PageFares";
 
 const ManageBookings = () => {
@@ -34,9 +31,19 @@ const ManageBookings = () => {
   const dispatch = useDispatch();
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
-  const { tripModified } = useSelector(bookingSelector);
   const { verifyManageBookingResponse } = useSelector(paymentSelector);
   const { pnr } = router.query;
+
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    ScrollToTop();
+  }, []);
 
   useEffect(() => {
     async function checkParams() {
@@ -50,6 +57,7 @@ const ManageBookings = () => {
       if (signature) {
         if (router?.query?.pnr) {
           setStatePnr(pnr);
+          dispatch(setManageBookingPnr(pnr));
           const payload = {
             pnr,
           };

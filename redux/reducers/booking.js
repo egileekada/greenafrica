@@ -12,6 +12,7 @@ import addDays from "date-fns/addDays";
 import { GetSSRAvailabilityForBooking } from "services/bookingService";
 
 const initialState = {
+  manageBookingPnr: null,
   testBooking: "tee",
   tripParams: null,
   returnParams: null,
@@ -41,6 +42,9 @@ export const bookingSlice = createSlice({
   name: "booking",
   initialState,
   reducers: {
+    setManageBookingPnr: (state, { payload }) => {
+      state.manageBookingPnr = payload;
+    },
     setTripParams: (state, { payload }) => {
       state.tripParams = payload;
     },
@@ -110,6 +114,7 @@ export const bookingSlice = createSlice({
 });
 
 export const {
+  setManageBookingPnr,
   setTripParams,
   setReturnParams,
   setLowFareAvailabilityLoading,
@@ -806,10 +811,10 @@ export const FetchSSRAvailability = () => async (dispatch, getState) => {
           setSSRAvailabilityResponse(SSRAvailabilityResponse.data)
         );
       } catch (err) {
-        notification.error({
-          message: "Error",
-          description: "Fetch SSR Failed",
-        });
+        // notification.error({
+        //   message: "Error",
+        //   description: "Fetch SSR Failed",
+        // });
       }
     }
   } else {
@@ -1007,12 +1012,11 @@ export const CancelSSRs = () => async (dispatch, getState) => {
         },
       };
       await CancelSSR(cancelSSRRequest);
-      console.log("cancel ssr success");
     } catch (err) {
-      notification.error({
-        message: "Error",
-        description: "Cancel Services failed",
-      });
+      // notification.error({
+      //   message: "Error",
+      //   description: "Cancel Services failed",
+      // });
     }
   }
 
