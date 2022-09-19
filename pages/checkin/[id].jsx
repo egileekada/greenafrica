@@ -24,6 +24,8 @@ import {
   resetSelectedPassengers,
 } from "redux/reducers/session";
 
+import { setCheckinPNR } from "redux/reducers/checkin";
+
 const CheckInDetails = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -55,6 +57,7 @@ const CheckInDetails = () => {
   useEffect(() => {
     async function getBooking() {
       if (signature) {
+        dispatch(setCheckinPNR(id));
         dispatch(retrieveBooking({ id }));
       }
     }
@@ -191,6 +194,10 @@ const CheckInDetails = () => {
     // router.push("/checkin/seat-selection");
   };
 
+  const handleServices = () => {
+    router.push("/checkin/manage-services");
+  };
+
   return (
     <BaseLayout>
       <section className="w-full checkin">
@@ -311,7 +318,7 @@ const CheckInDetails = () => {
                     </section>
                     <section className="mx-6">
                       <button
-                        // onClick={handleServices}
+                        onClick={handleServices}
                         className={`basis-full md:basis-auto btn btn-outline checkin-services mb-3 md:mb-0 md:mr-3`}
                       >
                         Manage Services

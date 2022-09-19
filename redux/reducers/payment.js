@@ -121,7 +121,6 @@ export const VerifyManageBookingPayment = (payload) => async (dispatch) => {
   try {
     const Response = await VerifyPayment(payload.ref);
     dispatch(setVerifyManageBookingResponse(Response?.data?.data));
-    console.log(Response?.data?.data);
     if (Response?.data?.data?.pnr) {
       window.location.assign(`/bookings?pnr=${Response?.data?.data?.pnr}`);
     }

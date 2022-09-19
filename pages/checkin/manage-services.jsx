@@ -7,15 +7,16 @@ import {
   GetBookingDetailsWithPNR,
   sessionSelector,
 } from "redux/reducers/session";
-import { bookingSelector } from "redux/reducers/booking";
 import {
   FetchSSRAvailability,
   ReSellSSROption,
-  setBookingSessionSSRs,
-  setBookingSessionReturnSSRs,
+  setCheckinSessionSSRs,
+  setCheckinSessionReturnSSRs,
   CancelSSRs,
-} from "redux/reducers/booking";
-import BookingPassengerItem from "../bookings/components/BookingPassengerItem";
+  checkinSelector,
+} from "redux/reducers/checkin";
+import CheckinPassengerItem from "./components/CheckinPassengerItem";
+
 import { useRouter } from "next/router";
 
 const PassengerDetails = () => {
@@ -28,8 +29,8 @@ const PassengerDetails = () => {
   const { signature, bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
 
-  const { SSRAvailabilityLoading, ResellSSRLoading, manageBookingPnr } =
-    useSelector(bookingSelector);
+  const { SSRAvailabilityLoading, ResellSSRLoading, checkinPNR } =
+    useSelector(checkinSelector);
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -44,11 +45,10 @@ const PassengerDetails = () => {
 
   useEffect(() => {
     async function fetchBookingDetails() {
-      if (signature && manageBookingPnr) {
+      if (signature && checkinPNR) {
         dispatch(FetchSSRAvailability());
-
         const payload = {
-          pnr: manageBookingPnr,
+          pnr: checkinPNR,
         };
         dispatch(GetBookingDetailsWithPNR(payload));
       }
@@ -58,7 +58,7 @@ const PassengerDetails = () => {
 
   useEffect(() => {
     async function setExisitingSSRS() {
-      if (manageBookingPnr) {
+      if (checkinPNR) {
         if (bookingResponse && bookingResponse?.Booking) {
           const _TRIPS = bookingResponse?.Booking?.Journeys;
 
@@ -82,7 +82,7 @@ const PassengerDetails = () => {
                 dispatch(CancelSSRs());
               }
               setSSRs(_BookingSSRs);
-              dispatch(setBookingSessionSSRs(_BookingSSRs));
+              dispatch(setCheckinSessionSSRs(_BookingSSRs));
             } else {
               const _GOSSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
               const _RETURNSSRs = _TRIPS[1]?.Segments[0]?.PaxSSRs;
@@ -121,12 +121,12 @@ const PassengerDetails = () => {
 
               setSSRs(_BookingSessionSSRs);
               setReturnSSRs(_BookingSessionReturnSSRs);
-              dispatch(setBookingSessionSSRs(_BookingSessionSSRs));
-              dispatch(setBookingSessionReturnSSRs(_BookingSessionReturnSSRs));
+              dispatch(setCheckinSessionSSRs(_BookingSessionSSRs));
+              dispatch(setCheckinSessionReturnSSRs(_BookingSessionReturnSSRs));
             }
           }
         }
-      }
+      } 
     }
     setExisitingSSRS();
   }, [bookingResponse]);
@@ -184,7 +184,7 @@ const PassengerDetails = () => {
                   {bookingResponse?.Booking?.Passengers.length > 0 ? (
                     bookingResponse?.Booking?.Passengers.map((_sesPax) => {
                       return (
-                        <BookingPassengerItem
+                        <CheckinPassengerItem
                           passenger={_sesPax}
                           selectedSSRs={selectedSSRs}
                           setSSRs={setSSRs}

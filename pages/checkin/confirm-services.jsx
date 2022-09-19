@@ -5,23 +5,17 @@ import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import IbeAdbar from "containers/IbeAdbar";
-import FliightIcon from "assets/svgs/aero.svg";
-import ArrowIcon from "assets/svgs/small-arrow.svg";
-import Spinner from "components/Spinner";
 import SkeletonLoader from "components/SkeletonLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { sessionSelector, FetchStateFromServer } from "redux/reducers/session";
-import { saveTripParams, saveReturnParams } from "redux/reducers/booking";
-import { bookingSelector } from "redux/reducers/booking";
 import { useRouter } from "next/router";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import ConfrimPageFares from "../bookings/components/ConfrimPageFares";
 
-const ConfirmManageBooking = () => {
+const ConfirmCheckinServices = () => {
   const router = useRouter();
-  const [selectedPaxs] = useState([]);
   const dispatch = useDispatch();
   const { sessionStateLoading, sessionStateResponse, signature } =
     useSelector(sessionSelector);
@@ -66,32 +60,6 @@ const ConfirmManageBooking = () => {
     );
   };
 
-  const PageCTA = () => {
-    return (
-      <section className="flex flex-wrap md:flex-nowrap mx-6">
-        <button
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
-          onClick={handleItenary}
-        >
-          Change Flight
-        </button>
-        <button
-          onClick={handleServices}
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
-        >
-          Manage Services
-        </button>
-        <button
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
-            selectedPaxs?.length < 1 && "pointer-events-none opacity-50"
-          } `}
-        >
-          Seat Management
-        </button>
-      </section>
-    );
-  };
-
   const PageInfo = () => {
     return (
       <section className="checkin__info mx-6 my-3">
@@ -114,127 +82,14 @@ const ConfirmManageBooking = () => {
               )
             )}
             <PageInfo />
-            <PageCTA />
             <PassengersSection />
             <ConfrimPageFares />
           </>
         ) : (
-          <p className="errorText">No Journeys</p>
+          <p className="errorText m-6">No Journeys</p>
         )}
       </>
     );
-  };
-
-  const handleItenary = () => {
-    let _JourneyOneTax = 0;
-    let _JourneyOneFare = 0;
-
-    const _JourneyOneServiceCharges =
-      sessionStateResponse?.BookingData?.Journeys[0].Segments[0].Fares[0]
-        .PaxFares[0].ServiceCharges;
-
-    _JourneyOneServiceCharges.map((_serviceCharge) => {
-      _serviceCharge.ChargeCode === ""
-        ? (_JourneyOneFare = _serviceCharge?.Amount)
-        : (_JourneyOneTax = _JourneyOneTax + parseInt(_serviceCharge?.Amount));
-    });
-
-    const _STD = format(
-      new Date(sessionStateResponse?.BookingData?.Journeys[0].Segments[0].STD),
-      "yyyy-MM-dd"
-    );
-    const tripPayload = {
-      departureStation:
-        sessionStateResponse?.BookingData?.Journeys[0].Segments[0]
-          .DepartureStation,
-      arrivalStation:
-        sessionStateResponse?.BookingData?.Journeys[0].Segments[0]
-          .ArrivalStation,
-      beginDate: _STD,
-      endDate: _STD,
-      returnDate: null,
-      goStd: _STD,
-      returnSTD: null,
-      isRoundTrip:
-        sessionStateResponse?.BookingData?.Journeys.length > 1 ? true : false,
-      totalPaxCount: sessionStateResponse?.BookingData?.Passengers.length,
-      taxAmount: _JourneyOneTax,
-      minimumFarePrice: _JourneyOneFare,
-      serviceBundleItem:
-        sessionStateResponse?.BookingData?.Journeys[0].Segments[0].Fares[0]
-          .RuleNumber,
-      scheduleIndex: 0,
-      currentDate: new Date(),
-    };
-
-    // const goStd = sessionStateResponse?.BookingData?.Journeys[0].Segments[0].STD;
-
-    if (sessionStateResponse?.BookingData?.Journeys.length > 1) {
-      let _JourneyTwoTax = 0;
-      let _JourneyTwoFare = 0;
-
-      const _JourneyTwoServiceCharges =
-        sessionStateResponse?.BookingData?.Journeys[1].Segments[0].Fares[0]
-          .PaxFares[0].ServiceCharges;
-
-      _JourneyTwoServiceCharges.map((_serviceCharge) => {
-        _serviceCharge.ChargeCode === ""
-          ? (_JourneyTwoFare = _serviceCharge?.Amount)
-          : (_JourneyTwoTax =
-              _JourneyTwoTax + parseInt(_serviceCharge?.Amount));
-      });
-
-      const _beginSTD = format(
-        new Date(
-          sessionStateResponse?.BookingData?.Journeys[0].Segments[0].STD
-        ),
-        "yyyy-MM-dd"
-      );
-
-      const _returnSTD = format(
-        new Date(
-          sessionStateResponse?.BookingData?.Journeys[1].Segments[0].STD
-        ),
-        "yyyy-MM-dd"
-      );
-
-      const returnPayload = {
-        departureStation:
-          sessionStateResponse?.BookingData?.Journeys[1].Segments[0]
-            .DepartureStation,
-        arrivalStation:
-          sessionStateResponse?.BookingData?.Journeys[1].Segments[0]
-            .ArrivalStation,
-        beginDate: _beginSTD,
-        endDate: _beginSTD,
-        returnDate: _returnSTD,
-        goStd: _beginSTD,
-        returnSTD: _returnSTD,
-        isRoundTrip: true,
-        totalPaxCount: sessionStateResponse?.BookingData?.Passengers.length,
-        taxAmount: _JourneyTwoTax,
-        minimumFarePrice: _JourneyTwoFare,
-        serviceBundleItem:
-          sessionStateResponse?.BookingData?.Journeys[1].Segments[0].Fares[0]
-            .RuleNumber,
-        scheduleIndex: 1,
-        currentDate: new Date(),
-      };
-
-      dispatch(saveTripParams(tripPayload));
-      dispatch(saveReturnParams(returnPayload));
-      // console.log("tripParams", tripPayload);
-      // console.log("returnPayloa", returnPayload);
-      router.push("/bookings/change-flight");
-    } else {
-      // console.log("tripParams", tripPayload);
-      dispatch(saveTripParams(tripPayload));
-      router.push("/bookings/change-flight");
-    }
-  };
-
-  const handleServices = () => {
-    router.push("/bookings/services");
   };
 
   const SingleJourneyItem = ({ journey, journeyIndex }) => {
@@ -322,7 +177,7 @@ const ConfirmManageBooking = () => {
           </p>
           <button
             className="btn btn-primary"
-            onClick={() => router.push("/bookings/payment")}
+            onClick={() => router.push("/checkin/pay")}
           >
             Pay ₦
             {parseInt(
@@ -339,9 +194,6 @@ const ConfirmManageBooking = () => {
             </div>
           ) : (
             <section className="ga__section relative">
-              {/* <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
-                  <p>Boarding pass has been emailed to test@greenafrica.net</p>
-                </div> */}
               <div className="ga__section__main">
                 <div className="mb-8 mt-16 xlg:mt-3">
                   {sessionStateResponse?.BookingData ? (
@@ -349,14 +201,6 @@ const ConfirmManageBooking = () => {
                       <h2 className="text-black font-bold text-2xl mb-2">
                         Booking
                       </h2>
-                      <p>
-                        Kindly confirm that the information below is correct
-                        before checking in{" "}
-                        {parseInt(
-                          sessionStateResponse?.BookingData?.BookingSum
-                            ?.BalanceDue
-                        )}
-                      </p>
                     </>
                   ) : null}
                 </div>
@@ -382,4 +226,4 @@ const ConfirmManageBooking = () => {
   );
 };
 
-export default ConfirmManageBooking;
+export default ConfirmCheckinServices;
