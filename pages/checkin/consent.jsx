@@ -1,18 +1,17 @@
 import React, { useEffect } from "react";
 import BaseLayout from "layouts/Base";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useDispatch } from "react-redux";
 
 import { retrieveBookingFromState } from "redux/reducers/session";
 
-import { Link } from "react-router-dom";
-
 const Consent = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const {
-    query: { session },
-  } = router;
+  // const {
+  //   query: { signature },
+  // } = router;
 
   useEffect(() => {
     dispatch(retrieveBookingFromState());
