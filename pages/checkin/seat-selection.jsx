@@ -22,6 +22,7 @@ import { useGetLocationsQuery } from "services/widgetApi.js";
 import {
   useTryAssignSeatMutation,
   useBookingCommitMutation,
+  useStartCheckInMutation,
 } from "services/bookingApi";
 
 const SeatSelection = () => {
@@ -34,8 +35,11 @@ const SeatSelection = () => {
   const [ticketIndex, setTicketIndex] = useState(0);
   const [showEmergency, setEmergency] = useState(false);
 
-  const { signature, isLoading, bookingResponse, seats } =
+  const { signature, isLoading, bookingResponse, seats, checkInSelection } =
     useSelector(sessionSelector);
+
+  const [startCheckin, { isLoading: checkInLoading }] =
+    useStartCheckInMutation();
 
   const { TabPane } = Tabs;
 
@@ -93,7 +97,12 @@ const SeatSelection = () => {
     if (parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0) {
       router.push("/checkin/pay");
     } else {
-      router.push("/checkin/consent");
+      startCheckin(checkInSelection)
+        .unwrap()
+        .then((data) => {
+          router.push("/checkin/confirm");
+        })
+        .catch((error) => console.log(error));
     }
   };
 
@@ -170,10 +179,10 @@ const SeatSelection = () => {
               onClick={skipSeatSelection}
               className="btn btn-outline text-center mr-4 w-1/2 md:w-1/6 md:ml-auto"
             >
-              Skip
+              {checkInLoading ? "Processing" : "Skip"}
             </button>
 
-            {seats.length > 0 && (
+            {seats?.length > 0 && (
               <button
                 className="btn btn-primary w-1/2 md:w-1/6"
                 onClick={initAssignSeats}

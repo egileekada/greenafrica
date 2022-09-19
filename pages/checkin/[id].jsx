@@ -182,7 +182,13 @@ const CheckInDetails = () => {
 
     dispatch(saveCheckInSelection(newData));
 
-    router.push("/checkin/seat-selection");
+    router.push({
+      pathname: "/checkin/consent",
+      query: {
+        signature,
+      },
+    });
+    // router.push("/checkin/seat-selection");
   };
 
   return (
