@@ -31,8 +31,14 @@ const SeatSelection = () => {
   const [ticketIndex, setTicketIndex] = useState(0);
   const [showEmergency, setEmergency] = useState(false);
 
-  const { signature, isLoading, bookingCommitResponse, bookingState, seats } =
-    useSelector(sessionSelector);
+  const {
+    signature,
+    isLoading,
+    bookingCommitResponse,
+    bookingState,
+    seats,
+    assignSeatResponse,
+  } = useSelector(sessionSelector);
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -47,12 +53,12 @@ const SeatSelection = () => {
 
   useEffect(() => {
     async function redirectToSSR() {
-      if (bookingCommitResponse) {
+      if (assignSeatResponse) {
         router.push("/trip/payment");
       }
     }
     redirectToSSR();
-  }, [bookingCommitResponse]);
+  }, [assignSeatResponse]);
 
   useEffect(() => {
     async function getAvailability() {
