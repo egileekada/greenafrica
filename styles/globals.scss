@@ -167,6 +167,10 @@
           }
         }
       }
+
+      &.checkin-services {
+        @apply border text-xs;
+      }
     }
   }
   // Button

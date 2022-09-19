@@ -16,6 +16,7 @@ import generalReducer from "redux/reducers/general";
 import sessionReducer from "redux/reducers/session";
 import paymentReducer from "redux/reducers/payment";
 import bookingReducer from "redux/reducers/booking";
+import checkinReducer from "./reducers/checkin";
 
 import { widgetApi } from "../services/widgetApi";
 import { bookingApi } from "../services/bookingApi";
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   session: sessionReducer,
   payment: paymentReducer,
   booking: bookingReducer,
+  checkin: checkinReducer,
   [widgetApi.reducerPath]: widgetApi.reducer,
   [bookingApi.reducerPath]: bookingApi.reducer,
 });

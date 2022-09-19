@@ -5,61 +5,31 @@ import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import IbeAdbar from "containers/IbeAdbar";
+import FliightIcon from "assets/svgs/aero.svg";
+import ArrowIcon from "assets/svgs/small-arrow.svg";
+import Spinner from "components/Spinner";
 import SkeletonLoader from "components/SkeletonLoader";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  startSession,
-  sessionSelector,
-  GetBookingDetailsWithPNR,
-} from "redux/reducers/session";
+import { sessionSelector, FetchStateFromServer } from "redux/reducers/session";
 import { saveTripParams, saveReturnParams } from "redux/reducers/booking";
-import { paymentSelector } from "redux/reducers/payment";
+import { bookingSelector } from "redux/reducers/booking";
 import { useRouter } from "next/router";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
-import { setManageBookingPnr } from "redux/reducers/booking";
-import PageFares from "./components/PageFares";
+import ConfrimPageFares from "../bookings/components/ConfrimPageFares";
 
-const ManageBookings = () => {
+const ConfirmManageBooking = () => {
   const router = useRouter();
-  const [statePNR, setStatePnr] = useState("");
   const [selectedPaxs] = useState([]);
   const dispatch = useDispatch();
-  const { bookingResponseLoading, bookingResponse, signature } =
+  const { sessionStateLoading, sessionStateResponse, signature } =
     useSelector(sessionSelector);
-  const { verifyManageBookingResponse } = useSelector(paymentSelector);
-  const { pnr } = router.query;
-
-  const ScrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  useEffect(() => {
-    ScrollToTop();
-  }, []);
-
-  useEffect(() => {
-    async function checkParams() {
-      dispatch(startSession());
-    }
-    checkParams();
-  }, []);
 
   useEffect(() => {
     async function fetchBookingDetails() {
       if (signature) {
-        if (router?.query?.pnr) {
-          setStatePnr(pnr);
-          dispatch(setManageBookingPnr(pnr));
-          const payload = {
-            pnr,
-          };
-          dispatch(GetBookingDetailsWithPNR(payload));
-        }
+        dispatch(FetchStateFromServer());
       }
     }
     fetchBookingDetails();
@@ -68,7 +38,7 @@ const ManageBookings = () => {
   const TripHeader = () => {
     return (
       <section className="ibe__flight__info__destination">
-        <p>Booking Code: {bookingResponse?.Booking?.RecordLocator}</p>
+        <p>Booking Code: {sessionStateResponse?.BookingData?.RecordLocator}</p>
         <figure className="flightCircle">
           <FlightIcon />
         </figure>
@@ -81,14 +51,16 @@ const ManageBookings = () => {
       <section className="mx-6 my-6 flex flex-col ">
         <h3 className="title-text no-mb font-700 text-sm">
           PASSENGER
-          {bookingResponse?.Booking?.Passengers?.length > 0 ? "S" : ""}
+          {sessionStateResponse?.BookingData?.Passengers?.length > 0 ? "S" : ""}
         </h3>
         <section className="flex flex-col">
-          {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
-            return (
-              <ManagePassengerItem passenger={_pax} paxIndex={_paxIndex} />
-            );
-          })}
+          {sessionStateResponse?.BookingData?.Passengers.map(
+            (_pax, _paxIndex) => {
+              return (
+                <ManagePassengerItem passenger={_pax} paxIndex={_paxIndex} />
+              );
+            }
+          )}
         </section>
       </section>
     );
@@ -134,16 +106,17 @@ const ManageBookings = () => {
   const TabContent = () => {
     return (
       <>
-        {bookingResponse?.Booking?.Journeys?.length > 0 ? (
+        {sessionStateResponse?.BookingData?.Journeys?.length > 0 ? (
           <>
-            {bookingResponse?.Booking?.Journeys.map((_journey, _index) => (
-              <SingleJourneyItem journey={_journey} journeyIndex={_index} />
-            ))}
-            {/* <PageInfo /> */}
+            {sessionStateResponse?.BookingData?.Journeys.map(
+              (_journey, _index) => (
+                <SingleJourneyItem journey={_journey} journeyIndex={_index} />
+              )
+            )}
+            <PageInfo />
             <PageCTA />
             <PassengersSection />
-            {/* <PageCTA /> */}
-            <PageFares />
+            <ConfrimPageFares />
           </>
         ) : (
           <p className="errorText">No Journeys</p>
@@ -157,8 +130,8 @@ const ManageBookings = () => {
     let _JourneyOneFare = 0;
 
     const _JourneyOneServiceCharges =
-      bookingResponse?.Booking?.Journeys[0].Segments[0].Fares[0].PaxFares[0]
-        .ServiceCharges;
+      sessionStateResponse?.BookingData?.Journeys[0].Segments[0].Fares[0]
+        .PaxFares[0].ServiceCharges;
 
     _JourneyOneServiceCharges.map((_serviceCharge) => {
       _serviceCharge.ChargeCode === ""
@@ -167,38 +140,42 @@ const ManageBookings = () => {
     });
 
     const _STD = format(
-      new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STD),
+      new Date(sessionStateResponse?.BookingData?.Journeys[0].Segments[0].STD),
       "yyyy-MM-dd"
     );
     const tripPayload = {
       departureStation:
-        bookingResponse?.Booking?.Journeys[0].Segments[0].DepartureStation,
+        sessionStateResponse?.BookingData?.Journeys[0].Segments[0]
+          .DepartureStation,
       arrivalStation:
-        bookingResponse?.Booking?.Journeys[0].Segments[0].ArrivalStation,
+        sessionStateResponse?.BookingData?.Journeys[0].Segments[0]
+          .ArrivalStation,
       beginDate: _STD,
       endDate: _STD,
       returnDate: null,
       goStd: _STD,
       returnSTD: null,
-      isRoundTrip: bookingResponse?.Booking?.Journeys.length > 1 ? true : false,
-      totalPaxCount: bookingResponse?.Booking?.Passengers.length,
+      isRoundTrip:
+        sessionStateResponse?.BookingData?.Journeys.length > 1 ? true : false,
+      totalPaxCount: sessionStateResponse?.BookingData?.Passengers.length,
       taxAmount: _JourneyOneTax,
       minimumFarePrice: _JourneyOneFare,
       serviceBundleItem:
-        bookingResponse?.Booking?.Journeys[0].Segments[0].Fares[0].RuleNumber,
+        sessionStateResponse?.BookingData?.Journeys[0].Segments[0].Fares[0]
+          .RuleNumber,
       scheduleIndex: 0,
       currentDate: new Date(),
     };
 
-    // const goStd = bookingResponse?.Booking?.Journeys[0].Segments[0].STD;
+    // const goStd = sessionStateResponse?.BookingData?.Journeys[0].Segments[0].STD;
 
-    if (bookingResponse?.Booking?.Journeys.length > 1) {
+    if (sessionStateResponse?.BookingData?.Journeys.length > 1) {
       let _JourneyTwoTax = 0;
       let _JourneyTwoFare = 0;
 
       const _JourneyTwoServiceCharges =
-        bookingResponse?.Booking?.Journeys[1].Segments[0].Fares[0].PaxFares[0]
-          .ServiceCharges;
+        sessionStateResponse?.BookingData?.Journeys[1].Segments[0].Fares[0]
+          .PaxFares[0].ServiceCharges;
 
       _JourneyTwoServiceCharges.map((_serviceCharge) => {
         _serviceCharge.ChargeCode === ""
@@ -208,31 +185,38 @@ const ManageBookings = () => {
       });
 
       const _beginSTD = format(
-        new Date(bookingResponse?.Booking?.Journeys[0].Segments[0].STD),
+        new Date(
+          sessionStateResponse?.BookingData?.Journeys[0].Segments[0].STD
+        ),
         "yyyy-MM-dd"
       );
 
       const _returnSTD = format(
-        new Date(bookingResponse?.Booking?.Journeys[1].Segments[0].STD),
+        new Date(
+          sessionStateResponse?.BookingData?.Journeys[1].Segments[0].STD
+        ),
         "yyyy-MM-dd"
       );
 
       const returnPayload = {
         departureStation:
-          bookingResponse?.Booking?.Journeys[1].Segments[0].DepartureStation,
+          sessionStateResponse?.BookingData?.Journeys[1].Segments[0]
+            .DepartureStation,
         arrivalStation:
-          bookingResponse?.Booking?.Journeys[1].Segments[0].ArrivalStation,
+          sessionStateResponse?.BookingData?.Journeys[1].Segments[0]
+            .ArrivalStation,
         beginDate: _beginSTD,
         endDate: _beginSTD,
         returnDate: _returnSTD,
         goStd: _beginSTD,
         returnSTD: _returnSTD,
         isRoundTrip: true,
-        totalPaxCount: bookingResponse?.Booking?.Passengers.length,
+        totalPaxCount: sessionStateResponse?.BookingData?.Passengers.length,
         taxAmount: _JourneyTwoTax,
         minimumFarePrice: _JourneyTwoFare,
         serviceBundleItem:
-          bookingResponse?.Booking?.Journeys[1].Segments[0].Fares[0].RuleNumber,
+          sessionStateResponse?.BookingData?.Journeys[1].Segments[0].Fares[0]
+            .RuleNumber,
         scheduleIndex: 1,
         currentDate: new Date(),
       };
@@ -328,8 +312,9 @@ const ManageBookings = () => {
 
   return (
     <Fragment>
-      {/* {bookingResponse &&
-      parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0 ? (
+      {sessionStateResponse &&
+      parseInt(sessionStateResponse?.BookingData?.BookingSum?.BalanceDue) >
+        0 ? (
         <nav className="manage-booking-bar">
           <p className="font-display text-base text-primary-main">
             You made a few changes to your booking and additional charges have
@@ -341,45 +326,42 @@ const ManageBookings = () => {
           >
             Pay ₦
             {parseInt(
-              bookingResponse?.Booking?.BookingSum?.BalanceDue
+              sessionStateResponse?.BookingData?.BookingSum?.BalanceDue
             ).toLocaleString("NGN")}
           </button>
         </nav>
-      ) : null} */}
+      ) : null}
       <BaseLayout>
         <section className="w-full checkin">
-          {bookingResponseLoading ? (
+          {sessionStateLoading ? (
             <div className="px-12 py-12">
               <SkeletonLoader />
             </div>
           ) : (
             <section className="ga__section relative">
-              {verifyManageBookingResponse &&
-              verifyManageBookingResponse?.pnr.toLowerCase() ===
-                statePNR.toLowerCase() ? (
-                <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
-                  <p>
-                    You added some new services so your fare has been updated
-                    with additional fees
-                  </p>
-                </div>
-              ) : null}
+              {/* <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
+                  <p>Boarding pass has been emailed to test@greenafrica.net</p>
+                </div> */}
               <div className="ga__section__main">
                 <div className="mb-8 mt-16 xlg:mt-3">
-                  {bookingResponse?.Booking ? (
+                  {sessionStateResponse?.BookingData ? (
                     <>
                       <h2 className="text-black font-bold text-2xl mb-2">
                         Booking
                       </h2>
                       <p>
                         Kindly confirm that the information below is correct
-                        before checking in
+                        before checking in{" "}
+                        {parseInt(
+                          sessionStateResponse?.BookingData?.BookingSum
+                            ?.BalanceDue
+                        )}
                       </p>
                     </>
                   ) : null}
                 </div>
 
-                {bookingResponse?.Booking ? (
+                {sessionStateResponse?.BookingData ? (
                   <section className="flex flex-col bg-white pb-24">
                     <TripHeader />
                     <TabContent />
@@ -400,4 +382,4 @@ const ManageBookings = () => {
   );
 };
 
-export default ManageBookings;
+export default ConfirmManageBooking;

@@ -294,6 +294,24 @@ const CheckInDetails = () => {
                         </p>
                       </div>
                     </section>
+
+                    <section className="checkin__info mx-6 my-3">
+                      <p>
+                        <span className="text-primary text-primary-main font-bold">
+                          NOTE:&nbsp;
+                        </span>
+                        You do not need to select pasengers for manage services
+                      </p>
+                    </section>
+                    <section className="mx-6">
+                      <button
+                        // onClick={handleServices}
+                        className={`basis-full md:basis-auto btn btn-outline checkin-services mb-3 md:mb-0 md:mr-3`}
+                      >
+                        Manage Services
+                      </button>
+                    </section>
+
                     <section className="mx-6">
                       <h3 className="title-text no-mb">PASSENGERS</h3>
                     </section>
