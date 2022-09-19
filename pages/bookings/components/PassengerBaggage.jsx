@@ -31,7 +31,7 @@ const BookingPassengerBaggage = ({
   const [preSelectedGoSSRS, setPreSelectedGoSSRS] = useState([]);
   const [preSelectedReturnSSRS, setPreSelectedReturnSSRS] = useState([]);
 
-  const { sessionStateResponse } = useSelector(sessionSelector);
+  const { bookingResponse } = useSelector(sessionSelector);
   const {
     SSRAvailabilityResponse,
     bookingSessionSSRs,
@@ -40,14 +40,14 @@ const BookingPassengerBaggage = ({
 
   useEffect(() => {
     async function setDefaultTab() {
-      if (sessionStateResponse?.BookingData?.Journeys?.length > 0) {
-        let _activeTab = `${sessionStateResponse?.BookingData?.Journeys[0]?.Segments[0]?.DepartureStation.trim().toLowerCase()}${sessionStateResponse?.BookingData?.Journeys[0]?.Segments[0].ArrivalStation.trim().toLowerCase()}`;
+      if (bookingResponse?.Booking?.Journeys?.length > 0) {
+        let _activeTab = `${bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation.trim().toLowerCase()}${bookingResponse?.Booking?.Journeys[0]?.Segments[0].ArrivalStation.trim().toLowerCase()}`;
         setActiveTab(_activeTab);
         setSchedueIndex(0);
       }
     }
     setDefaultTab();
-  }, [sessionStateResponse]);
+  }, [bookingResponse]);
 
   useEffect(() => {
     async function setDefaultSSRS() {
@@ -103,8 +103,8 @@ const BookingPassengerBaggage = ({
         </h2>
 
         <div className="flex h-16 border-b mb-6">
-          {sessionStateResponse?.BookingData?.Journeys?.length > 0 &&
-            sessionStateResponse?.BookingData?.Journeys?.map(
+          {bookingResponse?.Booking?.Journeys?.length > 0 &&
+            bookingResponse?.Booking?.Journeys?.map(
               (_journey, _journeyIndex) => {
                 const tabID = `${_journey?.Segments[0]?.DepartureStation.trim().toLowerCase()}${_journey?.Segments[0]?.ArrivalStation.trim().toLowerCase()}`;
                 return (
@@ -158,10 +158,10 @@ const BookingPassengerBaggage = ({
                       return ALLOWED__SSRS.includes(_SSR?.SSRCode);
                     }).map((_SSRITEM) => {
                       const _ARRIVAL =
-                        sessionStateResponse?.BookingData?.Journeys[0]
+                        bookingResponse?.Booking?.Journeys[0]
                           ?.Segments[0]?.ArrivalStation;
                       const _DEPARTURE =
-                        sessionStateResponse?.BookingData?.Journeys[0]
+                        bookingResponse?.Booking?.Journeys[0]
                           ?.Segments[0]?.DepartureStation;
 
                       const passengerGoSSRs = preSelectedGoSSRS.filter(
@@ -202,10 +202,10 @@ const BookingPassengerBaggage = ({
                       return ALLOWED__SSRS.includes(_SSR?.SSRCode);
                     }).map((_SSRITEM) => {
                       const _ARRIVAL =
-                        sessionStateResponse?.BookingData?.Journeys[1]
+                        bookingResponse?.Booking?.Journeys[1]
                           ?.Segments[0]?.ArrivalStation;
                       const _DEPARTURE =
-                        sessionStateResponse?.BookingData?.Journeys[1]
+                        bookingResponse?.Booking?.Journeys[1]
                           ?.Segments[0]?.DepartureStation;
 
                       const passengerReturnSSRs = preSelectedReturnSSRS.filter(

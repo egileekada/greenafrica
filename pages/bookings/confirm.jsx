@@ -313,6 +313,7 @@ const ConfirmManageBooking = () => {
   return (
     <Fragment>
       {sessionStateResponse &&
+      sessionStateResponse?.BookingData &&
       parseInt(sessionStateResponse?.BookingData?.BookingSum?.BalanceDue) >
         0 ? (
         <nav className="manage-booking-bar">
@@ -351,11 +352,11 @@ const ConfirmManageBooking = () => {
                       </h2>
                       <p>
                         Kindly confirm that the information below is correct
-                        before checking in{" "}
-                        {parseInt(
+                        before proceeding{" "}
+                        {/* {parseInt(
                           sessionStateResponse?.BookingData?.BookingSum
                             ?.BalanceDue
-                        )}
+                        )} */}
                       </p>
                     </>
                   ) : null}

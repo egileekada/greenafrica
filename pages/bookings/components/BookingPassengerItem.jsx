@@ -20,13 +20,13 @@ const BookingPassengerItem = ({
   const [wcPreSelected, setWCPreSelected] = useState(false);
   const [vpPreSelected, setVPPreSelected] = useState(false);
   const [hpPreSelected, setHPPreSelected] = useState(false);
-  const { sessionStateResponse } = useSelector(sessionSelector);
+  const { bookingResponse } = useSelector(sessionSelector);
   const { bookingSessionSSRs } = useSelector(bookingSelector);
 
   const _Arrival =
-    sessionStateResponse?.BookingData?.Journeys[0]?.Segments[0]?.ArrivalStation;
+    bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
   const _Departure =
-    sessionStateResponse?.BookingData?.Journeys[0]?.Segments[0]
+    bookingResponse?.Booking?.Journeys[0]?.Segments[0]
       ?.DepartureStation;
 
   useEffect(() => {

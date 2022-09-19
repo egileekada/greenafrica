@@ -22,7 +22,7 @@ const BookingReturnBaggageCard = ({
   const [totalFare, setFare] = useState(0);
   const [limit, setLimit] = useState(0);
   const [value, setValue] = useState(0);
-  const { sessionStateResponse } = useSelector(sessionSelector);
+  const { bookingResponse } = useSelector(sessionSelector);
   const { bookingSessionReturnSSRs } = useSelector(bookingSelector);
 
   const KG = SSRItem?.SSRCode.substring(1);
@@ -84,7 +84,7 @@ const BookingReturnBaggageCard = ({
           _ssr.ssrCode === SSRItem?.SSRCode &&
           parseInt(_ssr.passengerNumber) ===
             parseInt(passenger?.PassengerNumber);
-        return sessionStateResponse?.BookingData?.Passengers?.length > 1
+        return bookingResponse?.Booking?.Passengers?.length > 1
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
