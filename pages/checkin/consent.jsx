@@ -1,36 +1,22 @@
 import React, { useEffect } from "react";
 import BaseLayout from "layouts/Base";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import {
-  sessionSelector,
-  retrieveBookingFromState,
-} from "redux/reducers/session";
-import { useStartCheckInMutation } from "services/bookingApi";
+import { retrieveBookingFromState } from "redux/reducers/session";
+
+import { Link } from "react-router-dom";
 
 const Consent = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { bookingState, checkInSelection } = useSelector(sessionSelector);
-  const [startCheckin] = useStartCheckInMutation();
+  const {
+    query: { session },
+  } = router;
 
   useEffect(() => {
     dispatch(retrieveBookingFromState());
   }, []);
-
-  const triggerCheck = () => {
-    if (parseInt(bookingState?.BookingSum?.BalanceDue) > 0) {
-      router.push("/checkin/pay");
-    } else {
-      startCheckin(checkInSelection)
-        .unwrap()
-        .then((data) => {
-          router.push("/checkin/confirm");
-        })
-        .catch((error) => console.log(error));
-    }
-  };
 
   return (
     <BaseLayout>
@@ -94,12 +80,14 @@ const Consent = () => {
             >
               Go Back
             </button>
-            <button
-              className="btn btn-primary text-center my-2"
-              onClick={triggerCheck}
+            <Link
+              href={{
+                pathname: "/checkin/seat-selection",
+                query: { terms: true },
+              }}
             >
-              Accept Terms
-            </button>
+              <a className="btn btn-primary text-center my-2">Accept Terms</a>
+            </Link>
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 
-import { bookingState} from "./data";
+import { bookingState } from "./data";
 
 const initialState = {
   isLoading: false,
@@ -68,7 +68,7 @@ const initialState = {
   bookingState: null,
   sessionStateLoading: false,
   sessionStateResponse: null,
-  sessionStateResponse:bookingState,
+  sessionStateResponse: bookingState,
   seats: [],
   checkInSelection: [],
   selectedPassengers: [],
@@ -2202,13 +2202,13 @@ export const tryAssignSeat = (payload) => async (dispatch, getState) => {
     await dispatch(
       setAssignSeatResponse(Response.data.BookingUpdateResponseData)
     );
-
-    await dispatch(
-      startBookingCommit({
-        recordLocator:
-          Response.data.BookingUpdateResponseData.Success.RecordLocator,
-      })
-    );
+    // TODO REMOVE Booking COMMIT
+    // await dispatch(
+    //   startBookingCommit({
+    //     recordLocator:
+    //       Response.data.BookingUpdateResponseData.Success.RecordLocator,
+    //   })
+    // );
   } catch (err) {
     console.error("Update passenger Request error", err.response.data);
     notification.error({
