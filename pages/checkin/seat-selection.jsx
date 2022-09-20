@@ -15,21 +15,22 @@ import {
   retrieveCheckinSeatAvailability,
   tryClearSeat,
   setLoading,
+  setBookingState,
 } from "redux/reducers/session";
 
 import SeatWrapper from "./Seats/SeatWrapper";
 import { useGetLocationsQuery } from "services/widgetApi.js";
 import {
   useTryAssignSeatMutation,
-  useBookingCommitMutation,
   useStartCheckInMutation,
+  useBookingStateMutation,
 } from "services/bookingApi";
 
 const SeatSelection = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [assignUserseat] = useTryAssignSeatMutation();
-  const [initCommit] = useBookingCommitMutation();
+  const [getState] = useBookingStateMutation();
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const [showPopUp, setShow] = useState(false);
   const [ticketIndex, setTicketIndex] = useState(0);
@@ -71,17 +72,32 @@ const SeatSelection = () => {
           message: "Success",
           description: "Seat Assignment successful",
         });
-        makeCommit(data?.BookingUpdateResponseData?.Success.RecordLocator);
+        makeCommit();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        notification.error({
+          message: "Error",
+          description: "Please select another seat",
+        });
+      });
     dispatch(setLoading(false));
   };
 
-  const makeCommit = (data) => {
-    initCommit(data)
+  const makeCommit = () => {
+    getState()
       .unwrap()
       .then((data) => {
-        router.push("/checkin/consent");
+        dispatch(setBookingState(data?.BookingData));
+        if (parseInt(data?.BookingData?.BookingSum?.BalanceDue) > 0) {
+          router.push("/checkin/pay");
+        } else {
+          startCheckin(checkInSelection)
+            .unwrap()
+            .then((data) => {
+              router.push("/checkin/confirm");
+            })
+            .catch((error) => console.log(error));
+        }
       })
       .catch((error) => console.log(error));
   };

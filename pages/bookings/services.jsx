@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import BaseLayout from "layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonLoader from "components/SkeletonLoader";
-import {
-  GetBookingDetailsWithPNR,
-  sessionSelector,
-} from "redux/reducers/session";
+import { sessionSelector, FetchStateFromServer } from "redux/reducers/session";
 import { bookingSelector } from "redux/reducers/booking";
 import {
   FetchSSRAvailability,
@@ -50,7 +47,7 @@ const PassengerDetails = () => {
         const payload = {
           pnr: manageBookingPnr,
         };
-        dispatch(GetBookingDetailsWithPNR(payload));
+        dispatch(FetchStateFromServer());
       }
     }
     fetchBookingDetails();
@@ -129,7 +126,7 @@ const PassengerDetails = () => {
       }
     }
     setExisitingSSRS();
-  }, [bookingResponse]);
+  }, []);
 
   const ProceedToSellSSR = () => {
     if (selectedSSRs.length > 0 || selectedReturnSSRs.length > 0) {

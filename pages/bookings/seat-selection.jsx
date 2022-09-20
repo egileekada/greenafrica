@@ -1,81 +1,52 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect, useRef } from "react";
-import { Tabs } from "antd";
-import Link from "next/link";
+import { notification } from "antd";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { Tabs } from "antd";
 import BaseLayout from "layouts/Base";
-import IbeSidebar from "containers/IbeSidebar";
-import Popup from "components/Popup";
-import Seatslegend from "containers/Seats/SeatPopUp";
-import SeatWrapper from "containers/Seats/SeatWrapper";
-import LogoIcon from "assets/svgs/logo.svg";
 
-import InfoIcon from "assets/svgs/seats/info.svg";
-import { useGetLocationsQuery } from "services/widgetApi.js";
+import Popup from "components/Popup";
+import Seatslegend from "./Seats/SeatPopUp";
 
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   sessionSelector,
-  startSession,
-  retrieveSeatAvailability,
-  tryAssignSeat,
+  retrieveCheckinSeatAvailability,
+  tryClearSeat,
+  setLoading,
 } from "redux/reducers/session";
 
-const { TabPane } = Tabs;
+import SeatWrapper from "./Seats/SeatWrapper";
+import { useGetLocationsQuery } from "services/widgetApi.js";
+import { useTryAssignSeatMutation } from "services/bookingApi";
 
 const SeatSelection = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [assignUserseat] = useTryAssignSeatMutation();
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const [showPopUp, setShow] = useState(false);
   const [ticketIndex, setTicketIndex] = useState(0);
   const [showEmergency, setEmergency] = useState(false);
 
-  const {
-    signature,
-    isLoading,
-    bookingCommitResponse,
-    bookingState,
-    seats,
-    assignSeatResponse,
-  } = useSelector(sessionSelector);
+  const { signature, isLoading, bookingResponse, seats, checkInSelection } =
+    useSelector(sessionSelector);
 
-  const ScrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  useEffect(() => {
-    ScrollToTop();
-  }, []);
-
-  useEffect(() => {
-    async function redirectToSSR() {
-      if (assignSeatResponse) {
-        router.push("/trip/payment");
-      }
-    }
-    redirectToSSR();
-  }, [assignSeatResponse]);
+  const { TabPane } = Tabs;
 
   useEffect(() => {
     async function getAvailability() {
       if (signature) {
-        await dispatch(retrieveSeatAvailability({ ticketIndex }));
+        dispatch(retrieveCheckinSeatAvailability({ ticketIndex }));
       }
     }
     getAvailability();
   }, [ticketIndex]);
 
-  const initAssignSeats = () => {
-    dispatch(tryAssignSeat({ ticketIndex }));
-  };
+  const childRef = useRef(null);
 
-  const goBackToHome = async () => {
-    window.location.assign("https://dev-website.gadevenv.com/");
-  };
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation
@@ -84,28 +55,52 @@ const SeatSelection = () => {
     return `${name} (${code})`;
   };
 
+  const initAssignSeats = async () => {
+    dispatch(setLoading(true));
+    await assignUserseat()
+      .unwrap()
+      .then((data) => {
+        notification.success({
+          message: "Success",
+          description: "Seat Assignment successful",
+        });
+        router.push("/bookings/confirm");
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error",
+          description: "Kindly Choose another seat",
+        });
+      });
+    dispatch(setLoading(false));
+  };
+
+  useEffect(() => {
+    async function retrieveState() {
+      dispatch(tryClearSeat());
+    }
+    retrieveState();
+  }, []);
+
   return (
     <>
       <BaseLayout>
-        <nav className="top__bar logo-holder">
-          <button onClick={goBackToHome}>
-            <figure className="cursor-pointer">
-              <LogoIcon />
-            </figure>
-          </button>
-        </nav>
         <section className="w-full checkin">
           <section className="ga__section bg-normal">
             <div className="ga__section__main standalone">
               <div className="mb-8">
                 <h2 className="text-black font-bold text-2xl mb-2">
-                  Seat Selection
+                  Change Seat Selection
                 </h2>
               </div>
 
               <section className="flex flex-col bg-white pb-24 pt-5 px-3 md:px-8 rounded-lg">
-                <Tabs defaultActiveKey="1" tabBarStyle={{ color: "#47FF5A" }}>
-                  {bookingState?.Journeys.map((journey, index) => (
+                <Tabs
+                  defaultActiveKey="1"
+                  tabBarStyle={{ color: "#47FF5A" }}
+                  onChange={(e) => setTicketIndex(e - 1)}
+                >
+                  {bookingResponse?.Booking?.Journeys.map((journey, index) => (
                     <TabPane
                       tab={
                         <div className="inline-flex rounded-t-lg border-b-2 border-transparent text-[#9E9BBF] hover:text-[#9E9BBF] items-center font-semibold group">
@@ -151,20 +146,18 @@ const SeatSelection = () => {
                 </Tabs>
               </section>
             </div>
-            <div className="ga__section__side">
-              <IbeSidebar />
-            </div>
           </section>
         </section>
 
         <div className="sticky bottom-0 border border-t-2 border-[#dadce0] z-40 bg-[#fff] p-6 w-full">
           <div className="flex md:justify-items-end gap-2">
-            <Link href="/trip/payment">
+            <Link href="/bookings/confirm">
               <a className="btn btn-outline text-center mr-4 w-1/2 md:w-1/6 md:ml-auto">
                 Skip
               </a>
             </Link>
-            {seats.length > 0 && (
+
+            {seats?.length > 0 && (
               <button
                 className="btn btn-primary w-1/2 md:w-1/6"
                 onClick={initAssignSeats}
