@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { notification } from "antd";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { Tabs } from "antd";
 import BaseLayout from "layouts/Base";
 
@@ -15,22 +16,16 @@ import {
   retrieveCheckinSeatAvailability,
   tryClearSeat,
   setLoading,
-  setBookingState,
 } from "redux/reducers/session";
 
 import SeatWrapper from "./Seats/SeatWrapper";
 import { useGetLocationsQuery } from "services/widgetApi.js";
-import {
-  useTryAssignSeatMutation,
-  useStartCheckInMutation,
-  useBookingStateMutation,
-} from "services/bookingApi";
+import { useTryAssignSeatMutation } from "services/bookingApi";
 
 const SeatSelection = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [assignUserseat] = useTryAssignSeatMutation();
-  const [getState] = useBookingStateMutation();
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const [showPopUp, setShow] = useState(false);
   const [ticketIndex, setTicketIndex] = useState(0);
@@ -38,9 +33,6 @@ const SeatSelection = () => {
 
   const { signature, isLoading, bookingResponse, seats, checkInSelection } =
     useSelector(sessionSelector);
-
-  const [startCheckin, { isLoading: checkInLoading }] =
-    useStartCheckInMutation();
 
   const { TabPane } = Tabs;
 
@@ -72,34 +64,15 @@ const SeatSelection = () => {
           message: "Success",
           description: "Seat Assignment successful",
         });
-        makeCommit();
+        router.push("/bookings/confirm");
       })
       .catch((error) => {
         notification.error({
           message: "Error",
-          description: "Please select another seat",
+          description: "Kindly Choose another seat",
         });
       });
     dispatch(setLoading(false));
-  };
-
-  const makeCommit = () => {
-    getState()
-      .unwrap()
-      .then((data) => {
-        dispatch(setBookingState(data?.BookingData));
-        if (parseInt(data?.BookingData?.BookingSum?.BalanceDue) > 0) {
-          router.push("/checkin/pay");
-        } else {
-          startCheckin(checkInSelection)
-            .unwrap()
-            .then((data) => {
-              router.push("/checkin/confirm");
-            })
-            .catch((error) => console.log(error));
-        }
-      })
-      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
@@ -108,19 +81,6 @@ const SeatSelection = () => {
     }
     retrieveState();
   }, []);
-
-  const skipSeatSelection = () => {
-    if (parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0) {
-      router.push("/checkin/pay");
-    } else {
-      startCheckin(checkInSelection)
-        .unwrap()
-        .then((data) => {
-          router.push("/checkin/confirm");
-        })
-        .catch((error) => console.log(error));
-    }
-  };
 
   return (
     <>
@@ -191,12 +151,11 @@ const SeatSelection = () => {
 
         <div className="sticky bottom-0 border border-t-2 border-[#dadce0] z-40 bg-[#fff] p-6 w-full">
           <div className="flex md:justify-items-end gap-2">
-            <button
-              onClick={skipSeatSelection}
-              className="btn btn-outline text-center mr-4 w-1/2 md:w-1/6 md:ml-auto"
-            >
-              {checkInLoading ? "Processing" : "Skip"}
-            </button>
+            <Link href="/bookings/confirm">
+              <a className="btn btn-outline text-center mr-4 w-1/2 md:w-1/6 md:ml-auto">
+                Skip
+              </a>
+            </Link>
 
             {seats?.length > 0 && (
               <button

@@ -8,12 +8,8 @@ import ProfileIcon from "assets/svgs/profile.svg";
 import InfoIcon from "assets/svgs/seats/info.svg";
 
 const SeatWrapper = ({ ticketIndex, setShow }) => {
-  const {
-    seatResponseLoading,
-    seatAvailability,
-    selectedPassengers,
-    bookingResponse,
-  } = useSelector(sessionSelector);
+  const { seatResponseLoading, seatAvailability, bookingResponse } =
+    useSelector(sessionSelector);
 
   const [key] = useState(Math.random());
   const [pasengerState, setPassengerState] = useState(null);
@@ -46,48 +42,7 @@ const SeatWrapper = ({ ticketIndex, setShow }) => {
             <h3 className="title-text">PASSENGER DETAILS</h3>
             {bookingResponse?.Booking?.Passengers.map((passenger, index) => (
               <>
-                {selectedPassengers.filter(
-                  (e) =>
-                    e.PassengerNumber === passenger.PassengerNumber &&
-                    e.journey === ticketIndex
-                )[0] && (
-                  <div className="flex items-center mb-4" key={index}>
-                    <input
-                      id={`passenger-${index}-${ticketIndex}`}
-                      type="radio"
-                      value={passenger.PassengerNumber}
-                      name={`passenger-state-${ticketIndex}`}
-                      onChange={(e) =>
-                        handleChange(e, passenger.PassengerInfants.length)
-                      }
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mb-2"
-                    />
-                    <label
-                      htmlFor={`passenger-${index}-${ticketIndex}`}
-                      className="ml-2"
-                    >
-                      <div className="flex mb-6 mt-4">
-                        <div className="flex flex-col w-[53px] mr-4">
-                          <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
-                            <ProfileIcon />
-                          </div>
-                        </div>
-                        <div className="flex flex-col">
-                          <h5 className="text-base font-extrabold text-primary-main font-display mb-2">
-                            {passenger.Names[0].FirstName}{" "}
-                            {passenger.Names[0].LastName}
-                          </h5>
-                          <h6 className="text-base text-[#261F5E] font-title">
-                            {selectedSeat[index]?.seatDesignator?.length > 0
-                              ? `Seat Number: ${selectedSeat[index]?.seatDesignator}`
-                              : "No Seat Selected"}
-                          </h6>
-                        </div>
-                      </div>
-                    </label>
-                  </div>
-                )}
-                {/* <div className="flex items-center mb-4" key={index}>
+                <div className="flex items-center mb-4" key={index}>
                   <input
                     id={`passenger-${index}-${ticketIndex}`}
                     type="radio"
@@ -114,14 +69,14 @@ const SeatWrapper = ({ ticketIndex, setShow }) => {
                           {passenger.Names[0].LastName}
                         </h5>
                         <h6 className="text-base text-[#261F5E] font-title">
-                          {selectedSeat[index]?.seatDesignator.length > 0
-                            ? `Seat Number: ${selectedSeat[index].seatDesignator}`
+                          {selectedSeat[index]?.seatDesignator?.length > 0
+                            ? `Seat Number: ${selectedSeat[index]?.seatDesignator}`
                             : "No Seat Selected"}
                         </h6>
                       </div>
                     </div>
                   </label>
-                </div> */}
+                </div>
               </>
             ))}
             <button className="flex xxl:hidden mb-3">

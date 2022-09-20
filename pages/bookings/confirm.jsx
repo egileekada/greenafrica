@@ -5,15 +5,12 @@ import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import IbeAdbar from "containers/IbeAdbar";
-import FliightIcon from "assets/svgs/aero.svg";
-import ArrowIcon from "assets/svgs/small-arrow.svg";
-import Spinner from "components/Spinner";
 import SkeletonLoader from "components/SkeletonLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { sessionSelector, FetchStateFromServer } from "redux/reducers/session";
 import { saveTripParams, saveReturnParams } from "redux/reducers/booking";
-import { bookingSelector } from "redux/reducers/booking";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
@@ -81,13 +78,11 @@ const ConfirmManageBooking = () => {
         >
           Manage Services
         </button>
-        <button
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
-            selectedPaxs?.length < 1 && "pointer-events-none opacity-50"
-          } `}
-        >
-          Seat Management
-        </button>
+        <Link href="/bookings/seat-selection">
+          <a className="basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3">
+            Seat Management
+          </a>
+        </Link>
       </section>
     );
   };
