@@ -340,9 +340,7 @@ const ConfirmManageBooking = () => {
             </div>
           ) : (
             <section className="ga__section relative">
-              {/* <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
-                  <p>Boarding pass has been emailed to test@greenafrica.net</p>
-                </div> */}
+             
               <div className="ga__section__main">
                 <div className="mb-8 mt-16 xlg:mt-3">
                   {sessionStateResponse?.BookingData ? (

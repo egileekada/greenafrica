@@ -5,7 +5,11 @@ import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { sessionSelector } from "redux/reducers/session";
+import {
+  sessionSelector,
+  retrieveBookingFromState,
+  retrieveBookingFromState,
+} from "redux/reducers/session";
 import { paymentSelector, FetchPaymentGateways } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
 import { notification } from "antd";
@@ -49,6 +53,7 @@ const CheckinPayment = () => {
     async function fetchGateways() {
       setTotalFare(parseInt(bookingState?.BookingSum?.BalanceDue));
       dispatch(FetchPaymentGateways());
+      dispatch(retrieveBookingFromState());
     }
     fetchGateways();
   }, []);
