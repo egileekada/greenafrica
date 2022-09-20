@@ -1817,6 +1817,7 @@ export const FetchStateFromServer = () => async (dispatch, getState) => {
     };
 
     const stateBooking = await GetBookingFromState(payload);
+    dispatch(setBookingState(stateBooking.data.BookingData));
     await dispatch(setSessionStateResponse(stateBooking.data));
   } catch (err) {
     notification.error({
