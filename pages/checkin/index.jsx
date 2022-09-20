@@ -39,7 +39,15 @@ const CheckIn = () => {
         .unwrap()
         .then((data) => {
           dispatch(retrieveBooking({ id: values.pnr }));
-          router.push(`/checkin/${values.pnr}`);
+          router.push(
+            {
+              pathname: "/checkin/home",
+              query: {
+                pnr: values.pnr,
+              },
+            },
+            "/checkin/home"
+          );
         })
         .catch((error) => {
           notification.error({

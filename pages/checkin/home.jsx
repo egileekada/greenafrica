@@ -26,9 +26,9 @@ import {
 
 import { setCheckinPNR } from "redux/reducers/checkin";
 
-const CheckInDetails = () => {
+const CheckInDetails = (props) => {
   const router = useRouter();
-  const { id } = router.query;
+  const { pnr } = router.query;
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   const [passengers, setPassengers] = useState([]);
@@ -45,7 +45,7 @@ const CheckInDetails = () => {
   useEffect(() => {
     if (router.isReady) {
       async function initSession() {
-        if (id) {
+        if (pnr) {
           dispatch(startSession());
           dispatch(resetSelectedPassengers());
         }
@@ -57,8 +57,8 @@ const CheckInDetails = () => {
   useEffect(() => {
     async function getBooking() {
       if (signature) {
-        dispatch(setCheckinPNR(id));
-        dispatch(retrieveBooking({ id }));
+        dispatch(setCheckinPNR(pnr));
+        dispatch(retrieveBooking({ pnr }));
       }
     }
     getBooking();
@@ -194,12 +194,15 @@ const CheckInDetails = () => {
       },
       "/checkin/consent"
     );
-    // router.push("/checkin/seat-selection");
   };
 
   const handleServices = () => {
     router.push("/checkin/manage-services");
   };
+
+  if (!props.pnr) {
+    router.push("/");
+  }
 
   return (
     <BaseLayout>
@@ -404,11 +407,6 @@ const CheckInDetails = () => {
                 ))}
                 {/* Checkin Info*/}
                 <div className="flex mx-6 mt-5">
-                  {/* {bookingResponse?.Booking?.BookingSum.BalanceDue > 0 ? (
-                    <Link href="/checkin/pay">
-                      <a className="btn btn-primary">Pay & Check In </a>
-                    </Link>
-                  ) : ( */}
                   <button
                     className="btn btn-primary"
                     disabled={passengers.length < 1}
@@ -416,7 +414,6 @@ const CheckInDetails = () => {
                   >
                     Check In
                   </button>
-                  {/* )} */}
                 </div>
               </section>
             </div>
@@ -431,3 +428,11 @@ const CheckInDetails = () => {
 };
 
 export default CheckInDetails;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      pnr: context.query.pnr ? context.query.pnr : "",
+    },
+  };
+}
