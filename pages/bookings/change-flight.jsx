@@ -15,6 +15,7 @@ import IbeTrips from "containers/Booking/IbeTrips";
 import BookingIbeHeader from "containers/Booking/IbeHeader";
 import ReturnBookingIbeHeader from "containers/Booking/IbeHeader/ReturnIbeHeader";
 import { notification } from "antd";
+import ManageFlightWidget from "containers/Widgets/ManageFlightWidget";
 
 const ManageUpdateItenary = () => {
   const router = useRouter();
@@ -69,9 +70,13 @@ const ManageUpdateItenary = () => {
       <section className="w-full">
         <section className="ga__section bg-normal">
           <div className="ga__section__main standalone">
-            <h2 className="text-primary-main font-extrabold text-2xl mb-8 text-center">
+            <h2 className="text-primary-main font-extrabold text-2xl mb-4 text-center">
               UPDATE ITENARY
             </h2>
+
+            <div className="flex flex-col mb-8">
+              <ManageFlightWidget />
+            </div>
 
             <section className="flex flex-col  rounded-xl pb-12">
               {manageFlightAvailabilityLoading ? (
