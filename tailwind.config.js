@@ -6,9 +6,9 @@ module.exports = {
     "./containers/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    borderWidth: {
-      DEFAULT: "1px",
-    },
+    // borderWidth: {
+    //   DEFAULT: "1px",
+    // },
     fontFamily: {
       body: ["Plus Jakarta Sans"],
       title: ["Plus Jakarta Sans"],

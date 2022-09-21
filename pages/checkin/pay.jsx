@@ -7,8 +7,7 @@ import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   sessionSelector,
-  retrieveBookingFromState,
-  retrieveBookingFromState,
+  retrieveBookingFromState
 } from "redux/reducers/session";
 import { paymentSelector, FetchPaymentGateways } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
