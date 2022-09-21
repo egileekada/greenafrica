@@ -313,7 +313,7 @@ const ManageBookings = (props) => {
   };
 
   if (!props.pnr) {
-    router.push("/");
+    router.push("/bookings");
   }
 
   return (

@@ -186,6 +186,9 @@ const Home = () => {
         {sessionLoading ? (
           <section className="spinner__container">
             <SkeletonLoader />
+            <SkeletonLoader />
+            <SkeletonLoader />
+            <SkeletonLoader />
           </section>
         ) : (
           <Fragment>

@@ -55,7 +55,7 @@ const ManageBooking = () => {
             description: error?.data?.Error?.ErrorText,
           });
 
-          console.log(error);
+          // console.log(error);
         });
     },
   });
