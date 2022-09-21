@@ -46,23 +46,13 @@ const CheckInDetails = (props) => {
     if (router.isReady) {
       async function initSession() {
         if (pnr) {
-          dispatch(startSession());
+          dispatch(setCheckinPNR(pnr));
           dispatch(resetSelectedPassengers());
         }
       }
       initSession();
     }
   }, [router.isReady]);
-
-  useEffect(() => {
-    async function getBooking() {
-      if (signature) {
-        dispatch(setCheckinPNR(pnr));
-        dispatch(retrieveBooking({ pnr }));
-      }
-    }
-    getBooking();
-  }, [signature]);
 
   const PassengerBags = (_passenger, PassengerNumber) => {
     const _Baggages = _passenger.filter((pax) => {
