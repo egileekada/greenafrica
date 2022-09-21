@@ -148,6 +148,7 @@ const TripPayment = () => {
             currency: "NGN",
             customer: {
               email: bookingState?.BookingContacts[0].EmailAddress,
+              name: sessionContact?.firstName,
             },
           });
         })
@@ -174,7 +175,9 @@ const TripPayment = () => {
     } else {
       handleFlutterPayment({
         callback: (response) => {
-          console.log(response);
+          window.location.assign(
+            `https://dev-ibe.gadevenv.com/trip/confirm-payment?ref=${response.tx_ref}`
+          );
           closePaymentModal(); // this will close the modal programmatically
         },
         onClose: () => {},

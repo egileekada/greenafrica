@@ -7,7 +7,7 @@ import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   sessionSelector,
-  retrieveBookingFromState
+  retrieveBookingFromState,
 } from "redux/reducers/session";
 import { paymentSelector, FetchPaymentGateways } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
@@ -87,6 +87,7 @@ const CheckinPayment = () => {
             currency: "NGN",
             customer: {
               email: bookingState?.BookingContacts[0].EmailAddress,
+              name: `${bookingState.BookingContacts[0].Names[0].FirstName} ${bookingState?.BookingContacts[0].Names[0].LastName}`,
             },
           });
         })
@@ -112,7 +113,9 @@ const CheckinPayment = () => {
     } else {
       handleFlutterPayment({
         callback: (response) => {
-          console.log(response);
+          window.location.assign(
+            `https://dev-ibe.gadevenv.com/checkin/confirm-payment?ref=${response.tx_ref}`
+          );
           closePaymentModal(); // this will close the modal programmatically
         },
         onClose: () => {},
