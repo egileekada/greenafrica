@@ -1586,33 +1586,37 @@ export const GetBookingDetailsWithPNR =
 
     dispatch(setBookingResponseLoading(true));
 
-    const requestPayload = {
-      header: {
-        signature: currentState?.signature,
-        messageContractVersion: "",
-        enableExceptionStackTrace: false,
-        contractVersion: 0,
-      },
-      getBookingRequestDto: {
-        getBookingRequestData: {
-          getBookingBy: 0,
-          getBookingBySpecified: true,
-          getByRecordLocator: {
-            recordLocator: payload.pnr,
+    if (payload.pnr) {
+      const requestPayload = {
+        header: {
+          signature: currentState?.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: false,
+          contractVersion: 0,
+        },
+        getBookingRequestDto: {
+          getBookingRequestData: {
+            getBookingBy: 0,
+            getBookingBySpecified: true,
+            getByRecordLocator: {
+              recordLocator: payload.pnr,
+            },
           },
         },
-      },
-    };
-    try {
-      const Response = await GetBooking(requestPayload);
-      await dispatch(setBookingResponse(Response.data));
-    } catch (err) {
-      // console.log("GetBooking Request error", err.response);
-      notification.error({
-        message: "Error",
-        description: "Get Booking Details failed",
-      });
+      };
+
+      // console.log("request payload is", requestPayload);
+      try {
+        const Response = await GetBooking(requestPayload);
+        await dispatch(setBookingResponse(Response.data));
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: "Get Booking Details failed",
+        });
+      }
     }
+
     dispatch(setBookingResponseLoading(false));
   };
 

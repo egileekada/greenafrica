@@ -20,6 +20,7 @@ import {
   saveCheckInSelection,
   saveCheckInPassengerSelection,
   resetSelectedPassengers,
+  GetBookingDetailsWithPNR,
 } from "redux/reducers/session";
 
 import { setCheckinPNR } from "redux/reducers/checkin";
@@ -39,6 +40,7 @@ const CheckInDetails = (props) => {
       async function initSession() {
         if (props.pnr) {
           dispatch(setCheckinPNR(props.pnr));
+          dispatch(GetBookingDetailsWithPNR({ pnr: props.pnr }));
           dispatch(resetSelectedPassengers());
         }
       }

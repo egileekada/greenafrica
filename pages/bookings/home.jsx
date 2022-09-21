@@ -7,7 +7,10 @@ import DottedLine from "assets/svgs/dotted-line.svg";
 import IbeAdbar from "containers/IbeAdbar";
 import SkeletonLoader from "components/SkeletonLoader";
 import { useDispatch, useSelector } from "react-redux";
-import { sessionSelector } from "redux/reducers/session";
+import {
+  sessionSelector,
+  GetBookingDetailsWithPNR,
+} from "redux/reducers/session";
 import { saveTripParams, saveReturnParams } from "redux/reducers/booking";
 import { paymentSelector } from "redux/reducers/payment";
 import { useRouter } from "next/router";
@@ -21,7 +24,6 @@ import PageFares from "./components/PageFares";
 const ManageBookings = (props) => {
   const router = useRouter();
   const [statePNR, setStatePnr] = useState("");
-  const [selectedPaxs] = useState([]);
   const dispatch = useDispatch();
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
@@ -44,6 +46,7 @@ const ManageBookings = (props) => {
         if (router?.query?.pnr) {
           setStatePnr(props.pnr);
           dispatch(setManageBookingPnr(props.pnr));
+          dispatch(GetBookingDetailsWithPNR({ pnr: props.pnr }));
         }
       }
     }

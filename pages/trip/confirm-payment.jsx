@@ -72,6 +72,7 @@ const ConfirmTripPayment = () => {
         {verifyPaymentLoading ? (
           <section className="py-32 lg:py-12 px-12">
             <SkeletonLoader />
+            <SkeletonLoader />
           </section>
         ) : (
           <section className="py-32 lg:py-12 px-12">

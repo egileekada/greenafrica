@@ -8,7 +8,6 @@ import Fare from "containers/IbeSummary/Fare";
 import SummaryDetails from "containers/IbeSummary/SummaryDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { GetBookingDetails, sessionSelector } from "redux/reducers/session";
-import Spinner from "components/Spinner";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
@@ -231,7 +230,11 @@ const TripConfirm = () => {
       </nav>
       <section className="w-full">
         {bookingResponseLoading ? (
-          <SkeletonLoader />
+          <section className="py-32 lg:py-12 px-12">
+            <SkeletonLoader />
+            <SkeletonLoader />
+            <SkeletonLoader />
+          </section>
         ) : (
           <section className="ga__section">
             {bookingResponse ? (
