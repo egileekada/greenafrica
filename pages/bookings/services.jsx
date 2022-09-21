@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import BaseLayout from "layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonLoader from "components/SkeletonLoader";
-import { sessionSelector, FetchStateFromServer } from "redux/reducers/session";
+
+import {
+  sessionSelector,
+  FetchStateFromServer,
+  GetBookingDetailsWithPNR,
+} from "redux/reducers/session";
 import { bookingSelector } from "redux/reducers/booking";
 import {
   FetchSSRAvailability,
@@ -11,7 +16,6 @@ import {
   setBookingSessionSSRs,
   setBookingSessionReturnSSRs,
   CancelSSRs,
-  GetBookingDetailsWithPNR,
 } from "redux/reducers/booking";
 import BookingPassengerItem from "./components/BookingPassengerItem";
 import { useRouter } from "next/router";
