@@ -161,6 +161,8 @@ const TripPayment = () => {
     }
   };
 
+  // flw_ref
+
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
   };
@@ -175,8 +177,9 @@ const TripPayment = () => {
     } else {
       handleFlutterPayment({
         callback: (response) => {
+          console.log(response);
           window.location.assign(
-            `https://dev-ibe.gadevenv.com/trip/confirm-payment?ref=${response.tx_ref}`
+            `https://dev-ibe.gadevenv.com/trip/confirm-payment?reference=${response.tx_ref}`
           );
           closePaymentModal(); // this will close the modal programmatically
         },

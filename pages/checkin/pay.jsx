@@ -79,7 +79,7 @@ const CheckinPayment = () => {
           setConfig({
             ...config,
             tx_ref: data?.data?.reference,
-            amount: totalFare * 100,
+            amount: gateway[0]?.code === "PS" ? totalFare * 100 : totalFare,
             email: bookingState?.BookingContacts[0].EmailAddress,
             publicKey: gateway[0].public_key,
             public_key: gateway[0].public_key,
@@ -114,7 +114,7 @@ const CheckinPayment = () => {
       handleFlutterPayment({
         callback: (response) => {
           window.location.assign(
-            `https://dev-ibe.gadevenv.com/checkin/confirm-payment?ref=${response.tx_ref}`
+            `https://dev-ibe.gadevenv.com/checkin/confirm-payment?reference=${response.tx_ref}`
           );
           closePaymentModal(); // this will close the modal programmatically
         },
