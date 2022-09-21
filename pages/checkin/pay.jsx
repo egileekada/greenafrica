@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef, useState } from "react";
 import BaseLayout from "layouts/Base";
-import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -143,8 +142,8 @@ const CheckinPayment = () => {
             <Spinner />
           </section>
         ) : (
-          <section className="ga__section">
-            <div className="ga__section__main payment-section">
+          <section className="ga__section bg-[rgb(158,155,191)]/[0.17]">
+            <div className="ga__section__main payment-section mx-auto bg-[#0000]">
               {gatewaysResponse ? (
                 <>
                   <div className="mb-8">
@@ -209,9 +208,6 @@ const CheckinPayment = () => {
               ) : (
                 <p>No response from gateway</p>
               )}
-            </div>
-            <div className="ga__section__side">
-              <IbeSidebar />
             </div>
           </section>
         )}
