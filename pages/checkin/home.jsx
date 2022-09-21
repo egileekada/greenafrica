@@ -17,8 +17,6 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
-  startSession,
-  retrieveBooking,
   saveCheckInSelection,
   saveCheckInPassengerSelection,
   resetSelectedPassengers,
@@ -28,25 +26,19 @@ import { setCheckinPNR } from "redux/reducers/checkin";
 
 const CheckInDetails = (props) => {
   const router = useRouter();
-  const { pnr } = router.query;
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   const [passengers, setPassengers] = useState([]);
 
   const dispatch = useDispatch();
-  const {
-    signature,
-    sessionLoading,
-    isLoading,
-    bookingResponseLoading,
-    bookingResponse,
-  } = useSelector(sessionSelector);
+  const { signature, sessionLoading, bookingResponseLoading, bookingResponse } =
+    useSelector(sessionSelector);
 
   useEffect(() => {
     if (router.isReady) {
       async function initSession() {
-        if (pnr) {
-          dispatch(setCheckinPNR(pnr));
+        if (props.pnr) {
+          dispatch(setCheckinPNR(props.pnr));
           dispatch(resetSelectedPassengers());
         }
       }
