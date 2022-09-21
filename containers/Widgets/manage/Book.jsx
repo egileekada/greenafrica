@@ -30,8 +30,7 @@ const ManageBookingTab = ({ type, promocode }) => {
   const { data } = useGetDestinationQuery();
   const [arrivals, setArrivals] = useState([]);
 
-  const { goTrip, returnTrip, tripParams, returnParams } =
-    useSelector(bookingSelector);
+  const { tripParams, returnParams } = useSelector(bookingSelector);
 
   const originSelect = useRef(null);
   const destinationSelect = useRef(null);
@@ -150,7 +149,7 @@ const ManageBookingTab = ({ type, promocode }) => {
         const check = isBefore(departureDate, returnDate);
 
         if (check) {
-          console.log("fetch flights");
+          // console.log("fetch flights");
 
           const tripRequest = {
             ...tripParams,
@@ -169,7 +168,6 @@ const ManageBookingTab = ({ type, promocode }) => {
 
           dispatch(setTripParams(tripRequest));
           dispatch(setReturnParams(returnRequest));
-
 
           dispatch(fetchFlightAvailability(tripRequest, returnRequest));
           dispatch(fetchLowFareAvailability(tripRequest));

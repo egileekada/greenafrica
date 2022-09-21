@@ -169,6 +169,7 @@ export const ReSellSSROption =
     dispatch(setCheckinSessionSSRs(payload));
     dispatch(setCheckinSessionReturnSSRs(returnPayload));
     const currentSession = getState().session;
+    const currentCheckinSession = getState().checkin;
     const segmentSSRRequests = [];
     const _bookingResponse = currentSession?.bookingResponse;
 
@@ -275,9 +276,9 @@ export const ReSellSSROption =
           },
         },
       };
-      await BookingSell(sellSSRRequest);
-      console.log("ssr sell success");
-      window.location.assign(`/checkin/confirm-services`);
+      const res = await BookingSell(sellSSRRequest);
+      const PNR = res?.data?.BookingUpdateResponseData?.Success?.RecordLocator;
+      window.location.assign(`/checkin/home?pnr=${PNR}`);
     } catch (err) {
       notification.error({
         message: "Error",

@@ -148,8 +148,8 @@ const CheckinPassengerBaggage = ({
         </div>
 
         <div className="flex flex-col">
-          {/* <p>selectedSSRs:: {JSON.stringify(selectedSSRs)}</p> */}
-          {/* <p>selectedReturnSSRs:: {JSON.stringify(selectedReturnSSRs)}</p> */}
+          <p>selectedSSRs:: {JSON.stringify(selectedSSRs)}</p>
+          <p>selectedReturnSSRs:: {JSON.stringify(selectedReturnSSRs)}</p>
           {/* <p>hhjj: {JSON.stringify(checkinSessionSSRs)}</p>; */}
         </div>
 

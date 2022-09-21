@@ -58,6 +58,10 @@ const TripConfirm = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
   };
 
+  const goToCheckin = () => {
+    router.push("checkin");
+  };
+
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation
@@ -256,7 +260,10 @@ const TripConfirm = () => {
                       >
                         Manage Booking
                       </button>
-                      <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2">
+                      <button
+                        className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2"
+                        onClick={goToCheckin}
+                      >
                         Check In
                       </button>
                       <button
