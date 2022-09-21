@@ -38,23 +38,28 @@ const ManageFlightWidget = () => {
   return (
     <section className="ga__desktop__filter w-full min-h-[168px] flex flex-col bg-white ">
       <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3">
-        <div className="flex items-center">
+        <div className="flex items-center pointer-events-none cursor-not-allowed opacity-50">
           <button
             onClick={() => setActiveTab(1)}
             className={`btn ${
               activeTab === 1 ? "btn-primary white font-title" : "btn-text"
             } mr-[22px]`}
+            disabled={true}
           >
             One Way
           </button>
-          <button
-            onClick={() => setActiveTab(2)}
-            className={`btn ${
-              activeTab === 2 ? "btn-primary white font-title" : "btn-text"
-            } mr-[22px]`}
-          >
-            Round Trip
-          </button>
+
+          {bookingResponse && bookingResponse?.Booking?.Journeys.length > 1 && (
+            <button
+              onClick={() => setActiveTab(2)}
+              className={`btn ${
+                activeTab === 2 ? "btn-primary white font-title" : "btn-text"
+              } mr-[22px]`}
+              disabled={true}
+            >
+              Round Trip
+            </button>
+          )}
         </div>
 
         <div className="flex">
