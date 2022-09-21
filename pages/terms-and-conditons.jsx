@@ -1,8 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import BaseLayout from "layouts/Base";
 import TermsCard from "components/Cards/terms";
+import { useRouter } from "next/router";
 
 const PassengerDetails = () => {
+  const router = useRouter();
+
   return (
     <BaseLayout>
       <section className="w-full">
@@ -25,10 +28,16 @@ const PassengerDetails = () => {
 
               {/* CTA */}
               <section className="flex flex-wrap md:flex-nowrap items-center my-4">
-                <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-0 md:mr-2 mb-4 md:mb-0">
+                <button
+                  className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-0 md:mr-2 mb-4 md:mb-0"
+                  onClick={() => router.back()}
+                >
                   Go Back
                 </button>
-                <button className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-2 md:mr-2">
+                <button
+                  className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-2 md:mr-2"
+                  onClick={() => router.push("/trip/view?accept=1")}
+                >
                   Accept Terms
                 </button>
               </section>
