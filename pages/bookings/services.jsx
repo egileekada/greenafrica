@@ -11,6 +11,7 @@ import {
   setBookingSessionSSRs,
   setBookingSessionReturnSSRs,
   CancelSSRs,
+  GetBookingDetailsWithPNR,
 } from "redux/reducers/booking";
 import BookingPassengerItem from "./components/BookingPassengerItem";
 import { useRouter } from "next/router";
@@ -47,7 +48,8 @@ const PassengerDetails = () => {
         const payload = {
           pnr: manageBookingPnr,
         };
-        dispatch(FetchStateFromServer());
+        // dispatch(FetchStateFromServer());
+        dispatch(GetBookingDetailsWithPNR(payload));
       }
     }
     fetchBookingDetails();

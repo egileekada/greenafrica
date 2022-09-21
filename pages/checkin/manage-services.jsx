@@ -126,7 +126,7 @@ const PassengerDetails = () => {
             }
           }
         }
-      } 
+      }
     }
     setExisitingSSRS();
   }, [bookingResponse]);
