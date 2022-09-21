@@ -140,7 +140,7 @@ const ManageBookingTab = ({ type, promocode }) => {
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
-      console.log("formik", values);
+      // console.log("formik", values);
 
       if (tripParams?.isRoundTrip) {
         // Round Trip
