@@ -150,9 +150,12 @@ const PassengerDetails = () => {
     } else {
       handleFlutterPayment({
         callback: (response) => {
-          window.location.assign(
-            `https://dev-ibe.gadevenv.com/bookings/confirm-payment?reference=${response.tx_ref}`
+          dispatch(
+            VerifyManageBookingPayment({
+              ref: response?.tx_ref,
+            })
           );
+
           closePaymentModal(); // this will close the modal programmatically
         },
         onClose: () => {},
