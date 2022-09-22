@@ -130,7 +130,7 @@ const CheckIn = () => {
                         formik.touched.pnr && formik.errors.pnr
                           ? "border border-[#de0150]"
                           : ""
-                      } relative rounded-md z-0 border border-2 border-b-2 border-gray-300 pt-4 px-4`}
+                      } relative rounded-md z-0 border border-2 border-gray-300 pt-4 px-4`}
                     >
                       <input
                         type="text"
@@ -158,7 +158,7 @@ const CheckIn = () => {
                         formik.touched.email && formik.errors.email
                           ? "border border-[#de0150]"
                           : ""
-                      } relative rounded-md z-0 border border-2 border-b-2 border-gray-300 pt-4 px-4`}
+                      } relative rounded-md z-0 border border-2 border-gray-300 pt-4 px-4`}
                     >
                       <input
                         type="email"
