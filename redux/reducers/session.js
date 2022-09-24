@@ -261,11 +261,37 @@ export const sessionSlice = createSlice({
       state.seats = [];
     },
     setCheckInSelection: (state, { payload }) => {
-      // return {
-      //   ...state,
-      //   checkInSelection: state.checkInSelection.concat(payload),
-      // };
       state.checkInSelection = payload;
+    },
+    addSeatToCheckInSelection: (state, { payload }) => {
+      const hasItem = state?.checkInSelection[
+        payload.ticketIndex
+      ]?.checkInPaxRequestList.some(
+        (l) => l.passengerID === parseInt(payload.passengerNumber)
+      );
+
+      if (hasItem) {
+        return {
+          ...state,
+          checkInSelection: state.checkInSelection.map((item, index) => {
+            if (index === payload.ticketIndex) {
+              return {
+                ...item,
+                checkInPaxRequestList: item.checkInPaxRequestList.map((el) => {
+                  if (el.passengerID === parseInt(payload.passengerNumber)) {
+                    return {
+                      ...el,
+                      seatNo: payload.SeatDesignator,
+                    };
+                  }
+                  return el;
+                }),
+              };
+            }
+            return item;
+          }),
+        };
+      }
     },
     setSelectedPassengers: (state, { payload }) => {
       return {
@@ -331,6 +357,7 @@ export const {
   resetSeat,
   resetSelectedPassengers,
   setCheckInSelection,
+  addSeatToCheckInSelection,
   setSelectedPassengers,
 } = sessionSlice.actions;
 export const sessionSelector = (state) => state.session;

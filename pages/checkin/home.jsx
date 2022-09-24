@@ -298,7 +298,7 @@ const CheckInDetails = (props) => {
                       </div>
                     </section>
 
-                    <section className="checkin__info mx-6 my-3">
+                    {/* <section className="checkin__info mx-6 my-3">
                       <p>
                         <span className="text-primary text-primary-main font-bold">
                           NOTE:&nbsp;
@@ -313,7 +313,7 @@ const CheckInDetails = (props) => {
                       >
                         Manage Services
                       </button>
-                    </section>
+                    </section> */}
 
                     <section className="mx-6">
                       <h3 className="title-text no-mb">PASSENGERS</h3>

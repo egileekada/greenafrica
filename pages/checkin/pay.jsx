@@ -1,13 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef, useState } from "react";
 import BaseLayout from "layouts/Base";
-import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   sessionSelector,
-  retrieveBookingFromState
+  retrieveBookingFromState,
 } from "redux/reducers/session";
 import { paymentSelector, FetchPaymentGateways } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
@@ -79,7 +78,7 @@ const CheckinPayment = () => {
           setConfig({
             ...config,
             tx_ref: data?.data?.reference,
-            amount: totalFare * 100,
+            amount: gateway[0]?.code === "PS" ? totalFare * 100 : totalFare,
             email: bookingState?.BookingContacts[0].EmailAddress,
             publicKey: gateway[0].public_key,
             public_key: gateway[0].public_key,
@@ -87,6 +86,7 @@ const CheckinPayment = () => {
             currency: "NGN",
             customer: {
               email: bookingState?.BookingContacts[0].EmailAddress,
+              name: `${bookingState.BookingContacts[0].Names[0].FirstName} ${bookingState?.BookingContacts[0].Names[0].LastName}`,
             },
           });
         })
@@ -112,7 +112,9 @@ const CheckinPayment = () => {
     } else {
       handleFlutterPayment({
         callback: (response) => {
-          console.log(response);
+          window.location.assign(
+            `https://dev-ibe.gadevenv.com/checkin/confirm-payment?reference=${response.tx_ref}`
+          );
           closePaymentModal(); // this will close the modal programmatically
         },
         onClose: () => {},
@@ -140,8 +142,8 @@ const CheckinPayment = () => {
             <Spinner />
           </section>
         ) : (
-          <section className="ga__section">
-            <div className="ga__section__main payment-section">
+          <section className="ga__section bg-[rgb(158,155,191)]/[0.17]">
+            <div className="ga__section__main payment-section mx-auto bg-[#0000]">
               {gatewaysResponse ? (
                 <>
                   <div className="mb-8">
@@ -206,9 +208,6 @@ const CheckinPayment = () => {
               ) : (
                 <p>No response from gateway</p>
               )}
-            </div>
-            <div className="ga__section__side">
-              <IbeSidebar />
             </div>
           </section>
         )}

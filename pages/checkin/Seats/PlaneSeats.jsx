@@ -16,6 +16,7 @@ import {
   sessionSelector,
   tryAssignSeat,
   trySaveSeat,
+  addSeatToCheckInSelection,
 } from "redux/reducers/session";
 
 import { useGetSeatlegendsQuery } from "services/widgetApi.js";
@@ -57,6 +58,14 @@ const PlaneSeats = forwardRef(
         setSeatSelected(true);
 
         const { PropertyList, SeatDesignator } = seat;
+
+        dispatch(
+          addSeatToCheckInSelection({
+            passengerNumber,
+            SeatDesignator,
+            ticketIndex,
+          })
+        );
 
         setSelected(SeatDesignator);
         setSelectedSeat(
@@ -503,6 +512,7 @@ const PlaneSeats = forwardRef(
                 <h2 className="font-header font-semibold text-primary-main text-xl mb-8">
                   LEGEND
                 </h2>
+
                 <section className="seats__legend">
                   {/* <div className="seats__legend__item">
                     <figure>
@@ -537,7 +547,10 @@ const PlaneSeats = forwardRef(
 
                   {!isLoading &&
                     legend?.data.items.map((legend, index) => (
-                      <div className="seats__legend__item" key={index * Math.random()}>
+                      <div
+                        className="seats__legend__item"
+                        key={index * Math.random()}
+                      >
                         <figure>
                           <div
                             className={`eat-box bg-[${legend.color_code}]`}

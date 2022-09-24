@@ -148,6 +148,7 @@ const TripPayment = () => {
             currency: "NGN",
             customer: {
               email: bookingState?.BookingContacts[0].EmailAddress,
+              name: sessionContact?.firstName,
             },
           });
         })
@@ -159,6 +160,8 @@ const TripPayment = () => {
       });
     }
   };
+
+  // flw_ref
 
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
@@ -175,6 +178,9 @@ const TripPayment = () => {
       handleFlutterPayment({
         callback: (response) => {
           console.log(response);
+          window.location.assign(
+            `https://dev-ibe.gadevenv.com/trip/confirm-payment?reference=${response.tx_ref}`
+          );
           closePaymentModal(); // this will close the modal programmatically
         },
         onClose: () => {},

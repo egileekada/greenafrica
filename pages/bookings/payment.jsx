@@ -98,7 +98,7 @@ const PassengerDetails = () => {
         pnr: bookingState?.RecordLocator,
         gateway_type_id: selected,
         payment_origin: "manage",
-        signature
+        signature,
       };
 
       // console.log("payload", payload);
@@ -113,7 +113,7 @@ const PassengerDetails = () => {
           setConfig({
             ...config,
             tx_ref: data?.data?.reference,
-            amount: totalFare * 100,
+            amount: gateway[0]?.code === "PS" ? totalFare * 100 : totalFare,
             email: bookingState?.BookingContacts[0].EmailAddress,
             publicKey: gateway[0].public_key,
             public_key: gateway[0].public_key,
@@ -121,6 +121,7 @@ const PassengerDetails = () => {
             currency: "NGN",
             customer: {
               email: bookingState?.BookingContacts[0].EmailAddress,
+              name: `${bookingState.BookingContacts[0].Names[0].FirstName} ${bookingState?.BookingContacts[0].Names[0].LastName}`,
             },
           });
         })
@@ -149,7 +150,12 @@ const PassengerDetails = () => {
     } else {
       handleFlutterPayment({
         callback: (response) => {
-          console.log(response);
+          dispatch(
+            VerifyManageBookingPayment({
+              ref: response?.tx_ref,
+            })
+          );
+
           closePaymentModal(); // this will close the modal programmatically
         },
         onClose: () => {},
