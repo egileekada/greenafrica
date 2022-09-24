@@ -22,8 +22,8 @@ import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
-
 import { bookingState } from "./data";
+import { lowFareAvailabilityResponse } from "./_data";
 
 const initialState = {
   isLoading: false,
@@ -396,7 +396,7 @@ export const setFlightRequest = (payload) => async (dispatch) => {
   // await dispatch(fetchFlightAvailability(payload));
 };
 
-export const fetchLowFareAvailability = (payload) => async (dispatch) => {
+export const _fetchLowFareAvailability = (payload) => async (dispatch) => {
   dispatch(setLowFareAvailabilityLoading(true));
 
   const { departureStation, arrivalStation, signature, currentDate } = payload;
@@ -459,7 +459,82 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
   dispatch(setLowFareAvailabilityLoading(false));
 };
 
-export const returnLowFareAvailability = (payload) => async (dispatch) => {
+export const fetchLowFareAvailability = (payload) => async (dispatch) => {
+  dispatch(setLowFareAvailabilityLoading(true));
+
+  const { departureStation, arrivalStation, signature, currentDate, ADT, CHD } =
+    payload;
+
+  const totalPaxCount = parseInt(ADT) + parseInt(CHD);
+
+  const requestPayload = {
+    signature: signature,
+    messageContractVersion: "",
+    enableExceptionStackTrace: true,
+    contractVersion: 0,
+    AvailabilityRequest: {
+      DepartureStation: departureStation,
+      ArrivalStation: arrivalStation,
+      beginDate: format(currentDate, "yyyy-MM-dd"),
+      beginDateSpecified: true,
+      endDate: format(addDays(currentDate, 180), "yyyy-MM-dd"),
+      endDateSpecified: true,
+      CarrierCode: "Q9",
+      FlightType: 5,
+      FlightTypeSpecified: true,
+      PaxCount: totalPaxCount,
+      PaxCountSpecified: true,
+      Dow: 10,
+      DowSpecified: true,
+      CurrencyCode: "NGN",
+      DisplayCurrencyCode: "NGN",
+      AvailabilityType: 0,
+      AvailabilityTypeSpecified: true,
+      MaximumConnectingFlights: 0,
+      MaximumConnectingFlightsSpecified: true,
+      AvailabilityFilter: 0,
+      AvailabilityFilterSpecified: true,
+      FareClassControl: 0,
+      MinimumFarePrice: 0,
+      MaximumFarePrice: 0,
+      SSRCollectionsMode: 0,
+      FareClassControlSpecified: true,
+      MinimumFarePriceSpecified: true,
+      MaximumFarePriceSpecified: true,
+      SSRCollectionsModeSpecified: true,
+      InboundOutbound: 0,
+      InboundOutboundSpecified: true,
+      NightsStay: 0,
+      NightsStaySpecified: true,
+      IncludeAllotmentsSpecified: true,
+      IncludeAllotments: false,
+      IncludeTaxesAndFees: true,
+      FareRuleFilter: 0,
+      LoyaltyFilter: 0,
+      IncludeTaxesAndFeesSpecified: true,
+      FareRuleFilterSpecified: true,
+      LoyaltyFilterSpecified: true,
+      ServiceBundleControl: 0,
+      BookingStatus: 0,
+      ServiceBundleControlSpecified: true,
+      BookingStatusSpecified: true,
+      taxAmount: 0,
+    },
+  };
+
+  try {
+    const Response = await GetLowFareAvailability(requestPayload);
+    await dispatch(setLowFareAvailabilityResponse(Response.data));
+  } catch (err) {
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Low Fares failed",
+    // });
+  }
+  dispatch(setLowFareAvailabilityLoading(false));
+};
+
+export const _returnLowFareAvailability = (payload) => async (dispatch) => {
   dispatch(setReturnFareAvailabilityLoading(true));
 
   const { departureStation, arrivalStation, signature, currentDate } = payload;
@@ -510,6 +585,79 @@ export const returnLowFareAvailability = (payload) => async (dispatch) => {
     },
   };
 
+  try {
+    const Response = await GetLowFareAvailability(requestPayload);
+    await dispatch(setReturnFareAvailabilityResponse(Response.data));
+  } catch (err) {
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Return Low Fares failed",
+    // });
+  }
+  dispatch(setReturnFareAvailabilityLoading(false));
+};
+
+export const returnLowFareAvailability = (payload) => async (dispatch) => {
+  dispatch(setReturnFareAvailabilityLoading(true));
+
+  const { departureStation, arrivalStation, signature, currentDate, ADT, CHD } =
+    payload;
+  const totalPaxCount = parseInt(ADT) + parseInt(CHD);
+
+  const requestPayload = {
+    signature: signature,
+    messageContractVersion: "",
+    enableExceptionStackTrace: true,
+    contractVersion: 0,
+    AvailabilityRequest: {
+      DepartureStation: departureStation,
+      ArrivalStation: arrivalStation,
+      beginDate: format(currentDate, "yyyy-MM-dd"),
+      beginDateSpecified: true,
+      endDate: format(addDays(currentDate, 180), "yyyy-MM-dd"),
+      endDateSpecified: true,
+      CarrierCode: "Q9",
+      FlightType: 5,
+      FlightTypeSpecified: true,
+      PaxCount: totalPaxCount,
+      PaxCountSpecified: true,
+      Dow: 10,
+      DowSpecified: true,
+      CurrencyCode: "NGN",
+      DisplayCurrencyCode: "NGN",
+      AvailabilityType: 0,
+      AvailabilityTypeSpecified: true,
+      MaximumConnectingFlights: 0,
+      MaximumConnectingFlightsSpecified: true,
+      AvailabilityFilter: 0,
+      AvailabilityFilterSpecified: true,
+      FareClassControl: 0,
+      MinimumFarePrice: 0,
+      MaximumFarePrice: 0,
+      SSRCollectionsMode: 0,
+      FareClassControlSpecified: true,
+      MinimumFarePriceSpecified: true,
+      MaximumFarePriceSpecified: true,
+      SSRCollectionsModeSpecified: true,
+      InboundOutbound: 0,
+      InboundOutboundSpecified: true,
+      NightsStay: 0,
+      NightsStaySpecified: true,
+      IncludeAllotmentsSpecified: true,
+      IncludeAllotments: false,
+      IncludeTaxesAndFees: true,
+      FareRuleFilter: 0,
+      LoyaltyFilter: 0,
+      IncludeTaxesAndFeesSpecified: true,
+      FareRuleFilterSpecified: true,
+      LoyaltyFilterSpecified: true,
+      ServiceBundleControl: 0,
+      BookingStatus: 0,
+      ServiceBundleControlSpecified: true,
+      BookingStatusSpecified: true,
+      taxAmount: 0,
+    },
+  };
   try {
     const Response = await GetLowFareAvailability(requestPayload);
     await dispatch(setReturnFareAvailabilityResponse(Response.data));

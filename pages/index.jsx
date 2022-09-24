@@ -59,7 +59,6 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    console.log(Date.now());
     async function checkSigInit() {
       const ibeQuery = new URLSearchParams(window.location.search);
       const flightOrigin = ibeQuery.get("origin");
@@ -185,8 +184,6 @@ const Home = () => {
         </nav>
         {sessionLoading ? (
           <section className="spinner__container">
-            <SkeletonLoader />
-            <SkeletonLoader />
             <SkeletonLoader />
             <SkeletonLoader />
           </section>
