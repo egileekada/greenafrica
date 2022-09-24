@@ -6,18 +6,20 @@ import CaretRight from "assets/svgs/caretright.svg";
 import Spinner from "components/Spinner";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   bookingSelector,
-  returnLowFareAvailability,
+  fetchLowFareAvailability,
   fetchFlightAvailability,
-  setReturnParams,
-  setReturnTrip,
+  setTripParams,
+  setGoTrip,
 } from "redux/reducers/booking";
+
 import { format } from "date-fns";
-import isBefore from "date-fns/isBefore";
+import isAfter from "date-fns/isAfter";
 import { notification } from "antd";
 
-const ReturnBookingIbeHeader = () => {
+const BookingIbeHeader = () => {
   const dispatch = useDispatch();
 
   const [dateList, setDateList] = useState([]);
@@ -26,12 +28,13 @@ const ReturnBookingIbeHeader = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFDateList, setCurrFDates] = useState([]);
   const [recurrent, setRecurrent] = useState(false);
+  const [loaded, setLoaded] = useState(true);
 
   const {
     tripParams,
     returnParams,
-    returnFareAvailabilityLoading,
-    returnFareAvailabilityResponse,
+    lowFareAvailabilityLoading,
+    lowFareAvailabilityResponse,
   } = useSelector(bookingSelector);
 
   const _length = window.innerWidth > 1200 ? 7 : 3;
@@ -41,32 +44,29 @@ const ReturnBookingIbeHeader = () => {
 
   useEffect(() => {
     if (
-      returnFareAvailabilityResponse &&
-      returnFareAvailabilityResponse?.GetAvailabilityResponse
+      lowFareAvailabilityResponse &&
+      lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
     ) {
       const _dateList =
-        returnFareAvailabilityResponse?.GetAvailabilityResponse?.Schedule;
+        lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
+          ?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList;
+
       setDateList([..._dateList]);
 
       const _fareDateList = [];
       _dateList.map((_dateListItem, _dl) => {
-        const totalServiceCharge =
-          _dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.PaxFares[0].ServiceCharges.reduce(
-            (accumulator, object) => {
-              return accumulator + object.Amount;
-            },
-            0
-          );
         let newObj = {};
-        newObj.id = `${_dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.FareSellKey}${_dl}`;
-        newObj.date = _dateListItem?.DepartureDate;
-        newObj.cost = totalServiceCharge;
+        newObj.id = newObj.date = _dateListItem?.DepartureDate;
+        newObj.date = newObj.date = _dateListItem?.DepartureDate;
+        newObj.cost =
+          parseInt(_dateListItem?.FareAmount) +
+          parseInt(_dateListItem?.TaxesAndFeesAmount);
         _fareDateList.push(newObj);
       });
       setFareDateList([..._fareDateList]);
 
-      if (returnParams?.recurrent) {
-        const _selectedDate = new Date(returnParams?.returnDate);
+      if (tripParams?.recurrent) {
+        const _selectedDate = new Date(tripParams?.beginDate);
         let _dateIndex = _fareDateList.findIndex((object) => {
           return (
             format(new Date(object.date), "yyyy-MM-dd") ===
@@ -88,7 +88,7 @@ const ReturnBookingIbeHeader = () => {
         if (recurrent) {
           paginate(1, _fareDateList);
         } else {
-          const selectedDate = new Date(returnParams?.returnDate);
+          const selectedDate = new Date(tripParams?.beginDate);
           let dateIndex = _fareDateList.findIndex((object) => {
             return (
               format(new Date(object.date), "yyyy-MM-dd") ===
@@ -104,8 +104,10 @@ const ReturnBookingIbeHeader = () => {
           }
         }
       }
+
+      setLoaded(false);
     }
-  }, [returnFareAvailabilityResponse]);
+  }, [lowFareAvailabilityResponse]);
 
   const paginate = (pageNumber, _fares) => {
     indexOfLastPost = pageNumber * _length;
@@ -127,11 +129,11 @@ const ReturnBookingIbeHeader = () => {
       const lastDate = new Date(fareDateList[fareDateList.length - 1]?.date);
 
       const newFlightRequest = {
-        ...returnParams,
+        ...tripParams,
         currentDate: lastDate,
       };
       setRecurrent(true);
-      dispatch(returnLowFareAvailability(newFlightRequest));
+      dispatch(fetchLowFareAvailability(newFlightRequest));
     }
   };
 
@@ -151,49 +153,45 @@ const ReturnBookingIbeHeader = () => {
 
   const FetchNewTrips = (_dateItem) => {
     const _newDate = new Date(_dateItem?.date);
-    const _check = isBefore(_newDate, new Date(tripParams?.goStd));
-
-    // console.log("_newDate", _newDate);
-    // console.log("go departure date", new Date(tripParams?.goStd));
+    const _check = isAfter(_newDate, new Date(returnParams?.returnSTD));
 
     if (_check) {
       notification.error({
         message: "Error",
         description:
-          "You can't change date to a date that is before the original trip departure's date",
+          "You can't change date to a date later than original trip return date",
       });
     } else {
-      // console.log("not isBefore");
       const flightRequest = {
-        ...returnParams,
-        returnDate: format(_newDate, "yyyy-MM-dd"),
+        ...tripParams,
+        beginDate: format(_newDate, "yyyy-MM-dd"),
+        endDate: format(_newDate, "yyyy-MM-dd"),
         recurrent: true,
-        isRoundTrip: 1,
       };
-
-      dispatch(setReturnTrip(null));
-      dispatch(setReturnParams(flightRequest));
-      dispatch(fetchFlightAvailability(tripParams, flightRequest));
+      dispatch(setGoTrip(null));
+      dispatch(setTripParams(flightRequest));
+      dispatch(fetchFlightAvailability(flightRequest, returnParams));
     }
   };
 
   return (
-    <section className="ibe__flight__info mt-20" id="returnContainer">
+    <section className="ibe__flight__info">
       <section className="ibe__flight__info__destination">
-        <p className="mx-4">{returnParams?.departureStation}</p>
+        <p className="mx-4">{tripParams?.departureStation}</p>
         <figure>
           <ArrowTo />
         </figure>
-        <p className="mx-4">{returnParams?.arrivalStation}</p>
-
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>} */}
+        <p className="mx-4">{tripParams?.arrivalStation}</p>
+        {/* {currentPage && <p> currentPage:: {currentPage}</p>}
+        {width && <p> width:: {width}</p>}
+        {_length && <p> _length:: {_length}</p>} */}
 
         <figure className="flightCircle">
           <FlightIcon />
         </figure>
       </section>
       <section className="ibe__flight__info__dates">
-        {returnFareAvailabilityLoading ? (
+        {lowFareAvailabilityLoading ? (
           <section className="flex items-center w-full">
             <Spinner />
           </section>
@@ -215,12 +213,12 @@ const ReturnBookingIbeHeader = () => {
                         i === currentFDateList.length - 1 ? "b-r-none" : ""
                       }`}
                     >
-                      {returnParams && (
+                      {tripParams && (
                         <button
                           className={`${
                             format(new Date(_dateItem?.date), "yyyy-MM-dd") ===
                             format(
-                              new Date(returnParams?.returnDate),
+                              new Date(tripParams?.beginDate),
                               "yyyy-MM-dd"
                             )
                               ? "active"
@@ -231,14 +229,20 @@ const ReturnBookingIbeHeader = () => {
                           <h6 className="text-center">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
-                          <p> ₦{_dateItem?.cost.toLocaleString()}</p>
+                          {_dateItem?.cost > 0 ? (
+                            <p> ₦{_dateItem?.cost.toLocaleString()}</p>
+                          ) : (
+                            <p>No Flight</p>
+                          )}
                         </button>
                       )}
                     </div>
                   );
                 })
+              ) : loaded ? (
+                <Spinner />
               ) : (
-                <p className="errorText text-lg">No date available</p>
+                <p className="errorText text-lg"> No date available</p>
               )}
             </section>
 
@@ -255,4 +259,4 @@ const ReturnBookingIbeHeader = () => {
   );
 };
 
-export default ReturnBookingIbeHeader;
+export default BookingIbeHeader;

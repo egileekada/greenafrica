@@ -37,8 +37,8 @@ const ManageFlightWidget = () => {
 
   return (
     <section className="ga__desktop__filter w-full min-h-[168px] flex flex-col bg-white ">
-      <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3">
-        <div className="flex items-center pointer-events-none cursor-not-allowed opacity-50">
+      <div className="ga__desktop__filter__header flex items-center justify-end px-5 py-3">
+        {/* <div className="flex items-center pointer-events-none cursor-not-allowed opacity-50">
           <button
             onClick={() => setActiveTab(1)}
             className={`btn ${
@@ -60,7 +60,7 @@ const ManageFlightWidget = () => {
               Round Trip
             </button>
           )}
-        </div>
+        </div> */}
 
         <div className="flex">
           {showPromo ? (

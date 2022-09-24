@@ -42,25 +42,21 @@ const ReturnBookingIbeHeader = () => {
   useEffect(() => {
     if (
       returnFareAvailabilityResponse &&
-      returnFareAvailabilityResponse?.GetAvailabilityResponse
+      returnFareAvailabilityResponse?.LowFareTripAvailabilityResponse
     ) {
       const _dateList =
-        returnFareAvailabilityResponse?.GetAvailabilityResponse?.Schedule;
+        returnFareAvailabilityResponse?.LowFareTripAvailabilityResponse
+          ?.LowFareAvailabilityResponseList[0].DateMarketLowFareList;
       setDateList([..._dateList]);
 
       const _fareDateList = [];
       _dateList.map((_dateListItem, _dl) => {
-        const totalServiceCharge =
-          _dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.PaxFares[0].ServiceCharges.reduce(
-            (accumulator, object) => {
-              return accumulator + object.Amount;
-            },
-            0
-          );
         let newObj = {};
-        newObj.id = `${_dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.FareSellKey}${_dl}`;
-        newObj.date = _dateListItem?.DepartureDate;
-        newObj.cost = totalServiceCharge;
+        newObj.id = newObj.date = _dateListItem?.DepartureDate;
+        newObj.date = newObj.date = _dateListItem?.DepartureDate;
+        newObj.cost =
+          parseInt(_dateListItem?.FareAmount) +
+          parseInt(_dateListItem?.TaxesAndFeesAmount);
         _fareDateList.push(newObj);
       });
       setFareDateList([..._fareDateList]);
@@ -88,7 +84,7 @@ const ReturnBookingIbeHeader = () => {
         if (recurrent) {
           paginate(1, _fareDateList);
         } else {
-          const selectedDate = new Date(returnParams?.returnDate);
+          const selectedDate = new Date(returnParams?.beginDate);
           let dateIndex = _fareDateList.findIndex((object) => {
             return (
               format(new Date(object.date), "yyyy-MM-dd") ===
@@ -231,7 +227,11 @@ const ReturnBookingIbeHeader = () => {
                           <h6 className="text-center">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
-                          <p> ₦{_dateItem?.cost.toLocaleString()}</p>
+                          {_dateItem?.cost > 0 ? (
+                            <p> ₦{_dateItem?.cost.toLocaleString()}</p>
+                          ) : (
+                            <p>No Flight</p>
+                          )}
                         </button>
                       )}
                     </div>

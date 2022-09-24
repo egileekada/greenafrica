@@ -45,22 +45,27 @@ const BookingIbeHeader = () => {
   useEffect(() => {
     if (
       lowFareAvailabilityResponse &&
-      lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
+      lowFareAvailabilityResponse?.GetAvailabilityResponse
     ) {
       const _dateList =
-        lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
-          ?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList;
+        lowFareAvailabilityResponse?.GetAvailabilityResponse?.Schedule;
 
       setDateList([..._dateList]);
 
       const _fareDateList = [];
       _dateList.map((_dateListItem, _dl) => {
+        const totalServiceCharge =
+          _dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.PaxFares[0].ServiceCharges.reduce(
+            (accumulator, object) => {
+              return accumulator + object.Amount;
+            },
+            0
+          );
+
         let newObj = {};
-        newObj.id = newObj.date = _dateListItem?.DepartureDate;
-        newObj.date = newObj.date = _dateListItem?.DepartureDate;
-        newObj.cost =
-          parseInt(_dateListItem?.FareAmount) +
-          parseInt(_dateListItem?.TaxesAndFeesAmount);
+        newObj.id = `${_dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.FareSellKey}${_dl}`;
+        newObj.date = _dateListItem?.DepartureDate;
+        newObj.cost = totalServiceCharge;
         _fareDateList.push(newObj);
       });
       setFareDateList([..._fareDateList]);
@@ -229,11 +234,7 @@ const BookingIbeHeader = () => {
                           <h6 className="text-center">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
-                          {_dateItem?.cost > 0 ? (
-                            <p> ₦{_dateItem?.cost.toLocaleString()}</p>
-                          ) : (
-                            <p>No Flight</p>
-                          )}
+                          <p> ₦{_dateItem?.cost.toLocaleString()}</p>
                         </button>
                       )}
                     </div>

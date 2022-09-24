@@ -150,7 +150,7 @@ export const saveReturnParams = (payload) => async (dispatch) => {
   dispatch(setReturnParams(payload));
 };
 
-export const fetchLowFareAvailability =
+export const _fetchLowFareAvailability =
   (payload) => async (dispatch, getState) => {
     const currentState = getState().session;
     dispatch(setLowFareAvailabilityLoading(true));
@@ -225,7 +225,88 @@ export const fetchLowFareAvailability =
     dispatch(setLowFareAvailabilityLoading(false));
   };
 
-export const returnLowFareAvailability =
+export const fetchLowFareAvailability =
+  (payload) => async (dispatch, getState) => {
+    const currentState = getState().session;
+    dispatch(setLowFareAvailabilityLoading(true));
+
+    const {
+      departureStation,
+      arrivalStation,
+      currentDate,
+      taxAmount,
+      minimumFarePrice,
+    } = payload;
+
+    const requestPayload = {
+      signature: currentState.signature,
+      messageContractVersion: "",
+      enableExceptionStackTrace: true,
+      contractVersion: 0,
+      AvailabilityRequest: {
+        DepartureStation: departureStation,
+        ArrivalStation: arrivalStation,
+        beginDate: format(currentDate, "yyyy-MM-dd"),
+        beginDateSpecified: true,
+        endDate: format(addDays(currentDate, 180), "yyyy-MM-dd"),
+        endDateSpecified: true,
+        CarrierCode: "Q9",
+        FlightType: 5,
+        FlightTypeSpecified: true,
+        PaxCount:
+          currentState?.bookingResponse?.Booking?.Passengers?.length || 1,
+        PaxCountSpecified: true,
+        Dow: 10,
+        DowSpecified: true,
+        CurrencyCode: "NGN",
+        DisplayCurrencyCode: "NGN",
+        AvailabilityType: 0,
+        AvailabilityTypeSpecified: true,
+        MaximumConnectingFlights: 0,
+        MaximumConnectingFlightsSpecified: true,
+        AvailabilityFilter: 0,
+        AvailabilityFilterSpecified: true,
+        FareClassControl: 0,
+        MaximumFarePrice: 0,
+        SSRCollectionsMode: 0,
+        FareClassControlSpecified: true,
+        MinimumFarePriceSpecified: true,
+        MaximumFarePriceSpecified: true,
+        SSRCollectionsModeSpecified: true,
+        InboundOutbound: 0,
+        InboundOutboundSpecified: true,
+        NightsStay: 0,
+        NightsStaySpecified: true,
+        IncludeAllotmentsSpecified: true,
+        IncludeAllotments: false,
+        IncludeTaxesAndFees: true,
+        FareRuleFilter: 0,
+        LoyaltyFilter: 0,
+        IncludeTaxesAndFeesSpecified: true,
+        FareRuleFilterSpecified: true,
+        LoyaltyFilterSpecified: true,
+        ServiceBundleControl: 0,
+        BookingStatus: 0,
+        ServiceBundleControlSpecified: true,
+        BookingStatusSpecified: true,
+        MinimumFarePrice: minimumFarePrice,
+        taxAmount: taxAmount,
+      },
+    };
+
+    try {
+      const Response = await GetLowFareAvailability(requestPayload);
+      await dispatch(setLowFareAvailabilityResponse(Response.data));
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Fetch Low Fares failed",
+      });
+    }
+    dispatch(setLowFareAvailabilityLoading(false));
+  };
+
+export const _returnLowFareAvailability =
   (payload) => async (dispatch, getState) => {
     const currentState = getState().session;
     dispatch(setReturnFareAvailabilityLoading(true));
@@ -285,6 +366,89 @@ export const returnLowFareAvailability =
         // taxAmount: parseInt(taxAmount),
         totalAmount: parseInt(minimumFarePrice),
         totalTaxAmount: parseInt(taxAmount),
+      },
+    };
+
+    try {
+      const Response = await GetLowFareAvailability(requestPayload);
+      await dispatch(setReturnFareAvailabilityResponse(Response.data));
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Fetch Return Low Fares failed",
+      });
+    }
+    dispatch(setReturnFareAvailabilityLoading(false));
+  };
+
+export const returnLowFareAvailability =
+  (payload) => async (dispatch, getState) => {
+    const currentState = getState().session;
+    dispatch(setReturnFareAvailabilityLoading(true));
+
+    const {
+      departureStation,
+      arrivalStation,
+      currentDate,
+      taxAmount,
+      minimumFarePrice,
+    } = payload;
+
+    const requestPayload = {
+      signature: currentState.signature,
+      messageContractVersion: "",
+      enableExceptionStackTrace: true,
+      contractVersion: 0,
+      AvailabilityRequest: {
+        DepartureStation: arrivalStation,
+        ArrivalStation: departureStation,
+        // beginDate: format(currentDate, "yyyy-MM-dd"),
+        beginDate: format(new Date(currentDate), "yyyy-MM-dd"),
+        beginDateSpecified: true,
+        // endDate: format(addDays(currentDate, 180), "yyyy-MM-dd"),
+        endDate: format(addDays(new Date(currentDate), 27), "yyyy-MM-dd"),
+        endDateSpecified: true,
+        CarrierCode: "Q9",
+        FlightType: 5,
+        FlightTypeSpecified: true,
+        PaxCount:
+          currentState?.bookingResponse?.Booking?.Passengers?.length || 1,
+        PaxCountSpecified: true,
+        Dow: 10,
+        DowSpecified: true,
+        CurrencyCode: "NGN",
+        DisplayCurrencyCode: "NGN",
+        AvailabilityType: 0,
+        AvailabilityTypeSpecified: true,
+        MaximumConnectingFlights: 0,
+        MaximumConnectingFlightsSpecified: true,
+        AvailabilityFilter: 0,
+        AvailabilityFilterSpecified: true,
+        FareClassControl: 0,
+        MinimumFarePrice: minimumFarePrice,
+        MaximumFarePrice: 0,
+        SSRCollectionsMode: 0,
+        FareClassControlSpecified: true,
+        MinimumFarePriceSpecified: true,
+        MaximumFarePriceSpecified: true,
+        SSRCollectionsModeSpecified: true,
+        InboundOutbound: 0,
+        InboundOutboundSpecified: true,
+        NightsStay: 0,
+        NightsStaySpecified: true,
+        IncludeAllotmentsSpecified: true,
+        IncludeAllotments: false,
+        IncludeTaxesAndFees: true,
+        FareRuleFilter: 0,
+        LoyaltyFilter: 0,
+        IncludeTaxesAndFeesSpecified: true,
+        FareRuleFilterSpecified: true,
+        LoyaltyFilterSpecified: true,
+        ServiceBundleControl: 0,
+        BookingStatus: 0,
+        ServiceBundleControlSpecified: true,
+        BookingStatusSpecified: true,
+        taxAmount: taxAmount,
       },
     };
 
