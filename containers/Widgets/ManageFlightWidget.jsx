@@ -36,7 +36,7 @@ const ManageFlightWidget = () => {
   };
 
   return (
-    <section className="ga__desktop__filter w-full min-h-[168px] flex flex-col bg-white ">
+    <section className="ga__desktop__filter w-full min-h-[120px] flex flex-col bg-white ">
       <div className="ga__desktop__filter__header flex items-center justify-end px-5 py-3">
         {/* <div className="flex items-center pointer-events-none cursor-not-allowed opacity-50">
           <button
@@ -62,7 +62,7 @@ const ManageFlightWidget = () => {
           )}
         </div> */}
 
-        <div className="flex">
+        {/* <div className="flex">
           {showPromo ? (
             <>
               <div className="relative">
@@ -104,7 +104,7 @@ const ManageFlightWidget = () => {
               <span className="text-primary">Use promo code</span>
             </button>
           )}
-        </div>
+        </div> */}
       </div>
       <section className="ga__desktop__filter__content px-5 py-[18px]">
         {activeTab === 1 && <ManageBookingTab promocode={promocode} />}
