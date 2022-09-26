@@ -60,7 +60,11 @@ const SeatSelection = () => {
       (location) => location.code === abrreviation
     );
 
-    return `${name} (${code})`;
+    return (
+      <>
+        {name} <span className="hidden md:flex ml-1"> ({code})</span>
+      </>
+    );
   };
 
   const initAssignSeats = async () => {
