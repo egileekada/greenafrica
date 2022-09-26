@@ -58,7 +58,7 @@ const TripConfirm = () => {
   };
 
   const goToCheckin = () => {
-    router.push("checkin");
+    router.push("/checkin");
   };
 
   const resolveAbbreviation = (abrreviation) => {
@@ -263,12 +263,11 @@ const TripConfirm = () => {
                       >
                         Manage Booking
                       </button>
-                      <button
-                        className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2"
-                        onClick={goToCheckin}
-                      >
-                        Check In
-                      </button>
+                      <Link href="/checkin">
+                        <a className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2">
+                          Check In
+                        </a>
+                      </Link>
                       <button
                         className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2 mt-4 md:mt-0"
                         onClick={goBackToHome}

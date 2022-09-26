@@ -149,6 +149,7 @@ const SeatSelection = () => {
                         setShow={setShow}
                         ticketIndex={index}
                         key={index + 2}
+                        productClass={journey?.Segments[0].Fares[0].RuleNumber}
                       />
                     </TabPane>
                   ))}
