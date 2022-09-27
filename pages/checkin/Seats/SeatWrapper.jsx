@@ -7,7 +7,7 @@ import { sessionSelector } from "redux/reducers/session";
 import ProfileIcon from "assets/svgs/profile.svg";
 import InfoIcon from "assets/svgs/seats/info.svg";
 
-const SeatWrapper = ({ ticketIndex, setShow }) => {
+const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
   const {
     seatResponseLoading,
     seatAvailability,

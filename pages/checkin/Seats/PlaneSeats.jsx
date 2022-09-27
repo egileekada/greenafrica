@@ -32,6 +32,7 @@ const PlaneSeats = forwardRef(
       selectedSeat,
       setSelectedSeat,
       ticketIndex,
+      productClass,
     },
     ref
   ) => {
@@ -215,7 +216,7 @@ const PlaneSeats = forwardRef(
           </p>
 
           <p className="font-semibold mb-2 text-base">
-            {mapSeatGroup(seatGroup)}
+            {productClass === "SAVR" && mapSeatGroup(seatGroup)}
           </p>
           {propertylist.filter((list) => list.TypeCode === "INFANT").length >
             0 && <p className="font-light">Customer with infant</p>}
