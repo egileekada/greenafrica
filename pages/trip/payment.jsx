@@ -209,7 +209,7 @@ const TripPayment = () => {
         </button>
       </nav>
       <section className="w-full">
-        {bookingCommitLoading && <p>Saving booking details...</p>}
+        {/* {bookingCommitLoading && <p>Saving booking details...</p>} */}
         {gatewaysLoading ? (
           <section className="py-10 pl-12">
             <SkeletonLoader />

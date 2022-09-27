@@ -100,7 +100,7 @@ const IbeTripPopup = ({
 
   const handleSell = async (fareId) => {
     //FareKey is Fare SellKey
-    console.log("selected", selected);
+    // console.log("selected", selected);
 
     handleFare(fareId);
 
@@ -358,7 +358,7 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Continue with gSaver"}
+                          : "Upgrade to gSaver"}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -373,7 +373,7 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Continue with gClassic"}
+                          : "Upgrade to gClassic"}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -389,7 +389,7 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Continue with gFlex"}
+                          : "Upgrade to gFlex"}
                       </button>
                     </div>
                   </div>
@@ -420,7 +420,7 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Continue With gSaver
+                  Upgrade to gSaver
                 </button>
               </div>
 
@@ -449,7 +449,7 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Continue With gClassic
+                  Upgrade to gClassic
                 </button>
               </div>
 
@@ -478,7 +478,7 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Continue With gFlex
+                  Upgrade to gFlex
                 </button>
               </div>
             </section>

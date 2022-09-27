@@ -132,7 +132,7 @@ const PassengerFormItem = ({
           parseInt(_DIFF) < 145
             ? setErr({
                 ...error,
-                dob: "Can't select less than 12 years of age for an adult change",
+                dob: "Can't select less than 12 years of age for an adult",
               })
             : fillInDob(indexedPassenger, dateString);
         }
@@ -141,7 +141,7 @@ const PassengerFormItem = ({
           parseInt(_DIFF) > 24
             ? setErr({
                 ...error,
-                dob: "Can't select more than 2 years of age for an infant change",
+                dob: "Can't select more than 2 years of age for an infant",
               })
             : fillInDob(indexedPassenger, dateString);
         }
@@ -150,7 +150,7 @@ const PassengerFormItem = ({
           parseInt(_DIFF) > 144
             ? setErr({
                 ...error,
-                dob: "Can't select more than 12 years of age for a child change",
+                dob: "Can't select more than 12 years of age for a child ",
               })
             : fillInDob(indexedPassenger, dateString);
         }

@@ -244,7 +244,7 @@ const Home = () => {
                     ) : (
                       <h2 className="text-red-600 font-normal text-sm mb-8">
                         {/* TODO this needs to be checked - edge case what happens when we close the modal on the landing page */}
-                        No flight available at the moment
+                        {/* No flight available at the moment */}
                       </h2>
                     )}
                   </div>
