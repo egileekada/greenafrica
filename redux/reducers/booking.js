@@ -32,8 +32,13 @@ const initialState = {
 
   SSRAvailabilityLoading: false,
   SSRAvailabilityResponse: null,
+
   bookingSessionSSRs: [],
   bookingSessionReturnSSRs: [],
+
+  newBookingSSRs: [],
+  newBookingReturnSSRs: [],
+
   ResellSSRLoading: false,
   ResellSSRResponse: null,
 };
@@ -101,6 +106,16 @@ export const bookingSlice = createSlice({
     setBookingSessionReturnSSRs: (state, { payload }) => {
       state.bookingSessionReturnSSRs = payload;
     },
+
+    setNewBookingSSRs: (state, { payload }) => {
+      state.newBookingSSRs = payload;
+    },
+    setNewBookingReturnSSRs: (state, { payload }) => {
+      state.newBookingReturnSSRs = payload;
+    },
+
+
+
     setResellSSRLoading: (state, { payload }) => {
       state.ResellSSRLoading = payload;
     },
@@ -132,6 +147,10 @@ export const {
   setSSRAvailabilityResponse,
   setBookingSessionSSRs,
   setBookingSessionReturnSSRs,
+
+  setNewBookingSSRs,
+  setNewBookingReturnSSRs,
+
   setResellSSRLoading,
   setResellSSRResponse,
 

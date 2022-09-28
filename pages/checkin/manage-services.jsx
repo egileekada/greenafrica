@@ -129,7 +129,9 @@ const PassengerDetails = () => {
               _RETURNSSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
                 .map((_ssr) => {
+                  const unique_id = uuid();
                   let newObj = {
+                    id: `${Date.now()}${unique_id}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),
                     ssrCode: _ssr?.SSRCode,
                     schedueIndex: 0,
@@ -166,9 +168,6 @@ const PassengerDetails = () => {
         newCheckinReturnSSRs,
         checkinSessionReturnSSRs
       );
-
-      // dispatch(setCheckinSessionSSRs(newCheckinSSRsPayload));
-      // dispatch(setCheckinSessionReturnSSRs(newCheckinReturnSSRsPayload));
 
       const segmentSSRRequests = [];
       let JourneyOneSSRs = [];
@@ -247,7 +246,7 @@ const PassengerDetails = () => {
       saveNewCheckInSSRs(segmentSSRRequests)
         .unwrap()
         .then((data) => {
-          console.log("rrrrr success", data);
+          // console.log("rrrrr success", data);
           router.push("/checkin/seat-selection");
         })
         .catch((error) => {

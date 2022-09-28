@@ -67,7 +67,13 @@ const ConfirmTripPayment = () => {
       .then((data) => {
         router.push("/checkin/confirm");
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        /** @TO-DO
+         * Handle Failure handler
+         *
+         *  **/
+        console.error(error);
+      });
   };
 
   const goBackToHome = () => {

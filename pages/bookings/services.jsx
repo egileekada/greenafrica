@@ -81,9 +81,7 @@ const PassengerDetails = () => {
                   };
                   _BookingSSRs.push(newObj);
                 });
-              if (_SingleJourneySSRs.length > 0) {
-                dispatch(CancelSSRs());
-              }
+
               setSSRs(_BookingSSRs);
               dispatch(setBookingSessionSSRs(_BookingSSRs));
             } else {
@@ -117,10 +115,6 @@ const PassengerDetails = () => {
                   };
                   _BookingSessionReturnSSRs.push(newObj);
                 });
-
-              if (_GOSSRs.length > 0 || _RETURNSSRs.length > 0) {
-                dispatch(CancelSSRs());
-              }
 
               setSSRs(_BookingSessionSSRs);
               setReturnSSRs(_BookingSessionReturnSSRs);

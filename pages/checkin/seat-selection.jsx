@@ -133,11 +133,10 @@ const SeatSelection = () => {
 
   const skipSeatSelection = () => {
     if (parseInt(bookingState?.BookingSum?.BalanceDue) > 0) {
-      console.log("skip seat with", bookingState?.BookingSum?.BalanceDue);
-
+      // console.log("skip seat with", bookingState?.BookingSum?.BalanceDue);
       router.push("/checkin/pay");
     } else {
-      console.log("start checking", bookingState?.BookingSum?.BalanceDue);
+      // console.log("start checking", bookingState?.BookingSum?.BalanceDue);
       startCheckin(checkInSelection)
         .unwrap()
         .then((data) => {
