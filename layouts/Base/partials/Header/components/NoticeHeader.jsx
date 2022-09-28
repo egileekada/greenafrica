@@ -2,25 +2,25 @@
 import { useQuery } from "@tanstack/react-query";
 import { getNotifications } from "../../../../../services";
 import useDeviceSize from "hooks/useWindowSize";
-import CovidIcon from "assets/svgs/bell.svg";
+import CovidIcon from "assets/svgs/circle.svg";
 import { useEffect, useState } from "react";
 import { BANNER_SHOW } from "lib/common";
+import { Cookies } from "react-cookie-consent";
 
 const NoticeHeader = () => {
   const { data } = useQuery(["notifications"], getNotifications);
+  var popupShown = Cookies.get("ad_anouncement_popup");
 
   const [width] = useDeviceSize();
 
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (
-        localStorage.getItem(BANNER_SHOW) !== "false" &&
-        localStorage.getItem(BANNER_SHOW) !== false
-      ) {
+    if (popupShown) {
+    } else {
+      setTimeout(() => {
         setShow(true);
-      }
+      }, 3000);
     }
   }, []);
 
@@ -45,15 +45,6 @@ const NoticeHeader = () => {
                   {data?.data?.item.contents}
                 </marquee>
               )}
-              <p
-                onClick={() => {
-                  setShow(false);
-                  localStorage.setItem(BANNER_SHOW, false);
-                }}
-                className="text-white text-sm underline cursor-pointer ml-2"
-              >
-                Close
-              </p>
             </div>
           </div>
         </header>
