@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroTwoIcon from "assets/svgs/aerotwo.svg";
