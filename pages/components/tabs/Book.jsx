@@ -177,7 +177,7 @@ const Book = ({
         <div className="flex items-center">
           <div>
             <p className="font-bold text-base mb-0">{props.data.cityName}</p>
-            <p className="small mb-0">{props.data.country}</p>
+            <p className="text-[12px] mb-0">{props.data.country}</p>
           </div>
           <div className="text-green bg-primary-main p-1 rounded-lg text-center w-20 ml-auto">
             {props.data.value}

@@ -75,10 +75,16 @@ const Navigation = () => {
                         <li className="my-4">
                           <Link href="/travel-documents">Travel Documents</Link>
                         </li>
+                        <li className="my-4">
+                          <Link href="/faqs">FAQ</Link>
+                        </li>
+                        <li className="my-4">
+                          <Link href="/our-fleet">Our Fleet</Link>
+                        </li>
                       </ul>
                     </div>
 
-                    <div>
+                    {/* <div>
                       <h3 className="uppercase">&nbsp;</h3>
                       <ul className="list-unstyled with-sub">
                         <li className="my-4">
@@ -88,7 +94,7 @@ const Navigation = () => {
                           <Link href="/our-fleet">Our Fleet</Link>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 

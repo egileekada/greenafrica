@@ -12,12 +12,12 @@ const FromTo = ({
   const [show, setShow] = React.useState(true);
   const [origin, setOrigin] = React.useState(
     !!fromTo.from.cityName && !!fromTo.from.value
-      ? `${fromTo.from.cityName} ${fromTo.from.value}`
+      ? `${fromTo.from.cityName} (${fromTo.from.value})`
       : "Select Origin"
   );
   const [destination, setDestination] = React.useState(
     !!fromTo.to.cityName && !!fromTo.to.value
-      ? `${fromTo.to.cityName} ${fromTo.to.value}`
+      ? `${fromTo.to.cityName} (${fromTo.to.value})`
       : "Select Destination"
   );
 
