@@ -36,7 +36,7 @@ const MobileSearch = ({
   const [screen, setScreen] = React.useState(1);
 
   return (
-    <div className="fixed top-0 bottom-0 left-0 right-0 z-20 h-screen w-screen bg-white flex flex-col justify-start items-center">
+    <div className="fixed top-0 bottom-0 left-0 right-0 z-50 h-screen w-screen bg-white flex flex-col justify-start items-center">
       <div className="w-full flex justify-between items-center gap-2 p-4 bg-primary-main">
         <button
           onClick={() => {

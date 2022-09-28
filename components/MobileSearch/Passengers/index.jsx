@@ -44,7 +44,7 @@ const Passengers = ({
     <div
       className={`relative px-4 w-full h-full flex flex-col justify-start items-start gap-2 dark:bg-gray-700 bg-white`}
     >
-      <p className="text-primary-main text-sm mt-3 ml-0 font-semibold px-4">
+      <p className="text-dark mt-6 ml-0 font-semibold px-4 text-base">
         Who’s travelling?
       </p>
       <div className="relative w-full">
