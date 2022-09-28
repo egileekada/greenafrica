@@ -16,6 +16,9 @@ const initialState = {
   checkinSessionSSRs: [],
   checkinSessionReturnSSRs: [],
 
+  newCheckinSSRs: [],
+  newCheckinReturnSSRs: [],
+
   ResellSSRLoading: false,
   ResellSSRResponse: null,
 
@@ -42,6 +45,13 @@ export const checkinSlice = createSlice({
     },
     setCheckinSessionReturnSSRs: (state, { payload }) => {
       state.checkinSessionReturnSSRs = payload;
+    },
+
+    setNewCheckinSSRs: (state, { payload }) => {
+      state.newCheckinSSRs = payload;
+    },
+    setNewCheckinReturnSSRs: (state, { payload }) => {
+      state.newCheckinReturnSSRs = payload;
     },
 
     setResellSSRLoading: (state, { payload }) => {
@@ -71,6 +81,9 @@ export const {
 
   setCheckinSessionSSRs,
   setCheckinSessionReturnSSRs,
+
+  setNewCheckinSSRs,
+  setNewCheckinReturnSSRs,
 
   setResellSSRLoading,
   setResellSSRResponse,
@@ -277,8 +290,8 @@ export const ReSellSSROption =
         },
       };
       const res = await BookingSell(sellSSRRequest);
-      const PNR = res?.data?.BookingUpdateResponseData?.Success?.RecordLocator;
-      window.location.assign(`/checkin/home?pnr=${PNR}`);
+      // const PNR = res?.data?.BookingUpdateResponseData?.Success?.RecordLocator;
+      window.location.assign(`/checkin/seat-selection`);
     } catch (err) {
       notification.error({
         message: "Error",

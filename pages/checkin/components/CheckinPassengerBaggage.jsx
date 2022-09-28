@@ -24,6 +24,8 @@ const CheckinPassengerBaggage = ({
   const router = useRouter();
   const { data, isLoading } = useGetLocationsQuery();
   const [showPopUp, setShow] = useState(false);
+  const [newSelection, setNewSelection] = useState(false);
+  const [returnNewSelection, setReturnNewSelection] = useState(false);
   const [activeTab, setActiveTab] = useState("");
   const [schedueIndex, setSchedueIndex] = useState(0);
   const [activeSSRS, setActiveSSRs] = useState([]);
@@ -41,9 +43,16 @@ const CheckinPassengerBaggage = ({
   useEffect(() => {
     async function setDefaultTab() {
       if (bookingResponse?.Booking?.Journeys?.length > 0) {
-        let _activeTab = `${bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation.trim().toLowerCase()}${bookingResponse?.Booking?.Journeys[0]?.Segments[0].ArrivalStation.trim().toLowerCase()}`;
+        const selectedTrip = bookingResponse?.Booking?.Journeys?.filter(
+          (_item, _itemIndex) => {
+            return parseInt(_itemIndex) === parseInt(passenger?.journey);
+          }
+        );
+
+        let _activeTab = `${selectedTrip[0]?.Segments[0]?.DepartureStation.trim().toLowerCase()}${selectedTrip[0]?.Segments[0].ArrivalStation.trim().toLowerCase()}`;
+
         setActiveTab(_activeTab);
-        setSchedueIndex(0);
+        setSchedueIndex(parseInt(passenger?.journey));
       }
     }
     setDefaultTab();
@@ -99,59 +108,58 @@ const CheckinPassengerBaggage = ({
 
         <div className="flex h-16 border-b mb-6">
           {bookingResponse?.Booking?.Journeys?.length > 0 ? (
-            bookingResponse?.Booking?.Journeys?.map(
-              (_journey, _journeyIndex) => {
-                const tabID = `${_journey?.Segments[0]?.DepartureStation.trim().toLowerCase()}${_journey?.Segments[0]?.ArrivalStation.trim().toLowerCase()}`;
+            bookingResponse?.Booking?.Journeys?.filter((_item, _itemIndex) => {
+              return parseInt(_itemIndex) === parseInt(passenger?.journey);
+            }).map((_journey, _journeyIndex) => {
+              const tabID = `${_journey?.Segments[0]?.DepartureStation.trim().toLowerCase()}${_journey?.Segments[0]?.ArrivalStation.trim().toLowerCase()}`;
 
-                return (
-                  <button
-                    className={`ssr__tab ${
-                      tabID === activeTab ? "active-ssr" : ""
-                    } `}
-                    onClick={() => {
-                      setActiveTab(tabID);
-                      setSchedueIndex(_journeyIndex);
-                    }}
-                  >
-                    <figure>
-                      <FlightIcon />
+              return (
+                <button
+                  className={`ssr__tab ${
+                    tabID === activeTab ? "active-ssr" : ""
+                  } `}
+                  onClick={() => {
+                    setActiveTab(tabID);
+                    setSchedueIndex(_journeyIndex);
+                  }}
+                >
+                  <figure>
+                    <FlightIcon />
+                  </figure>
+                  <div className="flex items-center ml-[10px] ">
+                    <p className="font-header text-sm mr-[6px] font-bold">
+                      {!isLoading &&
+                        resolveAbbreviation(
+                          _journey?.Segments[0]?.DepartureStation
+                        )}
+                    </p>
+                    <figure className="flex items-center justify-center -mb-1">
+                      <ArrowIcon />
                     </figure>
-                    <div className="flex items-center ml-[10px] ">
-                      <p className="font-header text-sm mr-[6px] font-bold">
-                        {!isLoading &&
-                          resolveAbbreviation(
-                            _journey?.Segments[0]?.DepartureStation
-                          )}
-                      </p>
-                      <figure className="flex items-center justify-center -mb-1">
-                        <ArrowIcon />
-                      </figure>
-                      <p className="font-header text-sm ml-[6px] font-bold">
-                        {!isLoading &&
-                          resolveAbbreviation(
-                            _journey?.Segments[0]?.ArrivalStation
-                          )}
-                      </p>
-                    </div>
-                  </button>
-                );
-              }
-            )
+                    <p className="font-header text-sm ml-[6px] font-bold">
+                      {!isLoading &&
+                        resolveAbbreviation(
+                          _journey?.Segments[0]?.ArrivalStation
+                        )}
+                    </p>
+                  </div>
+                </button>
+              );
+            })
           ) : (
             <>
               <p className="text-xs mt-2 text-">No Journey </p>
-              <p className="text-xs mt-2 text-">
-                {JSON.stringify(bookingResponse?.Booking?.Journeys)}
-              </p>
             </>
           )}
         </div>
 
-        <div className="flex flex-col">
-          <p>selectedSSRs:: {JSON.stringify(selectedSSRs)}</p>
-          <p>selectedReturnSSRs:: {JSON.stringify(selectedReturnSSRs)}</p>
-          {/* <p>hhjj: {JSON.stringify(checkinSessionSSRs)}</p>; */}
-        </div>
+        {/* <div className="flex flex-col">
+          <p>selectedSSRs length:: {selectedSSRs.length}</p>
+          <p>selectedSSRs :: {JSON.stringify(selectedSSRs)}</p>
+          <p>/////////////////////</p>
+          <p>newCheckinSSRs :: {JSON.stringify(newCheckinSSRs)}</p>
+          <p>newCheckinSSRs length:: {newCheckinSSRs.length}</p>
+        </div> */}
 
         <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
           {schedueIndex === 0
@@ -185,8 +193,9 @@ const CheckinPassengerBaggage = ({
                       return (
                         <CheckinBaggageCard
                           passenger={passenger}
+                          newSelection={newSelection}
+                          setNewSelection={setNewSelection}
                           selectedSSRs={selectedSSRs}
-                          setSSRs={setSSRs}
                           SSRItem={_SSRITEM}
                           schedueIndex={schedueIndex}
                           ArrivalStation={_ARRIVAL}
@@ -229,9 +238,10 @@ const CheckinPassengerBaggage = ({
                       return (
                         <CheckinReturnBaggageCard
                           passenger={passenger}
+                          returnNewSelection={returnNewSelection}
+                          setReturnNewSelection={setReturnNewSelection}
                           SSRItem={_SSRITEM}
                           selectedReturnSSRs={selectedReturnSSRs}
-                          setReturnSSRs={setReturnSSRs}
                           schedueIndex={schedueIndex}
                           ArrivalStation={_ARRIVAL}
                           DepartureStation={_DEPARTURE}

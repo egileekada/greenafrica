@@ -3,13 +3,18 @@ import BaggageIcon from "assets/svgs/baggage.svg";
 import Counter from "components/Counter";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
-import { checkinSelector, setCheckinSessionSSRs } from "redux/reducers/checkin";
+import {
+  checkinSelector,
+  setNewCheckinReturnSSRs,
+} from "redux/reducers/checkin";
+import { v4 as uuid } from "uuid";
 
 const CheckinReturnBaggageCard = ({
   passenger,
-  SSRItem,
+  returnNewSelection,
+  setReturnNewSelection,
   selectedReturnSSRs,
-  setReturnSSRs,
+  SSRItem,
   schedueIndex,
   ArrivalStation,
   DepartureStation,
@@ -19,8 +24,10 @@ const CheckinReturnBaggageCard = ({
   const [totalFare, setFare] = useState(0);
   const [limit, setLimit] = useState(0);
   const [value, setValue] = useState(0);
+  const [newReturnSSRs, setNewReturnSSRs] = useState([]);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { checkinSessionReturnSSRs } = useSelector(checkinSelector);
+  const { checkinSessionReturnSSRs, newCheckinReturnSSRs } =
+    useSelector(checkinSelector);
 
   const KG = SSRItem?.SSRCode.substring(1);
   const dispatch = useDispatch();
@@ -69,13 +76,17 @@ const CheckinReturnBaggageCard = ({
 
   useEffect(() => {
     if (parseInt(schedueIndex) === 1) {
-      handleReturnSSR();
+      if (returnNewSelection) {
+        handleReturnSSR();
+      }
     }
   }, [value]);
 
   const handleReturnSSR = () => {
     if (value >= 1 && value <= 2) {
-      const existingSSRs = [...selectedReturnSSRs];
+      const existingSSRs = returnNewSelection
+        ? [...newCheckinReturnSSRs]
+        : [...selectedReturnSSRs];
       const cleanedSSRs = existingSSRs.filter((_ssr) => {
         const ruleBasis =
           _ssr.ssrCode === SSRItem?.SSRCode &&
@@ -85,17 +96,22 @@ const CheckinReturnBaggageCard = ({
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
+
+      const unique_id = uuid();
       const SSRItemObj = new Array(value).fill({
+        id: `${Date.now()}${unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
         ssrCode: SSRItem.SSRCode,
         schedueIndex,
         ArrivalStation,
         DepartureStation,
       });
-      setReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
-      dispatch(setCheckinSessionSSRs([...cleanedSSRs, ...SSRItemObj]));
+      setNewReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+      dispatch(setNewCheckinReturnSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
-      const _existingSSRs = [...selectedReturnSSRs];
+      const _existingSSRs = returnNewSelection
+        ? [...newCheckinReturnSSRs]
+        : [...selectedReturnSSRs];
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
         const _ruleBasis =
           _ssr.ssrCode === SSRItem.SSRCode &&
@@ -103,15 +119,18 @@ const CheckinReturnBaggageCard = ({
             parseInt(passenger?.PassengerNumber);
         return !_ruleBasis;
       });
+
+      const _unique_id = uuid();
       const _SSRItemObj = new Array(value).fill({
+        id: `${Date.now()}${_unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
         ssrCode: SSRItem.SSRCode,
         schedueIndex,
         ArrivalStation,
         DepartureStation,
       });
-      setReturnSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
-      dispatch(setCheckinSessionSSRs([..._cleanedSSRs, ..._SSRItemObj]));
+      setNewReturnSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
+      dispatch(setNewCheckinReturnSSRs([..._cleanedSSRs, ..._SSRItemObj]));
     }
   };
 
@@ -127,6 +146,7 @@ const CheckinReturnBaggageCard = ({
   };
 
   const onValueIncrement = () => {
+    setReturnNewSelection(true);
     setValue((prevVal) => {
       if (prevVal + 1 > 2) {
         return 2;
@@ -137,6 +157,7 @@ const CheckinReturnBaggageCard = ({
   };
 
   const onValueDecrement = () => {
+    setReturnNewSelection(true);
     if (value <= limit) {
       return false;
     } else {
@@ -161,7 +182,8 @@ const CheckinReturnBaggageCard = ({
           {" "}
           ₦{totalFare.toLocaleString()}
         </p>
-        {/* <p>Limit : {limit}</p> */}
+        {/* <p>return imit : {limit}</p>
+        <p>passenger?.PassengerNumber : {passenger?.PassengerNumber}</p> */}
 
         <Counter
           value={value}
@@ -177,6 +199,7 @@ const CheckinReturnBaggageCard = ({
 CheckinReturnBaggageCard.defaultProps = {
   SSRItem: {},
   passenger: {},
+  returnNewSelection: false,
   selectedReturnSSRs: [],
   schedueIndex: 0,
   ArrivalStation: "",

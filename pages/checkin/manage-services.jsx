@@ -9,15 +9,20 @@ import {
 } from "redux/reducers/session";
 import {
   FetchSSRAvailability,
-  ReSellSSROption,
   setCheckinSessionSSRs,
   setCheckinSessionReturnSSRs,
-  CancelSSRs,
   checkinSelector,
+  setNewCheckinSSRs,
+  setNewCheckinReturnSSRs,
 } from "redux/reducers/checkin";
 import CheckinPassengerItem from "./components/CheckinPassengerItem";
-
 import { useRouter } from "next/router";
+import { uniqueId } from "lodash";
+import { v4 as uuid } from "uuid";
+import { extractUniqueDiffrenceById } from "utils/helpers";
+
+import { useSaveNewCheckInSSRsMutation } from "services/bookingApi";
+import { notification } from "antd";
 
 const PassengerDetails = () => {
   const router = useRouter();
@@ -26,11 +31,27 @@ const PassengerDetails = () => {
   const [selectedReturnSSRs, setReturnSSRs] = useState([]);
   const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
 
-  const { signature, bookingResponseLoading, bookingResponse } =
-    useSelector(sessionSelector);
+  const {
+    signature,
+    bookingResponseLoading,
+    bookingResponse,
+    selectedPassengers,
+  } = useSelector(sessionSelector);
 
-  const { SSRAvailabilityLoading, ResellSSRLoading, checkinPNR } =
-    useSelector(checkinSelector);
+  const {
+    SSRAvailabilityLoading,
+    ResellSSRLoading,
+    checkinPNR,
+
+    checkinSessionSSRs,
+    checkinSessionReturnSSRs,
+
+    newCheckinSSRs,
+    newCheckinReturnSSRs,
+  } = useSelector(checkinSelector);
+
+  const [saveNewCheckInSSRs, { isLoading: sellNewCheckinSSRsLoading }] =
+    useSaveNewCheckInSSRsMutation();
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -69,7 +90,9 @@ const PassengerDetails = () => {
               _SingleJourneySSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
                 .map((_ssr) => {
+                  let uuid = uniqueId(_ssr?.ArrivalStation);
                   let newObj = {
+                    id: `${Date.now()}${_ssrIndex}${uuid}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),
                     ssrCode: _ssr?.SSRCode,
                     schedueIndex: 0,
@@ -78,11 +101,10 @@ const PassengerDetails = () => {
                   };
                   _BookingSSRs.push(newObj);
                 });
-              if (_SingleJourneySSRs.length > 0) {
-                dispatch(CancelSSRs());
-              }
+
               setSSRs(_BookingSSRs);
               dispatch(setCheckinSessionSSRs(_BookingSSRs));
+              dispatch(setNewCheckinSSRs(_BookingSSRs));
             } else {
               const _GOSSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
               const _RETURNSSRs = _TRIPS[1]?.Segments[0]?.PaxSSRs;
@@ -90,8 +112,10 @@ const PassengerDetails = () => {
               const _BookingSessionSSRs = [];
               _GOSSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
-                .map((_ssr) => {
+                .map((_ssr, _ssrIndex) => {
+                  const unique_id = uuid();
                   let newObj = {
+                    id: `${Date.now()}${unique_id}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),
                     ssrCode: _ssr?.SSRCode,
                     schedueIndex: 0,
@@ -115,14 +139,14 @@ const PassengerDetails = () => {
                   _BookingSessionReturnSSRs.push(newObj);
                 });
 
-              if (_GOSSRs.length > 0 || _RETURNSSRs.length > 0) {
-                dispatch(CancelSSRs());
-              }
-
               setSSRs(_BookingSessionSSRs);
               setReturnSSRs(_BookingSessionReturnSSRs);
+
               dispatch(setCheckinSessionSSRs(_BookingSessionSSRs));
+              dispatch(setNewCheckinSSRs(_BookingSessionSSRs));
+
               dispatch(setCheckinSessionReturnSSRs(_BookingSessionReturnSSRs));
+              dispatch(setNewCheckinReturnSSRs(_BookingSessionReturnSSRs));
             }
           }
         }
@@ -132,36 +156,106 @@ const PassengerDetails = () => {
   }, [bookingResponse]);
 
   const ProceedToSellSSR = () => {
-    if (selectedSSRs.length > 0 || selectedReturnSSRs.length > 0) {
-      let Extras = selectedSSRs.filter(function (ssr) {
-        if (
-          ssr?.ssrCode === "WCHR" ||
-          ssr?.ssrCode === "VPRD" ||
-          ssr?.ssrCode === "HPRD"
-        )
-          return true;
-      });
+    if (newCheckinSSRs.length > 0 || newCheckinReturnSSRs.length > 0) {
+      const newCheckinSSRsPayload = extractUniqueDiffrenceById(
+        newCheckinSSRs,
+        checkinSessionSSRs
+      );
 
-      if (Extras?.length > 0) {
-        const _Arrival =
-          bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
-        const _Departure =
-          bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation;
-        const existingReturnSSRs = [...selectedReturnSSRs];
-        Extras.map((_item) => {
-          const newObj = {
-            ..._item,
-            schedueIndex: 1,
-            ArrivalStation: _Departure,
-            DepartureStation: _Arrival,
+      const newCheckinReturnSSRsPayload = extractUniqueDiffrenceById(
+        newCheckinReturnSSRs,
+        checkinSessionReturnSSRs
+      );
+
+      // dispatch(setCheckinSessionSSRs(newCheckinSSRsPayload));
+      // dispatch(setCheckinSessionReturnSSRs(newCheckinReturnSSRsPayload));
+
+      const segmentSSRRequests = [];
+      let JourneyOneSSRs = [];
+      let JourneyTwoSSRs = [];
+
+      newCheckinSSRsPayload.length > 0
+        ? newCheckinSSRsPayload.map((_ssr) => {
+            let newObj = {
+              state: 0,
+              stateSpecified: true,
+              actionStatusCode: "NN",
+              departureStation: _ssr?.DepartureStation,
+              arrivalStation: _ssr?.ArrivalStation,
+              passengerNumber: _ssr?.passengerNumber,
+              passengerNumberSpecified: true,
+              ssrCode: _ssr?.ssrCode,
+              ssrNumberSpecified: true,
+              ssrNumber: 0,
+              ssrDetail: "",
+              feeCode: "",
+              note: "",
+              ssrValue: 0,
+              ssrValueSpecified: true,
+              isInServiceBundle: false,
+              isInServiceBundleSpecified: true,
+            };
+            JourneyOneSSRs.push(newObj);
+          })
+        : null;
+
+      newCheckinReturnSSRsPayload.length > 0
+        ? newCheckinReturnSSRsPayload.map((_ssr) => {
+            let newObj = {
+              state: 0,
+              stateSpecified: true,
+              actionStatusCode: "NN",
+              departureStation: _ssr?.DepartureStation,
+              arrivalStation: _ssr?.ArrivalStation,
+              passengerNumber: _ssr?.passengerNumber,
+              passengerNumberSpecified: true,
+              ssrCode: _ssr?.ssrCode,
+              ssrNumberSpecified: true,
+              ssrNumber: 0,
+              ssrDetail: "",
+              feeCode: "",
+              note: "",
+              ssrValue: 0,
+              ssrValueSpecified: true,
+              isInServiceBundle: false,
+              isInServiceBundleSpecified: true,
+            };
+            JourneyTwoSSRs.push(newObj);
+          })
+        : null;
+
+      if (bookingResponse) {
+        const JOURNEYS = bookingResponse?.Booking?.Journeys;
+        JOURNEYS.map((_journey, _index) => {
+          let _segment = {
+            flightDesignator: {
+              carrierCode: _journey?.Segments[0].FlightDesignator?.CarrierCode,
+              flightNumber:
+                _journey?.Segments[0].FlightDesignator?.FlightNumber,
+              opSuffix: "",
+            },
+            std: _journey?.Segments[0]?.STD,
+            stdSpecified: true,
+            departureStation: _journey?.Segments[0]?.DepartureStation,
+            arrivalStation: _journey?.Segments[0]?.ArrivalStation,
+            paxSSRs: _index === 0 ? [...JourneyOneSSRs] : [...JourneyTwoSSRs],
           };
-          existingReturnSSRs.push(newObj);
+          segmentSSRRequests.push(_segment);
         });
-        setReturnSSRs([...existingReturnSSRs]);
-        dispatch(ReSellSSROption(selectedSSRs, [...existingReturnSSRs]));
-      } else {
-        dispatch(ReSellSSROption(selectedSSRs, selectedReturnSSRs));
       }
+
+      saveNewCheckInSSRs(segmentSSRRequests)
+        .unwrap()
+        .then((data) => {
+          console.log("rrrrr success", data);
+          router.push("/checkin/seat-selection");
+        })
+        .catch((error) => {
+          notification.error({
+            message: "Error",
+            description: "Sell Services failed",
+          });
+        });
     } else {
       router.back();
     }
@@ -181,8 +275,8 @@ const PassengerDetails = () => {
                 </h2>
 
                 <section className="flex flex-col rounded-xl pb-1 bg-transparent">
-                  {bookingResponse?.Booking?.Passengers.length > 0 ? (
-                    bookingResponse?.Booking?.Passengers.map((_sesPax) => {
+                  {selectedPassengers?.length > 0 ? (
+                    selectedPassengers.map((_sesPax) => {
                       return (
                         <CheckinPassengerItem
                           passenger={_sesPax}
@@ -209,7 +303,9 @@ const PassengerDetails = () => {
                         onClick={ProceedToSellSSR}
                         className="btn btn-primary"
                       >
-                        {ResellSSRLoading ? "Saving" : "Continue"}
+                        {ResellSSRLoading || sellNewCheckinSSRsLoading
+                          ? "Saving"
+                          : "Continue"}
                       </button>
                     </div>
                   )}

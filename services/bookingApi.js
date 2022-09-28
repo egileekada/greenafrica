@@ -189,6 +189,42 @@ export const bookingApi = createApi({
         },
       }),
     }),
+    saveNewCheckInSSRs: builder.mutation({
+      query: (body) => ({
+        url: "Booking/Sell",
+        method: "POST",
+        body: {
+          header: {
+            signature: store.getState().session.signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: false,
+            contractVersion: 0,
+          },
+          sellRequestDto: {
+            sellRequest: {
+              sellRequestData: {
+                sellBy: 2,
+                sellBySpecified: true,
+                sellSSR: {
+                  ssrRequest: {
+                    segmentSSRRequests: [...body],
+                    currencyCode: "NGN",
+                    cancelFirstSSR: true,
+                    cancelFirstSSRSpecified: true,
+                    ssrFeeForceWaiveOnSell: false,
+                    ssrFeeForceWaiveOnSellSpecified: true,
+                    sellSSRMode: 0,
+                    sellSSRModeSpecified: true,
+                    feePricingMode: 0,
+                    feePricingModeSpecified: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      }),
+    }),
   }),
 });
 
@@ -202,4 +238,5 @@ export const {
   useBookingCommitMutation,
   useBookingStateMutation,
   useGetBookingMutation,
+  useSaveNewCheckInSSRsMutation,
 } = bookingApi;

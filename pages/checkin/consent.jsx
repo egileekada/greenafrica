@@ -81,7 +81,7 @@ const Consent = () => {
             </button>
             <Link
               href={{
-                pathname: "/checkin/seat-selection",
+                pathname: "/checkin/manage-services",
                 query: { terms: true },
               }}
             >

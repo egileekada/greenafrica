@@ -117,13 +117,15 @@ const PassengerBaggage = ({
                   </figure>
                   <div className="flex items-center ml-[10px] ">
                     <p className="font-header text-sm mr-[6px] font-bold">
-                      {!isLoading && resolveAbbreviation(_journey.departureStation)}
+                      {!isLoading &&
+                        resolveAbbreviation(_journey.departureStation)}
                     </p>
                     <figure className="flex items-center justify-center -mb-1">
                       <ArrowIcon />
                     </figure>
                     <p className="font-header text-sm ml-[6px] font-bold">
-                      {!isLoading && resolveAbbreviation(_journey.arrivalStation)}
+                      {!isLoading &&
+                        resolveAbbreviation(_journey.arrivalStation)}
                     </p>
                   </div>
                 </button>
@@ -178,24 +180,6 @@ const PassengerBaggage = ({
                   );
                 });
               })}
-          {/* {activeSSRS.length > 0 &&
-            activeSSRS.map((_list) => {
-              return _list?.AvailablePaxSSRList.filter((_SSR) => {
-                return ALLOWED__SSRS.includes(_SSR?.SSRCode);
-              }).map((_SSRITEM) => {
-                return (
-                  <BaggageCard
-                    passenger={passenger}
-                    selectedSSRs={selectedSSRs}
-                    setSSRs={setSSRs}
-                    SSRItem={_SSRITEM}
-                    selectedReturnSSRs={selectedReturnSSRs}
-                    setReturnSSRs={setReturnSSRs}
-                    schedueIndex={schedueIndex}
-                  />
-                );
-              });
-            })} */}
         </section>
         {/* <div className="flex items-center primary-checkbox mb-4">
           <Checkbox onChange={onChange}>

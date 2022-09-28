@@ -3,15 +3,13 @@ import BaggageIcon from "assets/svgs/baggage.svg";
 import Counter from "components/Counter";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
-import { checkinSelector, setNewCheckinSSRs } from "redux/reducers/checkin";
-import { v4 as uuid } from "uuid";
+import { checkinSelector, setCheckinSessionSSRs } from "redux/reducers/checkin";
 
-const CheckinBaggageCard = ({
+const CheckinReturnBaggageCard = ({
   passenger,
-  newSelection,
-  setNewSelection,
-  selectedSSRs,
   SSRItem,
+  selectedReturnSSRs,
+  setReturnSSRs,
   schedueIndex,
   ArrivalStation,
   DepartureStation,
@@ -19,18 +17,18 @@ const CheckinBaggageCard = ({
   _limit,
 }) => {
   const [totalFare, setFare] = useState(0);
-  const [value, setValue] = useState(0);
   const [limit, setLimit] = useState(0);
-  const [newSSRs, setNewSSRs] = useState([]);
+  const [value, setValue] = useState(0);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { checkinSessionSSRs, newCheckinSSRs } = useSelector(checkinSelector);
+  const { checkinSessionReturnSSRs } = useSelector(checkinSelector);
+
   const KG = SSRItem?.SSRCode.substring(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function mapSessionSSRs() {
-      if (checkinSessionSSRs && checkinSessionSSRs.length > 0) {
-        const passengerSSRs = checkinSessionSSRs.filter((_ssr) => {
+    async function mapsessionReturnSSRs() {
+      if (checkinSessionReturnSSRs && checkinSessionReturnSSRs.length > 0) {
+        const passengerSSRs = checkinSessionReturnSSRs.filter((_ssr) => {
           return (
             parseInt(_ssr?.passengerNumber) ===
               parseInt(passenger?.PassengerNumber) &&
@@ -44,12 +42,12 @@ const CheckinBaggageCard = ({
         setValue(passengerSSRs.length);
       }
     }
-    mapSessionSSRs();
+    mapsessionReturnSSRs();
   }, [activeTab]);
 
   useEffect(() => {
     async function setBaggageLimit() {
-      if (checkinSessionSSRs && checkinSessionSSRs.length > 0) {
+      if (checkinSessionReturnSSRs && checkinSessionReturnSSRs.length > 0) {
         setLimit(_limit);
       }
     }
@@ -70,18 +68,14 @@ const CheckinBaggageCard = ({
   }, []);
 
   useEffect(() => {
-    if (parseInt(schedueIndex) === 0) {
-      if (newSelection) {
-        handleFlightSSR();
-      }
+    if (parseInt(schedueIndex) === 1) {
+      handleReturnSSR();
     }
   }, [value]);
 
-  const handleFlightSSR = () => {
+  const handleReturnSSR = () => {
     if (value >= 1 && value <= 2) {
-      const existingSSRs = newSelection
-        ? [...newCheckinSSRs]
-        : [...selectedSSRs];
+      const existingSSRs = [...selectedReturnSSRs];
       const cleanedSSRs = existingSSRs.filter((_ssr) => {
         const ruleBasis =
           _ssr.ssrCode === SSRItem?.SSRCode &&
@@ -91,21 +85,17 @@ const CheckinBaggageCard = ({
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
-      const unique_id = uuid();
       const SSRItemObj = new Array(value).fill({
-        id: `${Date.now()}${unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
         ssrCode: SSRItem.SSRCode,
         schedueIndex,
         ArrivalStation,
         DepartureStation,
       });
-      setNewSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
-      dispatch(setNewCheckinSSRs([...cleanedSSRs, ...SSRItemObj]));
+      setReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+      dispatch(setCheckinSessionSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
-      const _existingSSRs = newSelection
-        ? [...newCheckinSSRs]
-        : [...selectedSSRs];
+      const _existingSSRs = [...selectedReturnSSRs];
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
         const _ruleBasis =
           _ssr.ssrCode === SSRItem.SSRCode &&
@@ -113,18 +103,15 @@ const CheckinBaggageCard = ({
             parseInt(passenger?.PassengerNumber);
         return !_ruleBasis;
       });
-      const _unique_id = uuid();
-
       const _SSRItemObj = new Array(value).fill({
-        id: `${Date.now()}${_unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
         ssrCode: SSRItem.SSRCode,
         schedueIndex,
         ArrivalStation,
         DepartureStation,
       });
-      setNewSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
-      dispatch(setNewCheckinSSRs([..._cleanedSSRs, ..._SSRItemObj]));
+      setReturnSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
+      dispatch(setCheckinSessionSSRs([..._cleanedSSRs, ..._SSRItemObj]));
     }
   };
 
@@ -140,7 +127,6 @@ const CheckinBaggageCard = ({
   };
 
   const onValueIncrement = () => {
-    setNewSelection(true);
     setValue((prevVal) => {
       if (prevVal + 1 > 2) {
         return 2;
@@ -151,7 +137,6 @@ const CheckinBaggageCard = ({
   };
 
   const onValueDecrement = () => {
-    setNewSelection(true);
     if (value <= limit) {
       return false;
     } else {
@@ -171,15 +156,13 @@ const CheckinBaggageCard = ({
         <figure>
           <BaggageIcon />
         </figure>
-        <p className="font-body text-primary-main text-xs mb-1">
-          Extra Bag Up to {KG}kg
-        </p>
+        <p className="font-body text-primary-main text-xs mb-1">Up to {KG}kg</p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}
         </p>
-        {/* <p>Go Limit : {limit}</p>
-        <p>passenger?.PassengerNumber : {passenger?.PassengerNumber}</p> */}
+        {/* <p>Limit : {limit}</p> */}
+
         <Counter
           value={value}
           onValueChange={onValueChange}
@@ -191,11 +174,10 @@ const CheckinBaggageCard = ({
   );
 };
 
-CheckinBaggageCard.defaultProps = {
+CheckinReturnBaggageCard.defaultProps = {
   SSRItem: {},
   passenger: {},
-  newSelection: false,
-  selectedSSRs: [],
+  selectedReturnSSRs: [],
   schedueIndex: 0,
   ArrivalStation: "",
   DepartureStation: "",
@@ -203,4 +185,4 @@ CheckinBaggageCard.defaultProps = {
   _limit: 0,
 };
 
-export default CheckinBaggageCard;
+export default CheckinReturnBaggageCard;
