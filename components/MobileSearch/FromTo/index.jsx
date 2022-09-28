@@ -29,7 +29,7 @@ const FromTo = ({
     });
     setArrivals(value.arrivals);
     setShow(false);
-    setOrigin(`${value.cityName} ${value.value}`);
+    setOrigin(`${value.cityName} (${value.value})`);
   };
 
   const setDataDestination = (value) => {
@@ -37,7 +37,7 @@ const FromTo = ({
       ...fromTo,
       to: value,
     });
-    setDestination(`${value.cityName} ${value.value}`);
+    setDestination(`${value.cityName} (${value.value})`);
     if (type === "round_trip") {
       setScreen(3);
     } else {
@@ -69,10 +69,10 @@ const FromTo = ({
       <div className="relative bg-primary-main w-full p-3 flex justify-center items-center gap-4">
         <div
           onClick={() => setShow(true)}
-          className="cursor-pointer flex flex-col flex-1 rounded-lg justify-start items-start gap-1 bg-[#EDECFA] py-2 px-4"
+          className="cursor-pointer flex flex-col flex-1 rounded-lg justify-start items-start gap-1 bg-[#EDECFA] py-2 px-4 relative"
         >
           <span className="text-[10px] text-primary-main uppercase">
-            DEPARTING
+            DEPARTINGkkn
           </span>
           <span
             className={`text-sm font-bold ${
@@ -83,6 +83,12 @@ const FromTo = ({
           >
             {origin}
           </span>
+          <img
+            role="button"
+            src="/images/arrow-right.svg"
+            alt=""
+            className="absolute transform -right-[3px] bottom-0 -translate-x-1/2 -translate-y-1/2 z-[3] rotate-90"
+          />
         </div>
         <img
           role="button"
@@ -92,7 +98,7 @@ const FromTo = ({
         />
         <div
           onClick={() => setShow(false)}
-          className="cursor-pointer flex flex-col flex-1 rounded-lg justify-start items-start gap-1 bg-[#EDECFA] py-2 px-4"
+          className="cursor-pointer flex flex-col flex-1 rounded-lg justify-start items-start gap-1 bg-[#EDECFA] py-2 px-4 relative"
         >
           <span className="text-[10px] text-primary-main uppercase">
             ARRIVING
@@ -106,6 +112,12 @@ const FromTo = ({
           >
             {destination}
           </span>
+          <img
+            role="button"
+            src="/images/arrow-right.svg"
+            alt=""
+            className="absolute transform -right-[3px] bottom-0 -translate-x-1/2 -translate-y-1/2 z-[3] rotate-90"
+          />
         </div>
       </div>
 
