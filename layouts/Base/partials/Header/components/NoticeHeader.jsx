@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getNotifications } from "../../../../../services";
 import useDeviceSize from "hooks/useWindowSize";
-import CovidIcon from "assets/svgs/circle.svg";
+import CovidIcon from "assets/svgs/Circle.svg";
 import { useEffect, useState } from "react";
 import { BANNER_SHOW } from "lib/common";
 import { Cookies } from "react-cookie-consent";
