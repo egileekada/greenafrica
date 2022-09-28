@@ -28,38 +28,42 @@ const HomePopup = () => {
   };
 
   return (
-    <Popup display={showPopUp} closeModal={() => hidePopup()}>
-      <section className="w-full">
-        <section className="flex flex-col lg:flex-row items-center justify-between h-full rounded-xl lg:bg-[#26205E]">
-          <div className="md:basis-80 rounded-xl md:rounded-l-xl px-7 py-5 lg:pt-10 lg:px-10 flex items-center bg-white md:bg-[#26205E]">
-            <div className="">
-              <h2 className="text-primary-main md:text-white font-semibold font-body text-3xl mb-[18px]">
-                {data?.data.item.subject}
-              </h2>
-              <p className="text-sm leading-[29px] font-light text-primary-main md:text-white mb-6">
-                {data?.data.item.body}
-              </p>
-              <a
-                href={data?.data.item.cta_link}
-                className="btn btn-primary md:white border border-white w-[133px] py-4 px-6"
-                onClick={() => setShow(false)}
-              >
-                Get Started
-              </a>
-            </div>
-          </div>
-          <div className="h-full rounded-r-xl md:w-auto">
-            <figure className="h-[483px]">
-              <img
-                src={data?.data.item.web_image_url}
-                alt={data?.data.item.subject}
-                className="w-full h-full object-cover rounded-r-xl invisible lg:visible"
-              />
-            </figure>
-          </div>
-        </section>
-      </section>
-    </Popup>
+    <>
+      {data?.data !== null && (
+        <Popup display={showPopUp} closeModal={() => hidePopup()}>
+          <section className="w-full">
+            <section className="flex flex-col lg:flex-row items-center justify-between h-full rounded-xl lg:bg-[#26205E]">
+              <div className="md:basis-80 rounded-xl md:rounded-l-xl px-7 py-5 lg:pt-10 lg:px-10 flex items-center bg-white md:bg-[#26205E]">
+                <div className="">
+                  <h2 className="text-primary-main md:text-white font-semibold font-body text-3xl mb-[18px]">
+                    {data?.data.item.subject}
+                  </h2>
+                  <p className="text-sm leading-[29px] font-light text-primary-main md:text-white mb-6">
+                    {data?.data.item.body}
+                  </p>
+                  <a
+                    href={data?.data.item.cta_link}
+                    className="btn btn-primary md:white border border-white w-[133px] py-4 px-6"
+                    onClick={() => setShow(false)}
+                  >
+                    Get Started
+                  </a>
+                </div>
+              </div>
+              <div className="h-full rounded-r-xl md:w-auto">
+                <figure className="h-[483px]">
+                  <img
+                    src={data?.data.item.web_image_url}
+                    alt={data?.data.item.subject}
+                    className="w-full h-full object-cover rounded-r-xl invisible lg:visible"
+                  />
+                </figure>
+              </div>
+            </section>
+          </section>
+        </Popup>
+      )}
+    </>
   );
 };
 
