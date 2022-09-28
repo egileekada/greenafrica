@@ -70,7 +70,7 @@ const BookingEnd = ({
       <div className="flex w-full flex-col justify-start items-start gap-4">
         <div className="grid w-full grid-cols-1 lg:grid-cols-2 gap-4 md:col-span-2">
           <div
-            className={`border border-[#D8D7E2] flex items-end  shadow-none rounded-[14px] px-[24px] py-[16px] `}
+            className={`border border-[#D8D7E2] flex items-end  shadow-none rounded-[14px] px-[24px] py-[16px] relative`}
           >
             <img
               src="/images/widget_from.svg"
