@@ -17,10 +17,8 @@ import {
 } from "redux/reducers/checkin";
 import CheckinPassengerItem from "./components/CheckinPassengerItem";
 import { useRouter } from "next/router";
-import { uniqueId } from "lodash";
 import { v4 as uuid } from "uuid";
 import { extractUniqueDiffrenceById } from "utils/helpers";
-
 import { useSaveNewCheckInSSRsMutation } from "services/bookingApi";
 import { notification } from "antd";
 
@@ -90,7 +88,7 @@ const PassengerDetails = () => {
               _SingleJourneySSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
                 .map((_ssr, _ssrIndex) => {
-                  let uuid = uniqueId(_ssr?.ArrivalStation);
+                  let uuid = uuid();
                   let newObj = {
                     id: `${Date.now()}${_ssrIndex}${uuid}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),

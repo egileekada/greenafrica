@@ -20,6 +20,8 @@ import {
 } from "redux/reducers/booking";
 import BookingPassengerItem from "./components/BookingPassengerItem";
 import { useRouter } from "next/router";
+import { v4 as uuid } from "uuid";
+import { extractUniqueDiffrenceById } from "utils/helpers";
 
 const PassengerDetails = () => {
   const router = useRouter();
@@ -72,8 +74,10 @@ const PassengerDetails = () => {
               const _BookingSSRs = [];
               _SingleJourneySSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
-                .map((_ssr) => {
+                .map((_ssr, _ssrIndex) => {
+                  let uuid = uuid();
                   let newObj = {
+                    id: `${Date.now()}${_ssrIndex}${uuid}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),
                     ssrCode: _ssr?.SSRCode,
                     schedueIndex: 0,
@@ -93,8 +97,10 @@ const PassengerDetails = () => {
               const _BookingSessionSSRs = [];
               _GOSSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
-                .map((_ssr) => {
+                .map((_ssr, _ssrIndex) => {
+                  const unique_id = uuid();
                   let newObj = {
+                    id: `${Date.now()}${unique_id}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),
                     ssrCode: _ssr?.SSRCode,
                     schedueIndex: 0,
@@ -108,7 +114,9 @@ const PassengerDetails = () => {
               _RETURNSSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
                 .map((_ssr) => {
+                  const unique_id = uuid();
                   let newObj = {
+                    id: `${Date.now()}${unique_id}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),
                     ssrCode: _ssr?.SSRCode,
                     schedueIndex: 0,
