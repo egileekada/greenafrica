@@ -89,7 +89,7 @@ const PassengerDetails = () => {
               const _BookingSSRs = [];
               _SingleJourneySSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
-                .map((_ssr) => {
+                .map((_ssr, _ssrIndex) => {
                   let uuid = uniqueId(_ssr?.ArrivalStation);
                   let newObj = {
                     id: `${Date.now()}${_ssrIndex}${uuid}`,

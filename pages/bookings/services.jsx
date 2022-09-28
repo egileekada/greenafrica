@@ -15,7 +15,8 @@ import {
   ReSellSSROption,
   setBookingSessionSSRs,
   setBookingSessionReturnSSRs,
-  CancelSSRs,
+  setNewBookingSSRs,
+  setNewBookingReturnSSRs,
 } from "redux/reducers/booking";
 import BookingPassengerItem from "./components/BookingPassengerItem";
 import { useRouter } from "next/router";
@@ -83,6 +84,7 @@ const PassengerDetails = () => {
                 });
 
               setSSRs(_BookingSSRs);
+              dispatch(setNewBookingSSRs(_BookingSSRs));
               dispatch(setBookingSessionSSRs(_BookingSSRs));
             } else {
               const _GOSSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
@@ -118,6 +120,10 @@ const PassengerDetails = () => {
 
               setSSRs(_BookingSessionSSRs);
               setReturnSSRs(_BookingSessionReturnSSRs);
+
+              dispatch(setNewBookingSSRs(_BookingSessionSSRs));
+              dispatch(setNewBookingReturnSSRs(_BookingSessionReturnSSRs));
+
               dispatch(setBookingSessionSSRs(_BookingSessionSSRs));
               dispatch(setBookingSessionReturnSSRs(_BookingSessionReturnSSRs));
             }
@@ -127,6 +133,42 @@ const PassengerDetails = () => {
     }
     setExisitingSSRS();
   }, []);
+
+  const _ProceedToSellSSR = () => {
+    if (selectedSSRs.length > 0 || selectedReturnSSRs.length > 0) {
+      let Extras = selectedSSRs.filter(function (ssr) {
+        if (
+          ssr?.ssrCode === "WCHR" ||
+          ssr?.ssrCode === "VPRD" ||
+          ssr?.ssrCode === "HPRD"
+        )
+          return true;
+      });
+
+      if (Extras?.length > 0) {
+        const _Arrival =
+          bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
+        const _Departure =
+          bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation;
+        const existingReturnSSRs = [...selectedReturnSSRs];
+        Extras.map((_item) => {
+          const newObj = {
+            ..._item,
+            schedueIndex: 1,
+            ArrivalStation: _Departure,
+            DepartureStation: _Arrival,
+          };
+          existingReturnSSRs.push(newObj);
+        });
+        setReturnSSRs([...existingReturnSSRs]);
+        dispatch(ReSellSSROption(selectedSSRs, [...existingReturnSSRs]));
+      } else {
+        dispatch(ReSellSSROption(selectedSSRs, selectedReturnSSRs));
+      }
+    } else {
+      router.back();
+    }
+  };
 
   const ProceedToSellSSR = () => {
     if (selectedSSRs.length > 0 || selectedReturnSSRs.length > 0) {
