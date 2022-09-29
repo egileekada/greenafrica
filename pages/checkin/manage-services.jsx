@@ -17,9 +17,12 @@ import {
 } from "redux/reducers/checkin";
 import CheckinPassengerItem from "./components/CheckinPassengerItem";
 import { useRouter } from "next/router";
-import { extractUniqueDiffrenceById } from "utils/helpers";
+import {
+  extractUniqueDiffrenceById,
+  _extractDiffrenceById,
+  _extractUniqueDiffrenceById,
+} from "utils/helpers";
 import { useSaveNewCheckInSSRsMutation } from "services/bookingApi";
-import { notification } from "antd";
 import { uniqueId } from "lodash";
 
 const PassengerDetails = () => {
@@ -27,7 +30,10 @@ const PassengerDetails = () => {
   const dispatch = useDispatch();
   const [selectedSSRs, setSSRs] = useState([]);
   const [selectedReturnSSRs, setReturnSSRs] = useState([]);
+  const [newSSRs, setNewSSRs] = useState([]);
+  const [newReturnSSrs, setNewReturnSSRs] = useState([]);
   const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
+  const NEW_SSRS = ["x20", "x15", "x10", "vprd", "wchr", "hprd"];
 
   const {
     signature,
@@ -100,6 +106,14 @@ const PassengerDetails = () => {
                   _BookingSSRs.push(newObj);
                 });
 
+              const BookingSessionIds = _BookingSSRs.map((ssr) =>
+                ssr?.ssrCode.toLowerCase()
+              );
+              const _newArr = NEW_SSRS.filter((ssr) => {
+                return !BookingSessionIds.includes(ssr.toLowerCase());
+              });
+              setNewSSRs(_newArr);
+
               setSSRs(_BookingSSRs);
               dispatch(setCheckinSessionSSRs(_BookingSSRs));
               dispatch(setNewCheckinSSRs(_BookingSSRs));
@@ -123,6 +137,14 @@ const PassengerDetails = () => {
                   _BookingSessionSSRs.push(newObj);
                 });
 
+              const BookingSessionIds = _BookingSessionSSRs.map((ssr) =>
+                ssr?.ssrCode.toLowerCase()
+              );
+              const _newArr = NEW_SSRS.filter((ssr) => {
+                return !BookingSessionIds.includes(ssr.toLowerCase());
+              });
+              setNewSSRs(_newArr);
+
               const _BookingSessionReturnSSRs = [];
               _RETURNSSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
@@ -138,6 +160,14 @@ const PassengerDetails = () => {
                   };
                   _BookingSessionReturnSSRs.push(newObj);
                 });
+
+              const BookingSessionReturnIds = _BookingSessionReturnSSRs.map(
+                (ssr) => ssr?.ssrCode.toLowerCase()
+              );
+              const newArr = NEW_SSRS.filter((ssr) => {
+                return !BookingSessionReturnIds.includes(ssr.toLowerCase());
+              });
+              setNewReturnSSRs(newArr);
 
               setSSRs(_BookingSessionSSRs);
               setReturnSSRs(_BookingSessionReturnSSRs);
@@ -157,102 +187,106 @@ const PassengerDetails = () => {
 
   const ProceedToSellSSR = () => {
     if (newCheckinSSRs.length > 0 || newCheckinReturnSSRs.length > 0) {
-      const newCheckinSSRsPayload = extractUniqueDiffrenceById(
+      const newCheckinSSRsPayload = _extractUniqueDiffrenceById(
         newCheckinSSRs,
-        checkinSessionSSRs
+        checkinSessionSSRs,
+        newSSRs
       );
 
-      const newCheckinReturnSSRsPayload = extractUniqueDiffrenceById(
+      const newCheckinReturnSSRsPayload = _extractUniqueDiffrenceById(
         newCheckinReturnSSRs,
-        checkinSessionReturnSSRs
+        checkinSessionReturnSSRs,
+        newReturnSSrs
       );
 
-      const segmentSSRRequests = [];
-      let JourneyOneSSRs = [];
-      let JourneyTwoSSRs = [];
+      console.log(newCheckinSSRsPayload, newCheckinReturnSSRsPayload);
 
-      newCheckinSSRsPayload.length > 0
-        ? newCheckinSSRsPayload.map((_ssr) => {
-            let newObj = {
-              state: 0,
-              stateSpecified: true,
-              actionStatusCode: "NN",
-              departureStation: _ssr?.DepartureStation,
-              arrivalStation: _ssr?.ArrivalStation,
-              passengerNumber: _ssr?.passengerNumber,
-              passengerNumberSpecified: true,
-              ssrCode: _ssr?.ssrCode,
-              ssrNumberSpecified: true,
-              ssrNumber: 0,
-              ssrDetail: "",
-              feeCode: "",
-              note: "",
-              ssrValue: 0,
-              ssrValueSpecified: true,
-              isInServiceBundle: false,
-              isInServiceBundleSpecified: true,
-            };
-            JourneyOneSSRs.push(newObj);
-          })
-        : null;
+      // const segmentSSRRequests = [];
+      // let JourneyOneSSRs = [];
+      // let JourneyTwoSSRs = [];
 
-      newCheckinReturnSSRsPayload.length > 0
-        ? newCheckinReturnSSRsPayload.map((_ssr) => {
-            let newObj = {
-              state: 0,
-              stateSpecified: true,
-              actionStatusCode: "NN",
-              departureStation: _ssr?.DepartureStation,
-              arrivalStation: _ssr?.ArrivalStation,
-              passengerNumber: _ssr?.passengerNumber,
-              passengerNumberSpecified: true,
-              ssrCode: _ssr?.ssrCode,
-              ssrNumberSpecified: true,
-              ssrNumber: 0,
-              ssrDetail: "",
-              feeCode: "",
-              note: "",
-              ssrValue: 0,
-              ssrValueSpecified: true,
-              isInServiceBundle: false,
-              isInServiceBundleSpecified: true,
-            };
-            JourneyTwoSSRs.push(newObj);
-          })
-        : null;
+      // newCheckinSSRsPayload.length > 0
+      //   ? newCheckinSSRsPayload.map((_ssr) => {
+      //       let newObj = {
+      //         state: 0,
+      //         stateSpecified: true,
+      //         actionStatusCode: "NN",
+      //         departureStation: _ssr?.DepartureStation,
+      //         arrivalStation: _ssr?.ArrivalStation,
+      //         passengerNumber: _ssr?.passengerNumber,
+      //         passengerNumberSpecified: true,
+      //         ssrCode: _ssr?.ssrCode,
+      //         ssrNumberSpecified: true,
+      //         ssrNumber: 0,
+      //         ssrDetail: "",
+      //         feeCode: "",
+      //         note: "",
+      //         ssrValue: 0,
+      //         ssrValueSpecified: true,
+      //         isInServiceBundle: false,
+      //         isInServiceBundleSpecified: true,
+      //       };
+      //       JourneyOneSSRs.push(newObj);
+      //     })
+      //   : null;
 
-      if (bookingResponse) {
-        const JOURNEYS = bookingResponse?.Booking?.Journeys;
-        JOURNEYS.map((_journey, _index) => {
-          let _segment = {
-            flightDesignator: {
-              carrierCode: _journey?.Segments[0].FlightDesignator?.CarrierCode,
-              flightNumber:
-                _journey?.Segments[0].FlightDesignator?.FlightNumber,
-              opSuffix: "",
-            },
-            std: _journey?.Segments[0]?.STD,
-            stdSpecified: true,
-            departureStation: _journey?.Segments[0]?.DepartureStation,
-            arrivalStation: _journey?.Segments[0]?.ArrivalStation,
-            paxSSRs: _index === 0 ? [...JourneyOneSSRs] : [...JourneyTwoSSRs],
-          };
-          segmentSSRRequests.push(_segment);
-        });
-      }
+      // newCheckinReturnSSRsPayload.length > 0
+      //   ? newCheckinReturnSSRsPayload.map((_ssr) => {
+      //       let newObj = {
+      //         state: 0,
+      //         stateSpecified: true,
+      //         actionStatusCode: "NN",
+      //         departureStation: _ssr?.DepartureStation,
+      //         arrivalStation: _ssr?.ArrivalStation,
+      //         passengerNumber: _ssr?.passengerNumber,
+      //         passengerNumberSpecified: true,
+      //         ssrCode: _ssr?.ssrCode,
+      //         ssrNumberSpecified: true,
+      //         ssrNumber: 0,
+      //         ssrDetail: "",
+      //         feeCode: "",
+      //         note: "",
+      //         ssrValue: 0,
+      //         ssrValueSpecified: true,
+      //         isInServiceBundle: false,
+      //         isInServiceBundleSpecified: true,
+      //       };
+      //       JourneyTwoSSRs.push(newObj);
+      //     })
+      //   : null;
 
-      saveNewCheckInSSRs(segmentSSRRequests)
-        .unwrap()
-        .then((data) => {
-          // console.log("rrrrr success", data);
-          router.push("/checkin/seat-selection");
-        })
-        .catch((error) => {
-          notification.error({
-            message: "Error",
-            description: "Sell Services failed",
-          });
-        });
+      // if (bookingResponse) {
+      //   const JOURNEYS = bookingResponse?.Booking?.Journeys;
+      //   JOURNEYS.map((_journey, _index) => {
+      //     let _segment = {
+      //       flightDesignator: {
+      //         carrierCode: _journey?.Segments[0].FlightDesignator?.CarrierCode,
+      //         flightNumber:
+      //           _journey?.Segments[0].FlightDesignator?.FlightNumber,
+      //         opSuffix: "",
+      //       },
+      //       std: _journey?.Segments[0]?.STD,
+      //       stdSpecified: true,
+      //       departureStation: _journey?.Segments[0]?.DepartureStation,
+      //       arrivalStation: _journey?.Segments[0]?.ArrivalStation,
+      //       paxSSRs: _index === 0 ? [...JourneyOneSSRs] : [...JourneyTwoSSRs],
+      //     };
+      //     segmentSSRRequests.push(_segment);
+      //   });
+      // }
+
+      // saveNewCheckInSSRs(segmentSSRRequests)
+      //   .unwrap()
+      //   .then((data) => {
+      //     // console.log("rrrrr success", data);
+      //     router.push("/checkin/seat-selection");
+      //   })
+      //   .catch((error) => {
+      //     notification.error({
+      //       message: "Error",
+      //       description: "Sell Services failed",
+      //     });
+      //   });
     } else {
       router.push("/checkin/seat-selection");
     }
@@ -268,7 +302,7 @@ const PassengerDetails = () => {
             ) : bookingResponse && bookingResponse?.Booking ? (
               <>
                 <h2 className="text-primary-main font-extrabold text-2xl mb-8">
-                  Additional Services{" "}
+                  Additional Services
                 </h2>
 
                 <section className="flex flex-col rounded-xl pb-1 bg-transparent">

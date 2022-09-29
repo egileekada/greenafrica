@@ -29,8 +29,8 @@ const CheckinBaggageCard = ({
 
   useEffect(() => {
     async function mapSessionSSRs() {
-      if (checkinSessionSSRs && checkinSessionSSRs.length > 0) {
-        const passengerSSRs = checkinSessionSSRs.filter((_ssr) => {
+      if (newCheckinSSRs && newCheckinSSRs.length > 0) {
+        const passengerSSRs = newCheckinSSRs.filter((_ssr) => {
           return (
             parseInt(_ssr?.passengerNumber) ===
               parseInt(passenger?.PassengerNumber) &&

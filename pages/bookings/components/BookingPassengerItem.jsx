@@ -6,7 +6,6 @@ import BookingPassengerBaggage from "./PassengerBaggage";
 import { useSelector, useDispatch } from "react-redux";
 import { bookingSelector, setNewBookingSSRs } from "redux/reducers/booking";
 import { sessionSelector } from "redux/reducers/session";
-
 import { v4 as uuid } from "uuid";
 
 const BookingPassengerItem = ({

@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { Checkbox } from "antd";
 import PassengerAccordion from "../../bookings/components/PassengerAccordion";
 import CheckinPassengerBaggage from "./CheckinPassengerBaggage";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
-import { checkinSelector } from "redux/reducers/checkin";
+import { checkinSelector, setNewCheckinSSRs } from "redux/reducers/checkin";
+import { v4 as uuid } from "uuid";
 
 const CheckinPassengerItem = ({
   passenger,
@@ -21,7 +22,8 @@ const CheckinPassengerItem = ({
   const [vpPreSelected, setVPPreSelected] = useState(false);
   const [hpPreSelected, setHPPreSelected] = useState(false);
   const { sessionStateResponse } = useSelector(sessionSelector);
-  const { checkinSessionSSRs } = useSelector(checkinSelector);
+  const { newCheckinSSRs, checkinSessionSSRs } = useSelector(checkinSelector);
+  const dispatch = useDispatch();
 
   const _Arrival =
     sessionStateResponse?.BookingData?.Journeys[0]?.Segments[0]?.ArrivalStation;
@@ -72,20 +74,26 @@ const CheckinPassengerItem = ({
   const onWCChange = (e) => {
     if (!wcPreSelected) {
       if (e.target.checked) {
+        const unique_id = uuid();
         const _ssrObj = {
+          id: `${Date.now()}${unique_id}`,
           passengerNumber: parseInt(passenger?.PassengerNumber),
           ssrCode: "WCHR",
           schedueIndex: 0,
           ArrivalStation: _Arrival,
           DepartureStation: _Departure,
         };
-        setSSRs((prevState) => [...prevState, _ssrObj]);
+
+        const existingSSRs = [...newCheckinSSRs];
+        dispatch(setNewCheckinSSRs([...existingSSRs, _ssrObj]));
         setWCChecked(true);
       } else {
         let codeToBeRemoved = "WCHR";
-        setSSRs((prevState) =>
-          prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+        const existingSSRs = [...newCheckinSSRs];
+        const _cleanedSSRs = existingSSRs.filter(
+          (_ssr) => _ssr.ssrCode !== codeToBeRemoved
         );
+        dispatch(setNewCheckinSSRs([..._cleanedSSRs]));
         setWCChecked(false);
       }
     }
@@ -94,20 +102,25 @@ const CheckinPassengerItem = ({
   const onVPChange = (e) => {
     if (!vpPreSelected) {
       if (e.target.checked) {
+        const unique_id = uuid();
         const _ssrObj = {
+          id: `${Date.now()}${unique_id}`,
           passengerNumber: parseInt(passenger?.PassengerNumber),
           ssrCode: "VPRD",
           schedueIndex: 0,
           ArrivalStation: _Arrival,
           DepartureStation: _Departure,
         };
-        setSSRs((prevState) => [...prevState, _ssrObj]);
+        const existingSSRs = [...newCheckinSSRs];
+        dispatch(setNewCheckinSSRs([...existingSSRs, _ssrObj]));
         setVPChecked(true);
       } else {
         let codeToBeRemoved = "VPRD";
-        setSSRs((prevState) =>
-          prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+        const existingSSRs = [...newCheckinSSRs];
+        const _cleanedSSRs = existingSSRs.filter(
+          (_ssr) => _ssr.ssrCode !== codeToBeRemoved
         );
+        dispatch(setNewCheckinSSRs([..._cleanedSSRs]));
         setVPChecked(false);
       }
     }
@@ -116,20 +129,25 @@ const CheckinPassengerItem = ({
   const onHPChange = (e) => {
     if (!hpPreSelected) {
       if (e.target.checked) {
+        const unique_id = uuid();
         const _ssrObj = {
+          id: `${Date.now()}${unique_id}`,
           passengerNumber: parseInt(passenger?.PassengerNumber),
           ssrCode: "HPRD",
           schedueIndex: 0,
           ArrivalStation: _Arrival,
           DepartureStation: _Departure,
         };
-        setSSRs((prevState) => [...prevState, _ssrObj]);
+        const existingSSRs = [...newCheckinSSRs];
+        dispatch(setNewCheckinSSRs([...existingSSRs, _ssrObj]));
         setHPChecked(true);
       } else {
         let codeToBeRemoved = "HPRD";
-        setSSRs((prevState) =>
-          prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+        const existingSSRs = [...newCheckinSSRs];
+        const _cleanedSSRs = existingSSRs.filter(
+          (_ssr) => _ssr.ssrCode !== codeToBeRemoved
         );
+        dispatch(setNewCheckinSSRs([..._cleanedSSRs]));
         setHPChecked(false);
       }
     }
