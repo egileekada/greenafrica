@@ -201,92 +201,92 @@ const PassengerDetails = () => {
 
       console.log(newCheckinSSRsPayload, newCheckinReturnSSRsPayload);
 
-      // const segmentSSRRequests = [];
-      // let JourneyOneSSRs = [];
-      // let JourneyTwoSSRs = [];
+      const segmentSSRRequests = [];
+      let JourneyOneSSRs = [];
+      let JourneyTwoSSRs = [];
 
-      // newCheckinSSRsPayload.length > 0
-      //   ? newCheckinSSRsPayload.map((_ssr) => {
-      //       let newObj = {
-      //         state: 0,
-      //         stateSpecified: true,
-      //         actionStatusCode: "NN",
-      //         departureStation: _ssr?.DepartureStation,
-      //         arrivalStation: _ssr?.ArrivalStation,
-      //         passengerNumber: _ssr?.passengerNumber,
-      //         passengerNumberSpecified: true,
-      //         ssrCode: _ssr?.ssrCode,
-      //         ssrNumberSpecified: true,
-      //         ssrNumber: 0,
-      //         ssrDetail: "",
-      //         feeCode: "",
-      //         note: "",
-      //         ssrValue: 0,
-      //         ssrValueSpecified: true,
-      //         isInServiceBundle: false,
-      //         isInServiceBundleSpecified: true,
-      //       };
-      //       JourneyOneSSRs.push(newObj);
-      //     })
-      //   : null;
+      newCheckinSSRsPayload.length > 0
+        ? newCheckinSSRsPayload.map((_ssr) => {
+            let newObj = {
+              state: 0,
+              stateSpecified: true,
+              actionStatusCode: "NN",
+              departureStation: _ssr?.DepartureStation,
+              arrivalStation: _ssr?.ArrivalStation,
+              passengerNumber: _ssr?.passengerNumber,
+              passengerNumberSpecified: true,
+              ssrCode: _ssr?.ssrCode,
+              ssrNumberSpecified: true,
+              ssrNumber: 0,
+              ssrDetail: "",
+              feeCode: "",
+              note: "",
+              ssrValue: 0,
+              ssrValueSpecified: true,
+              isInServiceBundle: false,
+              isInServiceBundleSpecified: true,
+            };
+            JourneyOneSSRs.push(newObj);
+          })
+        : null;
 
-      // newCheckinReturnSSRsPayload.length > 0
-      //   ? newCheckinReturnSSRsPayload.map((_ssr) => {
-      //       let newObj = {
-      //         state: 0,
-      //         stateSpecified: true,
-      //         actionStatusCode: "NN",
-      //         departureStation: _ssr?.DepartureStation,
-      //         arrivalStation: _ssr?.ArrivalStation,
-      //         passengerNumber: _ssr?.passengerNumber,
-      //         passengerNumberSpecified: true,
-      //         ssrCode: _ssr?.ssrCode,
-      //         ssrNumberSpecified: true,
-      //         ssrNumber: 0,
-      //         ssrDetail: "",
-      //         feeCode: "",
-      //         note: "",
-      //         ssrValue: 0,
-      //         ssrValueSpecified: true,
-      //         isInServiceBundle: false,
-      //         isInServiceBundleSpecified: true,
-      //       };
-      //       JourneyTwoSSRs.push(newObj);
-      //     })
-      //   : null;
+      newCheckinReturnSSRsPayload.length > 0
+        ? newCheckinReturnSSRsPayload.map((_ssr) => {
+            let newObj = {
+              state: 0,
+              stateSpecified: true,
+              actionStatusCode: "NN",
+              departureStation: _ssr?.DepartureStation,
+              arrivalStation: _ssr?.ArrivalStation,
+              passengerNumber: _ssr?.passengerNumber,
+              passengerNumberSpecified: true,
+              ssrCode: _ssr?.ssrCode,
+              ssrNumberSpecified: true,
+              ssrNumber: 0,
+              ssrDetail: "",
+              feeCode: "",
+              note: "",
+              ssrValue: 0,
+              ssrValueSpecified: true,
+              isInServiceBundle: false,
+              isInServiceBundleSpecified: true,
+            };
+            JourneyTwoSSRs.push(newObj);
+          })
+        : null;
 
-      // if (bookingResponse) {
-      //   const JOURNEYS = bookingResponse?.Booking?.Journeys;
-      //   JOURNEYS.map((_journey, _index) => {
-      //     let _segment = {
-      //       flightDesignator: {
-      //         carrierCode: _journey?.Segments[0].FlightDesignator?.CarrierCode,
-      //         flightNumber:
-      //           _journey?.Segments[0].FlightDesignator?.FlightNumber,
-      //         opSuffix: "",
-      //       },
-      //       std: _journey?.Segments[0]?.STD,
-      //       stdSpecified: true,
-      //       departureStation: _journey?.Segments[0]?.DepartureStation,
-      //       arrivalStation: _journey?.Segments[0]?.ArrivalStation,
-      //       paxSSRs: _index === 0 ? [...JourneyOneSSRs] : [...JourneyTwoSSRs],
-      //     };
-      //     segmentSSRRequests.push(_segment);
-      //   });
-      // }
+      if (bookingResponse) {
+        const JOURNEYS = bookingResponse?.Booking?.Journeys;
+        JOURNEYS.map((_journey, _index) => {
+          let _segment = {
+            flightDesignator: {
+              carrierCode: _journey?.Segments[0].FlightDesignator?.CarrierCode,
+              flightNumber:
+                _journey?.Segments[0].FlightDesignator?.FlightNumber,
+              opSuffix: "",
+            },
+            std: _journey?.Segments[0]?.STD,
+            stdSpecified: true,
+            departureStation: _journey?.Segments[0]?.DepartureStation,
+            arrivalStation: _journey?.Segments[0]?.ArrivalStation,
+            paxSSRs: _index === 0 ? [...JourneyOneSSRs] : [...JourneyTwoSSRs],
+          };
+          segmentSSRRequests.push(_segment);
+        });
+      }
 
-      // saveNewCheckInSSRs(segmentSSRRequests)
-      //   .unwrap()
-      //   .then((data) => {
-      //     // console.log("rrrrr success", data);
-      //     router.push("/checkin/seat-selection");
-      //   })
-      //   .catch((error) => {
-      //     notification.error({
-      //       message: "Error",
-      //       description: "Sell Services failed",
-      //     });
-      //   });
+      saveNewCheckInSSRs(segmentSSRRequests)
+        .unwrap()
+        .then((data) => {
+          // console.log("rrrrr success", data);
+          router.push("/checkin/seat-selection");
+        })
+        .catch((error) => {
+          notification.error({
+            message: "Error",
+            description: "Sell Services failed",
+          });
+        });
     } else {
       router.push("/checkin/seat-selection");
     }
