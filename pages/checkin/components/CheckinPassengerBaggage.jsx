@@ -155,13 +155,19 @@ const CheckinPassengerBaggage = ({
           )}
         </div>
 
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <p>selectedSSRs length:: {selectedSSRs.length}</p>
           <p>selectedSSRs :: {JSON.stringify(selectedSSRs)}</p>
           <p>/////////////////////</p>
           <p>newCheckinSSRs :: {JSON.stringify(newCheckinSSRs)}</p>
           <p>newCheckinSSRs length:: {newCheckinSSRs.length}</p>
-        </div>
+          <p>/////////////////////</p>
+          <p>selectedSSRs length:: {selectedSSRs.length}</p>
+          <p>selectedSSRs :: {JSON.stringify(selectedSSRs)}</p>
+          <p>/////////////////////</p>
+          <p> newCheckinReturnSSRs :: {JSON.stringify(newCheckinReturnSSRs)}</p>
+          <p> newCheckinReturnSSRs length:: {newCheckinReturnSSRs.length}</p>
+        </div> */}
 
         <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
           {schedueIndex === 0
