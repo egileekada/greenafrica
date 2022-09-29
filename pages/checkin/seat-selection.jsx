@@ -24,7 +24,6 @@ import {
   useTryAssignSeatMutation,
   useStartCheckInMutation,
   useBookingStateMutation,
-  useSaveNewCheckInSSRsMutation,
 } from "services/bookingApi";
 import SkeletonLoader from "components/SkeletonLoader";
 
@@ -133,10 +132,8 @@ const SeatSelection = () => {
 
   const skipSeatSelection = () => {
     if (parseInt(bookingState?.BookingSum?.BalanceDue) > 0) {
-      // console.log("skip seat with", bookingState?.BookingSum?.BalanceDue);
       router.push("/checkin/pay");
     } else {
-      // console.log("start checking", bookingState?.BookingSum?.BalanceDue);
       startCheckin(checkInSelection)
         .unwrap()
         .then((data) => {
