@@ -5,14 +5,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import {
   bookingSelector,
-  setBookingSessionReturnSSRs,
+  setNewBookingReturnSSRs,
 } from "redux/reducers/booking";
+import { v4 as uuid } from "uuid";
 
 const BookingReturnBaggageCard = ({
   passenger,
-  SSRItem,
+  returnNewSelection,
+  setReturnNewSelection,
   selectedReturnSSRs,
-  setReturnSSRs,
+  SSRItem,
   schedueIndex,
   ArrivalStation,
   DepartureStation,
@@ -22,16 +24,18 @@ const BookingReturnBaggageCard = ({
   const [totalFare, setFare] = useState(0);
   const [limit, setLimit] = useState(0);
   const [value, setValue] = useState(0);
+  const [newReturnSSRs, setNewReturnSSRs] = useState([]);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { bookingSessionReturnSSRs } = useSelector(bookingSelector);
+  const { bookingSessionReturnSSRs, newBookingReturnSSRs } =
+    useSelector(bookingSelector);
 
   const KG = SSRItem?.SSRCode.substring(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function mapsessionReturnSSRs() {
-      if (bookingSessionReturnSSRs && bookingSessionReturnSSRs.length > 0) {
-        const passengerSSRs = bookingSessionReturnSSRs.filter((_ssr) => {
+      if (newBookingReturnSSRs && newBookingReturnSSRs.length > 0) {
+        const passengerSSRs = newBookingReturnSSRs.filter((_ssr) => {
           return (
             parseInt(_ssr?.passengerNumber) ===
               parseInt(passenger?.PassengerNumber) &&
@@ -78,7 +82,9 @@ const BookingReturnBaggageCard = ({
 
   const handleReturnSSR = () => {
     if (value >= 1 && value <= 2) {
-      const existingSSRs = [...selectedReturnSSRs];
+      const existingSSRs = returnNewSelection
+        ? [...newBookingReturnSSRs]
+        : [...selectedReturnSSRs];
       const cleanedSSRs = existingSSRs.filter((_ssr) => {
         const ruleBasis =
           _ssr.ssrCode === SSRItem?.SSRCode &&
@@ -88,17 +94,21 @@ const BookingReturnBaggageCard = ({
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
+      const unique_id = uuid();
       const SSRItemObj = new Array(value).fill({
+        id: `${Date.now()}${unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
         ssrCode: SSRItem.SSRCode,
         schedueIndex,
         ArrivalStation,
         DepartureStation,
       });
-      setReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
-      dispatch(setBookingSessionReturnSSRs([...cleanedSSRs, ...SSRItemObj]));
+      setNewReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+      dispatch(setNewBookingReturnSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
-      const _existingSSRs = [...selectedReturnSSRs];
+      const _existingSSRs = returnNewSelection
+        ? [...newBookingReturnSSRs]
+        : [...selectedReturnSSRs];
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
         const _ruleBasis =
           _ssr.ssrCode === SSRItem.SSRCode &&
@@ -106,19 +116,22 @@ const BookingReturnBaggageCard = ({
             parseInt(passenger?.PassengerNumber);
         return !_ruleBasis;
       });
+      const _unique_id = uuid();
       const _SSRItemObj = new Array(value).fill({
+        id: `${Date.now()}${_unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
         ssrCode: SSRItem.SSRCode,
         schedueIndex,
         ArrivalStation,
         DepartureStation,
       });
-      setReturnSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
-      dispatch(setBookingSessionReturnSSRs([..._cleanedSSRs, ..._SSRItemObj]));
+      setNewReturnSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
+      dispatch(setNewBookingReturnSSRs([..._cleanedSSRs, ..._SSRItemObj]));
     }
   };
 
   const onValueChange = (e) => {
+    setReturnNewSelection(true);
     let _val = parseInt(e.target.value);
     if (_val > 2) {
       setValue(2);
@@ -130,6 +143,7 @@ const BookingReturnBaggageCard = ({
   };
 
   const onValueIncrement = () => {
+    setReturnNewSelection(true);
     setValue((prevVal) => {
       if (prevVal + 1 > 2) {
         return 2;
@@ -140,6 +154,7 @@ const BookingReturnBaggageCard = ({
   };
 
   const onValueDecrement = () => {
+    setReturnNewSelection(true);
     if (value <= limit) {
       return false;
     } else {
@@ -180,6 +195,7 @@ const BookingReturnBaggageCard = ({
 BookingReturnBaggageCard.defaultProps = {
   SSRItem: {},
   passenger: {},
+  returnNewSelection: false,
   selectedReturnSSRs: [],
   schedueIndex: 0,
   ArrivalStation: "",

@@ -33,8 +33,17 @@ const PassengerDetails = () => {
   const { signature, bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
 
-  const { SSRAvailabilityLoading, ResellSSRLoading, manageBookingPnr } =
-    useSelector(bookingSelector);
+  const {
+    SSRAvailabilityLoading,
+    ResellSSRLoading,
+    manageBookingPnr,
+
+    bookingSessionSSRs,
+    bookingSessionReturnSSRs,
+
+    newBookingSSRs,
+    newBookingReturnSSRs,
+  } = useSelector(bookingSelector);
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -179,8 +188,8 @@ const PassengerDetails = () => {
   };
 
   const ProceedToSellSSR = () => {
-    if (selectedSSRs.length > 0 || selectedReturnSSRs.length > 0) {
-      let Extras = selectedSSRs.filter(function (ssr) {
+    if (newBookingSSRs.length > 0 || newBookingReturnSSRs.length > 0) {
+      let Extras = newBookingSSRs.filter(function (ssr) {
         if (
           ssr?.ssrCode === "WCHR" ||
           ssr?.ssrCode === "VPRD" ||
@@ -194,7 +203,7 @@ const PassengerDetails = () => {
           bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
         const _Departure =
           bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation;
-        const existingReturnSSRs = [...selectedReturnSSRs];
+        const existingReturnSSRs = [...newBookingReturnSSRs];
         Extras.map((_item) => {
           const newObj = {
             ..._item,
@@ -204,10 +213,40 @@ const PassengerDetails = () => {
           };
           existingReturnSSRs.push(newObj);
         });
-        setReturnSSRs([...existingReturnSSRs]);
-        dispatch(ReSellSSROption(selectedSSRs, [...existingReturnSSRs]));
+
+        const newBookingSSRsPayload = extractUniqueDiffrenceById(
+          newBookingSSRs,
+          bookingSessionSSRs
+        );
+
+        const newBookingReturnSSRsPayload = extractUniqueDiffrenceById(
+          existingReturnSSRs,
+          bookingSessionReturnSSRs
+        );
+
+        console.log(newBookingSSRsPayload, newBookingReturnSSRsPayload);
+
+        // dispatch(
+        //   ReSellSSROption(newBookingSSRsPayload, [
+        //     ...newBookingReturnSSRsPayload,
+        //   ])
+        // );
       } else {
-        dispatch(ReSellSSROption(selectedSSRs, selectedReturnSSRs));
+        const newBookingSSRsPayload = extractUniqueDiffrenceById(
+          newBookingSSRs,
+          bookingSessionSSRs
+        );
+
+        const newBookingReturnSSRsPayload = extractUniqueDiffrenceById(
+          newBookingReturnSSRs,
+          bookingSessionReturnSSRs
+        );
+
+        console.log(newBookingSSRsPayload, newBookingReturnSSRsPayload);
+
+        // dispatch(
+        //   ReSellSSROption(newBookingSSRsPayload, newBookingReturnSSRsPayload)
+        // );
       }
     } else {
       router.back();

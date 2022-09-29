@@ -24,6 +24,7 @@ import PageFares from "./components/PageFares";
 const ManageBookings = (props) => {
   const router = useRouter();
   const [statePNR, setStatePnr] = useState("");
+  const [checkedIn, setCheckedIn] = useState(false);
   const dispatch = useDispatch();
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
@@ -52,6 +53,20 @@ const ManageBookings = (props) => {
     }
     fetchBookingDetails();
   }, [router]);
+
+  useEffect(() => {
+    if (
+      bookingResponse &&
+      bookingResponse?.Booking &&
+      bookingResponse?.Booking?.Journeys?.length > 0
+    ) {
+      bookingResponse?.Booking?.Journeys.map((_journey) => {
+        _journey.Segments[0].PaxSegments.map((_paxSegment) => {
+          parseInt(_paxSegment?.LiftStatus) === 1 && setCheckedIn(true);
+        });
+      });
+    }
+  }, [bookingResponse]);
 
   const TripHeader = () => {
     return (
@@ -84,21 +99,38 @@ const ManageBookings = (props) => {
 
   const PageCTA = () => {
     return (
-      <section className="flex flex-wrap md:flex-nowrap mx-6">
+      <section
+        // className={`flex flex-wrap md:flex-nowrap mx-6 ${
+        //   !checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+        // }`}
+        className={`flex flex-wrap md:flex-nowrap mx-6`}
+      >
         <button
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+            checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+          } `}
           onClick={handleItenary}
         >
           Change Flight
         </button>
         <button
           onClick={handleServices}
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3  ${
+            !checkedIn
+              ? "pointer-events-none opacity-50 cursor-not-allowed"
+              : ""
+          }  `}
         >
           Manage Services
         </button>
         <Link href="/bookings/seat-selection">
-          <a className="basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3">
+          <a
+            className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 text-center ${
+              checkedIn
+                ? "pointer-events-none opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+          >
             Seat Management
           </a>
         </Link>

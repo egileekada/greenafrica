@@ -24,6 +24,8 @@ const BookingPassengerBaggage = ({
   const router = useRouter();
   const { data, isLoading } = useGetLocationsQuery();
   const [showPopUp, setShow] = useState(false);
+  const [newSelection, setNewSelection] = useState(false);
+  const [returnNewSelection, setReturnNewSelection] = useState(false);
   const [activeTab, setActiveTab] = useState("");
   const [schedueIndex, setSchedueIndex] = useState(0);
   const [activeSSRS, setActiveSSRs] = useState([]);
@@ -36,6 +38,8 @@ const BookingPassengerBaggage = ({
     SSRAvailabilityResponse,
     bookingSessionSSRs,
     bookingSessionReturnSSRs,
+    newBookingSSRs,
+    newBookingReturnSSRs,
   } = useSelector(bookingSelector);
 
   useEffect(() => {
@@ -144,9 +148,21 @@ const BookingPassengerBaggage = ({
         </div>
 
         <div className="flex flex-col">
-          {/* <p>selectedSSRs:: {JSON.stringify(selectedSSRs)}</p> */}
-          {/* <p>selectedReturnSSRs:: {JSON.stringify(selectedReturnSSRs)}</p> */}
-          {/* <p>hhjj: {JSON.stringify(bookingSessionSSRs)}</p>; */}
+          {/* <p>selectedSSRs length:: {JSON.stringify(selectedSSRs.length)}</p>
+          <p>selectedSSRs:: {JSON.stringify(selectedSSRs)}</p>
+          <p>////////////</p>
+          <p>newBookingSSRs:: {JSON.stringify(newBookingSSRs)}</p>
+          <p>newBookingSSRs length:: {JSON.stringify(newBookingSSRs.length)}</p> */}
+          {/* <p>
+            selectedReturnSSRs:: {JSON.stringify(selectedReturnSSRs.length)}
+          </p>
+          <p>selectedReturnSSRs:: {JSON.stringify(selectedReturnSSRs)}</p>
+          <p>////////////</p>
+          <p>newBookingReturnSSRs: {JSON.stringify(newBookingReturnSSRs)}</p>;
+          <p>
+            newBookingReturnSSRs: {JSON.stringify(newBookingReturnSSRs.length)}
+          </p> 
+           */}
         </div>
 
         <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
@@ -158,11 +174,11 @@ const BookingPassengerBaggage = ({
                       return ALLOWED__SSRS.includes(_SSR?.SSRCode);
                     }).map((_SSRITEM) => {
                       const _ARRIVAL =
-                        bookingResponse?.Booking?.Journeys[0]
-                          ?.Segments[0]?.ArrivalStation;
+                        bookingResponse?.Booking?.Journeys[0]?.Segments[0]
+                          ?.ArrivalStation;
                       const _DEPARTURE =
-                        bookingResponse?.Booking?.Journeys[0]
-                          ?.Segments[0]?.DepartureStation;
+                        bookingResponse?.Booking?.Journeys[0]?.Segments[0]
+                          ?.DepartureStation;
 
                       const passengerGoSSRs = preSelectedGoSSRS.filter(
                         (_ssr) => {
@@ -181,6 +197,8 @@ const BookingPassengerBaggage = ({
                       return (
                         <BoookingBaggageCard
                           passenger={passenger}
+                          newSelection={newSelection}
+                          setNewSelection={setNewSelection}
                           selectedSSRs={selectedSSRs}
                           setSSRs={setSSRs}
                           SSRItem={_SSRITEM}
@@ -202,11 +220,11 @@ const BookingPassengerBaggage = ({
                       return ALLOWED__SSRS.includes(_SSR?.SSRCode);
                     }).map((_SSRITEM) => {
                       const _ARRIVAL =
-                        bookingResponse?.Booking?.Journeys[1]
-                          ?.Segments[0]?.ArrivalStation;
+                        bookingResponse?.Booking?.Journeys[1]?.Segments[0]
+                          ?.ArrivalStation;
                       const _DEPARTURE =
-                        bookingResponse?.Booking?.Journeys[1]
-                          ?.Segments[0]?.DepartureStation;
+                        bookingResponse?.Booking?.Journeys[1]?.Segments[0]
+                          ?.DepartureStation;
 
                       const passengerReturnSSRs = preSelectedReturnSSRS.filter(
                         (_ssr) => {
@@ -225,9 +243,11 @@ const BookingPassengerBaggage = ({
                       return (
                         <BookingReturnBaggageCard
                           passenger={passenger}
-                          SSRItem={_SSRITEM}
+                          returnNewSelection={returnNewSelection}
+                          setReturnNewSelection={setReturnNewSelection}
                           selectedReturnSSRs={selectedReturnSSRs}
                           setReturnSSRs={setReturnSSRs}
+                          SSRItem={_SSRITEM}
                           schedueIndex={schedueIndex}
                           ArrivalStation={_ARRIVAL}
                           DepartureStation={_DEPARTURE}

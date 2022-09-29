@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { Checkbox } from "antd";
 import PassengerAccordion from "./PassengerAccordion";
 import BookingPassengerBaggage from "./PassengerBaggage";
-import { useSelector } from "react-redux";
-import { bookingSelector } from "redux/reducers/booking";
+import { useSelector, useDispatch } from "react-redux";
+import { bookingSelector, setNewBookingSSRs } from "redux/reducers/booking";
 import { sessionSelector } from "redux/reducers/session";
+
+import { v4 as uuid } from "uuid";
 
 const BookingPassengerItem = ({
   passenger,
@@ -21,13 +23,13 @@ const BookingPassengerItem = ({
   const [vpPreSelected, setVPPreSelected] = useState(false);
   const [hpPreSelected, setHPPreSelected] = useState(false);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { bookingSessionSSRs } = useSelector(bookingSelector);
+  const { newBookingSSRs, bookingSessionSSRs } = useSelector(bookingSelector);
+  const dispatch = useDispatch();
 
   const _Arrival =
     bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
   const _Departure =
-    bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-      ?.DepartureStation;
+    bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation;
 
   useEffect(() => {
     async function mapSessionSSRs() {
@@ -72,20 +74,26 @@ const BookingPassengerItem = ({
   const onWCChange = (e) => {
     if (!wcPreSelected) {
       if (e.target.checked) {
+        const unique_id = uuid();
         const _ssrObj = {
+          id: `${Date.now()}${unique_id}`,
           passengerNumber: parseInt(passenger?.PassengerNumber),
           ssrCode: "WCHR",
           schedueIndex: 0,
           ArrivalStation: _Arrival,
           DepartureStation: _Departure,
         };
-        setSSRs((prevState) => [...prevState, _ssrObj]);
+
+        const existingSSRs = [...newBookingSSRs];
+        dispatch(setNewBookingSSRs([...existingSSRs, _ssrObj]));
         setWCChecked(true);
       } else {
         let codeToBeRemoved = "WCHR";
-        setSSRs((prevState) =>
-          prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+        const existingSSRs = [...newBookingSSRs];
+        const _cleanedSSRs = existingSSRs.filter(
+          (_ssr) => _ssr.ssrCode !== codeToBeRemoved
         );
+        dispatch(setNewBookingSSRs([..._cleanedSSRs]));
         setWCChecked(false);
       }
     }
@@ -94,20 +102,25 @@ const BookingPassengerItem = ({
   const onVPChange = (e) => {
     if (!vpPreSelected) {
       if (e.target.checked) {
+        const unique_id = uuid();
         const _ssrObj = {
+          id: `${Date.now()}${unique_id}`,
           passengerNumber: parseInt(passenger?.PassengerNumber),
           ssrCode: "VPRD",
           schedueIndex: 0,
           ArrivalStation: _Arrival,
           DepartureStation: _Departure,
         };
-        setSSRs((prevState) => [...prevState, _ssrObj]);
+        const existingSSRs = [...newBookingSSRs];
+        dispatch(setNewBookingSSRs([...existingSSRs, _ssrObj]));
         setVPChecked(true);
       } else {
         let codeToBeRemoved = "VPRD";
-        setSSRs((prevState) =>
-          prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+        const existingSSRs = [...newBookingSSRs];
+        const _cleanedSSRs = existingSSRs.filter(
+          (_ssr) => _ssr.ssrCode !== codeToBeRemoved
         );
+        dispatch(setNewBookingSSRs([..._cleanedSSRs]));
         setVPChecked(false);
       }
     }
@@ -116,20 +129,25 @@ const BookingPassengerItem = ({
   const onHPChange = (e) => {
     if (!hpPreSelected) {
       if (e.target.checked) {
+        const unique_id = uuid();
         const _ssrObj = {
+          id: `${Date.now()}${unique_id}`,
           passengerNumber: parseInt(passenger?.PassengerNumber),
           ssrCode: "HPRD",
           schedueIndex: 0,
           ArrivalStation: _Arrival,
           DepartureStation: _Departure,
         };
-        setSSRs((prevState) => [...prevState, _ssrObj]);
+        const existingSSRs = [...newBookingSSRs];
+        dispatch(setNewBookingSSRs([...existingSSRs, _ssrObj]));
         setHPChecked(true);
       } else {
         let codeToBeRemoved = "HPRD";
-        setSSRs((prevState) =>
-          prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+        const existingSSRs = [...newBookingSSRs];
+        const _cleanedSSRs = existingSSRs.filter(
+          (_ssr) => _ssr.ssrCode !== codeToBeRemoved
         );
+        dispatch(setNewBookingSSRs([..._cleanedSSRs]));
         setHPChecked(false);
       }
     }

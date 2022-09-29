@@ -254,7 +254,7 @@ const PassengerDetails = () => {
           });
         });
     } else {
-      router.back();
+      router.push('/checkin/seat-selection');
     }
   };
 

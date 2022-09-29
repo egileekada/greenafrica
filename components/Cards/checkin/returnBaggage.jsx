@@ -135,6 +135,7 @@ const CheckinReturnBaggageCard = ({
   };
 
   const onValueChange = (e) => {
+    setReturnNewSelection(true);
     let _val = parseInt(e.target.value);
     if (_val > 2) {
       setValue(2);

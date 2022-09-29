@@ -3,12 +3,14 @@ import BaggageIcon from "assets/svgs/baggage.svg";
 import Counter from "components/Counter";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
-import { bookingSelector, setBookingSessionSSRs } from "redux/reducers/booking";
+import { bookingSelector, setNewBookingSSRs } from "redux/reducers/booking";
+import { v4 as uuid } from "uuid";
 
 const BoookingBaggageCard = ({
   passenger,
+  newSelection,
+  setNewSelection,
   selectedSSRs,
-  setSSRs,
   SSRItem,
   schedueIndex,
   ArrivalStation,
@@ -19,15 +21,16 @@ const BoookingBaggageCard = ({
   const [totalFare, setFare] = useState(0);
   const [value, setValue] = useState(0);
   const [limit, setLimit] = useState(0);
+  const [newSSRs, setNewSSRs] = useState([]);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { bookingSessionSSRs } = useSelector(bookingSelector);
+  const { bookingSessionSSRs, newBookingSSRs } = useSelector(bookingSelector);
   const KG = SSRItem?.SSRCode.substring(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function mapSessionSSRs() {
-      if (bookingSessionSSRs && bookingSessionSSRs.length > 0) {
-        const passengerSSRs = bookingSessionSSRs.filter((_ssr) => {
+      if (newBookingSSRs && newBookingSSRs.length > 0) {
+        const passengerSSRs = newBookingSSRs.filter((_ssr) => {
           return (
             parseInt(_ssr?.passengerNumber) ===
               parseInt(passenger?.PassengerNumber) &&
@@ -68,13 +71,17 @@ const BoookingBaggageCard = ({
 
   useEffect(() => {
     if (parseInt(schedueIndex) === 0) {
-      handleFlightSSR();
+      if (newSelection) {
+        handleFlightSSR();
+      }
     }
   }, [value]);
 
   const handleFlightSSR = () => {
     if (value >= 1 && value <= 2) {
-      const existingSSRs = [...selectedSSRs];
+      const existingSSRs = newSelection
+        ? [...newBookingSSRs]
+        : [...selectedSSRs];
       const cleanedSSRs = existingSSRs.filter((_ssr) => {
         const ruleBasis =
           _ssr.ssrCode === SSRItem?.SSRCode &&
@@ -84,17 +91,21 @@ const BoookingBaggageCard = ({
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
+      const unique_id = uuid();
       const SSRItemObj = new Array(value).fill({
+        id: `${Date.now()}${unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
         ssrCode: SSRItem.SSRCode,
         schedueIndex,
         ArrivalStation,
         DepartureStation,
       });
-      setSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
-      dispatch(setBookingSessionSSRs([...cleanedSSRs, ...SSRItemObj]));
+      setNewSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+      dispatch(setNewBookingSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
-      const _existingSSRs = [...selectedSSRs];
+      const _existingSSRs = newSelection
+        ? [...newBookingSSRs]
+        : [...selectedSSRs];
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
         const _ruleBasis =
           _ssr.ssrCode === SSRItem.SSRCode &&
@@ -102,19 +113,23 @@ const BoookingBaggageCard = ({
             parseInt(passenger?.PassengerNumber);
         return !_ruleBasis;
       });
+
+      const _unique_id = uuid();
       const _SSRItemObj = new Array(value).fill({
+        id: `${Date.now()}${_unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
         ssrCode: SSRItem.SSRCode,
         schedueIndex,
         ArrivalStation,
         DepartureStation,
       });
-      setSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
-      dispatch(setBookingSessionSSRs([..._cleanedSSRs, ..._SSRItemObj]));
+      setNewSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
+      dispatch(setNewBookingSSRs([..._cleanedSSRs, ..._SSRItemObj]));
     }
   };
 
   const onValueChange = (e) => {
+    setNewSelection(true);
     let _val = parseInt(e.target.value);
     if (_val > 2) {
       setValue(2);
@@ -126,6 +141,7 @@ const BoookingBaggageCard = ({
   };
 
   const onValueIncrement = () => {
+    setNewSelection(true);
     setValue((prevVal) => {
       if (prevVal + 1 > 2) {
         return 2;
@@ -136,6 +152,7 @@ const BoookingBaggageCard = ({
   };
 
   const onValueDecrement = () => {
+    setNewSelection(true);
     if (value <= limit) {
       return false;
     } else {
@@ -163,6 +180,7 @@ const BoookingBaggageCard = ({
           ₦{totalFare.toLocaleString()}
         </p>
         {/* <p>Limit : {limit}</p> */}
+        {/* <p>newSelection : {newSelection ? "newTrue" : "newFalse"}</p> */}
         <Counter
           value={value}
           onValueChange={onValueChange}
@@ -177,6 +195,7 @@ const BoookingBaggageCard = ({
 BoookingBaggageCard.defaultProps = {
   SSRItem: {},
   passenger: {},
+  newSelection: false,
   selectedSSRs: [],
   schedueIndex: 0,
   ArrivalStation: "",

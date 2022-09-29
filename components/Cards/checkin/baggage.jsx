@@ -114,7 +114,6 @@ const CheckinBaggageCard = ({
         return !_ruleBasis;
       });
       const _unique_id = uuid();
-
       const _SSRItemObj = new Array(value).fill({
         id: `${Date.now()}${_unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
@@ -129,6 +128,7 @@ const CheckinBaggageCard = ({
   };
 
   const onValueChange = (e) => {
+    setNewSelection(true);
     let _val = parseInt(e.target.value);
     if (_val > 2) {
       setValue(2);
