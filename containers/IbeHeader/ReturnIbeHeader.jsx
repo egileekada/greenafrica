@@ -202,7 +202,7 @@ const ReturnIbeHeader = () => {
             >
               <CaretLeft />
             </button>
-            <section className="flex items-center w-full mx-4 ">
+            <section className="flex items-center w-full mx-0 md:mx-4">
               {currentFDateList?.length > 0 ? (
                 currentFDateList.map((_dateItem, i) => {
                   return (
