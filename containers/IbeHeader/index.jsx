@@ -199,7 +199,9 @@ const IbeHeader = () => {
       <section className="ibe__flight__info__dates">
         {lowFareAvailabilityLoading ? (
           <section className="flex items-center w-full">
-            <Spinner />
+            <div className="mx-auto">
+              <Spinner />
+            </div>
           </section>
         ) : (
           <section className="flex items-center w-full">
@@ -232,7 +234,7 @@ const IbeHeader = () => {
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
-                          <h6 className="text-center">
+                          <h6 className="text-center !text-[9px] md:!text-[10px]">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (
@@ -247,7 +249,9 @@ const IbeHeader = () => {
                 })
               ) : loaded ? (
                 <>
-                  <Spinner />
+                  <div className="mx-auto">
+                    <Spinner />
+                  </div>
                 </>
               ) : (
                 <p className="errorText text-lg"> No date available</p>
