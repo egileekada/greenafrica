@@ -79,6 +79,7 @@ const BoookingBaggageCard = ({
 
   const handleFlightSSR = () => {
     if (value >= 1 && value <= 2) {
+      console.log("+ve block called", value);
       const existingSSRs = newSelection
         ? [...newBookingSSRs]
         : [...selectedSSRs];
@@ -87,6 +88,11 @@ const BoookingBaggageCard = ({
           _ssr.ssrCode === SSRItem?.SSRCode &&
           parseInt(_ssr.passengerNumber) ===
             parseInt(passenger?.PassengerNumber);
+        console.log(
+          bookingResponse?.Booking?.Passengers?.length > 1
+            ? "!ruleBasis"
+            : "_ssr.ssrCode !== SSRItem?.SSRCode"
+        );
         return bookingResponse?.Booking?.Passengers?.length > 1
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
@@ -103,6 +109,8 @@ const BoookingBaggageCard = ({
       setNewSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
       dispatch(setNewBookingSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
+      console.log("-ve block called", value);
+
       const _existingSSRs = newSelection
         ? [...newBookingSSRs]
         : [...selectedSSRs];

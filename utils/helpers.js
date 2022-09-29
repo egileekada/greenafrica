@@ -9,6 +9,8 @@ export const extractUniqueDiffrenceById = (array1, array2) => {
 
   const diff = getDifference(array1, array2);
 
+  console.log('diff is::',diff)
+
   const uniqueIds = new Set();
   const unique = diff.filter((element) => {
     const isDuplicate = uniqueIds.has(element.id);

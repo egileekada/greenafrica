@@ -82,6 +82,7 @@ const BookingReturnBaggageCard = ({
 
   const handleReturnSSR = () => {
     if (value >= 1 && value <= 2) {
+      console.log("+ve block called", value);
       const existingSSRs = returnNewSelection
         ? [...newBookingReturnSSRs]
         : [...selectedReturnSSRs];
@@ -106,6 +107,8 @@ const BookingReturnBaggageCard = ({
       setNewReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
       dispatch(setNewBookingReturnSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
+      console.log("-ve block called", value);
+
       const _existingSSRs = returnNewSelection
         ? [...newBookingReturnSSRs]
         : [...selectedReturnSSRs];

@@ -148,11 +148,11 @@ const BookingPassengerBaggage = ({
         </div>
 
         <div className="flex flex-col">
-          {/* <p>selectedSSRs length:: {JSON.stringify(selectedSSRs.length)}</p>
+          <p>selectedSSRs length:: {JSON.stringify(selectedSSRs.length)}</p>
           <p>selectedSSRs:: {JSON.stringify(selectedSSRs)}</p>
           <p>////////////</p>
           <p>newBookingSSRs:: {JSON.stringify(newBookingSSRs)}</p>
-          <p>newBookingSSRs length:: {JSON.stringify(newBookingSSRs.length)}</p> */}
+          <p>newBookingSSRs length:: {JSON.stringify(newBookingSSRs.length)}</p>
           {/* <p>
             selectedReturnSSRs:: {JSON.stringify(selectedReturnSSRs.length)}
           </p>
