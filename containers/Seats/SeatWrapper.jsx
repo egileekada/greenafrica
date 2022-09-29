@@ -23,7 +23,6 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
     sessionPassengers,
     bookingState,
   } = useSelector(sessionSelector);
-  console.log(productClass);
   const [key] = useState(Math.random());
   const [pasengerState, setPassengerState] = useState(null);
   const [passengerNumber, setpassengerNumber] = useState(null);

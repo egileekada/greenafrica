@@ -16,11 +16,11 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
         {parseInt(schedueIndex) === 0
           ? `Departure On ${format(
               new Date(flightParams?.beginDate),
-              "EEEE, LLLL dd yyyy"
+              "EEEE, LLL dd yyyy"
             )}`
           : `Return On ${format(
               new Date(flightParams?.returnDate),
-              "EEEE, LLLL dd yyyy"
+              "EEEE, LLL dd yyyy"
             )}`}
       </h2>
 

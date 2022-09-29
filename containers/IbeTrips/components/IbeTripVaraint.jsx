@@ -80,7 +80,7 @@ const IbeTripVariant = ({
 
   return (
     <Fragment>
-      <section className={`ibe__trip__variant ${fare_variant}`}>
+      <section className={`ibe__trip__variant ${fare_variant} `}>
         {!isLoading && (
           <div className="flex flex-col">
             <div className="type-header">
@@ -97,7 +97,7 @@ const IbeTripVariant = ({
                 )}
               </p>
             </div>
-            <ul className="mt-7 mb-10 px-8">
+            <ul className="mt-7 mb-10 md:px-8">
               {!featureLoading &&
                 productsFeatures?.data.product_services.map(
                   (feature, index) => (
@@ -105,7 +105,7 @@ const IbeTripVariant = ({
                       <figure className="w-[44px] h-[44px] bg-transparent rounded-full flex items-center justify-center">
                         <img src={feature.icon} alt="" />
                       </figure>
-                      <p className="text-black font-normal ml-4">
+                      <p className="text-black font-normal md:ml-4">
                         {feature.feature}
                       </p>
                     </li>

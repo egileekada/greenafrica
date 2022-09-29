@@ -211,7 +211,7 @@ const IbeHeader = () => {
             >
               <CaretLeft />
             </button>
-            <section className="flex items-center w-full mx-4 ">
+            <section className="flex items-center w-full mx-0 md:mx-4 ">
               {currentFDateList?.length > 0 ? (
                 currentFDateList.map((_dateItem, i) => {
                   return (
@@ -234,7 +234,7 @@ const IbeHeader = () => {
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
-                          <h6 className="text-center !text-[9px] md:!text-[10px]">
+                          <h6 className="text-center md:!text-[10px]">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (

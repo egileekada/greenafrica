@@ -185,7 +185,7 @@ const CheckInDetails = (props) => {
   };
 
   if (!props.pnr) {
-    router.push("/");
+    router.push("/checkin");
   }
 
   return (

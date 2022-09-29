@@ -191,7 +191,10 @@ const TripView = (props) => {
                               <>
                                 <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
                                   YOUR TRIP TO{" "}
-                                  {_segment && _segment?.DepartureStation}
+                                  {_segment &&
+                                    resolveAbbreviation(
+                                      _segment?.ArrivalStation
+                                    )}
                                 </h2>
                                 {/* TripHeader */}
                                 <section className="ibe__flight__info__destination">
@@ -223,7 +226,9 @@ const TripView = (props) => {
                                 <section className="ibe__trip__item tripView">
                                   <div className="basis-full flex  flex-col min-h-[54px] ">
                                     <p className="tripType self-center underline underline-offset-4">
-                                      Direct Flight
+                                      {_segment?.FlightDesignator?.CarrierCode}
+                                      &nbsp;
+                                      {_segment?.FlightDesignator?.FlightNumber}
                                     </p>
                                     <div className="flex justify-between">
                                       <div className="flex flex-col">
