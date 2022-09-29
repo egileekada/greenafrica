@@ -17,10 +17,10 @@ import {
 } from "redux/reducers/checkin";
 import CheckinPassengerItem from "./components/CheckinPassengerItem";
 import { useRouter } from "next/router";
-import { v4 as uuid } from "uuid";
 import { extractUniqueDiffrenceById } from "utils/helpers";
 import { useSaveNewCheckInSSRsMutation } from "services/bookingApi";
 import { notification } from "antd";
+import { uniqueId } from "lodash";
 
 const PassengerDetails = () => {
   const router = useRouter();
@@ -88,7 +88,7 @@ const PassengerDetails = () => {
               _SingleJourneySSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
                 .map((_ssr, _ssrIndex) => {
-                  let uuid = uuid();
+                  let uuid = uniqueId();
                   let newObj = {
                     id: `${Date.now()}${_ssrIndex}${uuid}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),
@@ -111,7 +111,7 @@ const PassengerDetails = () => {
               _GOSSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
                 .map((_ssr, _ssrIndex) => {
-                  const unique_id = uuid();
+                  const unique_id = uniqueId();
                   let newObj = {
                     id: `${Date.now()}${unique_id}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),
@@ -127,7 +127,7 @@ const PassengerDetails = () => {
               _RETURNSSRs
                 .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
                 .map((_ssr) => {
-                  const unique_id = uuid();
+                  const unique_id = uniqueId();
                   let newObj = {
                     id: `${Date.now()}${unique_id}`,
                     passengerNumber: parseInt(_ssr?.PassengerNumber),
@@ -254,7 +254,7 @@ const PassengerDetails = () => {
           });
         });
     } else {
-      router.push('/checkin/seat-selection');
+      router.push("/checkin/seat-selection");
     }
   };
 
