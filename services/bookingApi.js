@@ -225,6 +225,20 @@ export const bookingApi = createApi({
         },
       }),
     }),
+    bookingCommitWithoutPayment: builder.mutation({
+      query: () => ({
+        url: "/Booking/BookingCommitWithoutPayment",
+        method: "POST",
+        body: {
+          header: {
+            signature: store.getState().session.signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: false,
+            contractVersion: 0,
+          },
+        },
+      }),
+    }),
   }),
 });
 
@@ -239,4 +253,12 @@ export const {
   useBookingStateMutation,
   useGetBookingMutation,
   useSaveNewCheckInSSRsMutation,
+  useBookingCommitWithoutPaymentMutation,
 } = bookingApi;
+
+
+            // {
+            //   parseInt(
+            //     sessionStateResponse?.BookingData?.BookingSum?.BalanceDue
+            //   ).toLocaleString("NGN");
+            // }

@@ -67,6 +67,15 @@ export const BookingCommit = async (payload) => {
   });
 };
 
+export const CommitBookingWithoutPayment = async (payload) => {
+  let request = axios.post(`${BOOKING}BookingCommitWithoutPayment`, payload);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
 export const BookingSell = async (payload) => {
   let request = axios.post(`${BOOKING}Sell`, payload);
   return request.then((response) => {

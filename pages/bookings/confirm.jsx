@@ -15,13 +15,16 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import ConfrimPageFares from "./components/ConfrimPageFares";
+import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
 
 const ConfirmManageBooking = () => {
   const router = useRouter();
-  const [selectedPaxs] = useState([]);
   const dispatch = useDispatch();
   const { sessionStateLoading, sessionStateResponse, signature } =
     useSelector(sessionSelector);
+
+  const [bookingCommitWithoutPayment, { isLoading: commitPaymentLoading }] =
+    useBookingCommitWithoutPaymentMutation();
 
   useEffect(() => {
     async function fetchBookingDetails() {
@@ -305,28 +308,51 @@ const ConfirmManageBooking = () => {
     });
   };
 
+  const handlePayment = () => {
+    parseInt(sessionStateResponse?.BookingData?.BookingSum?.BalanceDue) > 0
+      ? router.push("/bookings/payment")
+      : bookingCommitWithoutPayment()
+          .unwrap()
+          .then((data) => {
+            router.push(
+              {
+                pathname: "/bookings/home",
+                query: {
+                  pnr: sessionStateResponse?.BookingData?.RecordLocator,
+                },
+              },
+              "/bookings/home"
+            );
+          })
+          .catch((error) => {
+            notification.error({
+              message: "Error",
+              description: "Booking Commit Failed",
+            });
+          });
+  };
+
   return (
     <Fragment>
-      {sessionStateResponse &&
-      sessionStateResponse?.BookingData &&
-      parseInt(sessionStateResponse?.BookingData?.BookingSum?.BalanceDue) >
-        0 ? (
+      {sessionStateResponse && sessionStateResponse?.BookingData && (
         <nav className="manage-booking-bar">
           <p className="font-display text-base text-primary-main">
             You made a few changes to your booking and additional charges have
             been added
           </p>
-          <button
-            className="btn btn-primary"
-            onClick={() => router.push("/bookings/payment")}
-          >
-            Pay ₦
-            {parseInt(
-              sessionStateResponse?.BookingData?.BookingSum?.BalanceDue
-            ).toLocaleString("NGN")}
+          <button className="btn btn-primary" onClick={handlePayment}>
+            {commitPaymentLoading
+              ? "Processing..."
+              : parseInt(
+                  sessionStateResponse?.BookingData?.BookingSum?.BalanceDue
+                ) > 0
+              ? `Pay ₦${parseInt(
+                  sessionStateResponse?.BookingData?.BookingSum?.BalanceDue
+                ).toLocaleString("NGN")}`
+              : "Proceed"}
           </button>
         </nav>
-      ) : null}
+      )}
       <BaseLayout>
         <section className="w-full checkin">
           {sessionStateLoading ? (
@@ -335,7 +361,6 @@ const ConfirmManageBooking = () => {
             </div>
           ) : (
             <section className="ga__section relative">
-             
               <div className="ga__section__main">
                 <div className="mb-8 mt-16 xlg:mt-3">
                   {sessionStateResponse?.BookingData ? (

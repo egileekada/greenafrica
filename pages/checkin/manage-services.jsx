@@ -18,7 +18,6 @@ import {
 import CheckinPassengerItem from "./components/CheckinPassengerItem";
 import { useRouter } from "next/router";
 import {
-  extractUniqueDiffrenceById,
   _extractDiffrenceById,
   _extractUniqueDiffrenceById,
 } from "utils/helpers";
