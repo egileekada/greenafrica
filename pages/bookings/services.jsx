@@ -307,8 +307,12 @@ const PassengerDetails = () => {
   };
 
   const sendSellRequest = async (payload, returnPayload = []) => {
-    dispatch(setBookingSessionSSRs(payload));
-    dispatch(setBookingSessionReturnSSRs(returnPayload));
+    // dispatch(setBookingSessionSSRs(payload));
+    // dispatch(setBookingSessionReturnSSRs(returnPayload));
+
+    // dispatch(setNewBookingSSRs(payload));
+    // dispatch(setNewBookingReturnSSRs(returnPayload));
+
     const segmentSSRRequests = [];
     const _bookingResponse = bookingResponse;
 
