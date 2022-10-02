@@ -225,6 +225,42 @@ export const bookingApi = createApi({
         },
       }),
     }),
+    ResellSSR: builder.mutation({
+      query: (segmentSSRRequests) => ({
+        url: "/Booking/Sell",
+        method: "POST",
+        body: {
+          header: {
+            signature: store.getState().session.signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: false,
+            contractVersion: 0,
+          },
+          sellRequestDto: {
+            sellRequest: {
+              sellRequestData: {
+                sellBy: 2,
+                sellBySpecified: true,
+                sellSSR: {
+                  ssrRequest: {
+                    segmentSSRRequests: [...segmentSSRRequests],
+                    currencyCode: "NGN",
+                    cancelFirstSSR: true,
+                    cancelFirstSSRSpecified: true,
+                    ssrFeeForceWaiveOnSell: false,
+                    ssrFeeForceWaiveOnSellSpecified: true,
+                    sellSSRMode: 0,
+                    sellSSRModeSpecified: true,
+                    feePricingMode: 0,
+                    feePricingModeSpecified: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      }),
+    }),
     bookingCommitWithoutPayment: builder.mutation({
       query: () => ({
         url: "/Booking/BookingCommitWithoutPayment",
@@ -254,11 +290,11 @@ export const {
   useGetBookingMutation,
   useSaveNewCheckInSSRsMutation,
   useBookingCommitWithoutPaymentMutation,
+  useResellSSRMutation,
 } = bookingApi;
 
-
-            // {
-            //   parseInt(
-            //     sessionStateResponse?.BookingData?.BookingSum?.BalanceDue
-            //   ).toLocaleString("NGN");
-            // }
+// {
+//   parseInt(
+//     sessionStateResponse?.BookingData?.BookingSum?.BalanceDue
+//   ).toLocaleString("NGN");
+// }

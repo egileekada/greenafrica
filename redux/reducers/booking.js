@@ -1091,9 +1091,7 @@ export const ReSellSSROption =
         };
         segmentSSRRequests.push(_segment);
       });
-    } else {
-      // GetBooking
-    }
+    } 
 
     try {
       const sellSSRRequest = {

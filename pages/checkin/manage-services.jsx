@@ -23,6 +23,8 @@ import {
 } from "utils/helpers";
 import { useSaveNewCheckInSSRsMutation } from "services/bookingApi";
 import { uniqueId } from "lodash";
+import { notification } from "antd";
+
 
 const PassengerDetails = () => {
   const router = useRouter();
