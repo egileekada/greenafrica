@@ -129,20 +129,27 @@ const TripConfirm = () => {
       <>
         {bookingResponse?.Booking?.Journeys.map((_journey, _journeyIndex) => {
           return (
-            <section className="flex flex-col">
+            <section className="basis-full md:basis-[48%]">
               {_journey?.Segments.map((_segment) => {
                 return (
-                  <p className="text-primary-main text-sm font-body font-normal px-6 lg:px-12 mb-4">
+                  <p className="text-primary-main text-sm font-body font-normal mb-4">
                     {_journeyIndex === 0 ? "Departing" : "Returning"} on &nbsp;
                     {format(new Date(_segment?.STD), "MMM dd, yyyy")}
                   </p>
                 );
               })}
 
-              <section className="ibe__trip__item summaryView bordered mx-6 lg:mx-12 mb-9">
-                <div className="basis-full flex  flex-col min-h-[54px] ">
-                  <p className="tripType self-center">Direct Flight</p>
-                  <div className="flex justify-between">
+              <section className="ibe__trip__item summaryView bordered mb-9 !px-3 md:!px-6 !lg-px-10">
+                <div className="basis-full flex  flex-col min-h-[54px]">
+                  {_journey?.Segments.map((_segment) => {
+                    return (
+                      <p className="tripType self-center">
+                        {_segment.FlightDesignator.CarrierCode}{" "}
+                        {_segment.FlightDesignator.FlightNumber}
+                      </p>
+                    );
+                  })}
+                  <div className="flex justify-between items-center">
                     <div className="flex flex-col">
                       {_journey?.Segments.map((_segment) => {
                         return (
@@ -154,17 +161,44 @@ const TripConfirm = () => {
 
                       {_journey?.Segments.map((_segment) => {
                         return (
-                          <p className="font-semibold font-body text-xs lg:text-sm text-black text-left">
+                          <p className="tripCity right-left">
                             {!locationLoading &&
                               resolveAbbreviation(_segment?.DepartureStation)}
                           </p>
                         );
                       })}
                     </div>
-                    <div className="tripIconPath">
-                      <DottedLine className="dotted-svg" />
-                      <AeroTwoIcon className="aero-svg" />
-                      <DottedLine className="dotted-svg" />
+                    <div className="">
+                      <svg
+                        className="w-full mx-auto"
+                        height="22"
+                        viewBox="0 0 245 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <line
+                          x1="-0.000309132"
+                          y1="10.5618"
+                          x2="99.9997"
+                          y2="10.4999"
+                          stroke="#9E9BBF"
+                          stroke-opacity="0.3"
+                          stroke-dasharray="2 2"
+                        />
+                        <line
+                          x1="145"
+                          y1="10.5"
+                          x2="245"
+                          y2="10.5"
+                          stroke="#9E9BBF"
+                          stroke-opacity="0.3"
+                          stroke-dasharray="2 2"
+                        />
+                        <path
+                          d="M130.149 11.731L130.15 11.709C130.206 10.6126 128.862 10.2909 128.862 10.2909L126.507 9.59643L125.521 6.94898C126.026 6.8646 126.402 6.55187 126.43 6.14002C126.466 5.60657 125.904 5.10922 125.175 5.02914C125.047 5.01513 124.923 5.01511 124.805 5.02697L124.048 2.99418L122.728 2.68608L123.875 9.37227L119.69 9.51318L118.883 7.2923L118.291 7.22667L117.865 13.5617L118.457 13.626L119.549 11.6137L123.654 12.6651L121.632 19.0033L122.973 18.9874L123.99 17.1495C124.105 17.187 124.227 17.214 124.355 17.228C125.084 17.3081 125.704 16.9406 125.74 16.4072C125.768 15.9953 125.439 15.6051 124.952 15.4117L126.277 13.0181L128.69 12.8473C128.69 12.8473 130.057 12.8234 130.149 11.731Z"
+                          fill="#9E9BBF"
+                        />
+                      </svg>
                     </div>
                     <div className="flex flex-col  items-end">
                       {_journey?.Segments.map((_segment) => {
@@ -249,7 +283,9 @@ const TripConfirm = () => {
                   >
                     <TripHeader />
                     <TicketCTA />
-                    <Journeys />
+                    <div className="flex flex-wrap md:flex-nowrap justify-between px-6 lg:px-12 mb-4">
+                      <Journeys />
+                    </div>
                     <PassengeAndFare isRoundTrip={isRoundTrip} />
 
                     {/* CTA */}
@@ -265,7 +301,7 @@ const TripConfirm = () => {
                         Manage Booking
                       </button>
                       <Link href="/checkin">
-                        <a className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2">
+                        <a className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2 text-center">
                           Check In
                         </a>
                       </Link>

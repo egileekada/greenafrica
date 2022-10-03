@@ -5,9 +5,7 @@ import { sessionSelector } from "redux/reducers/session";
 import ProfileIcon from "assets/svgs/profile.svg";
 import { capitalizeFirstLetter } from "lib/utils";
 
-import {
-  useGetProductsQuery,
-} from "services/widgetApi.js";
+import { useGetProductsQuery } from "services/widgetApi.js";
 
 const SummaryDetails = ({ isRoundTrip }) => {
   const { data: products, isLoading } = useGetProductsQuery();
@@ -169,7 +167,7 @@ const SummaryDetails = ({ isRoundTrip }) => {
               ) : null}
               <div className="trip__summary__details">
                 <div className="f-1">
-                  <h5>Baggage{_Baggages.length > 1 ? "s" : ""}:</h5>
+                  <h6>Baggage{_Baggages.length > 1 ? "s" : ""}:</h6>
                 </div>
                 <div className="f-1">
                   <h6>
@@ -187,12 +185,12 @@ const SummaryDetails = ({ isRoundTrip }) => {
                       return (
                         <div className="trip__summary__details">
                           <div className="f-1">
-                            <h5>
+                            <h6>
                               Seat{_Seats.length > 1 ? "s" : ""}
                               &nbsp;&nbsp;&nbsp;
                               {`${_segment?.PaxSeats[paxIndex]?.DepartureStation} -  ${_segment?.PaxSeats[paxIndex]?.ArrivalStation}`}
                               :
-                            </h5>
+                            </h6>
                           </div>
                           <div className="f-1">
                             <h6>
@@ -219,60 +217,6 @@ const SummaryDetails = ({ isRoundTrip }) => {
       <h2 className="trip-title mb-3">CONTACT DETAILS</h2>
       <div className="flex flex-col">
         <PassengerContact />
-
-        <div className="trip__summary__details">
-          <div className="f-1">
-            <h5>Trip Type:</h5>
-          </div>
-          <div className="f-1">
-            <h6> {isRoundTrip ? "Round Trip" : "One way"}</h6>
-          </div>
-        </div>
-
-        {bookingResponse?.Booking?.Journeys?.map((_journey, _journeyIndex) => {
-          return _journey.Segments.map((_segment) => {
-            return (
-              <>
-                <div className="trip__summary__details">
-                  <div className="f-1">
-                    <h5>
-                      {" "}
-                      {_journeyIndex === 0 ? "Departing" : "Returning"} Flight
-                      Number::
-                    </h5>
-                  </div>
-                  <div className="f-1">
-                    <h6>
-                      {_segment?.FlightDesignator?.CarrierCode}&nbsp;
-                      {_segment?.FlightDesignator?.FlightNumber}
-                    </h6>
-                  </div>
-                </div>
-
-                {_journey.Segments.map((_segment) => {
-                  return _segment.Fares.map((_fare) => {
-                    return (
-                      <div className="trip__summary__details">
-                        <div className="f-1">
-                          <h5>
-                            {" "}
-                            {_journeyIndex === 0
-                              ? "Departing"
-                              : "Returning"}{" "}
-                            Product:
-                          </h5>
-                        </div>
-                        <div className="f-1">
-                          <h6>{!isLoading && fare_name(_fare.ProductClass)}</h6>
-                        </div>
-                      </div>
-                    );
-                  });
-                })}
-              </>
-            );
-          });
-        })}
 
         <section className="flex flex-col mt-3">
           <PassengerInfos />
