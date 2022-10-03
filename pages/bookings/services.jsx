@@ -85,8 +85,8 @@ const PassengerDetails = () => {
           const _TRIPS = bookingResponse?.Booking?.Journeys;
 
           if (_TRIPS?.length > 0) {
-            if (newBookingSSRs || newBookingReturnSSRs) {
-            } else {
+            // if (newBookingSSRs || newBookingReturnSSRs) {
+            // } else {
               if (_TRIPS?.length === 1) {
                 const _SingleJourneySSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
                 const _BookingSSRs = [];
@@ -185,7 +185,7 @@ const PassengerDetails = () => {
                   setBookingSessionReturnSSRs(_BookingSessionReturnSSRs)
                 );
               }
-            }
+            // }
           }
         }
       }
@@ -257,9 +257,9 @@ const PassengerDetails = () => {
           newBookingReturnSSRsPayload
         );
 
-        await sendSellRequest(newBookingSSRsPayload, [
-          ...newBookingReturnSSRsPayload,
-        ]);
+        // await sendSellRequest(newBookingSSRsPayload, [
+        //   ...newBookingReturnSSRsPayload,
+        // ]);
       } else {
         let newBookingSSRsPayload = [];
         let newBookingReturnSSRsPayload = [];
@@ -296,10 +296,10 @@ const PassengerDetails = () => {
           newBookingReturnSSRsPayload
         );
 
-        await sendSellRequest(
-          newBookingSSRsPayload,
-          newBookingReturnSSRsPayload
-        );
+        // await sendSellRequest(
+        //   newBookingSSRsPayload,
+        //   newBookingReturnSSRsPayload
+        // );
       }
     } else {
       router.back();
@@ -307,12 +307,6 @@ const PassengerDetails = () => {
   };
 
   const sendSellRequest = async (payload, returnPayload = []) => {
-    // dispatch(setBookingSessionSSRs(payload));
-    // dispatch(setBookingSessionReturnSSRs(returnPayload));
-
-    // dispatch(setNewBookingSSRs(payload));
-    // dispatch(setNewBookingReturnSSRs(returnPayload));
-
     const segmentSSRRequests = [];
     const _bookingResponse = bookingResponse;
 

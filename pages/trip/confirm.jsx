@@ -265,7 +265,7 @@ const TripConfirm = () => {
                         Manage Booking
                       </button>
                       <Link href="/checkin">
-                        <a className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2">
+                        <a className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2 text-center">
                           Check In
                         </a>
                       </Link>

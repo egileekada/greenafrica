@@ -200,7 +200,7 @@ const PassengerDetails = () => {
         newReturnSSrs
       );
 
-      console.log(newCheckinSSRsPayload, newCheckinReturnSSRsPayload);
+      // console.log(newCheckinSSRsPayload, newCheckinReturnSSRsPayload);
 
       const segmentSSRRequests = [];
       let JourneyOneSSRs = [];

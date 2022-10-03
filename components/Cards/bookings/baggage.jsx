@@ -101,6 +101,7 @@ const BoookingBaggageCard = ({
         DepartureStation,
       });
       setNewSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+      console.log("i am bnxn");
       dispatch(setNewBookingSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
       const _existingSSRs = newSelection
@@ -124,6 +125,7 @@ const BoookingBaggageCard = ({
         DepartureStation,
       });
       setNewSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
+      console.log("i am your guy");
       dispatch(setNewBookingSSRs([..._cleanedSSRs, ..._SSRItemObj]));
     }
   };
