@@ -107,65 +107,71 @@ const CheckInDetails = (props) => {
   const tryCheckIn = () => {
     dispatch(saveCheckInPassengerSelection(passengers));
 
-    const newData = bookingResponse?.Booking?.Journeys.map((Journey, index) => {
-      return {
-        recordLocator: bookingResponse?.Booking?.RecordLocator,
-        inventoryLegKey: {
-          carrierCode: Journey.Segments[0].FlightDesignator.CarrierCode,
-          flightNumber: Journey.Segments[0].FlightDesignator.FlightNumber,
-          departureDate: Journey.Segments[0].STD,
-          departureDateSpecified: true,
-          departureStation: Journey.Segments[0].DepartureStation,
-          arrivalStation: Journey.Segments[0].ArrivalStation,
-        },
-        liftStatus: 1,
-        liftStatusSpecified: true,
-        bySegment: false,
-        bySegmentSpecified: true,
-        checkSameDayReturn: false,
-        checkSameDayReturnSpecified: true,
-        skipSecurityChecks: false,
-        skipSecurityChecksSpecified: true,
-        seatRequired: false,
-        seatRequiredSpecified: true,
-        retrieveBoardingZone: false,
-        retrieveBoardingZoneSpecified: true,
-        allowPartialCheckIn: false,
-        allowPartialCheckInSpecified: true,
-        otherAirlineCheckin: false,
-        otherAirlineCheckinSpecified: true,
-        checkInDestination: Journey.Segments[0].ArrivalStation,
-        returnDownlineSegments: true,
-        returnDownlineSegmentsSpecified: true,
-        inventoryLegKeyDepartureDateTime: Journey.Segments[0].STD,
-        inventoryLegKeyDepartureDateTimeSpecified: true,
-        processDownlineIATCI: true,
-        processDownlineIATCISpecified: true,
-        checkInPaxRequestList: [
-          ...passengers
-            .filter((data) => {
-              return data.journey === index;
-            })
-            .map((passenger) => {
-              return {
-                name: {
-                  title: passenger.Names[0].Title,
-                  firstName: passenger.Names[0].FirstName,
-                  lastName: passenger.Names[0].LastName,
-                },
-                verifiedID: false,
-                verifiedIDSpecified: true,
-                passengerID: passenger.PassengerNumber,
-                passengerIDSpecified: true,
-                processAPPS: false,
-                processAPPSSpecified: true,
-                appsTransitType: 0,
-                appsTransitTypeSpecified: true,
-              };
-            }),
-        ],
-      };
-    });
+    const newData = bookingResponse?.Booking?.Journeys.flatMap(
+      (Journey, index) => {
+        if (passengers.some((el) => el.journey === index)) {
+          return {
+            recordLocator: bookingResponse?.Booking?.RecordLocator,
+            inventoryLegKey: {
+              carrierCode: Journey.Segments[0].FlightDesignator.CarrierCode,
+              flightNumber: Journey.Segments[0].FlightDesignator.FlightNumber,
+              departureDate: Journey.Segments[0].STD,
+              departureDateSpecified: true,
+              departureStation: Journey.Segments[0].DepartureStation,
+              arrivalStation: Journey.Segments[0].ArrivalStation,
+            },
+            liftStatus: 1,
+            liftStatusSpecified: true,
+            bySegment: false,
+            bySegmentSpecified: true,
+            checkSameDayReturn: false,
+            checkSameDayReturnSpecified: true,
+            skipSecurityChecks: false,
+            skipSecurityChecksSpecified: true,
+            seatRequired: false,
+            seatRequiredSpecified: true,
+            retrieveBoardingZone: false,
+            retrieveBoardingZoneSpecified: true,
+            allowPartialCheckIn: false,
+            allowPartialCheckInSpecified: true,
+            otherAirlineCheckin: false,
+            otherAirlineCheckinSpecified: true,
+            checkInDestination: Journey.Segments[0].ArrivalStation,
+            returnDownlineSegments: true,
+            returnDownlineSegmentsSpecified: true,
+            inventoryLegKeyDepartureDateTime: Journey.Segments[0].STD,
+            inventoryLegKeyDepartureDateTimeSpecified: true,
+            processDownlineIATCI: true,
+            processDownlineIATCISpecified: true,
+            checkInPaxRequestList: [
+              ...passengers
+                .filter((data) => {
+                  return data.journey === index;
+                })
+                .map((passenger) => {
+                  return {
+                    name: {
+                      title: passenger.Names[0].Title,
+                      firstName: passenger.Names[0].FirstName,
+                      lastName: passenger.Names[0].LastName,
+                    },
+                    verifiedID: false,
+                    verifiedIDSpecified: true,
+                    passengerID: passenger.PassengerNumber,
+                    passengerIDSpecified: true,
+                    processAPPS: false,
+                    processAPPSSpecified: true,
+                    appsTransitType: 0,
+                    appsTransitTypeSpecified: true,
+                  };
+                }),
+            ],
+          };
+        } else {
+          return [];
+        }
+      }
+    );
 
     dispatch(saveCheckInSelection(newData));
 
