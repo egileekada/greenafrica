@@ -104,11 +104,14 @@ const BookingReturnBaggageCard = ({
         DepartureStation,
       });
       setNewReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
+      console.log("i am return bnxn");
       dispatch(setNewBookingReturnSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
       const _existingSSRs = returnNewSelection
         ? [...newBookingReturnSSRs]
         : [...selectedReturnSSRs];
+      // const _existingSSRs = [...newBookingReturnSSRs];
+
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
         const _ruleBasis =
           _ssr.ssrCode === SSRItem.SSRCode &&
@@ -126,6 +129,7 @@ const BookingReturnBaggageCard = ({
         DepartureStation,
       });
       setNewReturnSSRs((prevState) => [..._cleanedSSRs, ..._SSRItemObj]);
+      console.log("i am your return guy");
       dispatch(setNewBookingReturnSSRs([..._cleanedSSRs, ..._SSRItemObj]));
     }
   };

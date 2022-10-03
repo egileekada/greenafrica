@@ -114,8 +114,6 @@ export const bookingSlice = createSlice({
       state.newBookingReturnSSRs = payload;
     },
 
-
-
     setResellSSRLoading: (state, { payload }) => {
       state.ResellSSRLoading = payload;
     },
@@ -1091,7 +1089,7 @@ export const ReSellSSROption =
         };
         segmentSSRRequests.push(_segment);
       });
-    } 
+    }
 
     try {
       const sellSSRRequest = {
