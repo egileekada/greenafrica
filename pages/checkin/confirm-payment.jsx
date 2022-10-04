@@ -4,7 +4,10 @@ import BaseLayout from "layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { sessionSelector, startSession } from "redux/reducers/session";
-import { useStartCheckInMutation } from "services/bookingApi";
+import {
+  useStartCheckInMutation,
+  useGetBookingMutation,
+} from "services/bookingApi";
 
 import { useVerifyPaymentQuery } from "services/widgetApi";
 import LogoIcon from "assets/svgs/logo.svg";
@@ -33,6 +36,11 @@ const ConfirmTripPayment = () => {
     }
   );
 
+  const [
+    initGetBooking,
+    { isLoading: bookingLoading, isError, data: bookingData },
+  ] = useGetBookingMutation();
+
   const ScrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -54,26 +62,31 @@ const ConfirmTripPayment = () => {
 
   useEffect(() => {
     if (!statusRef.current) {
-      triggerCheckin(data?.data);
+      triggerCheckin(data?.data?.pnr);
     }
     return () => {
       statusRef.current = false;
     };
   }, [isSuccess]);
 
-  const triggerCheckin = () => {
-    startCheckin(checkInSelection)
+  const triggerCheckin = (pnr) => {
+    initGetBooking(pnr)
       .unwrap()
       .then((data) => {
-        router.push("/checkin/confirm");
+        startCheckin(checkInSelection)
+          .unwrap()
+          .then((data) => {
+            router.push("/checkin/confirm");
+          })
+          .catch((error) => {
+            /** @TO-DO
+             * Handle Failure handler
+             *
+             *  **/
+            console.error(error);
+          });
       })
-      .catch((error) => {
-        /** @TO-DO
-         * Handle Failure handler
-         *
-         *  **/
-        console.error(error);
-      });
+      .catch((error) => console.log(error));
   };
 
   const goBackToHome = () => {
