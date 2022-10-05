@@ -125,17 +125,13 @@ export const sessionSlice = createSlice({
       state.sellFlightLoading = payload;
     },
     setSellResponse: (state, { payload }) => {
-      state.sellResponse = {
-        ...payload,
-      };
+      state.sellResponse = payload;
     },
     setSellInfantLoading: (state, { payload }) => {
       state.sellInfantLoading = payload;
     },
     setSellInfantResponse: (state, { payload }) => {
-      state.sellInfantResponse = {
-        ...payload,
-      };
+      state.sellInfantResponse = payload;
     },
     setSessionPassengers: (state, { payload }) => {
       state.sessionPassengers = [...payload];
@@ -1044,7 +1040,6 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
 
   try {
     const sellResponse = await BookingSell(requestPayload);
-    await dispatch(setSellResponse(sellResponse.data));
     if (INFANT_COUNT > 0) {
       dispatch(setSellInfantLoading(true));
       try {
@@ -1058,6 +1053,8 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
         });
       }
       dispatch(setSellInfantLoading(false));
+    } else {
+      await dispatch(setSellResponse(sellResponse.data));
     }
   } catch (err) {
     notification.error({

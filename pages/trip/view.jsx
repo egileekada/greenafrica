@@ -78,7 +78,6 @@ const TripView = (props) => {
         }
       } else {
         // router.push("/");
-        console.log("selectedSessionJourney && selectedSessionFar not resent");
       }
     }
     init();
@@ -127,6 +126,7 @@ const TripView = (props) => {
           description: "Please review your selected details and try again",
         });
   };
+  
   const handleMultipleSell = async () => {
     dispatch(saveMultipleSellRequest(selectedSessionJourney));
   };
