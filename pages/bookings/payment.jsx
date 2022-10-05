@@ -41,6 +41,7 @@ const PassengerDetails = () => {
     amount: null,
     publicKey: "",
     text: "",
+    payment_options: "",
   });
   const initializePayment = usePaystackPayment(config);
   const handleFlutterPayment = useFlutterwave(config);
@@ -187,6 +188,8 @@ const PassengerDetails = () => {
               {bookingCommitLoading && <p>Saving booking details...</p>}
               {gatewaysLoading || verifyManageBookingLoading ? (
                 <section className="py-10 pl-12">
+                  <SkeletonLoader />
+                  <SkeletonLoader />
                   <SkeletonLoader />
                 </section>
               ) : (
