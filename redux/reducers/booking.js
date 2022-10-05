@@ -41,6 +41,9 @@ const initialState = {
 
   ResellSSRLoading: false,
   ResellSSRResponse: null,
+
+  goDifference: [],
+  returnDifference: [],
 };
 
 export const bookingSlice = createSlice({
@@ -120,6 +123,13 @@ export const bookingSlice = createSlice({
     setResellSSRResponse: (state, { payload }) => {
       state.ResellSSRResponse = payload;
     },
+
+    setGoDifference: (state, { payload }) => {
+      state.goDifference = payload;
+    },
+    setReturnDifference: (state, { payload }) => {
+      state.returnDifference = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState);
@@ -154,6 +164,9 @@ export const {
 
   setCancelBookingSSRLoading,
   setCancelBokingSSRResponse,
+
+  setGoDifference,
+  setReturnDifference,
 } = bookingSlice.actions;
 
 export const bookingSelector = (state) => state.booking;
