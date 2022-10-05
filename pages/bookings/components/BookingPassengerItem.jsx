@@ -156,8 +156,8 @@ const BookingPassengerItem = ({
     <PassengerAccordion passenger={passenger}>
       <section className="flex flex-col">
         <div className="flex flex-col mt-">
-          <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-2">
-            SPECIAL ASSISTANCE
+          <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-4">
+          SPECIAL ASSISTANCE <span className="italic">(Please let us know if you will require any special assistance at the airport)</span>
           </h6>
 
           <div className="flex items-center mb-5 primary-checkbox">
