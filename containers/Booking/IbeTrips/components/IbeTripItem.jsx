@@ -7,9 +7,14 @@ import IbeTripVariant from "./IbeTripVaraint";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 
+import { useSelector } from "react-redux";
+import { bookingSelector } from "redux/reducers/booking";
+
 const IbeTripItem = ({ journey, schedueIndex }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [flightTime, setFlightTime] = useState(null);
+
+  const { goTrip, returnTrip } = useSelector(bookingSelector);
 
   useEffect(() => {
     if (journey) {
@@ -39,7 +44,7 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
 
   return (
     <section className="flex flex-col mb-6">
-      <section className="ibe__trip__item">
+      <section className="ibe__trip__item relative">
         <div className="basis-full lg:basis-[70%] flex flex-col min-h-[54px] ">
           <p className="tripType self-center underline underline-offset-4">
             {journey.Segments.map((_segment) => {
@@ -60,6 +65,9 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
               <p className="tripCity">
                 {flightTime && flightTime?.DepartureStation}
               </p>
+              {/* <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3">
+                selected
+              </p> */}
             </div>
             <div className="tripIconPath">
               <DottedLine className="dotted-svg" />
@@ -85,13 +93,12 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
               )}
           </p>
         </div>
-        <div className="basis-full lg:basis-[30%] mt-4 lg:mt-0 flex justify-end items-center">
+        <div className="basis-full lg:basis-[30%] mt-4 lg:mt-0 flex justify-end items-center relative">
           {!isVisible ? (
             <button
               className="btn btn-primary w-full lg:w-[200px] flex items-center justify-center text-center group lg:ml-4"
               onClick={() => setIsVisible(!isVisible)}
             >
-              {/* <span className="text-white mr-3">From ₦16,501</span> */}
               <span className="text-white mr-3">
                 {leastFare ? `From ₦${leastFare.toLocaleString()}` : "Proceed"}
               </span>
@@ -106,7 +113,29 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
             </button>
           )}
         </div>
+
+        {goTrip?.journey?.JourneySellKey.toLowerCase() ===
+        journey?.JourneySellKey.toLowerCase() ? (
+          <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute top-[12px] text-[8px]">
+            Go Selected -{" "}
+            {goTrip?.fare?.RuleNumber.toLowerCase() === "savr" && "gSaver"}
+            {goTrip?.fare?.RuleNumber.toLowerCase() === "flex" && "gFlex"}
+            {goTrip?.fare?.RuleNumber.toLowerCase() === "clsc" && "gClassic"}
+          </p>
+        ) : null}
+
+        {returnTrip?.journey?.JourneySellKey.toLowerCase() ===
+        journey?.JourneySellKey.toLowerCase() ? (
+          <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute top-[12px] text-[8px]">
+            Return Selected -{" "}
+            {returnTrip?.fare?.RuleNumber.toLowerCase() === "savr" && "gSaver"}
+            {returnTrip?.fare?.RuleNumber.toLowerCase() === "flex" && "gFlex"}
+            {returnTrip?.fare?.RuleNumber.toLowerCase() === "clsc" &&
+              "gClassic"}
+          </p>
+        ) : null}
       </section>
+
       <section
         className={`variant-bg w-full min-h-[96px] pb-10 transition-all rounded-b-md border-b ${
           isVisible ? "flex flex-col" : "hidden"
@@ -143,19 +172,6 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
           })}
         </div>
       </section>
-      {/* {!isVisible &&
-        journey.Segments.map((_segment) => {
-          return (
-            <div className="ibe__trip__number">
-              <h4>FLIGHT NUMBER</h4>
-              <p>
-                {_segment?.FlightDesignator?.CarrierCode}
-                &nbsp;
-                {_segment?.FlightDesignator?.FlightNumber}
-              </p>
-            </div>
-          );
-        })} */}
     </section>
   );
 };

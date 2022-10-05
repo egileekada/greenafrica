@@ -1,103 +1,96 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BaseLayout from "layouts/Base";
-import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBookingCommit, sessionSelector } from "redux/reducers/session";
 import {
-  paymentSelector,
-  FetchPaymentGateways,
-  InitializeGatewayPayment,
-} from "redux/reducers/payment";
+  sessionSelector,
+  retrieveBookingFromState,
+} from "redux/reducers/session";
+import { paymentSelector, FetchPaymentGateways } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
 import { notification } from "antd";
 import { useRouter } from "next/router";
+import { usePaystackPayment } from "react-paystack";
+import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
+import { useInitiatePaymentMutation } from "services/widgetApi";
 
 const CheckinPayment = () => {
   const router = useRouter();
-
   const dispatch = useDispatch();
-  const [totalFare, setTotalFare] = useState();
-  const [selected, setSelected] = useState(1);
-  const {
-    bookingCommitLoading,
-    bookingCommitResponse,
-    sessionContact,
-    contactsResponse,
-    sellSSRResponse,
-    bookingResponse,
-    assignSeatResponse,
-  } = useSelector(sessionSelector);
+  const { bookingCommitLoading, bookingState, signature } =
+    useSelector(sessionSelector);
 
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
     useSelector(paymentSelector);
-  //
-  console.log(assignSeatResponse.Success.PNRAmount.BalanceDue);
-  //   useEffect(() => {
-  //     async function _getBookingCommit() {
-  //       if (sellSSRResponse) {
-  //         const _recordLocator =
-  //           bookingCommitResponse?.BookingUpdateResponseData?.Success
-  //             ?.RecordLocator;
-  //         console.log("record locator", _recordLocator);
-  //         if (!_recordLocator || _recordLocator?.length < 1) {
-  //           dispatch(GetBookingCommit());
-  //         }
-  //       }
-  //     }
-  //     _getBookingCommit();
-  //   }, [sellSSRResponse]);
+
+  const [config, setConfig] = useState({
+    reference: "",
+    email: "",
+    amount: null,
+    publicKey: "",
+    text: "",
+  });
+  const initializePayment = usePaystackPayment(config);
+  const handleFlutterPayment = useFlutterwave(config);
+
+  const [initPayment] = useInitiatePaymentMutation();
+  const [totalFare, setTotalFare] = useState();
+  const [selected, setSelected] = useState(1);
+
+  const onSuccess = (reference) => {
+    window.location.assign(reference?.redirecturl);
+  };
+
+  const onClose = () => {
+    console.log("closed");
+  };
 
   useEffect(() => {
     async function fetchGateways() {
+      setTotalFare(parseInt(bookingState?.BookingSum?.BalanceDue));
       dispatch(FetchPaymentGateways());
+      dispatch(retrieveBookingFromState());
     }
     fetchGateways();
   }, []);
 
-  //   useEffect(() => {
-  //     async function computeTotalFare() {
-  //       if (sellSSRResponse) {
-  //         setTotalFare(
-  //           parseInt(
-  //             sellSSRResponse?.BookingUpdateResponseData?.Success?.PNRAmount
-  //               ?.BalanceDue
-  //           )
-  //         );
-  //       } else if (contactsResponse) {
-  //         setTotalFare(
-  //           parseInt(
-  //             contactsResponse?.BookingUpdateResponseData?.Success?.PNRAmount
-  //               ?.BalanceDue
-  //           )
-  //         );
-  //       } else {
-  //         notification.error({
-  //           message: "Error",
-  //           description: "Unable to fetch total flight cost, Redirecting in 3s",
-  //         });
-  //         // setTimeout(() => {
-  //         //   router.push("/");
-  //         // }, 3000);
-  //       }
-  //     }
-  //     computeTotalFare();
-  //   }, [sellSSRResponse, contactsResponse]);
-
   const handlePayment = async () => {
-    if (bookingCommitResponse) {
+    if (bookingState) {
       const payload = {
-        customer_name: `${bookingResponse?.Booking.BookingContacts[0].Names[0].FirstName} ${bookingResponse?.Booking.BookingContacts[0].Names[0].LastName}`,
-        customer_email:
-          bookingResponse?.Booking?.BookingContacts[0].EmailAddress,
+        customer_name: `${bookingState.BookingContacts[0].Names[0].FirstName} ${bookingState?.BookingContacts[0].Names[0].LastName}`,
+        customer_email: bookingState?.BookingContacts[0].EmailAddress,
         amount: totalFare * 100,
-        pnr: bookingResponse?.Booking.RecordLocator,
+        pnr: bookingState?.RecordLocator,
         gateway_type_id: selected,
         payment_origin: "checkin",
+        signature,
       };
-      dispatch(InitializeGatewayPayment(payload));
+
+      const gateway = gatewaysResponse?.data?.items.filter(
+        (gate) => gate.id === selected
+      );
+
+      await initPayment(payload)
+        .unwrap()
+        .then((data) => {
+          setConfig({
+            ...config,
+            tx_ref: data?.data?.reference,
+            amount: gateway[0]?.code === "PS" ? totalFare * 100 : totalFare,
+            email: bookingState?.BookingContacts[0].EmailAddress,
+            publicKey: gateway[0].public_key,
+            public_key: gateway[0].public_key,
+            reference: data?.data?.reference,
+            currency: "NGN",
+            customer: {
+              email: bookingState?.BookingContacts[0].EmailAddress,
+              name: `${bookingState.BookingContacts[0].Names[0].FirstName} ${bookingState?.BookingContacts[0].Names[0].LastName}`,
+            },
+          });
+        })
+        .catch((error) => console.log(error));
     } else {
       notification.error({
         message: "Error",
@@ -109,6 +102,37 @@ const CheckinPayment = () => {
     }
   };
 
+  const triggerPaystack = () => {
+    const gateway = gatewaysResponse?.data?.items.filter(
+      (gate) => gate.id === selected
+    );
+
+    if (gateway[0]?.code === "PS") {
+      initializePayment(onSuccess, onClose);
+    } else {
+      handleFlutterPayment({
+        callback: (response) => {
+          window.location.assign(
+            `https://dev-ibe.gadevenv.com/checkin/confirm-payment?reference=${response.tx_ref}`
+          );
+          closePaymentModal(); // this will close the modal programmatically
+        },
+        onClose: () => {},
+      });
+    }
+  };
+
+  let storageRef = useRef(true);
+
+  useEffect(() => {
+    if (!storageRef.current) {
+      triggerPaystack();
+    }
+    return () => {
+      storageRef.current = false;
+    };
+  }, [config]);
+
   return (
     <BaseLayout>
       <section className="w-full">
@@ -118,8 +142,8 @@ const CheckinPayment = () => {
             <Spinner />
           </section>
         ) : (
-          <section className="ga__section">
-            <div className="ga__section__main payment-section">
+          <section className="ga__section bg-[rgb(158,155,191)]/[0.17]">
+            <div className="ga__section__main payment-section mx-auto bg-[#0000]">
               {gatewaysResponse ? (
                 <>
                   <div className="mb-8">
@@ -138,7 +162,7 @@ const CheckinPayment = () => {
                               selected === _gateway?.id ? "active" : ""
                             } `}
                             key={_i}
-                            onClick={() => setSelected(_gateway?.id)}
+                            onClick={() => setSelected(_gateway.id)}
                           >
                             {selected === _gateway?.id ? (
                               <figure className="check-payment">
@@ -184,9 +208,6 @@ const CheckinPayment = () => {
               ) : (
                 <p>No response from gateway</p>
               )}
-            </div>
-            <div className="ga__section__side">
-              <IbeSidebar />
             </div>
           </section>
         )}

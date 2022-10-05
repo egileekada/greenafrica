@@ -25,9 +25,11 @@ import Spinner from "components/Spinner";
 import LogoIcon from "assets/svgs/logo.svg";
 import { notification } from "antd";
 import { useRouter } from "next/router";
+import SkeletonLoader from "components/SkeletonLoader";
 
 const Home = () => {
   const [showPopUp, setShow] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
   const [roundTripEnabled, setRoundTripEnabled] = useState(false);
   const dispatch = useDispatch();
   const {
@@ -48,6 +50,7 @@ const Home = () => {
       if (flightOrigin) {
         dispatch(hideWidget());
         dispatch(startSession());
+        setIsStarted(true);
       } else {
         dispatch(showWidget());
       }
@@ -87,7 +90,7 @@ const Home = () => {
       }
     }
     checkSigInit();
-  }, [signature]);
+  }, [signature, isStarted]);
 
   useEffect(() => {
     async function checkRoundEnabled() {
@@ -117,8 +120,9 @@ const Home = () => {
   }, []);
 
   const goBackToHome = async () => {
-    const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
-    router.push(query);
+    // const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
+    // router.push(query);
+    window.location.assign("https://dev-website.gadevenv.com/");
   };
 
   const checkRoundTripPayload = () => {
@@ -172,12 +176,6 @@ const Home = () => {
     <Fragment>
       <BaseLayout>
         <nav className="top__bar logo-holder">
-          {/* <button>
-            <figure>
-              <BackIcon />
-            </figure>
-            <span>SELECT FLIGHT</span>
-          </button> */}
           <button onClick={goBackToHome}>
             <figure className="cursor-pointer">
               <LogoIcon />
@@ -186,7 +184,8 @@ const Home = () => {
         </nav>
         {sessionLoading ? (
           <section className="spinner__container">
-            <Spinner />
+            <SkeletonLoader />
+            <SkeletonLoader />
           </section>
         ) : (
           <Fragment>
@@ -199,7 +198,7 @@ const Home = () => {
                 <section className="flex flex-col scrollable">
                   <div className="flex flex-col mb-10">
                     {flightAvailabilityLoading ? (
-                      <Spinner />
+                      <SkeletonLoader />
                     ) : availabilityResponse ? (
                       <>
                         {availabilityResponse?.GetTripAvailabilityResponse
@@ -245,7 +244,7 @@ const Home = () => {
                     ) : (
                       <h2 className="text-red-600 font-normal text-sm mb-8">
                         {/* TODO this needs to be checked - edge case what happens when we close the modal on the landing page */}
-                        {/* Error fetching flight availability */}
+                        {/* No flight available at the moment */}
                       </h2>
                     )}
                   </div>

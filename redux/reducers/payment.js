@@ -14,6 +14,8 @@ const initialState = {
   paymentResponse: null,
   verifyPaymentLoading: false,
   verifyPaymentResponse: null,
+  verifyManageBookingLoading: false,
+  verifyManageBookingResponse: null,
 };
 
 export const paymentSlice = createSlice({
@@ -38,6 +40,13 @@ export const paymentSlice = createSlice({
     setVerifyPaymentResponse: (state, { payload }) => {
       state.verifyPaymentResponse = payload;
     },
+
+    setVerifyManageBookingLoading: (state, { payload }) => {
+      state.verifyManageBookingLoading = payload;
+    },
+    setVerifyManageBookingResponse: (state, { payload }) => {
+      state.verifyManageBookingResponse = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState); // THIS LINE
@@ -51,6 +60,8 @@ export const {
   setPaymentResponse,
   setVerifyPaymentLoading,
   setVerifyPaymentResponse,
+  setVerifyManageBookingLoading,
+  setVerifyManageBookingResponse,
 } = paymentSlice.actions;
 export const paymentSelector = (state) => state.payment;
 export default paymentSlice.reducer;
@@ -102,4 +113,24 @@ export const VerifyGatewayPayment = (payload) => async (dispatch) => {
   }
 
   dispatch(setVerifyPaymentLoading(false));
+};
+
+export const VerifyManageBookingPayment = (payload) => async (dispatch) => {
+  dispatch(setVerifyManageBookingLoading(true));
+
+  try {
+    const Response = await VerifyPayment(payload.ref);
+    dispatch(setVerifyManageBookingResponse(Response?.data?.data));
+    if (Response?.data?.data?.pnr) {
+      const PNR = Response?.data?.data?.pnr;
+      window.location.assign(`/bookings/home?pnr=${PNR}`);
+    }
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Verify Manage Booking Payment Failed",
+    });
+  }
+
+  dispatch(setVerifyManageBookingLoading(false));
 };

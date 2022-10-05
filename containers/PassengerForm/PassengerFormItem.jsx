@@ -13,6 +13,7 @@ const PassengerFormItem = ({
   setPassengers,
   errorIds,
   setErrorIds,
+  salutations,
 }) => {
   const [error, setErr] = useState({
     title: "",
@@ -131,7 +132,7 @@ const PassengerFormItem = ({
           parseInt(_DIFF) < 145
             ? setErr({
                 ...error,
-                dob: "Can't select less than 12 years of age for an adult change",
+                dob: "Can't select less than 12 years of age for an adult",
               })
             : fillInDob(indexedPassenger, dateString);
         }
@@ -140,7 +141,7 @@ const PassengerFormItem = ({
           parseInt(_DIFF) > 24
             ? setErr({
                 ...error,
-                dob: "Can't select more than 2 years of age for an infant change",
+                dob: "Can't select more than 2 years of age for an infant",
               })
             : fillInDob(indexedPassenger, dateString);
         }
@@ -149,7 +150,7 @@ const PassengerFormItem = ({
           parseInt(_DIFF) > 144
             ? setErr({
                 ...error,
-                dob: "Can't select more than 12 years of age for a child change",
+                dob: "Can't select more than 12 years of age for a child ",
               })
             : fillInDob(indexedPassenger, dateString);
         }
@@ -170,7 +171,7 @@ const PassengerFormItem = ({
       <div className="mb-6 flex flex-wrap lg:flex-nowrap">
         {/* <p>{JSON.stringify(passenger)}</p> */}
         <div className="form-group select-field select-group mr-0 md:mr-4">
-          <label>TITLE</label>
+          <label>TITLE*</label>
           <select
             id="title"
             name="title"
@@ -179,8 +180,11 @@ const PassengerFormItem = ({
             required
           >
             <option value="">Select</option>
-            <option value="Mrs">Mrs</option>
-            <option value="Mr">Mr</option>
+            {salutations.map((salutation, index) => (
+              <option value={salutation.title} key={index}>
+                {salutation.title}
+              </option>
+            ))}
           </select>
           <div className="select-icon">
             <SelectIcon />
@@ -191,7 +195,7 @@ const PassengerFormItem = ({
         </div>
 
         <div className="form-group flex-grow mr-0 md:mr-4">
-          <label>FIRST NAME</label>
+          <label>FIRST NAME*</label>
           <input
             type="text"
             placeholder="Enter first name"
@@ -206,7 +210,7 @@ const PassengerFormItem = ({
           ) : null}
         </div>
         <div className="form-group flex-grow mr-0 md:mr-4">
-          <label>LAST NAME</label>
+          <label>LAST NAME*</label>
           <input
             type="text"
             placeholder="Enter last name"
@@ -223,7 +227,12 @@ const PassengerFormItem = ({
 
         <div className="flex flex-col flex-grow-0 flex-shrink w-full md:w-auto">
           <div className="form-group w-full  h-20 md:h-auto">
-            <label>DATE OF BIRTH</label>
+            <label>
+              DATE OF BIRTH
+              {passenger?.type === "INF" || passenger?.type === "CHD"
+                ? "*"
+                : ""}{" "}
+            </label>
             <div className="date-picker">
               <DatePicker onChange={onChange} disabledDate={disabledDate} />
             </div>

@@ -16,21 +16,18 @@ import {
   GetSeatAvailabilityForBooking,
   AssignSeats,
   GetSSRAvailabilityForBooking,
+  CheckInPassengers,
 } from "services/bookingService";
 import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
-
-import { bookingResponse } from "./data";
-
-const _sig =
-  "evvMITkS66k=|g6x/dRNRkxY5PCxI9b+JfAOuL4VBljSZ3s9bNbeZGtLbeW6PGf30nEKn6L9z28x0Ap/sKKQqN63mUemlUOMPdvL7OSSZr0uoXEOj+nibyi35zaGmdzszVfDGCk9GjKY77fJJofLvYJY=";
+import { bookingState } from "./data";
+import { lowFareAvailabilityResponse } from "./_data";
 
 const initialState = {
   isLoading: false,
   signature: null,
-  // signature: _sig,
   sessionLoading: false,
   lowFareAvailabilityLoading: false,
   lowFareAvailabilityResponse: null,
@@ -61,7 +58,6 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   bookingResponse: null,
-  // bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,
@@ -72,8 +68,10 @@ const initialState = {
   bookingState: null,
   sessionStateLoading: false,
   sessionStateResponse: null,
-  // sessionStateResponse: bookingState,
+  sessionStateResponse: bookingState,
   seats: [],
+  checkInSelection: [],
+  selectedPassengers: [],
 };
 
 export const sessionSlice = createSlice({
@@ -259,6 +257,51 @@ export const sessionSlice = createSlice({
         };
       }
     },
+    resetSeat: (state) => {
+      state.seats = [];
+    },
+    setCheckInSelection: (state, { payload }) => {
+      state.checkInSelection = payload;
+    },
+    addSeatToCheckInSelection: (state, { payload }) => {
+      const hasItem = state?.checkInSelection[
+        payload.ticketIndex
+      ]?.checkInPaxRequestList.some(
+        (l) => l.passengerID === parseInt(payload.passengerNumber)
+      );
+
+      if (hasItem) {
+        return {
+          ...state,
+          checkInSelection: state.checkInSelection.map((item, index) => {
+            if (index === payload.ticketIndex) {
+              return {
+                ...item,
+                checkInPaxRequestList: item.checkInPaxRequestList.map((el) => {
+                  if (el.passengerID === parseInt(payload.passengerNumber)) {
+                    return {
+                      ...el,
+                      seatNo: payload.SeatDesignator,
+                    };
+                  }
+                  return el;
+                }),
+              };
+            }
+            return item;
+          }),
+        };
+      }
+    },
+    setSelectedPassengers: (state, { payload }) => {
+      return {
+        ...state,
+        selectedPassengers: state.selectedPassengers.concat(payload),
+      };
+    },
+    resetSelectedPassengers: (state) => {
+      state.selectedPassengers = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState); // THIS LINE
@@ -311,6 +354,11 @@ export const {
   setSessionStateLoading,
   setSessionStateResponse,
   setSeats,
+  resetSeat,
+  resetSelectedPassengers,
+  setCheckInSelection,
+  addSeatToCheckInSelection,
+  setSelectedPassengers,
 } = sessionSlice.actions;
 export const sessionSelector = (state) => state.session;
 export default sessionSlice.reducer;
@@ -375,7 +423,7 @@ export const setFlightRequest = (payload) => async (dispatch) => {
   // await dispatch(fetchFlightAvailability(payload));
 };
 
-export const fetchLowFareAvailability = (payload) => async (dispatch) => {
+export const _fetchLowFareAvailability = (payload) => async (dispatch) => {
   dispatch(setLowFareAvailabilityLoading(true));
 
   const { departureStation, arrivalStation, signature, currentDate } = payload;
@@ -430,15 +478,90 @@ export const fetchLowFareAvailability = (payload) => async (dispatch) => {
     const Response = await GetLowFareAvailability(requestPayload);
     await dispatch(setLowFareAvailabilityResponse(Response.data));
   } catch (err) {
-    notification.error({
-      message: "Error",
-      description: "Fetch Low Fares failed",
-    });
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Low Fares failed",
+    // });
   }
   dispatch(setLowFareAvailabilityLoading(false));
 };
 
-export const returnLowFareAvailability = (payload) => async (dispatch) => {
+export const fetchLowFareAvailability = (payload) => async (dispatch) => {
+  dispatch(setLowFareAvailabilityLoading(true));
+
+  const { departureStation, arrivalStation, signature, currentDate, ADT, CHD } =
+    payload;
+
+  const totalPaxCount = parseInt(ADT) + parseInt(CHD);
+
+  const requestPayload = {
+    signature: signature,
+    messageContractVersion: "",
+    enableExceptionStackTrace: true,
+    contractVersion: 0,
+    AvailabilityRequest: {
+      DepartureStation: departureStation,
+      ArrivalStation: arrivalStation,
+      beginDate: format(currentDate, "yyyy-MM-dd"),
+      beginDateSpecified: true,
+      endDate: format(addDays(currentDate, 180), "yyyy-MM-dd"),
+      endDateSpecified: true,
+      CarrierCode: "Q9",
+      FlightType: 5,
+      FlightTypeSpecified: true,
+      PaxCount: totalPaxCount,
+      PaxCountSpecified: true,
+      Dow: 10,
+      DowSpecified: true,
+      CurrencyCode: "NGN",
+      DisplayCurrencyCode: "NGN",
+      AvailabilityType: 0,
+      AvailabilityTypeSpecified: true,
+      MaximumConnectingFlights: 0,
+      MaximumConnectingFlightsSpecified: true,
+      AvailabilityFilter: 0,
+      AvailabilityFilterSpecified: true,
+      FareClassControl: 0,
+      MinimumFarePrice: 0,
+      MaximumFarePrice: 0,
+      SSRCollectionsMode: 0,
+      FareClassControlSpecified: true,
+      MinimumFarePriceSpecified: true,
+      MaximumFarePriceSpecified: true,
+      SSRCollectionsModeSpecified: true,
+      InboundOutbound: 0,
+      InboundOutboundSpecified: true,
+      NightsStay: 0,
+      NightsStaySpecified: true,
+      IncludeAllotmentsSpecified: true,
+      IncludeAllotments: false,
+      IncludeTaxesAndFees: true,
+      FareRuleFilter: 0,
+      LoyaltyFilter: 0,
+      IncludeTaxesAndFeesSpecified: true,
+      FareRuleFilterSpecified: true,
+      LoyaltyFilterSpecified: true,
+      ServiceBundleControl: 0,
+      BookingStatus: 0,
+      ServiceBundleControlSpecified: true,
+      BookingStatusSpecified: true,
+      taxAmount: 0,
+    },
+  };
+
+  try {
+    const Response = await GetLowFareAvailability(requestPayload);
+    await dispatch(setLowFareAvailabilityResponse(Response.data));
+  } catch (err) {
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Low Fares failed",
+    // });
+  }
+  dispatch(setLowFareAvailabilityLoading(false));
+};
+
+export const _returnLowFareAvailability = (payload) => async (dispatch) => {
   dispatch(setReturnFareAvailabilityLoading(true));
 
   const { departureStation, arrivalStation, signature, currentDate } = payload;
@@ -493,10 +616,83 @@ export const returnLowFareAvailability = (payload) => async (dispatch) => {
     const Response = await GetLowFareAvailability(requestPayload);
     await dispatch(setReturnFareAvailabilityResponse(Response.data));
   } catch (err) {
-    notification.error({
-      message: "Error",
-      description: "Fetch Return Low Fares failed",
-    });
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Return Low Fares failed",
+    // });
+  }
+  dispatch(setReturnFareAvailabilityLoading(false));
+};
+
+export const returnLowFareAvailability = (payload) => async (dispatch) => {
+  dispatch(setReturnFareAvailabilityLoading(true));
+
+  const { departureStation, arrivalStation, signature, currentDate, ADT, CHD } =
+    payload;
+  const totalPaxCount = parseInt(ADT) + parseInt(CHD);
+
+  const requestPayload = {
+    signature: signature,
+    messageContractVersion: "",
+    enableExceptionStackTrace: true,
+    contractVersion: 0,
+    AvailabilityRequest: {
+      DepartureStation: departureStation,
+      ArrivalStation: arrivalStation,
+      beginDate: format(currentDate, "yyyy-MM-dd"),
+      beginDateSpecified: true,
+      endDate: format(addDays(currentDate, 180), "yyyy-MM-dd"),
+      endDateSpecified: true,
+      CarrierCode: "Q9",
+      FlightType: 5,
+      FlightTypeSpecified: true,
+      PaxCount: totalPaxCount,
+      PaxCountSpecified: true,
+      Dow: 10,
+      DowSpecified: true,
+      CurrencyCode: "NGN",
+      DisplayCurrencyCode: "NGN",
+      AvailabilityType: 0,
+      AvailabilityTypeSpecified: true,
+      MaximumConnectingFlights: 0,
+      MaximumConnectingFlightsSpecified: true,
+      AvailabilityFilter: 0,
+      AvailabilityFilterSpecified: true,
+      FareClassControl: 0,
+      MinimumFarePrice: 0,
+      MaximumFarePrice: 0,
+      SSRCollectionsMode: 0,
+      FareClassControlSpecified: true,
+      MinimumFarePriceSpecified: true,
+      MaximumFarePriceSpecified: true,
+      SSRCollectionsModeSpecified: true,
+      InboundOutbound: 0,
+      InboundOutboundSpecified: true,
+      NightsStay: 0,
+      NightsStaySpecified: true,
+      IncludeAllotmentsSpecified: true,
+      IncludeAllotments: false,
+      IncludeTaxesAndFees: true,
+      FareRuleFilter: 0,
+      LoyaltyFilter: 0,
+      IncludeTaxesAndFeesSpecified: true,
+      FareRuleFilterSpecified: true,
+      LoyaltyFilterSpecified: true,
+      ServiceBundleControl: 0,
+      BookingStatus: 0,
+      ServiceBundleControlSpecified: true,
+      BookingStatusSpecified: true,
+      taxAmount: 0,
+    },
+  };
+  try {
+    const Response = await GetLowFareAvailability(requestPayload);
+    await dispatch(setReturnFareAvailabilityResponse(Response.data));
+  } catch (err) {
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Return Low Fares failed",
+    // });
   }
   dispatch(setReturnFareAvailabilityLoading(false));
 };
@@ -690,10 +886,10 @@ export const fetchFlightAvailability = (payload) => async (dispatch) => {
     errMsg &&
       errMsg.toLowerCase() === PROMO_ERROR.toLowerCase() &&
       dispatch(setPromoWidgetVisible(true));
-    notification.error({
-      message: "Error",
-      description: "Fetch Flights failed",
-    });
+    // notification.error({
+    //   message: "Error",
+    //   description: "Fetch Flights failed",
+    // });
   }
   dispatch(setFlightAvailabilityLoading(false));
 };
@@ -1482,6 +1678,48 @@ export const GetBookingCommit = () => async (dispatch, getState) => {
   dispatch(setBookingCommitLoading(false));
 };
 
+export const CommitBookingWithPNR = (pnr) => async (dispatch, getState) => {
+  dispatch(setBookingCommitLoading(true));
+  const currentState = getState().session;
+
+  const requestPayload = {
+    signature: currentState.signature,
+    messageContractVersion: "",
+    enableExceptionStackTrace: true,
+    contractVersion: 0,
+    bookingCommitRequestData: {
+      state: 2,
+      recordLocator: pnr,
+      paxCount: 0,
+      bookingID: 0,
+      bookingParentID: 0,
+      restrictionOverride: false,
+      changeHoldDateTime: false,
+      changeHoldDateTimeSpecified: false,
+      waiveNameChangeFee: false,
+      waiveNameChangeFeeSpecified: true,
+      waivePenaltyFee: false,
+      waivePenaltyFeeSpecified: true,
+      waiveSpoilageFee: false,
+      waiveSpoilageFeeSpecified: true,
+      distributeToContacts: true,
+      distributeToContactsSpecified: true,
+    },
+  };
+
+  try {
+    const Response = await BookingCommit(requestPayload);
+    await dispatch(setBookingCommitResponse(Response.data));
+    await dispatch(FetchStateFromServer());
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Get Booking failed",
+    });
+  }
+  dispatch(setBookingCommitLoading(false));
+};
+
 export const GetBookingDetails = () => async (dispatch, getState) => {
   dispatch(setBookingResponseLoading(true));
   const currentState = getState().session;
@@ -1523,33 +1761,37 @@ export const GetBookingDetailsWithPNR =
 
     dispatch(setBookingResponseLoading(true));
 
-    const requestPayload = {
-      header: {
-        signature: currentState?.signature,
-        messageContractVersion: "",
-        enableExceptionStackTrace: false,
-        contractVersion: 0,
-      },
-      getBookingRequestDto: {
-        getBookingRequestData: {
-          getBookingBy: 0,
-          getBookingBySpecified: true,
-          getByRecordLocator: {
-            recordLocator: payload.pnr,
+    if (payload.pnr) {
+      const requestPayload = {
+        header: {
+          signature: currentState?.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: false,
+          contractVersion: 0,
+        },
+        getBookingRequestDto: {
+          getBookingRequestData: {
+            getBookingBy: 0,
+            getBookingBySpecified: true,
+            getByRecordLocator: {
+              recordLocator: payload.pnr,
+            },
           },
         },
-      },
-    };
-    try {
-      const Response = await GetBooking(requestPayload);
-      await dispatch(setBookingResponse(Response.data));
-    } catch (err) {
-      // console.log("GetBooking Request error", err.response);
-      notification.error({
-        message: "Error",
-        description: "Get Booking Details failed",
-      });
+      };
+
+      // console.log("request payload is", requestPayload);
+      try {
+        const Response = await GetBooking(requestPayload);
+        await dispatch(setBookingResponse(Response.data));
+      } catch (err) {
+        notification.error({
+          message: "Error",
+          description: "Get Booking Details failed",
+        });
+      }
     }
+
     dispatch(setBookingResponseLoading(false));
   };
 
@@ -1754,6 +1996,7 @@ export const FetchStateFromServer = () => async (dispatch, getState) => {
     };
 
     const stateBooking = await GetBookingFromState(payload);
+    dispatch(setBookingState(stateBooking.data.BookingData));
     await dispatch(setSessionStateResponse(stateBooking.data));
   } catch (err) {
     notification.error({
@@ -1972,6 +2215,84 @@ export const retrieveSeatAvailability =
     dispatch(setSeatResponseLoading(false));
   };
 
+export const retrieveCheckinSeatAvailability =
+  (payload) => async (dispatch, getState) => {
+    dispatch(setSeatResponseLoading(true));
+    const currentState = getState().session;
+
+    const requestPayload = {
+      header: {
+        signature: currentState.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: false,
+        contractVersion: 0,
+      },
+      getSeatAvailabilityRequestDto: {
+        getSeatAvailabilityRequest: {
+          seatAvailabilityRequest: {
+            std: currentState?.bookingResponse?.Booking?.Journeys[
+              payload.ticketIndex
+            ].Segments[0].STD,
+            stdSpecified: true,
+            departureStation:
+              currentState.bookingResponse?.Booking?.Journeys[
+                payload.ticketIndex
+              ].Segments[0].DepartureStation,
+            arrivalStation:
+              currentState.bookingResponse?.Booking?.Journeys[
+                payload.ticketIndex
+              ].Segments[0].ArrivalStation,
+            includeSeatFees: true,
+            includeSeatFeesSpecified: false,
+            seatAssignmentMode: 2,
+            seatAssignmentModeSpecified: true,
+            flightNumber:
+              currentState.bookingResponse?.Booking?.Journeys[
+                payload.ticketIndex
+              ].Segments[0].FlightDesignator.FlightNumber,
+            carrierCode:
+              currentState.bookingResponse?.Booking?.Journeys[
+                payload.ticketIndex
+              ].Segments[0].FlightDesignator.CarrierCode,
+            compressProperties: false,
+            compressPropertiesSpecified: false,
+            enforceSeatGroupRestrictions: true,
+            enforceSeatGroupRestrictionsSpecified: false,
+            passengerIDs: [0, 1],
+            passengerNumbers: [0, 1],
+            seatGroup: 1,
+            seatGroupSpecified: false,
+            seatGroupSettings: [3],
+            includePropertyLookup: true,
+            includePropertyLookupSpecified: true,
+            overrideCarrierCode: "",
+            overrideFlightNumber: "",
+            overrideOpSuffix: "",
+            overrideSTD: "0001-01-01T00:00:00",
+            overrideSTDSpecified: false,
+            overrideDepartureStation: "",
+            overrideArrivalStation: "",
+            collectedCurrencyCode: "",
+            excludeEquipmentConfiguration: false,
+            excludeEquipmentConfigurationSpecified: true,
+            feePricingMode: 0,
+            feePricingModeSpecified: true,
+            opSuffix: "",
+          },
+        },
+      },
+    };
+    try {
+      const Response = await GetSeatAvailabilityForBooking(requestPayload);
+      await dispatch(
+        setSeatAvailabilityResponse(Response.data.SeatAvailabilityResponse)
+      );
+    } catch (err) {
+      console.log("Update passenger Request error", err.response);
+    }
+    dispatch(setSeatResponseLoading(false));
+  };
+
 export const startBookingCommit = (payload) => async (dispatch, getState) => {
   dispatch(setLoading(true));
   const currentState = getState().session;
@@ -2061,13 +2382,13 @@ export const tryAssignSeat = (payload) => async (dispatch, getState) => {
     await dispatch(
       setAssignSeatResponse(Response.data.BookingUpdateResponseData)
     );
-
-    await dispatch(
-      startBookingCommit({
-        recordLocator:
-          Response.data.BookingUpdateResponseData.Success.RecordLocator,
-      })
-    );
+    // TODO REMOVE Booking COMMIT
+    // await dispatch(
+    //   startBookingCommit({
+    //     recordLocator:
+    //       Response.data.BookingUpdateResponseData.Success.RecordLocator,
+    //   })
+    // );
   } catch (err) {
     console.error("Update passenger Request error", err.response.data);
     notification.error({
@@ -2092,102 +2413,22 @@ export const startCheckin = (payload) => async (dispatch, getState) => {
     checkInPassengersRequestDto: {
       checkInPassengersRequest: {
         checkInMultiplePassengersRequest: {
-          checkInMultiplePassengerRequestList: [
-            {
-              recordLocator:
-                currentState.bookingResponse?.Booking?.RecordLocator,
-              inventoryLegKey: {
-                carrierCode:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].FlightDesignator.CarrierCodes,
-                flightNumber:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].FlightDesignator.FlightNumber,
-                departureDate:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].STD,
-                departureDateSpecified: true,
-                departureStation:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].DepartureStation,
-                arrivalStation:
-                  currentState.bookingResponse?.Booking?.Journeys[
-                    payload.ticketIndex
-                  ].Segments[0].ArrivalStation,
-              },
-              liftStatus: 1,
-              liftStatusSpecified: true,
-              bySegment: false,
-              bySegmentSpecified: true,
-              checkSameDayReturn: false,
-              checkSameDayReturnSpecified: true,
-              skipSecurityChecks: false,
-              skipSecurityChecksSpecified: true,
-              seatRequired: false,
-              seatRequiredSpecified: true,
-              retrieveBoardingZone: false,
-              retrieveBoardingZoneSpecified: true,
-              allowPartialCheckIn: false,
-              allowPartialCheckInSpecified: true,
-              otherAirlineCheckin: false,
-              otherAirlineCheckinSpecified: true,
-              checkInDestination:
-                currentState.bookingResponse?.Booking?.Journeys[
-                  payload.ticketIndex
-                ].Segments[0].ArrivalStation,
-              returnDownlineSegments: true,
-              returnDownlineSegmentsSpecified: true,
-              inventoryLegKeyDepartureDateTime:
-                currentState.bookingResponse?.Booking?.Journeys[
-                  payload.ticketIndex
-                ].Segments[0].STD,
-              inventoryLegKeyDepartureDateTimeSpecified: true,
-              processDownlineIATCI: true,
-              processDownlineIATCISpecified: true,
-              checkInPaxRequestList: [
-                {
-                  name: {
-                    title: "MR",
-                    firstName: "Taiwo",
-                    lastName: "Aiyerin",
-                  },
-                  verifiedID: false,
-                  verifiedIDSpecified: true,
-                  passengerID: 0,
-                  passengerIDSpecified: true,
-                  processAPPS: false,
-                  processAPPSSpecified: true,
-                  appsTransitType: 0,
-                  appsTransitTypeSpecified: true,
-                },
-              ],
-            },
-          ],
+          checkInMultiplePassengerRequestList: [...payload],
         },
       },
     },
   };
 
   try {
-    const Response = await AssignSeats(requestPayload);
-    await dispatch(
-      setAssignSeatResponse(Response.data.BookingUpdateResponseData)
-    );
-
-    await dispatch(
-      startBookingCommit({
-        recordLocator:
-          Response.data.BookingUpdateResponseData.Success.RecordLocator,
-      })
-    );
+    const Response = await CheckInPassengers(requestPayload);
+    // await dispatch(
+    //   setAssignSeatResponse(Response.data.BookingUpdateResponseData)
+    // );
   } catch (err) {
     notification.error({
       message: "Error",
-      description: err.response.data.BookingUpdateResponseData.Error.ErrorText,
+      description:
+        "err.response.data.BookingUpdateResponseData.Error.ErrorText",
     });
   }
   dispatch(setLoading(false));
@@ -2233,3 +2474,22 @@ export const trySaveSeat = (payload) => async (dispatch, getState) => {
   // }
   dispatch(setLoading(false));
 };
+
+export const tryClearSeat = (payload) => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  await dispatch(resetSeat());
+  dispatch(setLoading(false));
+};
+
+export const saveCheckInSelection = (payload) => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  await dispatch(setCheckInSelection(payload));
+  dispatch(setLoading(false));
+};
+
+export const saveCheckInPassengerSelection =
+  (payload) => async (dispatch, getState) => {
+    dispatch(setLoading(true));
+    await dispatch(setSelectedPassengers(payload));
+    dispatch(setLoading(false));
+  };

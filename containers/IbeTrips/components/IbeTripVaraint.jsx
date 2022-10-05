@@ -62,42 +62,11 @@ const IbeTripVariant = ({
   );
 
   const handleBtnClick = (_fare) => {
-    //SellKey is Journey SellKey
     setSelected({
       ..._fare,
       sellKey,
     });
     setShow(true);
-
-    // if (flightParams?.isRoundTrip === 1) {
-    //   const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
-    //   const _cleanedFares = existingFares.filter((_item) => {
-    //     const _ruleBasis =
-    //       parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
-    //     return !_ruleBasis;
-    //   });
-
-    //   const _newFare = {
-    //     ..._fare,
-    //     sellKey,
-    //     schedueIndex,
-    //   };
-
-    //   const _newFares = [..._cleanedFares, _newFare];
-    //   dispatch(setSelectedSessionFare([..._newFares]));
-    //   setShow(true);
-    // } else {
-    //   dispatch(
-    //     setSelectedSessionFare([
-    //       {
-    //         ..._fare,
-    //         sellKey,
-    //         schedueIndex,
-    //       },
-    //     ])
-    //   );
-    //   setShow(true);
-    // }
   };
 
   const closePopUp = () => {
@@ -111,7 +80,7 @@ const IbeTripVariant = ({
 
   return (
     <Fragment>
-      <section className={`ibe__trip__variant ${fare_variant}`}>
+      <section className={`ibe__trip__variant ${fare_variant} `}>
         {!isLoading && (
           <div className="flex flex-col">
             <div className="type-header">
@@ -128,7 +97,7 @@ const IbeTripVariant = ({
                 )}
               </p>
             </div>
-            <ul className="mt-7 mb-10 px-8">
+            <ul className="mt-7 mb-10 md:px-8">
               {!featureLoading &&
                 productsFeatures?.data.product_services.map(
                   (feature, index) => (
@@ -136,7 +105,7 @@ const IbeTripVariant = ({
                       <figure className="w-[44px] h-[44px] bg-transparent rounded-full flex items-center justify-center">
                         <img src={feature.icon} alt="" />
                       </figure>
-                      <p className="text-black font-normal ml-4">
+                      <p className="text-black font-normal md:ml-4">
                         {feature.feature}
                       </p>
                     </li>

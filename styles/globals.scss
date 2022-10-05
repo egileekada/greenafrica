@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
-@import url('../assets/fonts/Cosmical/fonts.css');
-@import url('../assets/fonts/plus-jakarta-sans-v3-latin/font.css');
-@import 'antd/dist/antd.css';
-@import './loader.scss';
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap");
+@import url("../assets/fonts/Cosmical/fonts.css");
+@import url("../assets/fonts/plus-jakarta-sans-v3-latin/font.css");
+@import "antd/dist/antd.css";
+@import "./loader.scss";
 
 @tailwind base;
 @tailwind components;
@@ -12,6 +12,7 @@
   html,
   body {
     font-size: 14px;
+    font-family: Plus Jakarta Sans, system-ui, sans-serif;
   }
 }
 
@@ -62,8 +63,12 @@
     }
   }
 
+  .bg-normal {
+    background-color: rgba(158, 155, 191, 0.17);
+  }
+
   .ga__section {
-    @apply flex flex-wrap xlg:flex-nowrap w-full flex-grow-0 flex-shrink-0;
+    @apply md:flex flex-wrap xlg:flex-nowrap w-full flex-grow-0 flex-shrink-0;
 
     &.bg-normal {
       background-color: rgba(158, 155, 191, 0.17);
@@ -85,7 +90,7 @@
     }
 
     &__side {
-      @apply basis-full xlg:basis-[25%] bg-white px-8 py-8 flex-shrink-0;
+      @apply hidden xlg:flex xlg:flex-col basis-full xlg:basis-[25%] bg-white px-8 py-8 flex-shrink-0;
     }
   }
 
@@ -163,6 +168,10 @@
           }
         }
       }
+
+      &.checkin-services {
+        @apply border text-xs;
+      }
     }
   }
   // Button
@@ -199,7 +208,7 @@
     }
 
     input,
-    input[type='date'] {
+    input[type="date"] {
       @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
     }
 
@@ -251,7 +260,7 @@
 
     .phone-input {
       input,
-      input[type='date'] {
+      input[type="date"] {
         @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
       }
     }
@@ -315,12 +324,12 @@
         -o-transition: opacity 2s ease-in-out;
         transition: opacity 2s ease-in-out;
         opacity: 0;
-        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
         filter: alpha(opacity=0);
 
         &.activeText {
           opacity: 1;
-          -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)';
+          -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
           filter: alpha(opacity=1);
         }
       }
@@ -506,7 +515,7 @@
         @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full;
 
         &-item {
-          @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
+          @apply flex flex-col mr-12 basis-full md:basis-auto mb-6 md:mb-0;
 
           h5,
           h5 span {
@@ -523,7 +532,7 @@
             }
           }
           h6 {
-            @apply font-title font-medium text-xxs text-primary-main mb-[10px];
+            @apply font-title font-medium text-sm text-primary-main mb-[10px];
           }
         }
       }
@@ -546,7 +555,7 @@
     }
 
     p.tripCity {
-      @apply font-medium font-body text-xs lg:text-sm text-black text-left;
+      @apply font-normal font-body text-sm lg:text-base text-black text-left;
 
       &.right-text {
         @apply text-right;
@@ -625,7 +634,7 @@
 
     p.tripType,
     p.tripTime {
-      @apply text-primary-main text-xxs lg:text-sm font-body;
+      @apply text-primary-main text-xxs lg:text-[14px] font-body;
     }
   }
 
@@ -1053,7 +1062,8 @@
         }
 
         h6 {
-          @apply text-primary-main text-xs font-header font-bold;
+          // @apply text-primary-main text-xs font-header font-bold;
+          @apply text-primary-main text-sm font-body font-normal;
         }
       }
     }
@@ -1194,7 +1204,7 @@
       &.unavailable {
         @apply bg-[#F1F1F1];
         //TODO enable this effect
-        // pointer-events: none;
+        pointer-events: none;
       }
       &.group6 {
         @apply bg-[#F1F1F1];
@@ -1422,7 +1432,7 @@
 }
 
 .plane-seats {
-  background-image: url('./bg/cab.png');
+  background-image: url("./bg/cab.png");
   background-size: 35%;
   background-repeat: no-repeat;
   background-position-x: 50%;
@@ -1446,7 +1456,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -1519,7 +1529,7 @@ svg.primary-main {
 
 .react-date-picker__inputGroup {
   padding: 0px !important;
-  font-family: 'Plus Jakarta Sans';
+  font-family: "Plus Jakarta Sans";
 }
 
 .react-date-picker__button {
@@ -1546,7 +1556,7 @@ svg.primary-main {
   font-weight: 700 !important;
   font-size: 15px !important;
   padding-bottom: 0px !important;
-  font-family: 'Plus Jakarta Sans';
+  font-family: "Plus Jakarta Sans";
 }
 
 .react-calendar__month-view__days__day--weekend {
@@ -1591,18 +1601,18 @@ div[disabled] {
   background-color: #1eff5a;
 }
 
-[type='text']:focus,
-[type='email']:focus,
-[type='url']:focus,
-[type='password']:focus,
-[type='number']:focus,
-[type='date']:focus,
-[type='datetime-local']:focus,
-[type='month']:focus,
-[type='search']:focus,
-[type='tel']:focus,
-[type='time']:focus,
-[type='week']:focus,
+[type="text"]:focus,
+[type="email"]:focus,
+[type="url"]:focus,
+[type="password"]:focus,
+[type="number"]:focus,
+[type="date"]:focus,
+[type="datetime-local"]:focus,
+[type="month"]:focus,
+[type="search"]:focus,
+[type="tel"]:focus,
+[type="time"]:focus,
+[type="week"]:focus,
 [multiple]:focus,
 textarea:focus,
 select:focus {
@@ -1624,4 +1634,18 @@ select:focus {
       @apply text-primary-main;
     }
   }
+}
+
+button:disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
 }

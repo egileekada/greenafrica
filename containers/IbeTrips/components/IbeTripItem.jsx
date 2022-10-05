@@ -7,12 +7,16 @@ import IbeTripVariant from "./IbeTripVaraint";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import { useGetLocationsQuery } from "services/widgetApi.js";
+import { sessionSelector } from "redux/reducers/session";
+import { useSelector } from "react-redux";
 
 const IbeTripItem = ({ journey, schedueIndex }) => {
   const { data, isLoading } = useGetLocationsQuery();
 
   const [isVisible, setIsVisible] = useState(false);
   const [flightTime, setFlightTime] = useState(null);
+  const { selectedSessionJourney, selectedSessionFare } =
+    useSelector(sessionSelector);
 
   useEffect(() => {
     if (journey) {
@@ -48,11 +52,26 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
     return `${name} (${code})`;
   };
 
+  const itemFare =
+    selectedSessionFare &&
+    selectedSessionFare.filter(
+      (_fare) => parseInt(_fare?.schedueIndex) === parseInt(schedueIndex)
+    );
+
   return (
     <section className="flex flex-col mb-6">
-      <section className="ibe__trip__item">
+      <section className="ibe__trip__item relative">
+        {itemFare &&
+          itemFare?.length > 0 &&
+          journey?.JourneySellKey === itemFare[0]?.sellKey && (
+            <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute bottom-[12px] text-[8px]">
+              {parseInt(schedueIndex) === 0 ? "Go" : "Return"} Selected - g
+              {itemFare[0]?.RuleNumber}
+            </p>
+          )}
+
         {!isLoading && (
-          <div className="basis-full lg:basis-[70%] flex flex-col min-h-[54px] ">
+          <div className="basis-full lg:basis-[70%] flex flex-col min-h-[54px]relative ">
             <p className="tripType self-center underline underline-offset-4">
               {journey.Segments.map((_segment) => {
                 return (
@@ -100,8 +119,7 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
             </p>
           </div>
         )}
-
-        <div className="basis-full lg:basis-[30%] mt-4 lg:mt-0 flex justify-end items-center">
+        <div className="basis-full lg:basis-[30%] mt-4 lg:mt-0 flex justify-end items-center relative">
           {!isVisible ? (
             <button
               className="btn btn-primary w-full lg:w-[200px] flex items-center justify-center text-center group lg:ml-4"

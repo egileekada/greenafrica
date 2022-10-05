@@ -49,7 +49,8 @@ export const GetItineraryPrice = async (payload) => {
 };
 
 export const GetLowFareAvailability = async (payload) => {
-  let request = axios.post(`${BOOKING}GetLowFareTripAvailability`, payload);
+  // let request = axios.post(`${BOOKING}GetLowFareTripAvailability`, payload);
+  let request = axios.post(`${BOOKING}GetLowFareAvailability`, payload);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;
@@ -59,6 +60,15 @@ export const GetLowFareAvailability = async (payload) => {
 
 export const BookingCommit = async (payload) => {
   let request = axios.post(`${BOOKING}BookingCommit`, payload);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
+export const CommitBookingWithoutPayment = async (payload) => {
+  let request = axios.post(`${BOOKING}BookingCommitWithoutPayment`, payload);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;
@@ -111,6 +121,15 @@ export const ResellSSR = async (payload) => {
   });
 };
 
+export const CancelSSR = async (payload) => {
+  let request = axios.post(`${BOOKING}Cancel`, payload);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
 export const AssignSeats = async (payload) => {
   let request = axios.post(`${BOOKING}AssignSeats`, payload);
   return request.then((response) => {
@@ -150,6 +169,16 @@ export const AddPaymentToBooking = async (payload) => {
 
 export const GetSeatAvailabilityForBooking = async (payload) => {
   let request = axios.post(`${BOOKING}GetSeatAvailability`, payload);
+
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
+export const CheckInPassengers = async (payload) => {
+  let request = axios.post(`Operation/CheckInPassengers`, payload);
 
   return request.then((response) => {
     if (response.status === 200) {

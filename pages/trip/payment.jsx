@@ -1,29 +1,48 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
 import { useDispatch, useSelector } from "react-redux";
+import { usePaystackPayment } from "react-paystack";
+import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import {
   GetBookingCommit,
   sessionSelector,
   FetchStateFromServer,
 } from "redux/reducers/session";
-import {
-  paymentSelector,
-  FetchPaymentGateways,
-  InitializeGatewayPayment,
-} from "redux/reducers/payment";
+import { paymentSelector, FetchPaymentGateways } from "redux/reducers/payment";
 
 import { retrieveBookingFromState } from "redux/reducers/session";
-import Spinner from "components/Spinner";
+import SkeletonLoader from "components/SkeletonLoader";
 import { notification } from "antd";
 import { useRouter } from "next/router";
+import { useInitiatePaymentMutation } from "services/widgetApi";
 import LogoIcon from "assets/svgs/logo.svg";
 
 const TripPayment = () => {
   const router = useRouter();
+  const [config, setConfig] = useState({
+    reference: "",
+    email: "",
+    amount: null,
+    publicKey: "",
+    text: "",
+  });
+
+  const [initPayment] = useInitiatePaymentMutation();
+
+  const initializePayment = usePaystackPayment(config);
+  const handleFlutterPayment = useFlutterwave(config);
+
+  const onSuccess = (reference) => {
+    window.location.assign(reference?.redirecturl);
+  };
+
+  const onClose = () => {
+    console.log("closed");
+  };
 
   const dispatch = useDispatch();
   const [totalFare, setTotalFare] = useState();
@@ -34,6 +53,7 @@ const TripPayment = () => {
     sessionContact,
     sellSSRResponse,
     bookingState,
+    signature,
   } = useSelector(sessionSelector);
 
   const { gatewaysLoading, gatewaysResponse, paymentLoading } =
@@ -46,14 +66,12 @@ const TripPayment = () => {
           bookingState?.Passengers.length < 1 ||
           bookingState?.Journeys.length < 1
         ) {
-          // window.location.assign("https://dev-website.gadevenv.com/");
           notification.error({
             message: "Error",
             description: "No Passenger and journey in state",
           });
         }
       } else {
-        // window.location.assign("https://dev-website.gadevenv.com/");
         notification.error({
           message: "Error",
           description: "No Booking in state",
@@ -109,8 +127,32 @@ const TripPayment = () => {
           ?.RecordLocator,
         gateway_type_id: selected,
         payment_origin: "booking",
+        signature,
       };
-      dispatch(InitializeGatewayPayment(payload));
+
+      const gateway = gatewaysResponse?.data?.items.filter(
+        (gate) => gate.id === selected
+      );
+
+      await initPayment(payload)
+        .unwrap()
+        .then((data) => {
+          setConfig({
+            ...config,
+            tx_ref: data?.data?.reference,
+            amount: gateway[0]?.code === "PS" ? totalFare * 100 : totalFare,
+            email: bookingState?.BookingContacts[0].EmailAddress,
+            publicKey: gateway[0].public_key,
+            public_key: gateway[0].public_key,
+            reference: data?.data?.reference,
+            currency: "NGN",
+            customer: {
+              email: bookingState?.BookingContacts[0].EmailAddress,
+              name: sessionContact?.firstName,
+            },
+          });
+        })
+        .catch((error) => console.log(error));
     } else {
       notification.error({
         message: "Error",
@@ -119,9 +161,43 @@ const TripPayment = () => {
     }
   };
 
+  // flw_ref
+
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
   };
+
+  const triggerPaystack = () => {
+    const gateway = gatewaysResponse?.data?.items.filter(
+      (gate) => gate.id === selected
+    );
+
+    if (gateway[0]?.code === "PS") {
+      initializePayment(onSuccess, onClose);
+    } else {
+      handleFlutterPayment({
+        callback: (response) => {
+          console.log(response);
+          window.location.assign(
+            `https://dev-ibe.gadevenv.com/trip/confirm-payment?reference=${response.tx_ref}`
+          );
+          closePaymentModal(); // this will close the modal programmatically
+        },
+        onClose: () => {},
+      });
+    }
+  };
+
+  let storageRef = useRef(true);
+
+  useEffect(() => {
+    if (!storageRef.current) {
+      triggerPaystack();
+    }
+    return () => {
+      storageRef.current = false;
+    };
+  }, [config]);
 
   return (
     <BaseLayout>
@@ -133,10 +209,10 @@ const TripPayment = () => {
         </button>
       </nav>
       <section className="w-full">
-        {bookingCommitLoading && <p>Saving booking details...</p>}
+        {/* {bookingCommitLoading && <p>Saving booking details...</p>} */}
         {gatewaysLoading ? (
           <section className="py-10 pl-12">
-            <Spinner />
+            <SkeletonLoader />
           </section>
         ) : (
           <section className="ga__section">

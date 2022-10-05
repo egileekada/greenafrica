@@ -6,8 +6,6 @@ import IbeSidebar from "containers/IbeSidebar";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import ArrowTo from "assets/svgs/arrowto.svg";
 import { Checkbox } from "antd";
-import BackIcon from "assets/svgs/seats/arrowleft.svg";
-import ToTop from "assets/svgs/toTop.svg";
 import AeroIcon from "assets/svgs/aerotwo.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
@@ -29,17 +27,13 @@ import {
   useGetLocationsQuery,
 } from "services/widgetApi.js";
 
-const TripView = () => {
+const TripView = (props) => {
   const dispatch = useDispatch();
   const { data, isLoading } = useGetLocationsQuery();
-  const {
-    data: products,
-    isLoading: productLoading,
-  } = useGetProductsQuery();
+  const { data: products, isLoading: productLoading } = useGetProductsQuery();
   const [roundTripEnabled, setRoundTripEnabled] = useState(false);
   const [checked, setChecked] = useState(false);
   const {
-    flightParams,
     sellFlightLoading,
     selectedSessionFare,
     selectedSessionJourney,
@@ -53,6 +47,19 @@ const TripView = () => {
       behavior: "smooth",
     });
   };
+
+  useEffect(() => {
+    if (router.isReady) {
+      async function initSession() {
+        if (props?.accept) {
+          if (parseInt(props?.accept) === 1) {
+            setChecked(true);
+          }
+        }
+      }
+      initSession();
+    }
+  }, [router.isReady]);
 
   useEffect(() => {
     ScrollToTop();
@@ -125,17 +132,10 @@ const TripView = () => {
   };
 
   const ChangeFlight = async () => {
-    if (roundTripEnabled) {
-      const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&return=${flightParams?.returnDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}&round=1`;
-      router.push(query);
-    } else {
-      const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
-      router.push(query);
-    }
+    window.location.assign("https://dev-website.gadevenv.com/");
   };
 
   const resolveAbbreviation = (abrreviation) => {
-
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation
     );
@@ -145,12 +145,6 @@ const TripView = () => {
 
   return (
     <BaseLayout>
-      {/* <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">
-        <button className="flex items-center">
-          <BackIcon />
-          <span className="ml-6 text-white text-xs">TRIP DETAILS</span>
-        </button>
-      </nav> */}
       <nav className="top__bar logo-holder">
         <button onClick={ChangeFlight}>
           <figure className="cursor-pointer">
@@ -191,101 +185,107 @@ const TripView = () => {
                   return (
                     <>
                       <section className="flex flex-col">
-                        {!isLoading && _journey?.Segments.map((_segment) => {
-                          return (
-                            <>
-                              <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
-                                YOUR TRIP TO{" "}
-                                {_segment && _segment?.DepartureStation}
-                              </h2>
-                              {/* TripHeader */}
-                              <section className="ibe__flight__info__destination">
-                                <p>
-                                  {" "}
-                                  {_segment &&
-                                    resolveAbbreviation(
-                                      _segment?.DepartureStation
-                                    )}
-                                </p>
-                                <figure>
-                                  <ArrowTo />
-                                </figure>
-                                <p>
-                                  {" "}
+                        {!isLoading &&
+                          _journey?.Segments.map((_segment) => {
+                            return (
+                              <>
+                                <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
+                                  YOUR TRIP TO{" "}
                                   {_segment &&
                                     resolveAbbreviation(
                                       _segment?.ArrivalStation
                                     )}
-                                </p>
-
-                                <figure className="flightCircle">
-                                  <FlightIcon />
-                                </figure>
-                              </section>
-                              {/* TripHeader*/}
-
-                              {/* TripInfo */}
-                              <section className="ibe__trip__item tripView">
-                                <div className="basis-full flex  flex-col min-h-[54px] ">
-                                  <p className="tripType self-center underline underline-offset-4">
-                                    Direct Flight
-                                  </p>
-                                  <div className="flex justify-between">
-                                    <div className="flex flex-col">
-                                      <h5 className="tripType">
-                                        {" "}
-                                        {_segment &&
-                                          format(
-                                            new Date(_segment?.STD),
-                                            "HH:mm"
-                                          )}
-                                      </h5>
-                                      <p className="tripCity">
-                                        {" "}
-                                        {_segment &&
-                                          resolveAbbreviation(
-                                            _segment?.DepartureStation
-                                          )}
-                                      </p>
-                                    </div>
-                                    <div className="tripIconPath">
-                                      <DottedLine className="dotted-svg" />
-                                      <AeroIcon className="aero-svg" />
-                                      <DottedLine className="dotted-svg" />
-                                    </div>
-                                    <div className="flex flex-col items-end">
-                                      <h5 className="tripType right-text font-bold">
-                                        {" "}
-                                        {_segment &&
-                                          format(
-                                            new Date(_segment?.STA),
-                                            "HH:mm"
-                                          )}
-                                      </h5>
-                                      <p className="tripCity right-text">
-                                        {" "}
-                                        {_segment &&
-                                          resolveAbbreviation(
-                                            _segment?.ArrivalStation
-                                          )}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <p className="tripTime self-center">
+                                </h2>
+                                {/* TripHeader */}
+                                <section className="ibe__flight__info__destination">
+                                  <p>
+                                    {" "}
                                     {_segment &&
-                                      timeConvert(
-                                        differenceInMinutes(
-                                          new Date(_segment?.STA),
-                                          new Date(_segment?.STD)
-                                        )
+                                      resolveAbbreviation(
+                                        _segment?.DepartureStation
                                       )}
                                   </p>
-                                </div>
-                              </section>
-                              {/* TripInfo */}
-                            </>
-                          );
-                        })}
+                                  <figure>
+                                    <ArrowTo />
+                                  </figure>
+                                  <p>
+                                    {" "}
+                                    {_segment &&
+                                      resolveAbbreviation(
+                                        _segment?.ArrivalStation
+                                      )}
+                                  </p>
+
+                                  <figure className="flightCircle">
+                                    <FlightIcon />
+                                  </figure>
+                                </section>
+                                {/* TripHeader*/}
+
+                                {/* TripInfo */}
+                                <section className="ibe__trip__item tripView">
+                                  <div className="basis-full flex  flex-col min-h-[54px] ">
+                                    <p className="tripType self-center underline underline-offset-4">
+                                      {_segment?.FlightDesignator?.CarrierCode}
+                                      &nbsp;
+                                      {_segment?.FlightDesignator?.FlightNumber}
+                                    </p>
+                                    <div className="flex justify-between">
+                                      <div className="flex flex-col">
+                                        <h5 className="tripType">
+                                          {" "}
+                                          {_segment &&
+                                            format(
+                                              new Date(_segment?.STD),
+                                              "HH:mm"
+                                            )}
+                                        </h5>
+                                        <p className="tripCity">
+                                          {" "}
+                                          {_segment &&
+                                            resolveAbbreviation(
+                                              _segment?.DepartureStation
+                                            )}
+                                        </p>
+                                      </div>
+                                      <div className="tripIconPath">
+                                        <DottedLine className="dotted-svg" />
+                                        <AeroIcon className="aero-svg" />
+                                        <DottedLine className="dotted-svg" />
+                                      </div>
+                                      <div className="flex flex-col items-end">
+                                        <h5 className="tripType right-text font-bold">
+                                          {" "}
+                                          {_segment &&
+                                            format(
+                                              new Date(_segment?.STA),
+                                              "HH:mm"
+                                            )}
+                                        </h5>
+                                        <p className="tripCity right-text">
+                                          {" "}
+                                          {_segment &&
+                                            resolveAbbreviation(
+                                              _segment?.ArrivalStation
+                                            )}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <p className="tripTime self-center">
+                                      {_segment &&
+                                        timeConvert(
+                                          differenceInMinutes(
+                                            new Date(_segment?.STA),
+                                            new Date(_segment?.STD)
+                                          )
+                                        )}
+                                    </p>
+                                  </div>
+                                </section>
+                                {/* TripInfo */}
+                              </>
+                            );
+                          })}
 
                         {/* TripPackage */}
                         <section className="ibe__trip__package flex justify-between">
@@ -384,14 +384,14 @@ const TripView = () => {
                 <div className="flex flex-col my-6">
                   <div className="flex mb-6">
                     <div className="flex items-center checkbox-copy mb-6">
-                      <Checkbox onChange={onChange}>
+                      <Checkbox onChange={onChange} checked={checked}>
                         <label className="check-label"></label>
                       </Checkbox>
                     </div>
 
                     <p>
                       I have read and accept the airline’s &nbsp;
-                      <Link href="/terms">
+                      <Link href="/terms-and-conditons">
                         <a className="text-primary-main hover:text-green underline font-display">
                           Fare Rules and Terms and Conditions.
                         </a>
@@ -432,3 +432,11 @@ const TripView = () => {
 };
 
 export default TripView;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      accept: context.query?.accept ? context.query?.accept : 0,
+    },
+  };
+}

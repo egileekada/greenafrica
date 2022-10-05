@@ -8,6 +8,9 @@ import IbeSidebar from "containers/IbeSidebar";
 import Popup from "components/Popup";
 import Seatslegend from "containers/Seats/SeatPopUp";
 import SeatWrapper from "containers/Seats/SeatWrapper";
+import LogoIcon from "assets/svgs/logo.svg";
+
+import InfoIcon from "assets/svgs/seats/info.svg";
 import { useGetLocationsQuery } from "services/widgetApi.js";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -28,8 +31,14 @@ const SeatSelection = () => {
   const [ticketIndex, setTicketIndex] = useState(0);
   const [showEmergency, setEmergency] = useState(false);
 
-  const { signature, isLoading, bookingCommitResponse, bookingState, seats } =
-    useSelector(sessionSelector);
+  const {
+    signature,
+    isLoading,
+    bookingCommitResponse,
+    bookingState,
+    seats,
+    assignSeatResponse,
+  } = useSelector(sessionSelector);
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -44,12 +53,12 @@ const SeatSelection = () => {
 
   useEffect(() => {
     async function redirectToSSR() {
-      if (bookingCommitResponse) {
+      if (assignSeatResponse) {
         router.push("/trip/payment");
       }
     }
     redirectToSSR();
-  }, [bookingCommitResponse]);
+  }, [assignSeatResponse]);
 
   useEffect(() => {
     async function getAvailability() {
@@ -64,17 +73,31 @@ const SeatSelection = () => {
     dispatch(tryAssignSeat({ ticketIndex }));
   };
 
+  const goBackToHome = async () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation
     );
 
-    return `${name} (${code})`;
+    return (
+      <>
+        {name} <span className="hidden md:flex ml-1"> ({code})</span>
+      </>
+    );
   };
 
   return (
     <>
       <BaseLayout>
+        <nav className="top__bar logo-holder">
+          <button onClick={goBackToHome}>
+            <figure className="cursor-pointer">
+              <LogoIcon />
+            </figure>
+          </button>
+        </nav>
         <section className="w-full checkin">
           <section className="ga__section bg-normal">
             <div className="ga__section__main standalone">
@@ -84,7 +107,7 @@ const SeatSelection = () => {
                 </h2>
               </div>
 
-              <section className="flex flex-col bg-white pb-24 pt-5 px-8 rounded-lg">
+              <section className="flex flex-col bg-white pb-24 pt-5 px-3 md:px-8 rounded-lg">
                 <Tabs defaultActiveKey="1" tabBarStyle={{ color: "#47FF5A" }}>
                   {bookingState?.Journeys.map((journey, index) => (
                     <TabPane
@@ -122,7 +145,12 @@ const SeatSelection = () => {
                       }
                       key={index + 1}
                     >
-                      <SeatWrapper ticketIndex={index} key={index + 2} />
+                      <SeatWrapper
+                        setShow={setShow}
+                        ticketIndex={index}
+                        key={index + 2}
+                        productClass={journey?.Segments[0].Fares[0].RuleNumber}
+                      />
                     </TabPane>
                   ))}
                 </Tabs>

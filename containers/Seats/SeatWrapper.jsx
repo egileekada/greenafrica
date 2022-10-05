@@ -12,7 +12,7 @@ import {
 import ProfileIcon from "assets/svgs/profile.svg";
 import InfoIcon from "assets/svgs/seats/info.svg";
 
-const SeatWrapper = ({ ticketIndex }) => {
+const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
   const dispatch = useDispatch();
   const {
     signature,
@@ -23,7 +23,6 @@ const SeatWrapper = ({ ticketIndex }) => {
     sessionPassengers,
     bookingState,
   } = useSelector(sessionSelector);
-
   const [key] = useState(Math.random());
   const [pasengerState, setPassengerState] = useState(null);
   const [passengerNumber, setpassengerNumber] = useState(null);
@@ -131,6 +130,7 @@ const SeatWrapper = ({ ticketIndex }) => {
               setSelectedSeat={setSelectedSeat}
               selectedSeat={selectedSeat}
               ticketIndex={ticketIndex}
+              productClass={productClass}
             />
           )}
         </div>

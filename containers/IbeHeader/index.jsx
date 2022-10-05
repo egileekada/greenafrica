@@ -25,23 +25,17 @@ const IbeHeader = () => {
   const [fareDateList, setFareDateList] = useState([]); //formatted Response
   //Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  // const [length, setLength] = useState(width > 1200 ? 7 : 3);
   const [currentFDateList, setCurrFDates] = useState([]);
   const [recurrent, setRecurrent] = useState(false);
   const [loaded, setLoaded] = useState(true);
 
   const {
-    availabilityResponse,
     lowFareAvailabilityLoading,
     lowFareAvailabilityResponse,
     flightParams,
   } = useSelector(sessionSelector);
 
-  // useEffect(() => {
-  //   setLength(width > 1200 ? 7 : 3);
-  // }, [width]);
-
-  const _length = width > 1200 ? 7 : 3;
+  const _length = window.innerWidth > 1200 ? 7 : 3;
 
   var indexOfLastPost = currentPage * length;
   var indexOfFirstPost = indexOfLastPost - length;
@@ -49,25 +43,31 @@ const IbeHeader = () => {
   useEffect(() => {
     if (
       lowFareAvailabilityResponse &&
-      lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
+      lowFareAvailabilityResponse?.GetAvailabilityResponse
     ) {
       const _dateList =
-        lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
-          ?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList;
+        lowFareAvailabilityResponse?.GetAvailabilityResponse?.Schedule;
 
       setDateList([..._dateList]);
 
       const _fareDateList = [];
       _dateList.map((_dateListItem, _dl) => {
+        const totalServiceCharge =
+          _dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.PaxFares[0].ServiceCharges.reduce(
+            (accumulator, object) => {
+              return accumulator + object.Amount;
+            },
+            0
+          );
+
         let newObj = {};
-        newObj.id = newObj.date = _dateListItem?.DepartureDate;
-        newObj.date = newObj.date = _dateListItem?.DepartureDate;
-        newObj.cost =
-          parseInt(_dateListItem?.FareAmount) +
-          parseInt(_dateListItem?.TaxesAndFeesAmount);
+        newObj.id = `${_dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.FareSellKey}${_dl}`;
+        newObj.date = _dateListItem?.DepartureDate;
+        newObj.cost = totalServiceCharge;
         _fareDateList.push(newObj);
       });
       setFareDateList([..._fareDateList]);
+      // console.log("list", _fareDateList);
 
       if (flightParams?.recurrent) {
         const _selectedDate = new Date(flightParams?.beginDate);
@@ -110,6 +110,8 @@ const IbeHeader = () => {
       }
 
       setLoaded(false);
+    } else {
+      console.log("mot avvvv");
     }
   }, [lowFareAvailabilityResponse]);
 
@@ -197,7 +199,9 @@ const IbeHeader = () => {
       <section className="ibe__flight__info__dates">
         {lowFareAvailabilityLoading ? (
           <section className="flex items-center w-full">
-            <Spinner />
+            <div className="mx-auto">
+              <Spinner />
+            </div>
           </section>
         ) : (
           <section className="flex items-center w-full">
@@ -207,7 +211,7 @@ const IbeHeader = () => {
             >
               <CaretLeft />
             </button>
-            <section className="flex items-center w-full mx-4 ">
+            <section className="flex items-center w-full mx-0 md:mx-4 ">
               {currentFDateList?.length > 0 ? (
                 currentFDateList.map((_dateItem, i) => {
                   return (
@@ -230,7 +234,7 @@ const IbeHeader = () => {
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
-                          <h6 className="text-center">
+                          <h6 className="text-center md:!text-[10px]">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (
@@ -244,7 +248,11 @@ const IbeHeader = () => {
                   );
                 })
               ) : loaded ? (
-                <Spinner />
+                <>
+                  <div className="mx-auto">
+                    <Spinner />
+                  </div>
+                </>
               ) : (
                 <p className="errorText text-lg"> No date available</p>
               )}

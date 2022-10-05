@@ -16,7 +16,8 @@ import {
   FetchSSRAvailabilityForBooking,
   retrieveBookingFromState,
 } from "redux/reducers/session";
-import Spinner from "components/Spinner";
+import SkeletonLoader from "components/SkeletonLoader";
+import LogoIcon from "assets/svgs/logo.svg";
 
 // TO DO
 // Create sessionReturnSSRs
@@ -76,7 +77,6 @@ const PassengerDetails = () => {
       if (sessionReturnSSRs && sessionReturnSSRs.length > 0) {
         setReturnSSRs(sessionReturnSSRs);
       }
-      // dispatch(CancelSSRs(sessionSSRs));
       dispatch(CancelSSRs());
     }
     checkSessionSSRs();
@@ -129,8 +129,19 @@ const PassengerDetails = () => {
     retrieveBooking();
   }, []);
 
+  const GO_BACK = async () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   return (
     <BaseLayout>
+      <nav className="top__bar logo-holder">
+        <button onClick={GO_BACK}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
       <section className="w-full">
         <section className="ga__section">
           <div className="ga__section__main">
@@ -140,7 +151,7 @@ const PassengerDetails = () => {
 
             {SSRAvailabilityLoading ? (
               <section className="flex flex-col">
-                <Spinner />
+                <SkeletonLoader />
               </section>
             ) : SSRAvailabilityResponse ? (
               <>
@@ -181,7 +192,8 @@ const PassengerDetails = () => {
                       {sellSSRLoading ? "Saving..." : "Continue"}
                     </button>
                   </section>
-                )}
+                  )}
+                  
               </>
             ) : (
               <p className="errorText text-2xl">No SSR Available</p>

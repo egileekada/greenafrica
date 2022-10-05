@@ -7,12 +7,17 @@ import Spinner from "components/Spinner";
 import useDeviceSize from "hooks/useWindowSize";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { sessionSelector, setFlightRequest } from "redux/reducers/session";
+import {
+  sessionSelector,
+  fetchLowFareAvailability,
+  setFlightRequest,
+  fetchFlightAvailability,
+} from "redux/reducers/session";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 import { format } from "date-fns";
-import addDays from "date-fns/addDays";
-import subDays from "date-fns/subDays";
 
 const IbeHeader = () => {
+  const { data, isLoading } = useGetLocationsQuery();
   const dispatch = useDispatch();
   const [width] = useDeviceSize();
 
@@ -20,9 +25,9 @@ const IbeHeader = () => {
   const [fareDateList, setFareDateList] = useState([]); //formatted Response
   //Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [length, setLength] = useState(width > 1200 ? 7 : 3);
   const [currentFDateList, setCurrFDates] = useState([]);
-  const [pageNumbers, setPageNumbers] = useState([]);
+  const [recurrent, setRecurrent] = useState(false);
+  const [loaded, setLoaded] = useState(true);
 
   const {
     lowFareAvailabilityLoading,
@@ -30,11 +35,8 @@ const IbeHeader = () => {
     flightParams,
   } = useSelector(sessionSelector);
 
-  useEffect(() => {
-    setLength(width > 1200 ? 7 : 3);
-  }, [width]);
+  const _length = window.innerWidth > 1200 ? 7 : 3;
 
-  // Get current posts
   var indexOfLastPost = currentPage * length;
   var indexOfFirstPost = indexOfLastPost - length;
 
@@ -46,16 +48,10 @@ const IbeHeader = () => {
       const _dateList =
         lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
           ?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList;
+
       setDateList([..._dateList]);
 
-      const _pageNumbers = [];
-      for (let i = 1; i <= Math.ceil(_dateList.length / length); i++) {
-        _pageNumbers.push(i);
-      }
-      setPageNumbers([..._pageNumbers]);
-
       const _fareDateList = [];
-
       _dateList.map((_dateListItem, _dl) => {
         let newObj = {};
         newObj.id = newObj.date = _dateListItem?.DepartureDate;
@@ -67,50 +63,83 @@ const IbeHeader = () => {
       });
       setFareDateList([..._fareDateList]);
 
-      const selectedDate = new Date(flightParams?.beginDate);
-      let dateIndex = _fareDateList.findIndex((object) => {
-        return (
-          format(new Date(object.date), "yyyy-MM-dd") ===
-          format(new Date(selectedDate), "yyyy-MM-dd")
-        );
-      });
-      console.log("dateIndex", dateIndex);
+      if (flightParams?.recurrent) {
+        const _selectedDate = new Date(flightParams?.beginDate);
+        let _dateIndex = _fareDateList.findIndex((object) => {
+          return (
+            format(new Date(object.date), "yyyy-MM-dd") ===
+            format(new Date(_selectedDate), "yyyy-MM-dd")
+          );
+        });
 
-      if (dateIndex > -1) {
-        const defaultPage = Math.ceil((dateIndex + 1) / length);
-        console.log("defaultPage", defaultPage);
-
-        paginate(defaultPage);
+        if (_dateIndex > -1) {
+          let initLength = window.innerWidth > 1200 ? 7 : 3;
+          let _pageNumber = Math.ceil((_dateIndex + 1) / initLength);
+          let _indexOfLastPost = _pageNumber * initLength;
+          let _indexOfFirstPost = _indexOfLastPost - initLength;
+          setCurrFDates(
+            _fareDateList.slice(_indexOfFirstPost, _indexOfLastPost)
+          );
+          setCurrentPage(_pageNumber);
+        }
       } else {
-        paginate(1);
+        if (recurrent) {
+          paginate(1, _fareDateList);
+        } else {
+          const selectedDate = new Date(flightParams?.beginDate);
+          let dateIndex = _fareDateList.findIndex((object) => {
+            return (
+              format(new Date(object.date), "yyyy-MM-dd") ===
+              format(new Date(selectedDate), "yyyy-MM-dd")
+            );
+          });
+
+          if (dateIndex > -1) {
+            const defaultPage = Math.ceil((dateIndex + 1) / _length);
+            paginate(defaultPage, _fareDateList);
+          } else {
+            paginate(1, _fareDateList);
+          }
+        }
       }
+
+      setLoaded(false);
     }
   }, [lowFareAvailabilityResponse]);
 
-  const paginate = (pageNumber) => {
-    indexOfLastPost = pageNumber * length;
-    indexOfFirstPost = indexOfLastPost - length;
-    setCurrFDates(fareDateList.slice(indexOfFirstPost, indexOfLastPost));
+  const paginate = (pageNumber, _fares) => {
+    indexOfLastPost = pageNumber * _length;
+    indexOfFirstPost = indexOfLastPost - _length;
+    setCurrFDates(_fares.slice(indexOfFirstPost, indexOfLastPost));
     setCurrentPage(pageNumber);
   };
 
   const onNext = () => {
     const nextPage = currentPage + 1;
-    indexOfLastPost = nextPage * length;
-    indexOfFirstPost = indexOfLastPost - length;
+    indexOfLastPost = nextPage * _length;
+    indexOfFirstPost = indexOfLastPost - _length;
     const newFareList = fareDateList.slice(indexOfFirstPost, indexOfLastPost);
 
     if (newFareList.length > 0) {
       setCurrFDates(fareDateList.slice(indexOfFirstPost, indexOfLastPost));
       setCurrentPage(nextPage);
+    } else {
+      const lastDate = new Date(fareDateList[fareDateList.length - 1]?.date);
+
+      const newFlightRequest = {
+        ...flightParams,
+        currentDate: lastDate,
+      };
+      setRecurrent(true);
+      dispatch(fetchLowFareAvailability(newFlightRequest));
     }
   };
 
   const onPrev = () => {
     if (currentPage > 1) {
       const prevPage = currentPage - 1;
-      indexOfLastPost = prevPage * length;
-      indexOfFirstPost = indexOfLastPost - length;
+      indexOfLastPost = prevPage * _length;
+      indexOfFirstPost = indexOfLastPost - _length;
       const newFareList = fareDateList.slice(indexOfFirstPost, indexOfLastPost);
 
       if (newFareList.length > 0) {
@@ -125,24 +154,40 @@ const IbeHeader = () => {
       ...flightParams,
       beginDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
       endDate: format(new Date(_dateItem?.date), "yyyy-MM-dd"),
+      recurrent: true,
     };
     dispatch(setFlightRequest(flightRequest));
+    dispatch(fetchFlightAvailability(flightRequest));
+  };
+
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
   };
 
   return (
     <section className="ibe__flight__info">
-      <section className="ibe__flight__info__destination">
-        <p className="mx-4">{flightParams?.departureStation}</p>
-        <figure>
-          <ArrowTo />
-        </figure>
-        <p className="mx-4">{flightParams?.arrivalStation}</p>
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>} */}
+      {!isLoading && (
+        <section className="ibe__flight__info__destination">
+          <p className="mx-4">
+            {resolveAbbreviation(flightParams?.departureStation)}
+          </p>
+          <figure>
+            <ArrowTo />
+          </figure>
+          <p className="mx-4">
+            {resolveAbbreviation(flightParams?.arrivalStation)}
+          </p>
 
-        <figure className="flightCircle">
-          <FlightIcon />
-        </figure>
-      </section>
+          <figure className="flightCircle">
+            <FlightIcon />
+          </figure>
+        </section>
+      )}
+
       <section className="ibe__flight__info__dates">
         {lowFareAvailabilityLoading ? (
           <section className="flex items-center w-full">
@@ -192,8 +237,10 @@ const IbeHeader = () => {
                     </div>
                   );
                 })
+              ) : loaded ? (
+                <Spinner />
               ) : (
-                <p className="errorText text-lg">No date available</p>
+                <p className="errorText text-lg"> No date available</p>
               )}
             </section>
 

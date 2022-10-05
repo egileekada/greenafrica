@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import BaseLayout from "layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
 import { paymentSelector, VerifyGatewayPayment } from "redux/reducers/payment";
-import Spinner from "components/Spinner";
+import SkeletonLoader from "components/SkeletonLoader";
 import { useRouter } from "next/router";
 import { sessionSelector, startSession } from "redux/reducers/session";
 import LogoIcon from "assets/svgs/logo.svg";
@@ -71,7 +71,8 @@ const ConfirmTripPayment = () => {
       <section className="w-full">
         {verifyPaymentLoading ? (
           <section className="py-32 lg:py-12 px-12">
-            <Spinner />
+            <SkeletonLoader />
+            <SkeletonLoader />
           </section>
         ) : (
           <section className="py-32 lg:py-12 px-12">

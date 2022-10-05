@@ -142,7 +142,7 @@ const Fare = ({ isRoundTrip }) => {
                               <h6>
                                 {" "}
                                 {bookingResponse?.Booking?.Passengers.length}x
-                                Passenget Service Charge:
+                                Passenger Service Charge:
                               </h6>
                             </div>
                             <div>
@@ -172,7 +172,7 @@ const Fare = ({ isRoundTrip }) => {
                               <h6>
                                 {" "}
                                 {bookingResponse?.Booking?.Passengers.length}x
-                                Fuel Subcharge:
+                                Fuel Surcharge:
                               </h6>
                             </div>
                             <div>

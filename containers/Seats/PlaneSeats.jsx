@@ -31,6 +31,7 @@ const PlaneSeats = forwardRef(
       selectedSeat,
       setSelectedSeat,
       ticketIndex,
+      productClass,
     },
     ref
   ) => {
@@ -113,7 +114,7 @@ const PlaneSeats = forwardRef(
     const tidyData = (data) => {
       const newArray = [];
 
-      for (let i = 0; i < data.length; i += 4) {
+      for (let i = 0; i < data?.length; i += 4) {
         newArray.push(data.slice(i, i + 4));
       }
 
@@ -204,7 +205,7 @@ const PlaneSeats = forwardRef(
           </p>
 
           <p className="font-semibold mb-2 text-base">
-            {mapSeatGroup(seatGroup)}
+            {productClass === "SAVR" && mapSeatGroup(seatGroup)}
           </p>
           {propertylist.filter((list) => list.TypeCode === "INFANT").length >
             0 && <p className="font-light">Customer with infant</p>}

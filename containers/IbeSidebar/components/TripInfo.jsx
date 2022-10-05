@@ -4,8 +4,6 @@ import { useState } from "react";
 import CheckIcon from "assets/svgs/done.svg";
 import OneIcon from "assets/svgs/one.svg";
 import FlightIcon from "assets/svgs/plane-oultine.svg";
-import CostIcon from "assets/svgs/cost.svg";
-import DiscountIcon from "assets/svgs/discount.svg";
 import CaretLeft from "assets/svgs/sidebar/caretleft.svg";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
@@ -13,7 +11,7 @@ import { format } from "date-fns";
 
 const TripInfo = () => {
   const [showContent, setShow] = useState(false);
-  const { flightParams, sessionStateResponse } = useSelector(sessionSelector);
+  const { sessionStateResponse } = useSelector(sessionSelector);
 
   const EmptyTrip = () => {
     return (
