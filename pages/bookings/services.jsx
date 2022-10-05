@@ -124,10 +124,7 @@ const PassengerDetails = () => {
 
                 setSSRs(_BookingSSRs);
                 dispatch(setNewBookingSSRs(_BookingSSRs));
-                dispatch(setBookingSessionSSRs(_BookingSSRs));
               } else {
-                //extract differnce from store
-
                 // perform deault actionStatusCode
                 const _GOSSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
                 const _RETURNSSRs = _TRIPS[1]?.Segments[0]?.PaxSSRs;
@@ -190,10 +187,6 @@ const PassengerDetails = () => {
                 dispatch(setNewBookingSSRs(_BookingSessionSSRs));
                 dispatch(setNewBookingReturnSSRs(_BookingSessionReturnSSRs));
 
-                dispatch(setBookingSessionSSRs(_BookingSessionSSRs));
-                dispatch(
-                  setBookingSessionReturnSSRs(_BookingSessionReturnSSRs)
-                );
                 // perform different action
               }
             } else {
@@ -417,7 +410,6 @@ const PassengerDetails = () => {
   };
 
   const sendSellRequest = async (payload, returnPayload = []) => {
-    
     dispatch(setGoDifference(payload));
     dispatch(setReturnDifference(returnPayload));
 
