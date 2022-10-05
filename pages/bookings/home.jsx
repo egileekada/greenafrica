@@ -115,10 +115,10 @@ const ManageBookings = (props) => {
         </button>
         <button
           onClick={handleServices}
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
-          // className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
-          //   checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
-          // }`}
+          // className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+            checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+          }`}
         >
           Manage Services
         </button>
