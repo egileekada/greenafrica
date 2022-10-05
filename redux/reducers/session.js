@@ -1040,6 +1040,7 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
 
   try {
     const sellResponse = await BookingSell(requestPayload);
+      // await dispatch(setSellResponse(sellResponse.data));
     if (INFANT_COUNT > 0) {
       dispatch(setSellInfantLoading(true));
       try {
@@ -1062,7 +1063,6 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
       description: "Sell Request failed",
     });
   }
-
   dispatch(setSellFlightLoading(false));
 };
 
