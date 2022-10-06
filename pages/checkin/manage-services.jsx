@@ -279,7 +279,7 @@ const PassengerDetails = () => {
       saveNewCheckInSSRs(segmentSSRRequests)
         .unwrap()
         .then((data) => {
-          // console.log("rrrrr success", data);
+          console.log("rrrrr success", data);
           router.push("/checkin/seat-selection");
         })
         .catch((error) => {
