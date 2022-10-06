@@ -389,6 +389,19 @@ const CheckInDetails = (props) => {
                                 )}
                               </>
                             )}
+                            {Journey?.Segments[0]?.PaxSegments[pIndex]
+                              ?.LiftStatus === 1 && (
+                              <>
+                                <div className="flex flex-wrap md:flex-nowrap items-center justify-between ml-auto">
+                                  <button className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0">
+                                    Download Boarding Pass
+                                  </button>
+                                  <button className="btn btn-outline  basis-full md:basis-auto">
+                                    Email Boarding Pass
+                                  </button>
+                                </div>
+                              </>
+                            )}
                           </div>
                         </section>
                       )
