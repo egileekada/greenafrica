@@ -805,7 +805,8 @@
       }
 
       h6 {
-        @apply text-primary-main text-xs font-body;
+        // @apply text-primary-main text-xs font-body;
+        @apply text-primary-main text-xs font-body font-bold;
       }
     }
   }

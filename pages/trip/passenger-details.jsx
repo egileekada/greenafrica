@@ -162,7 +162,6 @@ const PassengerDetails = () => {
           <div className="ga__section__main">
             <h2 className="text-primary-main font-extrabold text-2xl mb-8">
               Additional Services{" "}
-              {sessionStateResponse?.BookingData?.Journeys.length}
             </h2>
 
             {SSRAvailabilityLoading ? (
