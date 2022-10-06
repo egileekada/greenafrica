@@ -10,7 +10,7 @@ import { startSession, retrieveBooking } from "redux/reducers/session";
 import { resetStore } from "redux/store";
 
 const validationSchema = Yup.object().shape({
-  pnr: Yup.string().required("Required"),
+  pnr: Yup.string().length(6).required("Required"),
   email: Yup.string()
     .email("Must be a valid email address")
     .required("Required"),
@@ -129,8 +129,8 @@ const CheckIn = () => {
                       className={`${
                         formik.touched.pnr && formik.errors.pnr
                           ? "border border-[#de0150]"
-                          : ""
-                      } relative rounded-md z-0 border border-2 border-gray-300 pt-4 px-4`}
+                          : "border-gray-300"
+                      } relative rounded-md z-0 border border-2 pt-4 px-4`}
                     >
                       <input
                         type="text"
@@ -157,8 +157,8 @@ const CheckIn = () => {
                       className={`${
                         formik.touched.email && formik.errors.email
                           ? "border border-[#de0150]"
-                          : ""
-                      } relative rounded-md z-0 border border-2 border-gray-300 pt-4 px-4`}
+                          : "border-gray-300"
+                      } relative rounded-md z-0 border border-2 pt-4 px-4`}
                     >
                       <input
                         type="email"
