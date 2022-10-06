@@ -310,13 +310,15 @@ const IbeTripPopup = ({
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>15 kg (extra ₦500/kg)</p>
+                      <p>15 kg </p>
+                      <p>(Extra ₦500/kg)</p>
                     </div>
                     <div className="benefits__popup__row__item border-b">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>20 kg (extra ₦500/kg)</p>
+                      <p>20 kg</p>
+                      <p>(Extra ₦500/kg)</p>
                     </div>
                   </div>
                   {/* Seat Selection */}

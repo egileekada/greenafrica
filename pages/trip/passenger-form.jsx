@@ -18,12 +18,16 @@ import PassengerFormItem from "containers/PassengerForm/PassengerFormItem";
 import LogoIcon from "assets/svgs/logo.svg";
 import { useGetSalutationsQuery } from "services/widgetApi.js";
 
+import IntlTelInput from "react-intl-tel-input";
+import "react-intl-tel-input/dist/main.css";
+
 const PassengerForm = () => {
   const dispatch = useDispatch();
   const { data, isLoading } = useGetSalutationsQuery();
   const [totalPassengerCount, setCount] = useState(0);
   const [errorIds, setErrorIds] = useState([]);
   const [passengers, setPassengers] = useState([]);
+  const [touched, setTouched] = useState(false);
   const {
     passengersResponse,
     contactsResponse,
@@ -246,12 +250,13 @@ const PassengerForm = () => {
                         />
                       );
                     })}
-
                   {/* Contact Details */}
                   <div className="passenger__form__box">
                     <h3 className="text-[#8F8CA4] font-header text-xxs mb-6">
                       CONTACT INFORMATION
                     </h3>
+
+                    <p>{JSON.stringify(formik.values)}</p>
 
                     <div
                       className={`flex items-center checkbox-copy mb-6  ${
@@ -328,18 +333,71 @@ const PassengerForm = () => {
                       <div className="phone-group flex-grow mr-0 md:mr-4">
                         <label>PHONE NUMBER</label>
                         <div className="flex">
-                          <div className="phone-select">
+                          {/* <div className="phone-select">
                             <select
                               name="c_code"
                               {...formik.getFieldProps("c_code")}
                             >
                               <option value="+234">+234</option>
+                              <option value="+229">+234</option>
+                              <option value="+63">+234</option>
+                              <option value="+63">+234</option>
                             </select>
                             <div className="select-icon">
                               <SelectIcon />
                             </div>
-                          </div>
-                          <div className="phone-input">
+                          </div> */}
+                          <IntlTelInput
+                            onPhoneNumberBlur={() => {
+                              setTouched(true);
+                              if (formik.values.c_phone.length < 1) {
+                                formik.setFieldError(
+                                  "c_phone",
+                                  "Phone number is required"
+                                );
+                              }
+                            }}
+                            onSelectFlag={(e, country) => {
+                              formik.setFieldValue(
+                                "c_code",
+                                `+${country?.dialCode}`
+                              );
+                            }}
+                            onPhoneNumberChange={(e, fullnumber, numObj) => {
+                              let num = fullnumber;
+                              let code = numObj?.dialCode;
+                              // setTouched(true);
+
+                              formik.setFieldValue("c_code", `+${code}`);
+
+                              if (num.length > 0) {
+                                const regex =
+                                  /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
+
+                                const _test = regex.test(num.toString());
+                                if (_test) {
+                                  formik.setFieldValue("c_phone", `${num}`);
+                                } else {
+                                  formik.setFieldValue(
+                                    "c_phone",
+                                    formik.values.c_phone
+                                  );
+                                  formik.setFieldError(
+                                    "c_phone",
+                                    "Invalid Phone Number"
+                                  );
+                                  return false;
+                                }
+                              } else {
+                                formik.setFieldValue("c_phone", "");
+                              }
+                            }}
+                            preferredCountries={["ng", "bn"]}
+                            inputClassName="w-full"
+                            value={formik.values.c_phone}
+                          />
+
+                          {/* <div className="phone-input">
                             <input
                               type="tel"
                               pattern="[0-9]*"
@@ -361,9 +419,16 @@ const PassengerForm = () => {
                                 }
                               }}
                             />
-                          </div>
+                          </div> */}
                         </div>
-                        {formik.touched.c_phone && formik.errors.c_phone ? (
+                        {/* {formik.touched.c_phone && formik.errors.c_phone ? (
+                          <p className="errorText mt-2">
+                            {formik.errors.c_phone}
+                          </p>
+                        ) : null} */}
+                        {touched &&
+                        formik.errors.c_phone &&
+                        formik.errors.c_phone?.length > 0 ? (
                           <p className="errorText mt-2">
                             {formik.errors.c_phone}
                           </p>
@@ -449,7 +514,7 @@ const PassengerDetailsSchema = Yup.object().shape({
   c_phone: Yup.number()
     .typeError("Please Input a valid phone number")
     .required("Phone is Required")
-    .test("len", "Must be a minimum 11 characters", (val) => {
+    .test("len", "Must be a minimum 10 characters", (val) => {
       if (val) return val.toString().length >= 10;
     }),
 });

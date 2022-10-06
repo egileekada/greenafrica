@@ -100,10 +100,10 @@ const ManageBookings = (props) => {
   const PageCTA = () => {
     return (
       <section
-        // className={`flex flex-wrap md:flex-nowrap mx-6 ${
-        //   !checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
-        // }`}
-        className={`flex flex-wrap md:flex-nowrap mx-6`}
+        className={`flex flex-wrap md:flex-nowrap mx-6 ${
+          checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+        }`}
+        // className={`flex flex-wrap md:flex-nowrap mx-6`}
       >
         <button
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
