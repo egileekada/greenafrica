@@ -29,6 +29,7 @@ const TripPayment = () => {
     amount: null,
     publicKey: "",
     text: "",
+    payment_options: "",
   });
 
   const [initPayment] = useInitiatePaymentMutation();

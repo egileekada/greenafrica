@@ -31,6 +31,7 @@ const CheckinPayment = () => {
     amount: null,
     publicKey: "",
     text: "",
+    payment_options: "",
   });
   const initializePayment = usePaystackPayment(config);
   const handleFlutterPayment = useFlutterwave(config);

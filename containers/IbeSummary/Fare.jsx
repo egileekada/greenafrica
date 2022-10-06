@@ -12,6 +12,8 @@ const Fare = ({ isRoundTrip }) => {
       <h2 className="trip-title mb-3">FARE BREAKDOWN</h2>
       <div className="flex flex-col">
         {bookingResponse?.Booking?.Journeys?.map((_journey, _journeyIndex) => {
+          const _seat = _journey?.Segments[0].PaxSeats?.length;
+
           return (
             <>
               {_journey.Segments.map((_segment) => {
@@ -48,6 +50,7 @@ const Fare = ({ isRoundTrip }) => {
                   INFT: 0,
                   SEAT: 0,
                 };
+
                 _segment.PaxSSRs?.map((_segSSR) => {
                   _SSRsCount[_segSSR?.FeeCode] = _segment.PaxSSRs?.filter(
                     (_segCode) => {
@@ -185,7 +188,6 @@ const Fare = ({ isRoundTrip }) => {
                               </h6>
                             </div>
                           </div>
-
                           {parseInt(_SSRsCount?.INFT) > 0 && (
                             <div className="trip__summary__row subrow">
                               <div className="flex items-center">
@@ -238,12 +240,25 @@ const Fare = ({ isRoundTrip }) => {
                               </div>
                             </div>
                           )}
-                          {_SSRCount?.SEAT && (
+                          {/* {_SSRCount?.SEAT && (
                             <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
                                   {_SSRCount?.SEAT}x&nbsp;Seat
                                   {_SSRCount?.SEAT > 1 ? "s" : ""}
+                                </h6>
+                              </div>
+                              <div>
+                                <h6> ₦{_SSRSum?.SEAT.toLocaleString()}</h6>
+                              </div>
+                            </div>
+                          )} */}
+                          {_seat && (
+                            <div className="trip__summary__row">
+                              <div className="flex items-center">
+                                <h6>
+                                  {_seat}x&nbsp;Seat
+                                  {_seat > 1 ? "s" : ""}
                                 </h6>
                               </div>
                               <div>
