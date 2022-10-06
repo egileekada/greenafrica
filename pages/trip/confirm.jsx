@@ -58,8 +58,6 @@ const TripConfirm = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
   };
 
- 
-
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation

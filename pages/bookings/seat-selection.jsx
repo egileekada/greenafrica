@@ -10,6 +10,8 @@ import Popup from "components/Popup";
 import Seatslegend from "./Seats/SeatPopUp";
 
 import { useSelector, useDispatch } from "react-redux";
+import LogoIcon from "assets/svgs/logo.svg";
+
 
 import {
   sessionSelector,
@@ -79,6 +81,10 @@ const SeatSelection = () => {
     dispatch(setLoading(false));
   };
 
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   useEffect(() => {
     async function retrieveState() {
       dispatch(tryClearSeat());
@@ -89,7 +95,14 @@ const SeatSelection = () => {
   return (
     <>
       <BaseLayout>
-        <section className="w-full checkin">
+        <nav className="top__bar logo-holder">
+          <button onClick={goBackToHome}>
+            <figure className="cursor-pointer">
+              <LogoIcon />
+            </figure>
+          </button>
+        </nav>
+        <section className="w-full checkin pt-20 lg:pt-0">
           <section className="ga__section bg-normal">
             <div className="ga__section__main standalone">
               <div className="mb-8">

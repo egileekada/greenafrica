@@ -21,6 +21,7 @@ import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import { setManageBookingPnr } from "redux/reducers/booking";
 import { useGetLocationsQuery } from "services/widgetApi.js";
 import PageFares from "./components/PageFares";
+import LogoIcon from "assets/svgs/logo.svg";
 
 const ManageBookings = (props) => {
   const router = useRouter();
@@ -362,6 +363,10 @@ const ManageBookings = (props) => {
     });
   };
 
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   if (!props.pnr) {
     router.push("/bookings");
   }
@@ -387,9 +392,18 @@ const ManageBookings = (props) => {
         </nav>
       ) : null} */}
       <BaseLayout>
+        <nav className="top__bar logo-holder">
+          <button onClick={goBackToHome}>
+            <figure className="cursor-pointer">
+              <LogoIcon />
+            </figure>
+          </button>
+        </nav>
         <section className="w-full checkin">
           {bookingResponseLoading ? (
             <div className="px-12 py-12">
+              <SkeletonLoader />
+              <SkeletonLoader />
               <SkeletonLoader />
             </div>
           ) : (
