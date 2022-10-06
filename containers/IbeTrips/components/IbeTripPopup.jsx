@@ -124,9 +124,9 @@ const IbeTripPopup = ({
 
       const _newJourneys = [..._cleanedJourneys, _newJourney];
       dispatch(setSelectedSessionJourney([..._newJourneys]));
-      document
-        .getElementById("returnContainer")
-        .scrollIntoView({ behavior: "smooth" });
+      // document
+      //   .getElementById("returnContainer")
+      //   .scrollIntoView({ behavior: "smooth" });
       closePopUp();
       setIsVisible(false);
     } else {
