@@ -15,12 +15,16 @@ import IbeAdbar from "containers/IbeAdbar";
 import ReactToPrint from "react-to-print";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
-import { useGetLocationsQuery } from "services/widgetApi.js";
+import {
+  useGetLocationsQuery,
+  useGetProductsQuery,
+} from "services/widgetApi.js";
 import SkeletonLoader from "components/SkeletonLoader";
 
 const TripConfirm = () => {
   const router = useRouter();
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
+  const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   let componentRef = useRef();
   const dispatch = useDispatch();
   // const [segmentInfo, setSegmentInfo] = useState(null);
@@ -58,14 +62,19 @@ const TripConfirm = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
   };
 
- 
-
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation
     );
 
     return `${name} (${code})`;
+  };
+
+  const fare_name = (value) => {
+    const [{ name }] = products?.data?.items.filter(
+      (product) => product.code === value
+    );
+    return `${name}`;
   };
 
   const WelcomeNote = () => {
@@ -127,7 +136,11 @@ const TripConfirm = () => {
       <>
         {bookingResponse?.Booking?.Journeys.map((_journey, _journeyIndex) => {
           return (
-            <section className="basis-full md:basis-[48%]">
+            <section className="basis-full md:basis-[48%] relative">
+              <p className="bg-primary-main text-green text-xs py-1 px-4 rounded-[4px] absolute left-6 top-11">
+                {!productsLoading &&
+                  fare_name(_journey?.Segments[0].Fares[0].ProductClass)}
+              </p>
               {_journey?.Segments.map((_segment) => {
                 return (
                   <p className="text-primary-main text-sm font-body font-normal mb-4">
