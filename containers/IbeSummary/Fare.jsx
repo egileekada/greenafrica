@@ -284,8 +284,7 @@ const Fare = ({ isRoundTrip }) => {
           <div>
             <h6>
               {" "}
-              ₦
-              {bookingResponse?.Booking?.Payments[0]?.PaymentAmount.toLocaleString()}
+              ₦ {bookingResponse?.Booking?.Payments[0]?.PaymentAmount.toLocaleString()}
             </h6>
           </div>
         </div>

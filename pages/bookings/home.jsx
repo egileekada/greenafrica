@@ -19,6 +19,7 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import { setManageBookingPnr } from "redux/reducers/booking";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 import PageFares from "./components/PageFares";
 
 const ManageBookings = (props) => {
@@ -29,6 +30,7 @@ const ManageBookings = (props) => {
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
   const { verifyManageBookingResponse } = useSelector(paymentSelector);
+  const { data, isLoading: locationLoading } = useGetLocationsQuery();
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -270,6 +272,14 @@ const ManageBookings = (props) => {
     router.push("/bookings/services");
   };
 
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
+  };
+
   const SingleJourneyItem = ({ journey, journeyIndex }) => {
     return journey?.Segments.map((_segment) => {
       return (
@@ -303,7 +313,11 @@ const ManageBookings = (props) => {
                     {" "}
                     {format(new Date(_segment?.STD), "HH:mm")}
                   </h5>
-                  <p className="tripCity"> {_segment?.DepartureStation}</p>
+                  <p className="tripCity">
+                    {" "}
+                    {_segment?.DepartureStation &&
+                      resolveAbbreviation(_segment?.DepartureStation)}
+                  </p>
                 </div>
                 <div className="tripIconPath">
                   <DottedLine className="dotted-svg" />
@@ -317,7 +331,8 @@ const ManageBookings = (props) => {
                   </h5>
                   <p className="tripCity right-text">
                     {" "}
-                    {_segment?.ArrivalStation}
+                    {_segment?.ArrivalStation &&
+                      resolveAbbreviation(_segment?.ArrivalStation)}
                   </p>
                 </div>
               </div>

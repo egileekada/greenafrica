@@ -399,6 +399,8 @@ const IbeTripPopup = ({
               </section>
             </section>
             <section className="w-full bg-white rounded-xl flex flex-col  lg:hidden p-8">
+              <h4 className="text-black font-bold text-xl mb-6">Upgrade your fare and enjoy more benefits</h4>
+
               <div className="mobile__benefits__item">
                 <p>Our Recommendation</p>
                 <h5>gSaver</h5>
@@ -427,7 +429,6 @@ const IbeTripPopup = ({
               </div>
 
               <div className="mobile__benefits__item">
-                <h4>Upgrade your fare and enjoy more benefits</h4>
                 {/* <p>You selected:</p> */}
                 <h5>gClassic</h5>
                 <ul>
