@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useFindBookingMutation } from "services/bookingApi";
 import { startSession, retrieveBooking } from "redux/reducers/session";
 import { resetStore } from "redux/store";
+import LogoIcon from "assets/svgs/logo.svg";
 
 const validationSchema = Yup.object().shape({
   pnr: Yup.string().required("Required"),
@@ -60,9 +61,20 @@ const ManageBooking = () => {
     },
   });
 
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   return (
     <BaseLayout>
-      <section className="w-full px-3.5 py-10 lg:fit-x-bleed">
+      <nav className="top__bar logo-holder">
+        <button onClick={goBackToHome}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
+      <section className="w-full px-3.5 pt-32 lg:py-10 lg:fit-x-bleed">
         <div className="container mx-auto mb-10">
           <h1 className="text-primary-main text-2xl mb-4">Manage My Booking</h1>
           <p>

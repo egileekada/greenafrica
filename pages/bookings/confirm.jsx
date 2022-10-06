@@ -16,6 +16,7 @@ import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import ConfrimPageFares from "./components/ConfrimPageFares";
 import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
+import LogoIcon from "assets/svgs/logo.svg";
 
 const ConfirmManageBooking = () => {
   const router = useRouter();
@@ -235,6 +236,10 @@ const ConfirmManageBooking = () => {
     router.push("/bookings/services");
   };
 
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   const SingleJourneyItem = ({ journey, journeyIndex }) => {
     return journey?.Segments.map((_segment) => {
       return (
@@ -354,7 +359,14 @@ const ConfirmManageBooking = () => {
         </nav>
       )}
       <BaseLayout>
-        <section className="w-full checkin">
+        <nav className="top__bar logo-holder">
+          <button onClick={goBackToHome}>
+            <figure className="cursor-pointer">
+              <LogoIcon />
+            </figure>
+          </button>
+        </nav>
+        <section className="w-full checkin pt-4 lg:pt-0">
           {sessionStateLoading ? (
             <div className="px-12 py-12">
               <SkeletonLoader />

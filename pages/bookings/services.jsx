@@ -27,6 +27,8 @@ import {
 } from "utils/helpers";
 import { useResellSSRMutation } from "services/bookingApi";
 import { notification } from "antd";
+import LogoIcon from "assets/svgs/logo.svg";
+
 
 const PassengerDetails = () => {
   const router = useRouter();
@@ -501,9 +503,21 @@ const PassengerDetails = () => {
       });
   };
 
+   const goBackToHome = () => {
+     window.location.assign("https://dev-website.gadevenv.com/");
+   };
+
+
   return (
     <BaseLayout>
-      <section className="w-full">
+      <nav className="top__bar logo-holder">
+        <button onClick={goBackToHome}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
+      <section className="w-full pt-20 lg:pt-0">
         <section className="ga__section bg-normal">
           <div className="ga__section__main standalone">
             {bookingResponseLoading || SSRAvailabilityLoading ? (
