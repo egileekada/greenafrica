@@ -133,8 +133,8 @@ const PassengerDetailsItem = ({
             </div>
             <section className="flex flex-col special__needs mb-4">
               <div className="flex flex-col mt-">
-                <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-2">
-                  SPECIAL ASSISTANCE
+                <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-4">
+                  SPECIAL ASSISTANCE <span className="italic">(Please let us know if you will require any special assistance at the airport)</span>
                 </h6>
 
                 {/* //TODO I don't understand the logic here yet */}
