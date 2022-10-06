@@ -71,7 +71,7 @@ const ManageUpdateItenary = () => {
         <section className="ga__section bg-normal">
           <div className="ga__section__main standalone">
             <h2 className="text-primary-main font-extrabold text-2xl mb-4 text-center">
-              UPDATE ITINERARY 
+              UPDATE ITINERARY
             </h2>
 
             <div className="flex flex-col mb-8">
@@ -81,6 +81,8 @@ const ManageUpdateItenary = () => {
             <section className="flex flex-col  rounded-xl pb-12">
               {manageFlightAvailabilityLoading ? (
                 <div className="px-12 py-12">
+                  <SkeletonLoader />
+                  <SkeletonLoader />
                   <SkeletonLoader />
                 </div>
               ) : (

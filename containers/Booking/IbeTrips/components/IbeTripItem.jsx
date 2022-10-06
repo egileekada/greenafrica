@@ -9,10 +9,12 @@ import { timeConvert } from "utils/common";
 
 import { useSelector } from "react-redux";
 import { bookingSelector } from "redux/reducers/booking";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 
 const IbeTripItem = ({ journey, schedueIndex }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [flightTime, setFlightTime] = useState(null);
+  const { data, isLoading: locationLoading } = useGetLocationsQuery();
 
   const { goTrip, returnTrip } = useSelector(bookingSelector);
 
@@ -42,6 +44,14 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
       0
     );
 
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
+  };
+
   return (
     <section className="flex flex-col mb-6">
       <section className="ibe__trip__item relative">
@@ -62,9 +72,13 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
               <h5 className="tripType">
                 {flightTime && format(new Date(flightTime?.STD), "HH:mm")}
               </h5>
+
               <p className="tripCity">
-                {flightTime && flightTime?.DepartureStation}
+                {flightTime &&
+                  !locationLoading &&
+                  resolveAbbreviation(flightTime?.DepartureStation)}
               </p>
+
               {/* <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3">
                 selected
               </p> */}
@@ -79,7 +93,9 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
                 {flightTime && format(new Date(flightTime?.STA), "HH:mm")}
               </h5>
               <p className="tripCity right-text">
-                {flightTime && flightTime?.ArrivalStation}
+                {flightTime &&
+                  !locationLoading &&
+                  resolveAbbreviation(flightTime?.ArrivalStation)}{" "}
               </p>
             </div>
           </div>

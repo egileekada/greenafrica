@@ -292,7 +292,11 @@ const ManageBookings = (props) => {
             })}
 
             <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
-              <p className="tripType self-center">Direct Flight</p>
+              <p className="tripType self-center">
+                {" "}
+                {_segment?.FlightDesignator?.CarrierCode}{" "}
+                {_segment?.FlightDesignator?.FlightNumber}
+              </p>
               <div className="flex justify-between">
                 <div className="flex flex-col">
                   <h5 className="tripType">
@@ -328,7 +332,7 @@ const ManageBookings = (props) => {
               </p>
             </div>
 
-            <div className="trip-details">
+            {/* <div className="trip-details">
               <div className="trip-details-item">
                 <h6>FLIGHT NUMBER</h6>
                 <h5>
@@ -336,7 +340,7 @@ const ManageBookings = (props) => {
                   {_segment?.FlightDesignator?.FlightNumber}
                 </h5>
               </div>
-            </div>
+            </div> */}
           </section>
         </>
       );
@@ -392,10 +396,10 @@ const ManageBookings = (props) => {
                       <h2 className="text-black font-bold text-2xl mb-2">
                         Booking
                       </h2>
-                      <p>
+                      {/* <p>
                         Kindly confirm that the information below is correct
                         before checking in
-                      </p>
+                      </p> */}
                     </>
                   ) : null}
                 </div>

@@ -72,14 +72,14 @@ const PageFares = () => {
 
                             <div className="ibe__sidebar__row">
                               <div className="flex items-center">
-                                <h6>
+                                <span className="text-sm text-primary-main">
                                   {bookingResponse?.Booking?.Passengers.length}x
                                   Passenger
                                   {bookingResponse?.Booking?.Passengers.length >
                                   1
                                     ? "s"
                                     : ""}{" "}
-                                </h6>
+                                </span>
                               </div>
                               <div></div>
                             </div>
@@ -120,6 +120,13 @@ const PageFares = () => {
                                   }
                                 );
 
+                              const ChangeTax =
+                                _fare.PaxFares[0].ServiceCharges.filter(
+                                  (_charge) => {
+                                    return _charge.ChargeCode === "CHG";
+                                  }
+                                );
+
                               return (
                                 <>
                                   <div className="trip__summary__row subrow">
@@ -146,6 +153,23 @@ const PageFares = () => {
                                       </h6>
                                     </div>
                                   </div>
+
+                                  {/* <div className="trip__summary__row subrow">
+                                    <div className="flex items-center">
+                                      <h6>
+                                        {" "}
+                                        {
+                                          bookingResponse?.Booking?.Passengers
+                                            .length
+                                        }
+                                        x Change Service Charge:
+                                      </h6>
+                                    </div>
+                                    <div>
+                                      <h6>₦{ChangeTax.toLocaleString()}</h6>
+                                    </div>
+                                  </div> */}
+
                                   <div className="trip__summary__row subrow">
                                     <div className="flex items-center">
                                       <h6>
@@ -154,7 +178,7 @@ const PageFares = () => {
                                           bookingResponse?.Booking?.Passengers
                                             .length
                                         }
-                                        x Passenget Service Charge:
+                                        x Passenger Service Charge:
                                       </h6>
                                     </div>
                                     <div>

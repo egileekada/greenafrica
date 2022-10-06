@@ -14,13 +14,14 @@ import {
   setTripParams,
   setGoTrip,
 } from "redux/reducers/booking";
-
+import { useGetLocationsQuery } from "services/widgetApi.js";
 import { format } from "date-fns";
 import isAfter from "date-fns/isAfter";
 import { notification } from "antd";
 
 const BookingIbeHeader = () => {
   const dispatch = useDispatch();
+  const { data, isLoading: locationLoading } = useGetLocationsQuery();
 
   const [dateList, setDateList] = useState([]);
   const [fareDateList, setFareDateList] = useState([]);
@@ -179,17 +180,28 @@ const BookingIbeHeader = () => {
     }
   };
 
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
+  };
+
   return (
     <section className="ibe__flight__info">
       <section className="ibe__flight__info__destination">
-        <p className="mx-4">{tripParams?.departureStation}</p>
+        <p className="mx-4">
+          {tripParams?.departureStation &&
+            resolveAbbreviation(tripParams?.departureStation)}
+        </p>
         <figure>
           <ArrowTo />
         </figure>
-        <p className="mx-4">{tripParams?.arrivalStation}</p>
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>}
-        {width && <p> width:: {width}</p>}
-        {_length && <p> _length:: {_length}</p>} */}
+        <p className="mx-4">
+          {tripParams?.arrivalStation &&
+            resolveAbbreviation(tripParams?.arrivalStation)}
+        </p>
 
         <figure className="flightCircle">
           <FlightIcon />
@@ -234,7 +246,13 @@ const BookingIbeHeader = () => {
                           <h6 className="text-center">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
-                          <p> ₦{_dateItem?.cost.toLocaleString()}</p>
+                          <p>
+                            {" "}
+                            ₦
+                            {parseInt(_dateItem?.cost) > -1
+                              ? _dateItem?.cost?.toLocaleString()
+                              : 0}
+                          </p>
                         </button>
                       )}
                     </div>

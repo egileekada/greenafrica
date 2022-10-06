@@ -144,7 +144,6 @@ const PassengerForm = () => {
         }
       } else {
         if (_pax?.dob?.length < 1) {
-          console.log("rreached here,", _pax?.type);
           _formIsInValid = false;
         }
       }
@@ -157,8 +156,6 @@ const PassengerForm = () => {
           "Incomplete details, Please check through your form and fill-in appropriate details",
       });
     } else {
-      console.log("disaptching");
-
       dispatch(updatePassengersDetails(passengers));
       dispatch(updateContactsDetails(contactInfo));
     }
@@ -256,7 +253,7 @@ const PassengerForm = () => {
                       CONTACT INFORMATION
                     </h3>
 
-                    <p>{JSON.stringify(formik.values)}</p>
+                    {/* <p>{JSON.stringify(formik.values)}</p> */}
 
                     <div
                       className={`flex items-center checkbox-copy mb-6  ${

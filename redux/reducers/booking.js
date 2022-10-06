@@ -268,6 +268,7 @@ export const fetchLowFareAvailability =
       minimumFarePrice,
     } = payload;
 
+
     const requestPayload = {
       signature: currentState.signature,
       messageContractVersion: "",
@@ -276,9 +277,9 @@ export const fetchLowFareAvailability =
       AvailabilityRequest: {
         DepartureStation: departureStation,
         ArrivalStation: arrivalStation,
-        beginDate: format(currentDate, "yyyy-MM-dd"),
+        beginDate: format(new Date(currentDate), "yyyy-MM-dd"),
         beginDateSpecified: true,
-        endDate: format(addDays(currentDate, 180), "yyyy-MM-dd"),
+        endDate: format(addDays(new Date(currentDate), 180), "yyyy-MM-dd"),
         endDateSpecified: true,
         CarrierCode: "Q9",
         FlightType: 5,

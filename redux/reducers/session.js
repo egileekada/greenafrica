@@ -23,7 +23,7 @@ import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 import { bookingState } from "./data";
-import { bookingResponse } from "./data";
+// import { bookingResponse } from "./data";
 
 const initialState = {
   isLoading: false,

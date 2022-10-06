@@ -58,9 +58,7 @@ const TripConfirm = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
   };
 
-  const goToCheckin = () => {
-    router.push("/checkin");
-  };
+ 
 
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = data?.data?.items.filter(
