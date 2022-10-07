@@ -17,9 +17,17 @@ const SeatInfo = () => {
   useEffect(() => {
     if (
       sessionStateResponse &&
-      sessionStateResponse?.BookingData.Passengers.length > 0
+      sessionStateResponse?.BookingData?.Journeys?.length > 0
     ) {
-      setChecked(false);
+      const _Journeys = sessionStateResponse?.BookingData?.Journeys;
+
+      _Journeys.map((_item) => {
+        _item?.Segments.map((_seg) => {
+          if (_seg?.PaxSeats.length > 0) {
+            setChecked(true);
+          }
+        });
+      });
     }
   }, [sessionStateResponse]);
 

@@ -301,24 +301,24 @@ const IbeTripPopup = ({
                       <h5>Checked Baggage</h5>
                     </div>
                     <div className="benefits__popup__row__item">
-                      <figure>
+                      <fdddddigure>
                         <NullIcon />
-                      </figure>
+                      </fdddddigure>
                       <p>₦500/kg</p>
                     </div>
                     <div className="benefits__popup__row__item">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>15 kg </p>
-                      <p>(Extra ₦500/kg)</p>
+                      <p>15kg Included </p>
+                      <p>(Extra at ₦500/kg)</p>
                     </div>
                     <div className="benefits__popup__row__item border-b">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>20 kg</p>
-                      <p>(Extra ₦500/kg)</p>
+                      <p>20kg Included</p>
+                      <p>(Extra at ₦500/kg)</p>
                     </div>
                   </div>
                   {/* Seat Selection */}
@@ -399,7 +399,9 @@ const IbeTripPopup = ({
               </section>
             </section>
             <section className="w-full bg-white rounded-xl flex flex-col  lg:hidden p-8">
-              <h4 className="text-black font-bold text-xl mb-6">Upgrade your fare and enjoy more benefits</h4>
+              <h4 className="text-black font-bold text-xl mb-6">
+                Upgrade your fare and enjoy more benefits
+              </h4>
 
               <div className="mobile__benefits__item">
                 <p>Our Recommendation</p>

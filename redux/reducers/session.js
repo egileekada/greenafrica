@@ -22,9 +22,8 @@ import { notification } from "antd";
 import { setPromoWidgetVisible } from "./general";
 import format from "date-fns/format";
 import addDays from "date-fns/addDays";
-import { bookingState } from "./data";
+import { bookingResponse, sessionStateResponse } from "./data";
 // import { bookingResponse } from "./data";
-
 const initialState = {
   isLoading: false,
   signature: null,
@@ -58,7 +57,6 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   bookingResponse: null,
-  // bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,
@@ -69,7 +67,6 @@ const initialState = {
   bookingState: null,
   sessionStateLoading: false,
   sessionStateResponse: null,
-  sessionStateResponse: bookingState,
   seats: [],
   checkInSelection: [],
   selectedPassengers: [],

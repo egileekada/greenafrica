@@ -253,7 +253,7 @@ const Fare = ({ isRoundTrip }) => {
                               </div>
                             </div>
                           )} */}
-                          {_seat && (
+                          {_seat && parseInt(_seat) > 0 ? (
                             <div className="trip__summary__row">
                               <div className="flex items-center">
                                 <h6>
@@ -265,7 +265,19 @@ const Fare = ({ isRoundTrip }) => {
                                 <h6> ₦{_SSRSum?.SEAT.toLocaleString()}</h6>
                               </div>
                             </div>
-                          )}
+                          ) : null}
+
+                          {/* <div className="trip__summary__row">
+                            <div className="flex items-center">
+                              <h6>
+                                {_seat}x&nbsp;Seat
+                                {_seat > 1 ? "s" : ""}
+                              </h6>
+                            </div>
+                            <div>
+                              <h6> ₦{_SSRSum?.SEAT.toLocaleString()}</h6>
+                            </div>
+                          </div> */}
                         </>
                       );
                     })}
@@ -284,7 +296,8 @@ const Fare = ({ isRoundTrip }) => {
           <div>
             <h6>
               {" "}
-              ₦ {bookingResponse?.Booking?.Payments[0]?.PaymentAmount.toLocaleString()}
+              ₦{" "}
+              {bookingResponse?.Booking?.Payments[0]?.PaymentAmount.toLocaleString()}
             </h6>
           </div>
         </div>

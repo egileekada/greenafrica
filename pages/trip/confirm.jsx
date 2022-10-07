@@ -45,12 +45,12 @@ const TripConfirm = () => {
   }, []);
 
   //Don't re work - it currently breaks code
-  useEffect(() => {
-    async function fetchBookingDetails() {
-      dispatch(GetBookingDetails());
-    }
-    fetchBookingDetails();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchBookingDetails() {
+  //     dispatch(GetBookingDetails());
+  //   }
+  //   fetchBookingDetails();
+  // }, []);
 
   useEffect(() => {
     if (bookingResponse) {

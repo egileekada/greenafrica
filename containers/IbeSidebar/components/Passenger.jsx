@@ -3,12 +3,13 @@ import { Fragment, useState } from "react";
 import TwoIcon from "assets/svgs/two.svg";
 import CheckIcon from "assets/svgs/done.svg";
 import FlightIcon from "assets/svgs/aero-2.svg";
-// import BagIcon from "assets/svgs/bag.svg";
+import BagIcon from "assets/svgs/bag.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
 import CaretLeft from "assets/svgs/sidebar/caretleft.svg";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import { capitalizeFirstLetter } from "lib/utils";
+import CostIcon from "assets/svgs/cost.svg";
 
 const PassengerInfo = () => {
   const [showContent, setShow] = useState(false);
@@ -19,78 +20,127 @@ const PassengerInfo = () => {
       return pax?.FeeCode === "SEAT";
     });
 
+    const ALLOWED = ["xbag20", "xbag15", "xbag10"];
     return (
       <Fragment>
         <div className="ibe__sidebar__box">
           {passenger?.Names.map((_name) => {
-            {
-              /* console.log("passenger", passenger?.PassengerTypeInfo?.PaxType); */
-            }
             const paxType = passenger?.PassengerTypeInfo?.PaxType;
+            const _SSRCount = {};
+
+            sessionStateResponse?.BookingData?.Passengers.map((_pax) => {
+              return _pax.PassengerFees.map((_paxFee) => {
+                _SSRCount[_paxFee?.FeeCode] = _pax.PassengerFees.filter(
+                  (_fee) => {
+                    return _fee?.FeeCode === _paxFee?.FeeCode;
+                  }
+                ).length;
+              });
+            });
+
+            const tempSum = {};
+            const _SSRSum = {};
+            sessionStateResponse?.BookingData?.Passengers.map((_pax) => {
+              return _pax.PassengerFees.map((_paxFee) => {
+                tempSum[_paxFee?.FeeCode] = _paxFee.ServiceCharges;
+                const totalServiceCharge = tempSum[_paxFee?.FeeCode].reduce(
+                  (accumulator, object) => {
+                    return accumulator + object.Amount;
+                  },
+                  0
+                );
+                _SSRSum[_paxFee?.FeeCode] = totalServiceCharge;
+              });
+            });
+
             return (
-              <div className="flex mb-6">
-                <div className="flex flex-col w-[53px] mr-4">
-                  <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
-                    <ProfileIcon />
+              <section className="flex flex-col">
+                <div className="flex mb-6">
+                  <div className="flex flex-col w-[53px] mr-4">
+                    <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
+                      <ProfileIcon />
+                    </div>
+                  </div>
+                  <div className="flex flex-col">
+                    <h5 className="text-sm font-extrabold text-primary-main font-display">
+                      {`${capitalizeFirstLetter(
+                        _name?.FirstName
+                      )} ${capitalizeFirstLetter(_name?.LastName)}`}
+                    </h5>
+
+                    <h6 className="text-[12px] font-normal text-[#9692B8] font-title">
+                      {paxType && (
+                        <span className="mr-2">
+                          {paxType === "ADT"
+                            ? "ADULT"
+                            : paxType === "CHD"
+                            ? "CHILD"
+                            : "INFANT"}
+                        </span>
+                      )}
+                    </h6>
                   </div>
                 </div>
-                <div className="flex flex-col">
-                  <h5 className="text-sm font-extrabold text-primary-main font-display">
-                    {`${capitalizeFirstLetter(
-                      _name?.FirstName
-                    )} ${capitalizeFirstLetter(_name?.LastName)}`}
-                  </h5>
 
-                  <h6 className="text-[12px] font-normal text-[#9692B8] font-title">
-                    {paxType && (
-                      <span className="mr-2">
-                        {paxType === "ADT"
-                          ? "ADULT"
-                          : paxType === "CHD"
-                          ? "CHILD"
-                          : "INFANT"}
-                      </span>
-                    )}
-                  </h6>
+                {_SSRCount?.XBAG20 && _SSRCount?.XBAG20 > 1 && (
+                  <div className="flex flex-col">
+                    <div className="ibe__sidebar__row bordered">
+                      <div className="flex items-center">
+                        <figure className="mr-2">
+                          <BagIcon />
+                        </figure>
+                        <h6>
+                          {_SSRCount?.XBAG20}x&nbsp;20KG Baggage
+                          {_SSRCount?.XBAG20 > 1 ? "s" : ""}
+                        </h6>
+                      </div>
+                      <div>
+                        <h6>₦{parseInt(_SSRSum?.XBAG20).toLocaleString()}</h6>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-                  {/* {_Seats.length > 0
-                    ? sessionStateResponse?.BookingData.Journeys.map(
-                        (_journey) => {
-                          return _journey?.Segments.map((_segment) => {
-                            return (
-                              <h6 className="text-[12px] font-normal text-[#9692B8] font-title">
-                                <span className="mr-2">
-                                  {`${_segment?.PaxSeats[passengerIndex]?.DepartureStation} -  ${_segment?.PaxSeats[passengerIndex]?.ArrivalStation}`}
-                                </span>{" "}
-                                Seat Number :{" "}
-                                {
-                                  _segment?.PaxSeats[passengerIndex]
-                                    ?.UnitDesignator
-                                }
-                              </h6>
-                            );
-                          });
-                        }
-                      )
-                    : null} */}
-                </div>
-              </div>
+                {_SSRCount?.XBAG15 && _SSRCount?.XBAG15 > 1 && (
+                  <div className="flex flex-col">
+                    <div className="ibe__sidebar__row bordered">
+                      <div className="flex items-center">
+                        <figure className="mr-2">
+                          <BagIcon />
+                        </figure>
+                        <h6>
+                          {_SSRCount?.XBAG15}x&nbsp;15KG Baggage
+                          {_SSRCount?.XBAG15 > 1 ? "s" : ""}
+                        </h6>
+                      </div>
+                      <div>
+                        <h6>₦{parseInt(_SSRSum?.XBAG15).toLocaleString()}</h6>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {_SSRCount?.XBAG10 && _SSRCount?.XBAG10 > 1 && (
+                  <div className="flex flex-col">
+                    <div className="ibe__sidebar__row bordered">
+                      <div className="flex items-center">
+                        <figure className="mr-2">
+                          <BagIcon />
+                        </figure>
+                        <h6>
+                          {_SSRCount?.XBAG10}x&nbsp;10KG Baggage
+                          {_SSRCount?.XBAG10 > 1 ? "s" : ""}
+                        </h6>
+                      </div>
+                      <div>
+                        <h6>₦{parseInt(_SSRSum?.XBAG10).toLocaleString()}</h6>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </section>
             );
           })}
-
-          {/* <div className="flex flex-col">
-            <div className="ibe__sidebar__row bordered">
-              <div className="flex items-center">
-                <figure>
-                  <BagIcon />
-                </figure>
-                <h6>2 x 10 kg baggage:</h6>
-              </div>
-              <div>
-                <h6> ₦26,501</h6>
-              </div>
-            </div>
-          </div> */}
         </div>
       </Fragment>
     );
