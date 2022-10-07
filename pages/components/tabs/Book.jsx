@@ -114,7 +114,7 @@ const Book = ({
     for (const key in lowfare) {
       if (key === format(date, "yyyy-MM-dd")) {
         return (
-          <p className="text-[10px] font-light leading-tight my-1 text-[#9E9BBF]">
+          <p className="text-[10px] font-light leading-tight my-1 text-[#545175]">
             ₦{Math.round(lowfare[key])}K
           </p>
         );
