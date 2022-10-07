@@ -312,6 +312,10 @@
       box-shadow: none !important;
       outline: 0;
     }
+
+    .ant-input[disabled] {
+      color: #26205e !important;
+    }
   }
 
   .vertical--marquee {
@@ -341,7 +345,12 @@
   }
 
   .ant-input[disabled] {
-    color: rgba(114, 106, 106, 0.93) !important;
+    // color: rgba(114, 106, 106, 0.93) !important;
+    color: black !important;
+  }
+
+  .ant-input[disabled] {
+    color: rgb(6, 6, 6);
   }
 
   .top__bar {
@@ -776,7 +785,8 @@
             @apply border-t;
 
             h5 {
-              @apply font-title text-xs text-primary-main;
+              // @apply font-title text-xs text-primary-main;
+              @apply font-title text-base text-primary-main;
             }
 
             h6 {
@@ -1042,7 +1052,8 @@
         @apply border-none;
 
         h5 {
-          @apply text-primary-main text-xs font-title font-bold;
+          // @apply text-primary-main text-xs font-title font-bold;
+          @apply font-title text-base text-primary-main font-bold;
         }
 
         h6 {
