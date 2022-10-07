@@ -147,9 +147,9 @@ const IbeTripPopup = ({
       });
 
       dispatch(setSelectedSessionJourney([...orderedJourneys]));
-      document
-        .getElementById("returnContainer")
-        .scrollIntoView({ behavior: "smooth" });
+      // document
+      //   .getElementById("returnContainer")
+      //   .scrollIntoView({ behavior: "smooth" });
       closePopUp();
       setIsVisible(false);
     } else {
@@ -360,7 +360,7 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Upgrade to gSaver"}
+                          : "Continue with gSaver"}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -424,7 +424,7 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Upgrade to gSaver
+                  Continue with gSaver
                 </button>
               </div>
 
