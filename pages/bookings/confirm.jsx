@@ -68,13 +68,21 @@ const ConfirmManageBooking = () => {
   };
 
   const PageCTA = () => {
+    const disabled =
+      parseInt(
+        sessionStateResponse?.BookingData?.BookingInfo?.BookingStatus
+      ) === 1 &&
+      parseInt(sessionStateResponse?.BookingData?.BookingSum?.BalanceDue) > 0;
+
     return (
       <section className="flex flex-wrap md:flex-nowrap mx-6">
         <button
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+            disabled ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+          } `}
           onClick={handleItenary}
         >
-          Change Flight
+          Change Flight{" "}
         </button>
         <button
           onClick={handleServices}

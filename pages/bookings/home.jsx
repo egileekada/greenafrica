@@ -111,7 +111,10 @@ const ManageBookings = (props) => {
       >
         <button
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
-            checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+            checkedIn ||
+            parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0
+              ? "pointer-events-none opacity-50 cursor-not-allowed"
+              : ""
           } `}
           onClick={handleItenary}
         >
@@ -351,6 +354,10 @@ const ManageBookings = (props) => {
     window.location.assign("https://dev-website.gadevenv.com/");
   };
 
+  const handlePayment = () => {
+    router.push("/bookings/confirm");
+  };
+
   if (!props.pnr) {
     router.push("/bookings");
   }
@@ -365,6 +372,26 @@ const ManageBookings = (props) => {
             </figure>
           </button>
         </nav>
+
+        {bookingResponse &&
+          bookingResponse?.Booking &&
+          parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0 &&
+          parseInt(bookingResponse?.Booking?.BookingInfo?.BookingStatus) ===
+            1 && (
+            <nav className="manage-booking-bar">
+              <p className="font-display text-base text-primary-main">
+                Your booking is on hold. Please review the booking details and
+                complete the payment
+              </p>
+              <button className="btn btn-primary" onClick={handlePayment}>
+                Pay ₦
+                {parseInt(
+                  bookingResponse?.Booking?.BookingSum?.BalanceDue
+                ).toLocaleString("NGN")}
+              </button>
+            </nav>
+          )}
+
         <section className="w-full checkin">
           {bookingResponseLoading ? (
             <div className="px-12 py-12">
