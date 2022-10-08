@@ -67,6 +67,7 @@ const initialState = {
   bookingState: null,
   sessionStateLoading: false,
   sessionStateResponse: null,
+  // sessionStateResponse: sessionStateResponse,
   seats: [],
   checkInSelection: [],
   selectedPassengers: [],
