@@ -20,9 +20,8 @@ import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import { setManageBookingPnr } from "redux/reducers/booking";
 import { useGetLocationsQuery } from "services/widgetApi.js";
-import PageFares from "./components/PageFares";
+import PageFares from "../../../pages/bookings/components/PageFares";
 import LogoIcon from "assets/svgs/logo.svg";
-import Spinner from "components/Spinner";
 
 const ManageBookings = (props) => {
   const router = useRouter();
@@ -141,6 +140,17 @@ const ManageBookings = (props) => {
     );
   };
 
+  const PageInfo = () => {
+    return (
+      <section className="checkin__info mx-6 my-3">
+        <p>
+          You added some new services so your fare has been updated with
+          additional fees
+        </p>
+      </section>
+    );
+  };
+
   const TabContent = () => {
     return (
       <>
@@ -149,8 +159,10 @@ const ManageBookings = (props) => {
             {bookingResponse?.Booking?.Journeys.map((_journey, _index) => (
               <SingleJourneyItem journey={_journey} journeyIndex={_index} />
             ))}
+            {/* <PageInfo /> */}
             <PageCTA />
             <PassengersSection />
+            {/* <PageCTA /> */}
             <PageFares />
           </>
         ) : (
@@ -290,57 +302,61 @@ const ManageBookings = (props) => {
               );
             })}
 
-            {locationLoading ? (
-              <div className="p-4">
-                <Spinner />
+            <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
+              <p className="tripType self-center">
+                {" "}
+                {_segment?.FlightDesignator?.CarrierCode}{" "}
+                {_segment?.FlightDesignator?.FlightNumber}
+              </p>
+              <div className="flex justify-between">
+                <div className="flex flex-col">
+                  <h5 className="tripType">
+                    {" "}
+                    {format(new Date(_segment?.STD), "HH:mm")}
+                  </h5>
+                  <p className="tripCity">
+                    {" "}
+                    {_segment?.DepartureStation &&
+                      resolveAbbreviation(_segment?.DepartureStation)}
+                  </p>
+                </div>
+                <div className="tripIconPath">
+                  <DottedLine className="dotted-svg" />
+                  <AeroIcon className="aero-svg" />
+                  <DottedLine className="dotted-svg" />
+                </div>
+                <div className="flex flex-col  items-end">
+                  <h5 className="tripType right-text">
+                    {" "}
+                    {format(new Date(_segment?.STA), "HH:mm")}
+                  </h5>
+                  <p className="tripCity right-text">
+                    {" "}
+                    {_segment?.ArrivalStation &&
+                      resolveAbbreviation(_segment?.ArrivalStation)}
+                  </p>
+                </div>
               </div>
-            ) : data?.data?.items ? (
-              <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
-                <p className="tripType self-center">
-                  {" "}
+              <p className="tripTime self-center">
+                {" "}
+                {timeConvert(
+                  differenceInMinutes(
+                    new Date(_segment?.STA),
+                    new Date(_segment?.STD)
+                  )
+                )}
+              </p>
+            </div>
+
+            {/* <div className="trip-details">
+              <div className="trip-details-item">
+                <h6>FLIGHT NUMBER</h6>
+                <h5>
                   {_segment?.FlightDesignator?.CarrierCode}{" "}
                   {_segment?.FlightDesignator?.FlightNumber}
-                </p>
-                <div className="flex justify-between">
-                  <div className="flex flex-col">
-                    <h5 className="tripType">
-                      {" "}
-                      {format(new Date(_segment?.STD), "HH:mm")}
-                    </h5>
-                    <p className="tripCity">
-                      {" "}
-                      {_segment?.DepartureStation &&
-                        resolveAbbreviation(_segment?.DepartureStation)}
-                    </p>
-                  </div>
-                  <div className="tripIconPath">
-                    <DottedLine className="dotted-svg" />
-                    <AeroIcon className="aero-svg" />
-                    <DottedLine className="dotted-svg" />
-                  </div>
-                  <div className="flex flex-col  items-end">
-                    <h5 className="tripType right-text">
-                      {" "}
-                      {format(new Date(_segment?.STA), "HH:mm")}
-                    </h5>
-                    <p className="tripCity right-text">
-                      {" "}
-                      {_segment?.ArrivalStation &&
-                        resolveAbbreviation(_segment?.ArrivalStation)}
-                    </p>
-                  </div>
-                </div>
-                <p className="tripTime self-center">
-                  {" "}
-                  {timeConvert(
-                    differenceInMinutes(
-                      new Date(_segment?.STA),
-                      new Date(_segment?.STD)
-                    )
-                  )}
-                </p>
+                </h5>
               </div>
-            ) : null}
+            </div> */}
           </section>
         </>
       );
@@ -357,6 +373,24 @@ const ManageBookings = (props) => {
 
   return (
     <Fragment>
+      {/* {bookingResponse &&
+      parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0 ? (
+        <nav className="manage-booking-bar">
+          <p className="font-display text-base text-primary-main">
+            You made a few changes to your booking and additional charges have
+            been added
+          </p>
+          <button
+            className="btn btn-primary"
+            onClick={() => router.push("/bookings/payment")}
+          >
+            Pay ₦
+            {parseInt(
+              bookingResponse?.Booking?.BookingSum?.BalanceDue
+            ).toLocaleString("NGN")}
+          </button>
+        </nav>
+      ) : null} */}
       <BaseLayout>
         <nav className="top__bar logo-holder">
           <button onClick={goBackToHome}>
@@ -391,6 +425,10 @@ const ManageBookings = (props) => {
                       <h2 className="text-black font-bold text-2xl mb-2">
                         Booking
                       </h2>
+                      {/* <p>
+                        Kindly confirm that the information below is correct
+                        before checking in
+                      </p> */}
                     </>
                   ) : null}
                 </div>

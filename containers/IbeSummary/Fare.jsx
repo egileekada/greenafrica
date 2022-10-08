@@ -9,7 +9,6 @@ const Fare = ({ isRoundTrip }) => {
   const { bookingResponse } = useSelector(sessionSelector);
 
   const resolveAbbreviation = (abrreviation) => {
-    console.log("fareConfig", fareConfig);
     const [{ name, code }] = fareConfig?.data?.items.filter(
       (location) => location.code === abrreviation
     );

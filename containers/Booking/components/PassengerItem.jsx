@@ -3,10 +3,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
-const ManagePassengerItem = ({
-  passenger,
-  paxIndex
-}) => {
+const ManagePassengerItem = ({ passenger, paxIndex }) => {
   const { bookingResponse } = useSelector(sessionSelector);
 
   const _Seats =
@@ -39,13 +36,15 @@ const ManagePassengerItem = ({
         {_Seats.length > 0
           ? bookingResponse?.Booking?.Journeys.map((_journey) => {
               return _journey?.Segments.map((_segment) => {
-                return (
+                return _segment?.PaxSeats[paxIndex]?.DepartureStation ? (
                   <div className="trip-details-item">
                     <h6>
                       SEAT NUMBER{" "}
-                      <span className="text-[5px]">
+                      <span className="text-xs">
                         {" "}
+                        ({" "}
                         {`${_segment?.PaxSeats[paxIndex]?.DepartureStation} -  ${_segment?.PaxSeats[paxIndex]?.ArrivalStation}`}
+                        )
                       </span>
                     </h6>
                     <h5 className="flex items-center">
@@ -54,7 +53,7 @@ const ManagePassengerItem = ({
                       </span>
                     </h5>
                   </div>
-                );
+                ) : null;
               });
             })
           : null}

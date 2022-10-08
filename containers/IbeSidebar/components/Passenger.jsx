@@ -16,11 +16,10 @@ const PassengerInfo = () => {
   const { sessionStateResponse } = useSelector(sessionSelector);
 
   const PassengerItem = ({ passenger, passengerIndex }) => {
-    const _Seats = passenger.PassengerFees.filter((pax) => {
-      return pax?.FeeCode === "SEAT";
-    });
+    // const _Seats = passenger.PassengerFees.filter((pax) => {
+    //   return pax?.FeeCode === "SEAT";
+    // });
 
-    const ALLOWED = ["xbag20", "xbag15", "xbag10"];
     return (
       <Fragment>
         <div className="ibe__sidebar__box">
