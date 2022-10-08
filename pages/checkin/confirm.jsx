@@ -9,7 +9,8 @@ import DottedLine from "assets/svgs/dotted-line.svg";
 import ProfileIcon from "assets/svgs/profile.svg";
 import IbeAdbar from "containers/IbeAdbar";
 import SkeletonLoader from "components/SkeletonLoader";
-import { format, formatDistanceStrict } from "date-fns";
+import { format, differenceInMinutes } from "date-fns";
+import { timeConvert } from "utils/common";
 import {
   useGetLocationsQuery,
   useGetProductsQuery,
@@ -47,6 +48,28 @@ const CheckInDetails = () => {
       (product) => product.code === value
     );
     return `${name}`;
+  };
+
+  const PassengerBags = (_passenger, PassengerNumber) => {
+    const _Baggages = _passenger.filter((pax) => {
+      if (pax.PassengerNumber == PassengerNumber)
+        return (
+          pax.FeeCode === "XBAG20" ||
+          pax.FeeCode === "XBAG15" ||
+          pax.FeeCode === "XBAG10"
+        );
+    });
+
+    return (
+      <div className="trip-details-item">
+        <h6>BAGGAGE{_Baggages.length > 1 ? "S" : ""}: </h6>
+        <h5 className="flex items-center">
+          <span>
+            {_Baggages.length > 0 ? `${_Baggages.length}` : "No Baggage"}
+          </span>
+        </h5>
+      </div>
+    );
   };
 
   useEffect(() => {
@@ -128,7 +151,7 @@ const CheckInDetails = () => {
 
                       {bookingData?.Booking?.Journeys.map((Journey, index) => (
                         <>
-                          <div className="mx-6 mt-12 flex flex-col">
+                          <div className="mx-6 mt-12 flex flex-col hidden">
                             <h3 className="title-text">PASSENGER DETAILS</h3>
 
                             {bookingData?.Booking?.Passengers.map(
@@ -236,33 +259,167 @@ const CheckInDetails = () => {
                               </div>
                               <p className="tripTime self-center">
                                 {bookingData &&
-                                  formatDistanceStrict(
-                                    new Date(Journey?.Segments[0]?.STD),
-                                    new Date(Journey?.Segments[0]?.STA)
+                                  timeConvert(
+                                    differenceInMinutes(
+                                      new Date(Journey?.Segments[0]?.STA),
+                                      new Date(Journey?.Segments[0]?.STD)
+                                    )
                                   )}
                               </p>
                             </div>
-                            <div className="trip-details">
-                              <div className="flex flex-wrap md:flex-nowrap items-center justify-between ml-auto">
-                                <button className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0">
-                                  Download Boarding Pass
-                                </button>
-                                <button className="btn btn-outline  basis-full md:basis-auto">
-                                  Email Boarding Pass
-                                </button>
-                              </div>
-                            </div>
                           </section>
+
+                          {Journey?.Segments[0]?.PaxSegments.some(
+                            (passengers) => passengers.LiftStatus === 1
+                          ) && (
+                            <>
+                              <div className="mx-6">
+                                <h4 className="text-primary-main font-semibold mt-3">
+                                  CHECKED IN PASSENGERS
+                                </h4>
+                              </div>
+                              {bookingResponse?.Booking?.Passengers.map(
+                                (passenger, pIndex) => (
+                                  <>
+                                    {Journey?.Segments[0]?.PaxSegments[pIndex]
+                                      ?.LiftStatus === 1 && (
+                                      <section
+                                        className="ibe__trip__passengers checkinView mx-6 mb-3"
+                                        key={pIndex}
+                                      >
+                                        <div className="md:flex bordered p-4">
+                                          <div className="flex items-center w-full">
+                                            <p className="ml-2 text-lg font-semibold capitalize w-full flex items-center">
+                                              {passenger.Names[0].FirstName}{" "}
+                                              {passenger.Names[0].LastName}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        <div className="trip-details">
+                                          <div className="trip-details-item">
+                                            <h6>SEAT NUMBER</h6>
+                                            {Journey.Segments[0].PaxSeats
+                                              .length > 0 ? (
+                                              <h5 className="flex items-center text-center">
+                                                <span>
+                                                  {
+                                                    Journey.Segments[0].PaxSeats.filter(
+                                                      (seat) =>
+                                                        seat.PassengerNumber ==
+                                                        passenger.PassengerNumber
+                                                    )[0]?.UnitDesignator
+                                                  }
+                                                </span>
+                                              </h5>
+                                            ) : (
+                                              <h5 className="flex items-center">
+                                                <span>None</span>
+                                              </h5>
+                                            )}
+                                          </div>
+                                          {Journey.Segments[0].PaxSSRs.length >
+                                            0 && (
+                                            <>
+                                              {PassengerBags(
+                                                Journey.Segments[0].PaxSSRs,
+                                                passenger.PassengerNumber
+                                              )}
+                                            </>
+                                          )}
+
+                                          <div className="flex flex-wrap md:flex-nowrap items-center justify-between ml-auto">
+                                            <button className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0">
+                                              Download Boarding Pass
+                                            </button>
+                                            <button className="btn btn-outline  basis-full md:basis-auto">
+                                              Email Boarding Pass
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </section>
+                                    )}
+                                  </>
+                                )
+                              )}
+                            </>
+                          )}
+
+                          {Journey?.Segments[0]?.PaxSegments.some(
+                            (passengers) => passengers.LiftStatus === 0
+                          ) && (
+                            <>
+                              <div className="mx-6">
+                                <h4 className="text-primary-main font-semibold mt-3">
+                                  PASSENGERS AWAITING CHECK IN
+                                </h4>
+                              </div>
+                              {bookingResponse?.Booking?.Passengers.map(
+                                (passenger, pIndex) => (
+                                  <>
+                                    {Journey?.Segments[0]?.PaxSegments[pIndex]
+                                      ?.LiftStatus === 0 && (
+                                      <section
+                                        className="ibe__trip__passengers checkinView mx-6 mb-3"
+                                        key={pIndex}
+                                      >
+                                        <div className="md:flex bordered p-4">
+                                          <div className="flex items-center w-full">
+                                            <p className="ml-2 text-lg font-semibold capitalize w-full flex items-center">
+                                              {passenger.Names[0].FirstName}{" "}
+                                              {passenger.Names[0].LastName}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        <div className="trip-details">
+                                          <div className="trip-details-item">
+                                            <h6>SEAT NUMBER</h6>
+                                            {Journey.Segments[0].PaxSeats
+                                              .length > 0 ? (
+                                              <h5 className="flex items-center text-center">
+                                                <span>
+                                                  {
+                                                    Journey.Segments[0].PaxSeats.filter(
+                                                      (seat) =>
+                                                        seat.PassengerNumber ==
+                                                        passenger.PassengerNumber
+                                                    )[0]?.UnitDesignator
+                                                  }
+                                                </span>
+                                              </h5>
+                                            ) : (
+                                              <h5 className="flex items-center">
+                                                <span>None</span>
+                                              </h5>
+                                            )}
+                                          </div>
+                                          {Journey.Segments[0].PaxSSRs.length >
+                                            0 && (
+                                            <>
+                                              {PassengerBags(
+                                                Journey.Segments[0].PaxSSRs,
+                                                passenger.PassengerNumber
+                                              )}
+                                            </>
+                                          )}
+                                        </div>
+                                      </section>
+                                    )}
+                                  </>
+                                )
+                              )}
+                            </>
+                          )}
                         </>
                       ))}
 
-                      <section className="flex items-center mx-6 my-3">
+                      {/* <section className="flex items-center mx-6 my-3">
                         <figure className="mr-1">
                           <GreenCheck />
                         </figure>
                         <p>You have been checked in successfully</p>
-                      </section>
-                      {/* Checkin Info*/}
+                      </section> */}
                     </section>
                   </div>
                   <div className="ga__section__side">
