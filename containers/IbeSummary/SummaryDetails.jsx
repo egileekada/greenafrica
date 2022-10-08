@@ -88,20 +88,22 @@ const SummaryDetails = ({ isRoundTrip }) => {
             );
           });
 
+          {
+            /* const _Seats = _passenger.PassengerFees.filter((pax) => {
+            return pax.FeeCode === "SEAT";
+          }); */
+          }
+
           const _Seats = _passenger.PassengerFees.filter((pax) => {
             return pax.FeeCode === "SEAT";
           });
 
-          {
-            /* return _passenger?.PassengerInfants?.length > 0 ? (
-            "infant dey"
-          ) : ( */
-          }
           return (
             <section className="flex flex-col border-t border-t-details__border py-3 mb-3">
               <h2 className="font-bold text-primary-main font-display text-[10px]  mb-4">
                 PASSENGER {paxIndex + 1}:
               </h2>
+
               <div className="flex mb-3">
                 <div className="flex flex-col w-[53px] mr-4">
                   <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
@@ -185,12 +187,14 @@ const SummaryDetails = ({ isRoundTrip }) => {
                       return (
                         <div className="trip__summary__details">
                           <div className="f-1">
-                            <h6>
-                              Seat{_Seats.length > 1 ? "s" : ""}
-                              &nbsp;&nbsp;&nbsp;
-                              {`${_segment?.PaxSeats[paxIndex]?.DepartureStation} -  ${_segment?.PaxSeats[paxIndex]?.ArrivalStation}`}
-                              :
-                            </h6>
+                            {_segment?.PaxSeats[paxIndex]?.DepartureStation ? (
+                              <h6>
+                                Seat{_Seats.length > 1 ? "s" : ""}
+                                &nbsp;&nbsp;&nbsp; ({" "}
+                                {`${_segment?.PaxSeats[paxIndex]?.DepartureStation} -  ${_segment?.PaxSeats[paxIndex]?.ArrivalStation}`}
+                                ):
+                              </h6>
+                            ) : null}
                           </div>
                           <div className="f-1">
                             <h6>
