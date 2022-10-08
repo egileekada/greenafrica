@@ -43,7 +43,7 @@ const PlaneSeats = forwardRef(
       sessionLoading,
       bookingResponseLoading,
       bookingResponse,
-      bookingState,
+      selectedPassengers,
     } = useSelector(sessionSelector);
 
     const [segmentSeatRequests, setSegmentSeatRequests] = useState([]);
@@ -297,25 +297,28 @@ const PlaneSeats = forwardRef(
       }
     };
 
+    const getSeat = (PassengerNumber) => {
+      let value;
+      bookingResponse?.Booking?.Journeys[
+        ticketIndex
+      ].Segments[0].PaxSeats.flatMap((seat) => {
+        if (seat.PassengerNumber === PassengerNumber) {
+          value = seat?.UnitDesignator;
+        }
+      });
+      return value;
+    };
+
     const mapSeatSelection = () => {
       let i = 0;
       const newArray = [];
-      for (i = 0; i < pasengerCount; i++) {
-        if (
-          bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0].PaxSeats
-            .length > 0
-        ) {
-          newArray.push({
-            passengerNumber: i,
-            seatDesignator:
-              bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0]
-                .PaxSeats[i]?.UnitDesignator,
-          });
-        } else {
-          newArray.push({ passengerNumber: i, seatDesignator: "" });
-        }
-      }
 
+      bookingResponse?.Booking?.Passengers.map((passenger) => {
+        newArray.push({
+          passengerNumber: passenger.PassengerNumber,
+          seatDesignator: getSeat(passenger.PassengerNumber),
+        });
+      });
       setSelectedSeat(newArray);
     };
 

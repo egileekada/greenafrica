@@ -78,8 +78,12 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
                             {passenger.Names[0].LastName}
                           </h5>
                           <h6 className="text-base text-[#261F5E] font-title">
-                            {selectedSeat[index]?.seatDesignator?.length > 0
-                              ? `Seat Number: ${selectedSeat[index]?.seatDesignator}`
+                            {selectedSeat[passenger.PassengerNumber]
+                              ?.seatDesignator?.length > 0
+                              ? `Seat Number: ${
+                                  selectedSeat[passenger.PassengerNumber]
+                                    ?.seatDesignator
+                                }`
                               : "No Seat Selected"}
                           </h6>
                         </div>
@@ -150,7 +154,7 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
             <PlaneSeats
               pasengerState={pasengerState}
               passengerNumber={passengerNumber}
-              pasengerCount={bookingResponse?.Booking?.Passengers.length}
+              pasengerCount={selectedPassengers.length}
               key={key + 24}
               data={seatAvailability?.EquipmentInfos[0].Compartments[0].Seats}
               ref={childRef}
