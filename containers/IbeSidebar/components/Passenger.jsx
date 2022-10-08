@@ -52,6 +52,8 @@ const PassengerInfo = () => {
               });
             });
 
+            console.log("_SSRCount", _SSRCount);
+
             return (
               <section className="flex flex-col">
                 <div className="flex mb-6">
@@ -81,7 +83,7 @@ const PassengerInfo = () => {
                   </div>
                 </div>
 
-                {_SSRCount?.XBAG20 && _SSRCount?.XBAG20 > 1 && (
+                {_SSRCount?.XBAG20 && _SSRCount?.XBAG20 > 0 && (
                   <div className="flex flex-col">
                     <div className="ibe__sidebar__row bordered">
                       <div className="flex items-center">
@@ -100,7 +102,7 @@ const PassengerInfo = () => {
                   </div>
                 )}
 
-                {_SSRCount?.XBAG15 && _SSRCount?.XBAG15 > 1 && (
+                {_SSRCount?.XBAG15 && _SSRCount?.XBAG15 > 0 && (
                   <div className="flex flex-col">
                     <div className="ibe__sidebar__row bordered">
                       <div className="flex items-center">
@@ -119,7 +121,7 @@ const PassengerInfo = () => {
                   </div>
                 )}
 
-                {_SSRCount?.XBAG10 && _SSRCount?.XBAG10 > 1 && (
+                {_SSRCount?.XBAG10 && _SSRCount?.XBAG10 > 0 && (
                   <div className="flex flex-col">
                     <div className="ibe__sidebar__row bordered">
                       <div className="flex items-center">
