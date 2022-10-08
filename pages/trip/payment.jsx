@@ -157,7 +157,7 @@ const TripPayment = () => {
     } else {
       notification.error({
         message: "Error",
-        description: "PNR Code Unavailable",
+        description: "System Error, Try agin after 15 seconds",
       });
     }
   };
