@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from "react";
-import { format, formatDistanceStrict } from "date-fns";
+import { format, differenceInMinutes } from "date-fns";
 import { useRouter } from "next/router";
+import { timeConvert } from "utils/common";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
@@ -296,9 +297,11 @@ const CheckInDetails = (props) => {
                         </div>
                         <p className="tripTime self-center">
                           {bookingResponse &&
-                            formatDistanceStrict(
-                              new Date(Journey?.Segments[0]?.STD),
-                              new Date(Journey?.Segments[0]?.STA)
+                            timeConvert(
+                              differenceInMinutes(
+                                new Date(Journey?.Segments[0]?.STA),
+                                new Date(Journey?.Segments[0]?.STD)
+                              )
                             )}
                         </p>
                       </div>

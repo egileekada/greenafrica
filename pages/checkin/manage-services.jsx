@@ -25,7 +25,6 @@ import { useSaveNewCheckInSSRsMutation } from "services/bookingApi";
 import { uniqueId } from "lodash";
 import { notification } from "antd";
 
-
 const PassengerDetails = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -299,7 +298,10 @@ const PassengerDetails = () => {
         <section className="ga__section bg-normal">
           <div className="ga__section__main standalone">
             {bookingResponseLoading || SSRAvailabilityLoading ? (
-              <SkeletonLoader />
+              <>
+                <SkeletonLoader />
+                <SkeletonLoader />
+              </>
             ) : bookingResponse && bookingResponse?.Booking ? (
               <>
                 <h2 className="text-primary-main font-extrabold text-2xl mb-8">
