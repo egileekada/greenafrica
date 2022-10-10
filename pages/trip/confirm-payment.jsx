@@ -49,9 +49,7 @@ const ConfirmTripPayment = () => {
         // dispatch(startSession());
         if (signature) {
           router.push("/trip/confirm");
-        } else {
-          // dispatch(startSession());
-        }
+        } 
       }
     }
     _checkVerifyPayment();
