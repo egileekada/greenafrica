@@ -58,6 +58,9 @@ const Fare = ({ isRoundTrip }) => {
                   XBAG20: 0,
                   INFT: 0,
                   SEAT: 0,
+                  WCHR: 0,
+                  VPRD: 0,
+                  HPRD: 0,
                 };
 
                 _segment.PaxSSRs?.map((_segSSR) => {
@@ -67,6 +70,9 @@ const Fare = ({ isRoundTrip }) => {
                     }
                   ).length;
                 });
+
+                console.log("_SSrsCOunt", _SSRsCount);
+                console.log(" _SSRSum", _SSRSum);
 
                 return (
                   <>
@@ -240,6 +246,25 @@ const Fare = ({ isRoundTrip }) => {
                                   </div>
                                 </div>
                               )}
+
+                              {parseInt(_SSRsCount?.WCHR) > 0 && (
+                                <div className="trip__summary__row">
+                                  <div className="flex items-center">
+                                    <h6>
+                                      {_SSRsCount?.WCHR}x&nbsp;
+                                      {/* {fareConfig?.data
+                                        ? resolveAbbreviation(" WCHR")
+                                        : null} */}
+                                      WCHR
+                                      {_SSRsCount?.WCHR > 1 ? "s" : ""}
+                                    </h6>
+                                  </div>
+                                  <div>
+                                    <h6> ₦{_SSRSum?.WCHR.toLocaleString()}</h6>
+                                  </div>
+                                </div>
+                              )}
+
                               {parseInt(_SSRsCount?.XBAG20) > 0 && (
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">

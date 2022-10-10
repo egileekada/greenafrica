@@ -93,7 +93,7 @@ const IbeTripVariant = ({
                 ) : fare?.RuleNumber.toLowerCase() === "flex" ? (
                   "For Comfort & Convenience"
                 ) : (
-                  "We Recommend"
+                  "We Recommend "
                 )}
               </p>
             </div>

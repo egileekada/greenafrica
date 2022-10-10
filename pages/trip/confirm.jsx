@@ -44,7 +44,7 @@ const TripConfirm = () => {
     ScrollToTop();
   }, []);
 
-  //Don't re work - it currently breaks code
+  // Don't re work - it currently breaks code
   useEffect(() => {
     async function fetchBookingDetails() {
       dispatch(GetBookingDetails());

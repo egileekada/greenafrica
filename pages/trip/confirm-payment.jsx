@@ -46,9 +46,11 @@ const ConfirmTripPayment = () => {
   useEffect(() => {
     async function _checkVerifyPayment() {
       if (verifyPaymentResponse) {
-        dispatch(startSession());
+        // dispatch(startSession());
         if (signature) {
           router.push("/trip/confirm");
+        } else {
+          // dispatch(startSession());
         }
       }
     }
