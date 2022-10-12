@@ -341,14 +341,16 @@ const Book = ({
                   />
                 ) : (
                   <>
-                    {formatOptionLabel(
-                      fromTo?.from ?? {
-                        cityName: "",
-                        value: "",
-                        country: "",
-                        arrivals: [],
-                      }
-                    )}
+                    {fromTo?.from.value !== ""
+                      ? formatOptionLabel(
+                          fromTo?.from ?? {
+                            cityName: "",
+                            value: "",
+                            country: "",
+                            arrivals: [],
+                          }
+                        )
+                      : "Origin"}
                   </>
                 )}
               </div>
@@ -403,13 +405,15 @@ const Book = ({
                   />
                 ) : (
                   <>
-                    {formatOptionLabel(
-                      fromTo?.to ?? {
-                        cityName: "",
-                        value: "",
-                        country: "",
-                      }
-                    )}
+                    {fromTo?.to.value !== ""
+                      ? formatOptionLabel(
+                          fromTo?.to ?? {
+                            cityName: "",
+                            value: "",
+                            country: "",
+                          }
+                        )
+                      : "Destination"}
                   </>
                 )}
               </div>
