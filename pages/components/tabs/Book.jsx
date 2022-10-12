@@ -259,14 +259,14 @@ const Book = ({
     formik.setFieldValue("origin", value);
   };
 
-  useEffect(() => {
-    setOrigin(
-      fromTo?.from ?? { cityName: "", value: "", country: "", arrivals: [] }
-    );
-    setDestination(fromTo?.to ?? { cityName: "", value: "", country: "" });
-    setDepartureDateFormik(departureDate);
-    setReturnDateFormik(returningDate);
-  }, []);
+  // useEffect(() => {
+  //   setOrigin(
+  //     fromTo?.from ?? { cityName: "", value: "", country: "", arrivals: [] }
+  //   );
+  //   setDestination(fromTo?.to ?? { cityName: "", value: "", country: "" });
+  //   setDepartureDateFormik(departureDate);
+  //   setReturnDateFormik(returningDate);
+  // }, []);
 
   const setDestination = (value) => {
     formik.setFieldValue("destination", value);
@@ -296,7 +296,7 @@ const Book = ({
             <div
               className={`${
                 formik.touched.origin && formik.errors.origin
-                  ? "border border-[#de0150]"
+                  ? "border !border-[#de0150]"
                   : ""
               } ${width < 769 ? "cursor-pointer" : ""}
                flex items-end booking__wrapper `}
@@ -364,7 +364,7 @@ const Book = ({
             <div
               className={`${
                 formik.touched.destination && formik.errors.destination
-                  ? "border border-[#de0150]"
+                  ? "border !border-[#de0150]"
                   : ""
               } ${width < 769 ? "cursor-pointer" : ""}
               flex items-end booking__wrapper`}
