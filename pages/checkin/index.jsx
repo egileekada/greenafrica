@@ -23,6 +23,7 @@ const validationSchema = Yup.object().shape({
 const CheckIn = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const [findBooking, { isLoading }] = useFindBookingMutation();
   const [
     initGetBooking,
@@ -69,8 +70,14 @@ const CheckIn = () => {
             (booking) => booking.QueueCode === "NOFLY"
           )
         ) {
+          setMessage(
+            "Unable to checkin, please contact our call centre for further information"
+          );
           setIsModalOpen(true);
         } else if (data.Booking.BookingSum.BalanceDue > 0) {
+          setMessage(
+            "Please, try again or contact our call center to complete your booking."
+          );
           setIsModalOpen(true);
         } else {
           router.push(
@@ -221,13 +228,10 @@ const CheckIn = () => {
           </div>
         </div>
       </section>
-      <button onClick={() => setIsModalOpen(true)}>Open Modal</button>
+
       <Modal className="modalStyle" visible={isModalOpen} footer={null}>
         <div className="px-5 pb-5 pt-10 text-center">
-          <h1 className="text-lg font-normal">
-            Please, try again or contact our call center to complete your
-            booking.
-          </h1>
+          <h1 className="text-lg font-normal">{message}</h1>
 
           <button
             onClick={() => setIsModalOpen(false)}
