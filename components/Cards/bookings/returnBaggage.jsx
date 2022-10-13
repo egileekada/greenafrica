@@ -8,6 +8,7 @@ import {
   setNewBookingReturnSSRs,
 } from "redux/reducers/booking";
 import { v4 as uuid } from "uuid";
+import { uniqueId } from "lodash";
 
 const BookingReturnBaggageCard = ({
   passenger,
@@ -94,7 +95,7 @@ const BookingReturnBaggageCard = ({
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
-      const unique_id = uuid();
+      const unique_id = uniqueId(`${ArrivalStation}${DepartureStation}`);
       const SSRItemObj = new Array(value).fill({
         id: `${Date.now()}${unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
@@ -106,7 +107,7 @@ const BookingReturnBaggageCard = ({
       setNewReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
       dispatch(setNewBookingReturnSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
-      const _existingSSRs =  returnNewSelection
+      const _existingSSRs = returnNewSelection
         ? [...newBookingReturnSSRs]
         : [...selectedReturnSSRs];
 
@@ -126,7 +127,7 @@ const BookingReturnBaggageCard = ({
             parseInt(passenger?.PassengerNumber);
         return !_ruleBasis;
       });
-      const _unique_id = uuid();
+      const _unique_id = uniqueId(`${ArrivalStation}${DepartureStation}`);
       const _SSRItemObj = new Array(value).fill({
         id: `${Date.now()}${_unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
