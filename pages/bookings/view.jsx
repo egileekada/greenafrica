@@ -442,7 +442,7 @@ const TripView = () => {
                     }`}
                     onClick={resellJourney}
                     disabled={
-                      rresellingJourney || resellingSSR || cancellingSSR
+                      resellingJourney || resellingSSR || cancellingSSR
                     }
                   >
                     {resellingJourney || resellingSSR || cancellingSSR

@@ -962,8 +962,7 @@ export const FetchSSRAvailability = () => async (dispatch, getState) => {
             flightNumber:
               currentBooking?.goTrip?.segment?.FlightDesignator?.FlightNumber,
             opSuffix: "",
-            departureDate:
-              currentBooking?.goTrip?.segment?.FlightDesignator?.STD,
+            departureDate: currentBooking?.goTrip?.segment?.STD,
             departureDateSpecified: true,
             arrivalStation: currentBooking?.goTrip?.segment?.ArrivalStation,
             departureStation: currentBooking?.goTrip?.segment?.DepartureStation,
@@ -977,8 +976,7 @@ export const FetchSSRAvailability = () => async (dispatch, getState) => {
               currentBooking?.returnTrip?.segment?.FlightDesignator
                 ?.FlightNumber,
             opSuffix: "",
-            departureDate:
-              currentBooking?.returnTrip?.segment?.FlightDesignator?.STD,
+            departureDate: currentBooking?.returnTrip?.segment?.STD,
             departureDateSpecified: true,
             arrivalStation: currentBooking?.returnTrip?.segment?.ArrivalStation,
             departureStation:
