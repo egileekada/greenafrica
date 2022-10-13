@@ -180,7 +180,7 @@ const TripView = () => {
       </nav>
       <section className="w-full">
         <section className="ga__section">
-          <div className="ga__section__main">
+          <div className="ga__section__main flex-grow">
             <section className="flex flex-col mt-16 lg:mt-0">
               <section className="flex flex-col">
                 {goTrip?.journey && goTrip?.fare && goTrip?.segment && (
@@ -230,9 +230,6 @@ const TripView = () => {
                 {/* Terms */}
               </section>
             </section>
-          </div>
-          <div className="ga__section__side">
-            <IbeSidebar />
           </div>
         </section>
       </section>

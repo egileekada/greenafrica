@@ -28,7 +28,7 @@ import {
 } from "services/widgetApi.js";
 
 const TripView = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const { data, isLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productLoading } = useGetProductsQuery();
   const [roundTripEnabled, setRoundTripEnabled] = useState(false);

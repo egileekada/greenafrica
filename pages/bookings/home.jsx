@@ -405,10 +405,7 @@ const ManageBookings = (props) => {
               verifyManageBookingResponse?.pnr.toLowerCase() ===
                 statePNR.toLowerCase() ? (
                 <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
-                  <p>
-                    You added some new services so your fare has been updated
-                    with additional fees
-                  </p>
+                  <p>Your booking has been confirmed</p>
                 </div>
               ) : null}
               <div className="ga__section__main">

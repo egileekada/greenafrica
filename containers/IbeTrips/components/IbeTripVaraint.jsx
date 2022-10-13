@@ -54,12 +54,11 @@ const IbeTripVariant = ({
     return `${name}`;
   };
 
-  const totalServiceCharge = fare.PaxFares[0].ServiceCharges.reduce(
-    (accumulator, object) => {
-      return accumulator + object.Amount;
-    },
-    0
-  );
+  const totalServiceCharge = fare?.PaxFares
+    ? fare?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
+        return accumulator + object.Amount;
+      }, 0)
+    : 0;
 
   const handleBtnClick = (_fare) => {
     setSelected({
