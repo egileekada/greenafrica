@@ -15,6 +15,8 @@ import { bookingSelector, ResellNewJourney } from "redux/reducers/booking";
 import { sessionSelector } from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
+import { notification } from "antd";
+
 
 import {
   useResellNewJourneyMutation,
@@ -376,7 +378,7 @@ const TripView = () => {
             });
           });
       })
-      .catch(() => {
+      .catch((err) => {
         const errText =
           err?.response?.data?.BookingUpdateResponseData?.Error?.ErrorText;
         notification.error({
@@ -441,9 +443,7 @@ const TripView = () => {
                       checked ? "" : "opacity-50 pointer-events-none"
                     }`}
                     onClick={resellJourney}
-                    disabled={
-                      resellingJourney || resellingSSR || cancellingSSR
-                    }
+                    disabled={resellingJourney || resellingSSR || cancellingSSR}
                   >
                     {resellingJourney || resellingSSR || cancellingSSR
                       ? "Saving...."

@@ -17,6 +17,7 @@ import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import ConfrimPageFares from "./components/ConfrimPageFares";
 import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
 import LogoIcon from "assets/svgs/logo.svg";
+import { notification } from "antd";
 
 const ConfirmManageBooking = () => {
   const router = useRouter();
@@ -377,6 +378,9 @@ const ConfirmManageBooking = () => {
         <section className="w-full checkin pt-4 lg:pt-0">
           {sessionStateLoading ? (
             <div className="px-12 py-12">
+              <SkeletonLoader />
+              <SkeletonLoader />
+              <SkeletonLoader />
               <SkeletonLoader />
             </div>
           ) : (
