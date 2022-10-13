@@ -35,8 +35,8 @@ export const _extractUniqueDiffrenceById = (array1, array2, newArr = []) => {
 
   const diff = getDifference(array1, array2);
 
-  // console.log("new Arr", newArr);
-  // console.log("diff is  _extractUniqueDiffrenceById ::", diff);
+  console.log("diff is ", diff);
+  console.log("new Arr", newArr);
 
   const uniqueIds = new Set();
   const unique = diff.filter((element) => {
@@ -48,7 +48,6 @@ export const _extractUniqueDiffrenceById = (array1, array2, newArr = []) => {
     if (isDuplicate) {
       return true;
     }
-
     return false;
   });
 

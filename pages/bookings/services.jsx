@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import BaseLayout from "layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonLoader from "components/SkeletonLoader";
-
 import {
   sessionSelector,
   GetBookingDetailsWithPNR,
@@ -28,7 +27,6 @@ import {
 import { useResellSSRMutation } from "services/bookingApi";
 import { notification } from "antd";
 import LogoIcon from "assets/svgs/logo.svg";
-
 
 const PassengerDetails = () => {
   const router = useRouter();
@@ -94,101 +92,92 @@ const PassengerDetails = () => {
           const _TRIPS = bookingResponse?.Booking?.Journeys;
           if (_TRIPS?.length > 0) {
             if (goDifference?.length > 0 || returnDifference?.length > 0) {
-              if (_TRIPS?.length === 1) {
-                const _SingleJourneySSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
-                const _BookingSSRs = [...goDifference];
-                _SingleJourneySSRs
-                  .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
-                  .map((_ssr, _ssrIndex) => {
-                    let uuid = uniqueId(
-                      `${_ssr?.ArrivalStation}${_ssr?.DepartureStation}`
-                    );
-                    let newObj = {
-                      id: `${Date.now()}${_ssrIndex}${uuid}`,
-                      passengerNumber: parseInt(_ssr?.PassengerNumber),
-                      ssrCode: _ssr?.SSRCode,
-                      schedueIndex: 0,
-                      ArrivalStation: _ssr?.ArrivalStation,
-                      DepartureStation: _ssr?.DepartureStation,
-                    };
-                    _BookingSSRs.push(newObj);
-                  });
-
-                const BookingSessionIds = _BookingSSRs.map((ssr) =>
-                  ssr?.ssrCode.toLowerCase()
-                );
-                const _newArr = NEW_SSRS.filter((ssr) => {
-                  return !BookingSessionIds.includes(ssr.toLowerCase());
-                });
-                setNewSSRs(_newArr);
-
-                setSSRs(_BookingSSRs);
-                dispatch(setNewBookingSSRs(_BookingSSRs));
-              } else {
-                // perform deault actionStatusCode
-                const _GOSSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
-                const _RETURNSSRs = _TRIPS[1]?.Segments[0]?.PaxSSRs;
-
-                const _BookingSessionSSRs = [...goDifference];
-                _GOSSRs
-                  .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
-                  .map((_ssr, _ssrIndex) => {
-                    const unique_id = uniqueId(
-                      `${_ssr?.ArrivalStation}${_ssr?.DepartureStation}`
-                    );
-                    let newObj = {
-                      id: `${Date.now()}${unique_id}`,
-                      passengerNumber: parseInt(_ssr?.PassengerNumber),
-                      ssrCode: _ssr?.SSRCode,
-                      schedueIndex: 0,
-                      ArrivalStation: _ssr?.ArrivalStation,
-                      DepartureStation: _ssr?.DepartureStation,
-                    };
-                    _BookingSessionSSRs.push(newObj);
-                  });
-
-                const BookingSessionIds = _BookingSessionSSRs.map((ssr) =>
-                  ssr?.ssrCode.toLowerCase()
-                );
-                const _newArr = NEW_SSRS.filter((ssr) => {
-                  return !BookingSessionIds.includes(ssr.toLowerCase());
-                });
-                setNewSSRs(_newArr);
-
-                const _BookingSessionReturnSSRs = [...returnDifference];
-                _RETURNSSRs
-                  .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
-                  .map((_ssr) => {
-                    const unique_id = uniqueId(
-                      `${_ssr?.ArrivalStation}${_ssr?.DepartureStation}`
-                    );
-                    let newObj = {
-                      id: `${Date.now()}${unique_id}`,
-                      passengerNumber: parseInt(_ssr?.PassengerNumber),
-                      ssrCode: _ssr?.SSRCode,
-                      schedueIndex: 0,
-                      ArrivalStation: _ssr?.ArrivalStation,
-                      DepartureStation: _ssr?.DepartureStation,
-                    };
-                    _BookingSessionReturnSSRs.push(newObj);
-                  });
-
-                const BookingSessionReturnIds = _BookingSessionReturnSSRs.map(
-                  (ssr) => ssr?.ssrCode.toLowerCase()
-                );
-                const newArr = NEW_SSRS.filter((ssr) => {
-                  return !BookingSessionReturnIds.includes(ssr.toLowerCase());
-                });
-                setNewReturnSSRs(newArr);
-
-                setSSRs(_BookingSessionSSRs);
-                setReturnSSRs(_BookingSessionReturnSSRs);
-
-                dispatch(setNewBookingSSRs(_BookingSessionSSRs));
-                dispatch(setNewBookingReturnSSRs(_BookingSessionReturnSSRs));
-
-                // perform different action
-              }
+              // if (_TRIPS?.length === 1) {
+              //   const _SingleJourneySSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
+              //   const _BookingSSRs = [...goDifference];
+              //   _SingleJourneySSRs
+              //     .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
+              //     .map((_ssr, _ssrIndex) => {
+              //       let uuid = uniqueId(
+              //         `${_ssr?.ArrivalStation}${_ssr?.DepartureStation}`
+              //       );
+              //       let newObj = {
+              //         id: `${Date.now()}${_ssrIndex}${uuid}`,
+              //         passengerNumber: parseInt(_ssr?.PassengerNumber),
+              //         ssrCode: _ssr?.SSRCode,
+              //         schedueIndex: 0,
+              //         ArrivalStation: _ssr?.ArrivalStation,
+              //         DepartureStation: _ssr?.DepartureStation,
+              //       };
+              //       _BookingSSRs.push(newObj);
+              //     });
+              //   const BookingSessionIds = _BookingSSRs.map((ssr) =>
+              //     ssr?.ssrCode.toLowerCase()
+              //   );
+              //   const _newArr = NEW_SSRS.filter((ssr) => {
+              //     return !BookingSessionIds.includes(ssr.toLowerCase());
+              //   });
+              //   setNewSSRs(_newArr);
+              //   setSSRs(_BookingSSRs);
+              //   dispatch(setNewBookingSSRs(_BookingSSRs));
+              // } else {
+              //   // perform deault actionStatusCode
+              //   const _GOSSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
+              //   const _RETURNSSRs = _TRIPS[1]?.Segments[0]?.PaxSSRs;
+              //   const _BookingSessionSSRs = [...goDifference];
+              //   _GOSSRs
+              //     .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
+              //     .map((_ssr, _ssrIndex) => {
+              //       const unique_id = uniqueId(
+              //         `${_ssr?.ArrivalStation}${_ssr?.DepartureStation}`
+              //       );
+              //       let newObj = {
+              //         id: `${Date.now()}${unique_id}`,
+              //         passengerNumber: parseInt(_ssr?.PassengerNumber),
+              //         ssrCode: _ssr?.SSRCode,
+              //         schedueIndex: 0,
+              //         ArrivalStation: _ssr?.ArrivalStation,
+              //         DepartureStation: _ssr?.DepartureStation,
+              //       };
+              //       _BookingSessionSSRs.push(newObj);
+              //     });
+              //   const BookingSessionIds = _BookingSessionSSRs.map((ssr) =>
+              //     ssr?.ssrCode.toLowerCase()
+              //   );
+              //   const _newArr = NEW_SSRS.filter((ssr) => {
+              //     return !BookingSessionIds.includes(ssr.toLowerCase());
+              //   });
+              //   setNewSSRs(_newArr);
+              //   const _BookingSessionReturnSSRs = [...returnDifference];
+              //   _RETURNSSRs
+              //     .filter((ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode))
+              //     .map((_ssr) => {
+              //       const unique_id = uniqueId(
+              //         `${_ssr?.ArrivalStation}${_ssr?.DepartureStation}`
+              //       );
+              //       let newObj = {
+              //         id: `${Date.now()}${unique_id}`,
+              //         passengerNumber: parseInt(_ssr?.PassengerNumber),
+              //         ssrCode: _ssr?.SSRCode,
+              //         schedueIndex: 0,
+              //         ArrivalStation: _ssr?.ArrivalStation,
+              //         DepartureStation: _ssr?.DepartureStation,
+              //       };
+              //       _BookingSessionReturnSSRs.push(newObj);
+              //     });
+              //   const BookingSessionReturnIds = _BookingSessionReturnSSRs.map(
+              //     (ssr) => ssr?.ssrCode.toLowerCase()
+              //   );
+              //   const newArr = NEW_SSRS.filter((ssr) => {
+              //     return !BookingSessionReturnIds.includes(ssr.toLowerCase());
+              //   });
+              //   setNewReturnSSRs(newArr);
+              //   setSSRs(_BookingSessionSSRs);
+              //   setReturnSSRs(_BookingSessionReturnSSRs);
+              //   dispatch(setNewBookingSSRs(_BookingSessionSSRs));
+              //   dispatch(setNewBookingReturnSSRs(_BookingSessionReturnSSRs));
+              //   // perform different action
+              // }
             } else {
               if (_TRIPS?.length === 1) {
                 const _SingleJourneySSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
@@ -327,12 +316,17 @@ const PassengerDetails = () => {
         let newBookingReturnSSRsPayload = [];
 
         if (bookingSessionSSRs.length > 0) {
+          // console.log("called _extractUniqueDiffrenceById");
+          // console.log("newBookingSSRs", newBookingSSRs);
+          // console.log("bookingSessionSSRs", bookingSessionSSRs);
+          // console.log(" newSSRs", newSSRs);
           newBookingSSRsPayload = _extractUniqueDiffrenceById(
             newBookingSSRs,
             bookingSessionSSRs,
             newSSRs
           );
         } else {
+          // console.log("called extractDiffrenceByID");
           newBookingSSRsPayload = _extractDiffrenceById(
             newBookingSSRs,
             bookingSessionSSRs
@@ -354,11 +348,11 @@ const PassengerDetails = () => {
           }
         }
 
-        console.log(
-          "extras",
-          newBookingSSRsPayload,
-          newBookingReturnSSRsPayload
-        );
+        // console.log(
+        //   "extras",
+        //   newBookingSSRsPayload,
+        //   newBookingReturnSSRsPayload
+        // );
 
         await sendSellRequest(newBookingSSRsPayload, [
           ...newBookingReturnSSRsPayload,
@@ -368,12 +362,19 @@ const PassengerDetails = () => {
         let newBookingReturnSSRsPayload = [];
 
         if (bookingSessionSSRs.length > 0) {
+          // console.log("called _extractUniqueDiffrenceById");
+          // console.log("newBookingSSRs", newBookingSSRs);
+          // console.log("bookingSessionSSRs", bookingSessionSSRs);
+          // console.log(" newSSRs", newSSRs);
           newBookingSSRsPayload = _extractUniqueDiffrenceById(
             newBookingSSRs,
             bookingSessionSSRs,
             newSSRs
           );
         } else {
+          // console.log("called _extractDiffrenceById");
+          // console.log("newBookingSSRs", newBookingSSRs);
+          // console.log("bookingSessionSSRs", bookingSessionSSRs);
           newBookingSSRsPayload = _extractDiffrenceById(
             newBookingSSRs,
             bookingSessionSSRs
@@ -393,11 +394,11 @@ const PassengerDetails = () => {
           );
         }
 
-        console.log(
-          "no extras",
-          newBookingSSRsPayload,
-          newBookingReturnSSRsPayload
-        );
+        // console.log(
+        //   "no extras",
+        //   newBookingSSRsPayload,
+        //   newBookingReturnSSRsPayload
+        // );
 
         await sendSellRequest(
           newBookingSSRsPayload,
@@ -501,10 +502,9 @@ const PassengerDetails = () => {
       });
   };
 
-   const goBackToHome = () => {
-     window.location.assign("https://dev-website.gadevenv.com/");
-   };
-
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
 
   return (
     <BaseLayout>

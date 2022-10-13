@@ -4,7 +4,7 @@ import Counter from "components/Counter";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import { bookingSelector, setNewBookingSSRs } from "redux/reducers/booking";
-import { v4 as uuid } from "uuid";
+import { uniqueId } from "lodash";
 
 const BoookingBaggageCard = ({
   passenger,
@@ -91,7 +91,7 @@ const BoookingBaggageCard = ({
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
-      const unique_id = uuid();
+      const unique_id = uniqueId(`${ArrivalStation}${DepartureStation}`);
       const SSRItemObj = new Array(value).fill({
         id: `${Date.now()}${unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
@@ -114,7 +114,7 @@ const BoookingBaggageCard = ({
         return !_ruleBasis;
       });
 
-      const _unique_id = uuid();
+      const _unique_id = uniqueId(`${ArrivalStation}${DepartureStation}`);
       const _SSRItemObj = new Array(value).fill({
         id: `${Date.now()}${_unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
