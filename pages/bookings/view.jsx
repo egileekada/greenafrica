@@ -26,7 +26,7 @@ const TripView = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const { goTrip, returnTrip, tripParams, returnParams, resellLoading } =
+  const { goTrip, returnTrip, tripParams, returnParams } =
     useSelector(bookingSelector);
   const { bookingResponse } = useSelector(sessionSelector);
 
@@ -441,9 +441,13 @@ const TripView = () => {
                       checked ? "" : "opacity-50 pointer-events-none"
                     }`}
                     onClick={resellJourney}
-                    disabled={resellLoading}
+                    disabled={
+                      rresellingJourney || resellingSSR || cancellingSSR
+                    }
                   >
-                    {resellLoading ? "Saving...." : "Continue"}
+                    {resellingJourney || resellingSSR || cancellingSSR
+                      ? "Saving...."
+                      : "Continue"}
                   </button>
                 </div>
                 {/* Terms */}
