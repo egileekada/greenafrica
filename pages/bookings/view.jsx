@@ -2,22 +2,25 @@
 import Link from "next/link";
 import { useState } from "react";
 import BaseLayout from "layouts/Base";
-import IbeSidebar from "containers/IbeSidebar";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import ArrowTo from "assets/svgs/arrowto.svg";
 import { Checkbox } from "antd";
-import BackIcon from "assets/svgs/seats/arrowleft.svg";
-import ToTop from "assets/svgs/toTop.svg";
 import LogoIcon from "assets/svgs/logo.svg";
-
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { bookingSelector, ResellNewJourney } from "redux/reducers/booking";
+import { sessionSelector } from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
+
+import {
+  useResellNewJourneyMutation,
+  useCancelSSRMutation,
+  useResellSSRMutation,
+} from "services/bookingApi";
 
 const TripView = () => {
   const router = useRouter();
@@ -25,6 +28,12 @@ const TripView = () => {
   const [checked, setChecked] = useState(false);
   const { goTrip, returnTrip, tripParams, returnParams, resellLoading } =
     useSelector(bookingSelector);
+  const { bookingResponse } = useSelector(sessionSelector);
+
+  const [ResellSSR, { isLoading: resellingSSR }] = useResellSSRMutation();
+  const [CancelSSR, { isLoading: cancellingSSR }] = useCancelSSRMutation();
+  const [ResellNewJourney, { isLoading: resellingJourney }] =
+    useResellNewJourneyMutation();
 
   const onCheckChange = (e) => {
     setChecked(e.target.checked);
@@ -166,7 +175,217 @@ const TripView = () => {
   };
 
   const resellJourney = () => {
-    dispatch(ResellNewJourney());
+    // dispatch(ResellNewJourney());
+    //Refactor Begin
+    const paxPriceTypes = [];
+    const _serviceBundleList = [];
+
+    const ADULT_COUNT = bookingResponse?.Booking?.Passengers.filter((_pax) => {
+      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "adt";
+    }).length;
+
+    const CHILD_COUNT = bookingResponse?.Booking?.Passengers.filter((_pax) => {
+      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "chd";
+    }).length;
+
+    const totalPaxCount = bookingResponse?.Booking?.Passengers?.length;
+
+    if (ADULT_COUNT > 0) {
+      const _newPType = {
+        paxType: "ADT",
+        paxDiscountCode: "",
+        paxCount: ADULT_COUNT,
+        paxCountSpecified: true,
+      };
+      paxPriceTypes.push(_newPType);
+    }
+
+    if (CHILD_COUNT > 0) {
+      const _newPType = {
+        paxType: "CHD",
+        paxDiscountCode: "",
+        paxCount: CHILD_COUNT,
+        paxCountSpecified: true,
+      };
+      paxPriceTypes.push(_newPType);
+    }
+
+    const _journeySellKeys = [];
+    // SSR RELATED
+    let JourneyOneSegmentSSRRequest = null;
+    let JourneyTwoSegmentSSRRequest = null;
+    let JourneyOne = null;
+    let JourneyTwo = null;
+    // SSR RELATED
+    if (goTrip) {
+      let newObj = {
+        JourneySellKey: goTrip?.journey?.JourneySellKey,
+        FareSellKey: goTrip?.fare?.FareSellKey,
+        standbyPriorityCode: "",
+        packageIndicator: "",
+      };
+      _journeySellKeys.push(newObj);
+      _serviceBundleList.push(goTrip?.fare?.RuleNumber);
+
+      const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
+
+      const JourneyOneSSRsExSeat =
+        bookingResponse?.Booking?.Journeys[0].Segments[0].PaxSSRs.filter(
+          (ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode)
+        );
+
+      JourneyOneSegmentSSRRequest = {
+        flightDesignator: {
+          carrierCode: goTrip?.segment?.FlightDesignator?.CarrierCode,
+          flightNumber: goTrip?.segment?.FlightDesignator?.FlightNumber,
+          opSuffix: "",
+        },
+        std: goTrip?.segment?.STD,
+        stdSpecified: true,
+        departureStation: goTrip?.segment?.DepartureStation,
+        arrivalStation: goTrip?.segment?.ArrivalStation,
+        paxSSRs: [...JourneyOneSSRsExSeat],
+      };
+      JourneyOne = {
+        ...bookingResponse?.Booking?.Journeys[0],
+        State: 0,
+      };
+    }
+
+    if (returnTrip) {
+      let newObj = {
+        JourneySellKey: returnTrip?.journey?.JourneySellKey,
+        FareSellKey: returnTrip?.fare?.FareSellKey,
+        standbyPriorityCode: "",
+        packageIndicator: "",
+      };
+      _journeySellKeys.push(newObj);
+      _serviceBundleList.push(returnTrip?.fare?.RuleNumber);
+
+      const JourneyTwoSSRsExSeat =
+        currentSession?.bookingResponse?.Booking?.Journeys[1].Segments[0]
+          .PaxSSRs;
+
+      JourneyTwoSegmentSSRRequest = {
+        flightDesignator: {
+          carrierCode: returnTrip?.segment?.FlightDesignator?.CarrierCode,
+          flightNumber: returnTrip?.segment?.FlightDesignator?.FlightNumber,
+          opSuffix: "",
+        },
+        std: returnTrip?.segment?.STD,
+        stdSpecified: true,
+        departureStation: returnTrip?.segment?.DepartureStation,
+        arrivalStation: returnTrip?.segment?.ArrivalStation,
+        paxSSRs: [
+          ...JourneyTwoSSRsExSeat.filter((ssrItem) =>
+            ALLOWED__SSRS.includes(ssrItem?.SSRCode)
+          ),
+        ],
+      };
+
+      JourneyTwo = {
+        ...bookingResponse?.Booking?.Journeys[1],
+        State: 0,
+      };
+    }
+
+    const requestPayload = {
+      sellRequestDto: {
+        sellRequest: {
+          sellRequestData: {
+            sellBy: 0,
+            sellBySpecified: true,
+            sellJourneyByKeyRequest: {
+              sellJourneyByKeyRequestData: {
+                actionStatusCode: "NN",
+                journeySellKeys: [..._journeySellKeys],
+                paxPriceType: [...paxPriceTypes],
+                currencyCode: "NGN",
+                paxCount: totalPaxCount,
+                paxCountSpecified: true,
+                loyaltyFilter: 0,
+                loyaltyFilterSpecified: true,
+                isAllotmentMarketFare: false,
+                isAllotmentMarketFareSpecified: true,
+                preventOverLap: false,
+                preventOverLapSpecified: true,
+                replaceAllPassengersOnUpdate: false,
+                replaceAllPassengersOnUpdateSpecified: true,
+                serviceBundleList: [..._serviceBundleList],
+                applyServiceBundle: 1,
+                applyServiceBundleSpecified: true,
+              },
+            },
+          },
+        },
+      },
+    };
+
+    ResellNewJourney(requestPayload)
+      .unwrap()
+      .then(() => {
+        const segmentSSRRequests = [];
+        JourneyOneSegmentSSRRequest &&
+          segmentSSRRequests.push(JourneyOneSegmentSSRRequest);
+        JourneyTwoSegmentSSRRequest &&
+          segmentSSRRequests.push(JourneyTwoSegmentSSRRequest);
+        ResellSSR(segmentSSRRequests)
+          .unwrap()
+          .then((data) => {
+            const _journeys = [];
+            JourneyOne && _journeys.push(JourneyOne);
+            JourneyTwo && _journeys.push(JourneyTwo);
+            const cancelSSRRequest = {
+              cancelRequestData: {
+                cancelBy: 0,
+                cancelBySpecified: true,
+                cancelJourney: {
+                  cancelJourneyRequest: {
+                    journeys: [..._journeys],
+                    waivePenaltyFee: false,
+                    waivePenaltyFeeSpecified: true,
+                    waiveSpoilageFee: false,
+                    waiveSpoilageFeeSpecified: true,
+                    preventReprice: false,
+                    preventRepriceSpecified: true,
+                    forceRefareForItineraryIntegrity: false,
+                    forceRefareForItineraryIntegritySpecified: true,
+                    recordLocator: bookingResponse?.Booking?.RecordLocator,
+                  },
+                },
+              },
+            };
+            CancelSSR(cancelSSRRequest)
+              .unwrap()
+              .then((data) => {
+                // dispatch(setGoTrip(null));
+                // dispatch(setReturnTrip(null));
+                router.push(`/bookings/confirm`);
+              })
+              .catch(() => {
+                notification.error({
+                  message: "Error",
+                  description: "Cancel Services failed",
+                });
+              });
+          })
+          .catch(() => {
+            notification.error({
+              message: "Error",
+              description: "Sell Services failed",
+            });
+          });
+      })
+      .catch(() => {
+        const errText =
+          err?.response?.data?.BookingUpdateResponseData?.Error?.ErrorText;
+        notification.error({
+          message: "Error",
+          description: errText ? errText : "Sell Request failed",
+        });
+      });
+
+    //Refactor End
   };
 
   return (

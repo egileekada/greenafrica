@@ -74,11 +74,9 @@ const PassengerDetails = () => {
     async function fetchBookingDetails() {
       if (signature && manageBookingPnr) {
         dispatch(FetchSSRAvailability());
-
         const payload = {
           pnr: manageBookingPnr,
         };
-        // dispatch(FetchStateFromServer());
         dispatch(GetBookingDetailsWithPNR(payload));
       }
     }

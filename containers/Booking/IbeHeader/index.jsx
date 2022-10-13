@@ -181,11 +181,15 @@ const BookingIbeHeader = () => {
   };
 
   const resolveAbbreviation = (abrreviation) => {
-    const [{ name, code }] = data?.data?.items.filter(
-      (location) => location.code === abrreviation
-    );
+    if (data) {
+      const [{ name, code }] = data?.data?.items.filter(
+        (location) => location.code === abrreviation
+      );
 
-    return `${name} (${code})`;
+      return `${name} (${code})`;
+    } else {
+      return "";
+    }
   };
 
   return (
