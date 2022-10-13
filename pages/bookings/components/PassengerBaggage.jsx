@@ -26,10 +26,8 @@ const BookingPassengerBaggage = ({
   const [showPopUp, setShow] = useState(false);
   const [newSelection, setNewSelection] = useState(false);
   const [returnNewSelection, setReturnNewSelection] = useState(false);
-  const [activeTab, setActiveTab] = useState("");
-  const [schedueIndex, setSchedueIndex] = useState(0);
   const [activeSSRS, setActiveSSRs] = useState([]);
-
+  const [activeReturnSSRS, setActiveReturnSSRs] = useState([]);
   const [preSelectedGoSSRS, setPreSelectedGoSSRS] = useState([]);
   const [preSelectedReturnSSRS, setPreSelectedReturnSSRS] = useState([]);
 
@@ -38,20 +36,7 @@ const BookingPassengerBaggage = ({
     SSRAvailabilityResponse,
     bookingSessionSSRs,
     bookingSessionReturnSSRs,
-    // newBookingSSRs,
-    // newBookingReturnSSRs,
   } = useSelector(bookingSelector);
-
-  useEffect(() => {
-    async function setDefaultTab() {
-      if (bookingResponse?.Booking?.Journeys?.length > 0) {
-        let _activeTab = `${bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation.trim().toLowerCase()}${bookingResponse?.Booking?.Journeys[0]?.Segments[0].ArrivalStation.trim().toLowerCase()}`;
-        setActiveTab(_activeTab);
-        setSchedueIndex(0);
-      }
-    }
-    setDefaultTab();
-  }, [bookingResponse]);
 
   useEffect(() => {
     async function setDefaultSSRS() {
@@ -63,18 +48,23 @@ const BookingPassengerBaggage = ({
         const _SSRList =
           SSRAvailabilityResponse?.SSRAvailabilityForBookingResponse
             ?.SSRSegmentList;
-        if (_SSRList && _SSRList.length > 0 && activeTab?.length > 0) {
-          const filteredSSRs = _SSRList.filter((_listItem) => {
-            let _listItemID = `${_listItem?.LegKey?.DepartureStation.trim().toLowerCase()}${_listItem?.LegKey?.ArrivalStation.trim().toLowerCase()}`;
-            return _listItemID === activeTab;
+        if (_SSRList && _SSRList.length > 0) {
+          const filteredSSRs = _SSRList.filter((_listItem, _listIndex) => {
+            return parseInt(_listIndex) === 0;
           });
-
           setActiveSSRs([...filteredSSRs]);
+
+          if (_SSRList.length > 1) {
+            const _filteredSSRs = _SSRList.filter((_listItem, _listIndex) => {
+              return parseInt(_listIndex) === 1;
+            });
+            setActiveReturnSSRs([..._filteredSSRs]);
+          }
         }
       }
     }
     setDefaultSSRS();
-  }, [SSRAvailabilityResponse, activeTab]);
+  }, [SSRAvailabilityResponse]);
 
   useEffect(() => {
     if (bookingSessionSSRs && bookingSessionSSRs?.length > 0) {
@@ -86,7 +76,6 @@ const BookingPassengerBaggage = ({
   }, []);
 
   const proceedToSeatSelection = () => {
-    // this is suposed to go to seat-Selection,payment is an hotfix
     router.push("/trip/payment");
   };
 
@@ -103,71 +92,45 @@ const BookingPassengerBaggage = ({
     <Fragment>
       <section className="flex flex-col">
         <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs">
-        EXTRA BAGGAGE <span className="italic">(Do you require any extra checked in baggage allowance. Its cheaper online than at the airport)</span>
+          EXTRA BAGGAGE{" "}
+          <span className="italic">
+            (Do you require any extra checked in baggage allowance. Its cheaper
+            online than at the airport)
+          </span>
         </h2>
 
-        <div className="flex h-16 border-b mb-6">
-          {bookingResponse?.Booking?.Journeys?.length > 0 &&
-            bookingResponse?.Booking?.Journeys?.map(
-              (_journey, _journeyIndex) => {
-                const tabID = `${_journey?.Segments[0]?.DepartureStation.trim().toLowerCase()}${_journey?.Segments[0]?.ArrivalStation.trim().toLowerCase()}`;
-                return (
-                  <button
-                    className={`ssr__tab ${
-                      tabID === activeTab ? "active-ssr" : ""
-                    } `}
-                    onClick={() => {
-                      setActiveTab(tabID);
-                      setSchedueIndex(_journeyIndex);
-                    }}
-                  >
-                    <figure>
-                      <FlightIcon />
+        {bookingResponse?.Booking?.Journeys?.length > 0 && (
+          <section className="flex flex-col mt-4">
+            <div className="flex h-16 border-b mb-6">
+              {bookingResponse?.Booking?.Journeys?.length > 0 && (
+                <button className={`ssr__tab active-ssr`}>
+                  <figure>
+                    <FlightIcon />
+                  </figure>
+                  <div className="flex items-center ml-[10px] ">
+                    <p className="font-header text-sm mr-[6px] font-bold">
+                      {!isLoading &&
+                        resolveAbbreviation(
+                          bookingResponse?.Booking?.Journeys[0]?.Segments[0]
+                            ?.DepartureStation
+                        )}
+                    </p>
+                    <figure className="flex items-center justify-center -mb-1">
+                      <ArrowIcon />
                     </figure>
-                    <div className="flex items-center ml-[10px] ">
-                      <p className="font-header text-sm mr-[6px] font-bold">
-                        {!isLoading &&
-                          resolveAbbreviation(
-                            _journey?.Segments[0]?.DepartureStation
-                          )}
-                      </p>
-                      <figure className="flex items-center justify-center -mb-1">
-                        <ArrowIcon />
-                      </figure>
-                      <p className="font-header text-sm ml-[6px] font-bold">
-                        {!isLoading &&
-                          resolveAbbreviation(
-                            _journey?.Segments[0]?.ArrivalStation
-                          )}
-                      </p>
-                    </div>
-                  </button>
-                );
-              }
-            )}
-        </div>
-
-        <div className="flex flex-col">
-          {/* <p>selectedSSRs length:: {JSON.stringify(selectedSSRs.length)}</p>
-          <p>selectedSSRs:: {JSON.stringify(selectedSSRs)}</p>
-          <p>////////////</p>
-          <p>newBookingSSRs:: {JSON.stringify(newBookingSSRs)}</p>
-          <p>newBookingSSRs length:: {JSON.stringify(newBookingSSRs.length)}</p> */}
-          {/* <p>
-            selectedReturnSSRs:: {JSON.stringify(selectedReturnSSRs.length)}
-          </p>
-          <p>selectedReturnSSRs:: {JSON.stringify(selectedReturnSSRs)}</p>
-          <p>////////////</p>
-          <p>newBookingReturnSSRs: {JSON.stringify(newBookingReturnSSRs)}</p>;
-          <p>
-            newBookingReturnSSRs: {JSON.stringify(newBookingReturnSSRs.length)}
-          </p> 
-           */}
-        </div>
-
-        <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
-          {schedueIndex === 0
-            ? activeSSRS.length > 0 && (
+                    <p className="font-header text-sm ml-[6px] font-bold">
+                      {!isLoading &&
+                        resolveAbbreviation(
+                          bookingResponse?.Booking?.Journeys[0].Segments[0]
+                            ?.ArrivalStation
+                        )}
+                    </p>
+                  </div>
+                </button>
+              )}
+            </div>
+            <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
+              {activeSSRS.length > 0 && (
                 <>
                   {activeSSRS.map((_list) => {
                     return _list?.AvailablePaxSSRList.filter((_SSR) => {
@@ -202,20 +165,55 @@ const BookingPassengerBaggage = ({
                           selectedSSRs={selectedSSRs}
                           setSSRs={setSSRs}
                           SSRItem={_SSRITEM}
-                          schedueIndex={schedueIndex}
                           ArrivalStation={_ARRIVAL}
                           DepartureStation={_DEPARTURE}
-                          activeTab={activeTab}
                           _limit={passengerGoSSRs?.length}
+                          schedueIndex={0}
                         />
                       );
                     });
                   })}
                 </>
-              )
-            : activeSSRS.length > 0 && (
+              )}
+            </section>
+          </section>
+        )}
+
+        {bookingResponse?.Booking?.Journeys?.length > 1 && (
+          <section className="flex flex-col mt-4">
+            <div className="flex h-16 border-b mb-6">
+              {bookingResponse?.Booking?.Journeys?.length > 1 && (
+                <button className={`ssr__tab active-ssr`}>
+                  <figure>
+                    <FlightIcon />
+                  </figure>
+                  <div className="flex items-center ml-[10px] ">
+                    <p className="font-header text-sm mr-[6px] font-bold">
+                      {!isLoading &&
+                        resolveAbbreviation(
+                          bookingResponse?.Booking?.Journeys[1]?.Segments[0]
+                            ?.DepartureStation
+                        )}
+                    </p>
+                    <figure className="flex items-center justify-center -mb-1">
+                      <ArrowIcon />
+                    </figure>
+                    <p className="font-header text-sm ml-[6px] font-bold">
+                      {!isLoading &&
+                        resolveAbbreviation(
+                          bookingResponse?.Booking?.Journeys[1].Segments[0]
+                            ?.ArrivalStation
+                        )}
+                    </p>
+                  </div>
+                </button>
+              )}
+            </div>
+
+            <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
+              {activeReturnSSRS.length > 0 && activeReturnSSRS.length > 0 && (
                 <>
-                  {activeSSRS.map((_list) => {
+                  {activeReturnSSRS.map((_list) => {
                     return _list?.AvailablePaxSSRList.filter((_SSR) => {
                       return ALLOWED__SSRS.includes(_SSR?.SSRCode);
                     }).map((_SSRITEM) => {
@@ -248,18 +246,19 @@ const BookingPassengerBaggage = ({
                           selectedReturnSSRs={selectedReturnSSRs}
                           setReturnSSRs={setReturnSSRs}
                           SSRItem={_SSRITEM}
-                          schedueIndex={schedueIndex}
                           ArrivalStation={_ARRIVAL}
                           DepartureStation={_DEPARTURE}
-                          activeTab={activeTab}
                           _limit={passengerReturnSSRs?.length}
+                          schedueIndex={1}
                         />
                       );
                     });
                   })}
                 </>
               )}
-        </section>
+            </section>
+          </section>
+        )}
       </section>
       <Popup
         display={showPopUp}
