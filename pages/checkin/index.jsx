@@ -10,7 +10,7 @@ import {
   useGetBookingMutation,
 } from "services/bookingApi";
 
-import { startSession, retrieveBooking } from "redux/reducers/session";
+import { startSession } from "redux/reducers/session";
 import { resetStore } from "redux/store";
 
 const validationSchema = Yup.object().shape({
@@ -25,10 +25,7 @@ const CheckIn = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [findBooking, { isLoading }] = useFindBookingMutation();
-  const [
-    initGetBooking,
-    { isLoading: bookingLoading, isError, data: bookingData },
-  ] = useGetBookingMutation();
+  const [initGetBooking] = useGetBookingMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -55,8 +52,6 @@ const CheckIn = () => {
             message: "Error",
             description: error?.data?.Error?.ErrorText,
           });
-
-          console.log(error);
         });
     },
   });
@@ -77,12 +72,12 @@ const CheckIn = () => {
         } else if (data.Booking.BookingSum.BalanceDue > 0) {
           setMessage("Check-in is not available for unconfirmed bookings");
           setIsModalOpen(true);
-        } else if (data.PackageIndicator === 0) {
+        } else if (data.PackageIndicator == 0) {
           setMessage(
             "Online Check-in opens 2 days before the flight departure and closes 3 hours before the flight departure"
           );
           setIsModalOpen(true);
-        } else if (data.LoginIndicator > 1) {
+        } else if (parseInt(data.LoginIndicator) > 1) {
           setMessage(
             "Please, try again or contact our call center to complete your booking."
           );
