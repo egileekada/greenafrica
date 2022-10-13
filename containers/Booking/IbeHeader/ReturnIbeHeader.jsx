@@ -177,13 +177,16 @@ const ReturnBookingIbeHeader = () => {
       dispatch(fetchFlightAvailability(tripParams, flightRequest));
     }
   };
-
   const resolveAbbreviation = (abrreviation) => {
-    const [{ name, code }] = data?.data?.items.filter(
-      (location) => location.code === abrreviation
-    );
+    if (data) {
+      const [{ name, code }] = data?.data?.items.filter(
+        (location) => location.code === abrreviation
+      );
 
-    return `${name} (${code})`;
+      return `${name} (${code})`;
+    } else {
+      return "";
+    }
   };
 
   return (
@@ -194,8 +197,6 @@ const ReturnBookingIbeHeader = () => {
           <ArrowTo />
         </figure>
         <p className="mx-4">{returnParams?.arrivalStation}</p>
-
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>} */}
 
         <figure className="flightCircle">
           <FlightIcon />

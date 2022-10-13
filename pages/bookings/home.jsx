@@ -376,8 +376,8 @@ const ManageBookings = (props) => {
         {bookingResponse &&
           bookingResponse?.Booking &&
           parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0 &&
-          parseInt(bookingResponse?.Booking?.BookingInfo?.BookingStatus) ===
-            1 && (
+          parseInt(bookingResponse?.Booking?.BookingInfo?.BookingStatus) >=
+            0 && (
             <nav className="manage-booking-bar">
               <p className="font-display text-base text-primary-main">
                 Your booking is on hold. Please review the booking details and
