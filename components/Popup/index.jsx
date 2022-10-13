@@ -5,6 +5,14 @@ import CloseIcon from "assets/svgs/white-close.svg";
 const Popup = ({ children, display, closeModal, canClose = true }) => {
   const activeClass = display ? "active" : "inactive";
 
+  React.useEffect(() => {
+    if (display) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [display]);
+
   return display ? (
     <div className={`ga__popup ${activeClass}`}>
       <div
