@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import BaseLayout from "layouts/Base";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { notification } from "antd";
+import { notification, Modal } from "antd";
 import { useDispatch } from "react-redux";
-import { useFindBookingMutation } from "services/bookingApi";
-import { startSession, retrieveBooking } from "redux/reducers/session";
+import {
+  useFindBookingMutation,
+  useGetBookingMutation,
+} from "services/bookingApi";
+import { startSession } from "redux/reducers/session";
 import { resetStore } from "redux/store";
 import LogoIcon from "assets/svgs/logo.svg";
 
@@ -19,7 +22,10 @@ const validationSchema = Yup.object().shape({
 
 const ManageBooking = () => {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const [findBooking, { isLoading }] = useFindBookingMutation();
+  const [initGetBooking] = useGetBookingMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,27 +45,57 @@ const ManageBooking = () => {
       findBooking(values)
         .unwrap()
         .then((data) => {
-          dispatch(retrieveBooking({ id: values.pnr }));
-          router.push(
-            {
-              pathname: "/bookings/home",
-              query: {
-                pnr: values.pnr,
-              },
-            },
-            "/bookings/home"
-          );
+          checkPnr(values.pnr);
         })
         .catch((error) => {
           notification.error({
             message: "Error",
             description: error?.data?.Error?.ErrorText,
           });
-
-          // console.log(error);
         });
     },
   });
+
+  const checkPnr = (pnr) => {
+    initGetBooking(pnr)
+      .unwrap()
+      .then((data) => {
+        if (
+          data.Booking.BookingQueueInfos.some(
+            (booking) => booking.QueueCode === "NOFLY"
+          )
+        ) {
+          setMessage(
+            "Unable to checkin, please contact our call centre for further information"
+          );
+          setIsModalOpen(true);
+        } else if (data.Booking.BookingSum.BalanceDue > 0) {
+          setMessage("Check-in is not available for unconfirmed bookings");
+          setIsModalOpen(true);
+        } else if (data.PackageIndicator == 0) {
+          setMessage(
+            "Online Check-in opens 2 days before the flight departure and closes 3 hours before the flight departure"
+          );
+          setIsModalOpen(true);
+        } else if (parseInt(data.LoginIndicator) > 1) {
+          setMessage(
+            "Please, try again or contact our call center to complete your booking."
+          );
+          setIsModalOpen(true);
+        } else {
+          router.push(
+            {
+              pathname: "/bookings/home",
+              query: {
+                pnr: pnr,
+              },
+            },
+            "/bookings/home"
+          );
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
@@ -158,6 +194,19 @@ const ManageBooking = () => {
           </form>
         </div>
       </section>
+
+      <Modal className="modalStyle" visible={isModalOpen} footer={null}>
+        <div className="px-5 pb-5 pt-10 text-center">
+          <h1 className="text-lg font-normal">{message}</h1>
+
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="btn btn-primary basis-full md:basis-auto my-10 md:mb-0 mx-auto"
+          >
+            Ok
+          </button>
+        </div>
+      </Modal>
     </BaseLayout>
   );
 };
