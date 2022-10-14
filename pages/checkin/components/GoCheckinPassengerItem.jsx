@@ -191,7 +191,7 @@ const GoCheckinPassengerItem = ({
   return (
     <PassengerAccordion passenger={passenger}>
       <section className="flex flex-col">
-        <div className="flex flex-col mt-">
+        {/* <div className="flex flex-col mt-">
           <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-2">
             Go SPECIAL ASSISTANCE
           </h6>
@@ -221,7 +221,7 @@ const GoCheckinPassengerItem = ({
               </label>
             </Checkbox>
           </div>
-        </div>
+        </div> */}
         <CheckinPassengerBaggage
           passenger={passenger}
           selectedSSRs={selectedSSRs}
