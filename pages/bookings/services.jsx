@@ -266,11 +266,11 @@ const PassengerDetails = () => {
           }
         }
 
-        // console.log(
-        //   "extras",
-        //   newBookingSSRsPayload,
-        //   newBookingReturnSSRsPayload
-        // );
+        console.log(
+          "extras",
+          newBookingSSRsPayload,
+          newBookingReturnSSRsPayload
+        );
 
         await sendSellRequest(newBookingSSRsPayload, [
           ...newBookingReturnSSRsPayload,
