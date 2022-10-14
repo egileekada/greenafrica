@@ -33,8 +33,8 @@ const BookingPassengerItem = ({
 
   useEffect(() => {
     async function mapSessionSSRs() {
-      if (bookingSessionSSRs && bookingSessionSSRs?.length > 0) {
-        const WCHRs = bookingSessionSSRs?.filter((_ssr) => {
+      if (goDifference && goDifference.length > 0) {
+        const WCHRs = goDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "WCHR"
@@ -42,10 +42,9 @@ const BookingPassengerItem = ({
         });
         if (WCHRs.length > 0) {
           setWCChecked(true);
-          setWCPreSelected(true);
         }
 
-        const VPRDs = bookingSessionSSRs?.filter((_ssr) => {
+        const VPRDs = goDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "VPRD"
@@ -53,10 +52,9 @@ const BookingPassengerItem = ({
         });
         if (VPRDs.length > 0) {
           setVPChecked(true);
-          setVPPreSelected(true);
         }
 
-        const HPRDs = bookingSessionSSRs?.filter((_ssr) => {
+        const HPRDs = goDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "HPRD"
@@ -64,11 +62,10 @@ const BookingPassengerItem = ({
         });
         if (HPRDs.length > 0) {
           setHPChecked(true);
-          setHPPreSelected(true);
         }
       } else {
-        if (goDifference && goDifference.length > 0) {
-          const WCHRs = goDifference?.filter((_ssr) => {
+        if (bookingSessionSSRs && bookingSessionSSRs?.length > 0) {
+          const WCHRs = bookingSessionSSRs?.filter((_ssr) => {
             return (
               _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
               _ssr?.ssrCode === "WCHR"
@@ -79,7 +76,7 @@ const BookingPassengerItem = ({
             setWCPreSelected(true);
           }
 
-          const VPRDs = goDifference?.filter((_ssr) => {
+          const VPRDs = bookingSessionSSRs?.filter((_ssr) => {
             return (
               _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
               _ssr?.ssrCode === "VPRD"
@@ -90,7 +87,7 @@ const BookingPassengerItem = ({
             setVPPreSelected(true);
           }
 
-          const HPRDs = goDifference?.filter((_ssr) => {
+          const HPRDs = bookingSessionSSRs?.filter((_ssr) => {
             return (
               _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
               _ssr?.ssrCode === "HPRD"
