@@ -21,20 +21,21 @@ const GoCheckinPassengerItem = ({
   const [wcPreSelected, setWCPreSelected] = useState(false);
   const [vpPreSelected, setVPPreSelected] = useState(false);
   const [hpPreSelected, setHPPreSelected] = useState(false);
-  const { sessionStateResponse } = useSelector(sessionSelector);
-  const { newCheckinSSRs, checkinSessionSSRs } = useSelector(checkinSelector);
+  const { bookingResponse } = useSelector(sessionSelector);
+  const { newCheckinSSRs, checkinSessionSSRs, goDifference } =
+    useSelector(checkinSelector);
   const dispatch = useDispatch();
 
   const _Arrival =
-    sessionStateResponse?.BookingData?.Journeys[0]?.Segments[0]?.ArrivalStation;
+    bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
   const _Departure =
-    sessionStateResponse?.BookingData?.Journeys[0]?.Segments[0]
+    bookingResponse?.Booking?.Journeys[0]?.Segments[0]
       ?.DepartureStation;
 
   useEffect(() => {
     async function mapSessionSSRs() {
-      if (checkinSessionSSRs && checkinSessionSSRs?.length > 0) {
-        const WCHRs = checkinSessionSSRs?.filter((_ssr) => {
+      if (goDifference && goDifference.length > 0) {
+        const WCHRs = goDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "WCHR"
@@ -42,10 +43,9 @@ const GoCheckinPassengerItem = ({
         });
         if (WCHRs.length > 0) {
           setWCChecked(true);
-          setWCPreSelected(true);
         }
 
-        const VPRDs = checkinSessionSSRs?.filter((_ssr) => {
+        const VPRDs = goDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "VPRD"
@@ -53,10 +53,9 @@ const GoCheckinPassengerItem = ({
         });
         if (VPRDs.length > 0) {
           setVPChecked(true);
-          setVPPreSelected(true);
         }
 
-        const HPRDs = checkinSessionSSRs?.filter((_ssr) => {
+        const HPRDs = goDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "HPRD"
@@ -64,7 +63,41 @@ const GoCheckinPassengerItem = ({
         });
         if (HPRDs.length > 0) {
           setHPChecked(true);
-          setHPPreSelected(true);
+        }
+      } else {
+        if (checkinSessionSSRs && checkinSessionSSRs?.length > 0) {
+          const WCHRs = checkinSessionSSRs?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "WCHR"
+            );
+          });
+          if (WCHRs.length > 0) {
+            setWCChecked(true);
+            setWCPreSelected(true);
+          }
+
+          const VPRDs = checkinSessionSSRs?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "VPRD"
+            );
+          });
+          if (VPRDs.length > 0) {
+            setVPChecked(true);
+            setVPPreSelected(true);
+          }
+
+          const HPRDs = checkinSessionSSRs?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "HPRD"
+            );
+          });
+          if (HPRDs.length > 0) {
+            setHPChecked(true);
+            setHPPreSelected(true);
+          }
         }
       }
     }
@@ -83,6 +116,8 @@ const GoCheckinPassengerItem = ({
           ArrivalStation: _Arrival,
           DepartureStation: _Departure,
         };
+
+        console.log("ssrObj", _ssrObj);
 
         const existingSSRs = [...newCheckinSSRs];
         dispatch(setNewCheckinSSRs([...existingSSRs, _ssrObj]));
@@ -158,7 +193,7 @@ const GoCheckinPassengerItem = ({
       <section className="flex flex-col">
         <div className="flex flex-col mt-">
           <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-2">
-            Go SPECIAL ASSISTANCE {passenger?.journey}
+            Go SPECIAL ASSISTANCE
           </h6>
 
           <div className="flex items-center mb-5 primary-checkbox">

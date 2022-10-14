@@ -5,7 +5,10 @@ import PassengerAccordion from "../../bookings/components/PassengerAccordion";
 import CheckinPassengerBaggage from "./CheckinPassengerBaggage";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
-import { checkinSelector, setNewCheckinReturnSSRs } from "redux/reducers/checkin";
+import {
+  checkinSelector,
+  setNewCheckinReturnSSRs,
+} from "redux/reducers/checkin";
 import { v4 as uuid } from "uuid";
 
 const ReturnCheckinPassengerItem = ({
@@ -21,21 +24,20 @@ const ReturnCheckinPassengerItem = ({
   const [wcPreSelected, setWCPreSelected] = useState(false);
   const [vpPreSelected, setVPPreSelected] = useState(false);
   const [hpPreSelected, setHPPreSelected] = useState(false);
-  const { sessionStateResponse } = useSelector(sessionSelector);
-  const { newCheckinReturnSSRs, checkinSessionReturnSSRs } =
+  const { bookingResponse } = useSelector(sessionSelector);
+  const { newCheckinReturnSSRs, checkinSessionReturnSSRs, returnDifference } =
     useSelector(checkinSelector);
   const dispatch = useDispatch();
 
   const _Arrival =
-    sessionStateResponse?.BookingData?.Journeys[0]?.Segments[0]?.ArrivalStation;
+    bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
   const _Departure =
-    sessionStateResponse?.BookingData?.Journeys[0]?.Segments[0]
-      ?.DepartureStation;
+    bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation;
 
   useEffect(() => {
     async function mapSessionSSRs() {
-      if (checkinSessionReturnSSRs && checkinSessionReturnSSRs?.length > 0) {
-        const WCHRs = checkinSessionReturnSSRs?.filter((_ssr) => {
+      if (returnDifference && returnDifference.length > 0) {
+        const WCHRs = returnDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "WCHR"
@@ -43,10 +45,9 @@ const ReturnCheckinPassengerItem = ({
         });
         if (WCHRs.length > 0) {
           setWCChecked(true);
-          setWCPreSelected(true);
         }
 
-        const VPRDs = checkinSessionReturnSSRs?.filter((_ssr) => {
+        const VPRDs = returnDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "VPRD"
@@ -54,10 +55,9 @@ const ReturnCheckinPassengerItem = ({
         });
         if (VPRDs.length > 0) {
           setVPChecked(true);
-          setVPPreSelected(true);
         }
 
-        const HPRDs = checkinSessionReturnSSRs?.filter((_ssr) => {
+        const HPRDs = returnDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "HPRD"
@@ -65,7 +65,41 @@ const ReturnCheckinPassengerItem = ({
         });
         if (HPRDs.length > 0) {
           setHPChecked(true);
-          setHPPreSelected(true);
+        }
+      } else {
+        if (checkinSessionReturnSSRs && checkinSessionReturnSSRs?.length > 0) {
+          const WCHRs = checkinSessionReturnSSRs?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "WCHR"
+            );
+          });
+          if (WCHRs.length > 0) {
+            setWCChecked(true);
+            setWCPreSelected(true);
+          }
+
+          const VPRDs = checkinSessionReturnSSRs?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "VPRD"
+            );
+          });
+          if (VPRDs.length > 0) {
+            setVPChecked(true);
+            setVPPreSelected(true);
+          }
+
+          const HPRDs = checkinSessionReturnSSRs?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "HPRD"
+            );
+          });
+          if (HPRDs.length > 0) {
+            setHPChecked(true);
+            setHPPreSelected(true);
+          }
         }
       }
     }
@@ -84,6 +118,8 @@ const ReturnCheckinPassengerItem = ({
           ArrivalStation: _Arrival,
           DepartureStation: _Departure,
         };
+
+        console.log("ssrObj", _ssrObj);
 
         const existingSSRs = [...newCheckinReturnSSRs];
         dispatch(setNewCheckinReturnSSRs([...existingSSRs, _ssrObj]));
@@ -159,7 +195,7 @@ const ReturnCheckinPassengerItem = ({
       <section className="flex flex-col">
         <div className="flex flex-col mt-">
           <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-2">
-            Return SPECIAL ASSISTANCE {passenger?.journey}
+           Return SPECIAL ASSISTANCE
           </h6>
 
           <div className="flex items-center mb-5 primary-checkbox">

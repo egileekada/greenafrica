@@ -201,7 +201,7 @@ const PassengerDetails = () => {
       }
     }
     setExisitingSSRS();
-  }, []);
+  }, [bookingResponse]);
 
   const ProceedToSellSSR = async () => {
     if (newBookingSSRs.length > 0 || newBookingReturnSSRs.length > 0) {
