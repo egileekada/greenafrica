@@ -45,16 +45,16 @@ const CheckIn = () => {
       findBooking(values)
         .unwrap()
         .then((data) => {
-          // checkPnr(values.pnr);
-          router.push(
-            {
-              pathname: "/checkin/home",
-              query: {
-                pnr: values.pnr,
-              },
-            },
-            "/checkin/home"
-          );
+          checkPnr(values.pnr);
+          // router.push(
+          //   {
+          //     pathname: "/checkin/home",
+          //     query: {
+          //       pnr: values.pnr,
+          //     },
+          //   },
+          //   "/checkin/home"
+          // );
         })
         .catch((error) => {
           notification.error({
