@@ -332,7 +332,7 @@ const ConfrimPageFares = () => {
                                           <div>
                                             <h6>
                                               {" "}
-                                              ₦{_SSRSum?.INFT.toLocaleString()}
+                                              ₦{_SSRSum?.INFT?.toLocaleString()}
                                             </h6>
                                           </div>
                                         </div>
@@ -373,7 +373,9 @@ const ConfrimPageFares = () => {
                                             <h6>
                                               {" "}
                                               ₦
-                                              {_SSRSum?.XBAG15.toLocaleString()}
+                                              {_SSRSum?.XBAG15
+                                                ? _SSRSum?.XBAG15.toLocaleString()
+                                                : 0}
                                             </h6>
                                           </div>
                                         </div>
@@ -394,7 +396,9 @@ const ConfrimPageFares = () => {
                                             <h6>
                                               {" "}
                                               ₦
-                                              {_SSRSum?.XBAG10.toLocaleString()}
+                                              {_SSRSum?.XBAG10
+                                                ? _SSRSum?.XBAG10?.toLocaleString()
+                                                : 0}
                                             </h6>
                                           </div>
                                         </div>
@@ -412,7 +416,7 @@ const ConfrimPageFares = () => {
                                           <div>
                                             <h6>
                                               {" "}
-                                              ₦{_SSRSum?.SEAT.toLocaleString()}
+                                              ₦{_SSRSum?.SEAT?.toLocaleString()}
                                             </h6>
                                           </div>
                                         </div>

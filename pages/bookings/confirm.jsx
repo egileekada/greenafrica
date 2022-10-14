@@ -18,6 +18,7 @@ import ConfrimPageFares from "./components/ConfrimPageFares";
 import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
 import LogoIcon from "assets/svgs/logo.svg";
 import { notification } from "antd";
+import { bookingSelector } from "redux/reducers/booking";
 
 const ConfirmManageBooking = () => {
   const router = useRouter();
@@ -27,6 +28,8 @@ const ConfirmManageBooking = () => {
 
   const [bookingCommitWithoutPayment, { isLoading: commitPaymentLoading }] =
     useBookingCommitWithoutPaymentMutation();
+
+  const { goTrip, returnTrip } = useSelector(bookingSelector);
 
   useEffect(() => {
     async function fetchBookingDetails() {
@@ -87,7 +90,11 @@ const ConfirmManageBooking = () => {
         </button>
         <button
           onClick={handleServices}
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+            goTrip || returnTrip
+              ? "pointer-events-none opacity-50 cursor-not-allowed"
+              : ""
+          } `}
         >
           Manage Services
         </button>

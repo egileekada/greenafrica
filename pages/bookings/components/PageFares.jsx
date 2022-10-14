@@ -370,7 +370,10 @@ const PageFares = () => {
                                         <div>
                                           <h6>
                                             {" "}
-                                            ₦{_SSRSum?.XBAG20.toLocaleString()}
+                                            ₦
+                                            {_SSRSum?.XBAG20
+                                              ? _SSRSum?.XBAG20?.toLocaleString()
+                                              : 0}
                                           </h6>
                                         </div>
                                       </div>
@@ -387,7 +390,10 @@ const PageFares = () => {
                                         <div>
                                           <h6>
                                             {" "}
-                                            ₦{_SSRSum?.XBAG15.toLocaleString()}
+                                            ₦
+                                            {_SSRSum?.XBAG15
+                                              ? _SSRSum?.XBAG15?.toLocaleString()
+                                              : 0}
                                           </h6>
                                         </div>
                                       </div>
@@ -405,7 +411,10 @@ const PageFares = () => {
                                         <div>
                                           <h6>
                                             {" "}
-                                            ₦{_SSRSum?.XBAG10.toLocaleString()}
+                                            ₦
+                                            {_SSRSum?.XBAG10
+                                              ? _SSRSum?.XBAG10?.toLocaleString()
+                                              : 0}
                                           </h6>
                                         </div>
                                       </div>
