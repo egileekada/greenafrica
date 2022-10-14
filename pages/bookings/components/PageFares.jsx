@@ -2,17 +2,29 @@
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
-import { useGetFareconfigsQuery } from "services/widgetApi.js";
+
+import {
+  useGetFareconfigsQuery,
+  useGetSpecialAssistancesQuery,
+} from "services/widgetApi.js";
 
 const PageFares = () => {
   const { bookingResponse } = useSelector(sessionSelector);
-  const { data: fareConfig, isLoading } = useGetFareconfigsQuery();
+  const { data: fareConfig } = useGetFareconfigsQuery();
+  const { data: specialConfig } = useGetSpecialAssistancesQuery();
 
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = fareConfig?.data?.items.filter(
       (location) => location.code === abrreviation
     );
 
+    return `${name} (${code})`;
+  };
+
+  const resolveSpecialAbbreviation = (abrreviation) => {
+    const [{ name, code }] = specialConfig?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
     return `${name} (${code})`;
   };
 
@@ -60,13 +72,18 @@ const PageFares = () => {
                             XBAG20: 0,
                             INFT: 0,
                             SEAT: 0,
+                            WCHR: 0,
+                            VPRD: 0,
+                            HPRD: 0,
                           };
-                          _segment.PaxSSRs?.map((_segSSR) => {
-                            _SSRsCount[_segSSR?.FeeCode] =
-                              _segment.PaxSSRs?.filter((_segCode) => {
-                                return _segSSR?.FeeCode === _segCode?.FeeCode;
-                              }).length;
-                          });
+                          {
+                            _segment.PaxSSRs?.map((_segSSR) => {
+                              _SSRsCount[_segSSR?.FeeCode] =
+                                _segment.PaxSSRs?.filter((_segCode) => {
+                                  return _segSSR?.FeeCode === _segCode?.FeeCode;
+                                }).length;
+                            });
+                          }
 
                           return (
                             <>
@@ -189,6 +206,81 @@ const PageFares = () => {
                                       <h6>₦{ChangeTax.toLocaleString()}</h6>
                                     </div>
                                   </div> */}
+
+                                    {parseInt(_SSRsCount?.WCHR) > 0 && (
+                                      <div className="trip__summary__row subrow">
+                                        <div className="flex items-center">
+                                          <h6>
+                                            {_SSRsCount?.WCHR}x&nbsp;
+                                            {specialConfig?.data
+                                              ? resolveSpecialAbbreviation(
+                                                  "WCHR"
+                                                )
+                                              : "WCHR"}
+                                            {_SSRsCount?.WCHR > 1 ? "s" : ""}
+                                          </h6>
+                                        </div>
+                                        <div>
+                                          <h6>
+                                            {" "}
+                                            ₦
+                                            {_SSRSum?.WCHR
+                                              ? _SSRSum?.WCHR?.toLocaleString()
+                                              : 0}
+                                          </h6>
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {parseInt(_SSRsCount?.VPRD) > 0 && (
+                                      <div className="trip__summary__row subrow">
+                                        <div className="flex items-center">
+                                          <h6>
+                                            {_SSRsCount?.VPRD}x&nbsp;
+                                            {specialConfig?.data
+                                              ? resolveSpecialAbbreviation(
+                                                  "VPRD"
+                                                )
+                                              : "VPRD"}
+                                            {_SSRsCount?.VPRD > 1 ? "s" : ""}
+                                          </h6>
+                                        </div>
+                                        <div>
+                                          <h6>
+                                            {" "}
+                                            ₦{" "}
+                                            {_SSRSum?.VPRD
+                                              ? _SSRSum?.VPRD?.toLocaleString()
+                                              : 0}
+                                          </h6>
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {parseInt(_SSRsCount?.HPRD) > 0 && (
+                                      <div className="trip__summary__row subrow">
+                                        <div className="flex items-center">
+                                          <h6>
+                                            {_SSRsCount?.HPRD}x&nbsp;
+                                            {specialConfig?.data
+                                              ? resolveSpecialAbbreviation(
+                                                  "HPRD"
+                                                )
+                                              : "HPRD"}
+                                            {_SSRsCount?.HPRD > 1 ? "s" : ""}
+                                          </h6>
+                                        </div>
+                                        <div>
+                                          <h6>
+                                            {" "}
+                                            ₦
+                                            {_SSRSum?.HPRD
+                                              ? _SSRSum?.HPRD?.toLocaleString()
+                                              : 0}
+                                          </h6>
+                                        </div>
+                                      </div>
+                                    )}
 
                                     <div className="trip__summary__row subrow">
                                       <div className="flex items-center">

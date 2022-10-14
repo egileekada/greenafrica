@@ -2,17 +2,27 @@
 import Spinner from "components/Spinner";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
-import { useGetFareconfigsQuery } from "services/widgetApi.js";
+import {
+  useGetFareconfigsQuery,
+  useGetSpecialAssistancesQuery,
+} from "services/widgetApi.js";
 
 const Fare = ({ isRoundTrip }) => {
   const { data: fareConfig, isLoading } = useGetFareconfigsQuery();
+  const { data: specialConfig } = useGetSpecialAssistancesQuery();
   const { bookingResponse } = useSelector(sessionSelector);
 
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = fareConfig?.data?.items.filter(
       (location) => location.code === abrreviation
     );
+    return `${name} (${code})`;
+  };
 
+  const resolveSpecialAbbreviation = (abrreviation) => {
+    const [{ name, code }] = specialConfig?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
     return `${name} (${code})`;
   };
 
@@ -70,9 +80,6 @@ const Fare = ({ isRoundTrip }) => {
                     }
                   ).length;
                 });
-
-                console.log("_SSrsCOunt", _SSRsCount);
-                console.log(" _SSRSum", _SSRSum);
 
                 return (
                   <>
@@ -252,15 +259,48 @@ const Fare = ({ isRoundTrip }) => {
                                   <div className="flex items-center">
                                     <h6>
                                       {_SSRsCount?.WCHR}x&nbsp;
-                                      {/* {fareConfig?.data
-                                        ? resolveAbbreviation(" WCHR")
-                                        : null} */}
-                                      WCHR
+                                      {specialConfig?.data
+                                        ? resolveSpecialAbbreviation("WCHR")
+                                        : "WCHR"}
                                       {_SSRsCount?.WCHR > 1 ? "s" : ""}
                                     </h6>
                                   </div>
                                   <div>
                                     <h6> ₦{_SSRSum?.WCHR.toLocaleString()}</h6>
+                                  </div>
+                                </div>
+                              )}
+
+                              {parseInt(_SSRsCount?.VPRD) > 0 && (
+                                <div className="trip__summary__row">
+                                  <div className="flex items-center">
+                                    <h6>
+                                      {_SSRsCount?.VPRD}x&nbsp;
+                                      {specialConfig?.data
+                                        ? resolveSpecialAbbreviation("VPRD")
+                                        : "VPRD"}
+                                      {_SSRsCount?.VPRD > 1 ? "s" : ""}
+                                    </h6>
+                                  </div>
+                                  <div>
+                                    <h6> ₦{_SSRSum?.VPRD.toLocaleString()}</h6>
+                                  </div>
+                                </div>
+                              )}
+
+                              {parseInt(_SSRsCount?.HPRD) > 0 && (
+                                <div className="trip__summary__row">
+                                  <div className="flex items-center">
+                                    <h6>
+                                      {_SSRsCount?.HPRD}x&nbsp;
+                                      {specialConfig?.data
+                                        ? resolveSpecialAbbreviation("HPRD")
+                                        : "HPRD"}
+                                      {_SSRsCount?.HPRD > 1 ? "s" : ""}
+                                    </h6>
+                                  </div>
+                                  <div>
+                                    <h6> ₦{_SSRSum?.HPRD.toLocaleString()}</h6>
                                   </div>
                                 </div>
                               )}
