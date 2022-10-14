@@ -22,7 +22,8 @@ const BookingPassengerItem = ({
   const [vpPreSelected, setVPPreSelected] = useState(false);
   const [hpPreSelected, setHPPreSelected] = useState(false);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { newBookingSSRs, bookingSessionSSRs } = useSelector(bookingSelector);
+  const { newBookingSSRs, bookingSessionSSRs, goDifference } =
+    useSelector(bookingSelector);
   const dispatch = useDispatch();
 
   const _Arrival =
@@ -64,6 +65,41 @@ const BookingPassengerItem = ({
         if (HPRDs.length > 0) {
           setHPChecked(true);
           setHPPreSelected(true);
+        }
+      } else {
+        if (goDifference && goDifference.length > 0) {
+          const WCHRs = goDifference?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "WCHR"
+            );
+          });
+          if (WCHRs.length > 0) {
+            setWCChecked(true);
+            setWCPreSelected(true);
+          }
+
+          const VPRDs = goDifference?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "VPRD"
+            );
+          });
+          if (VPRDs.length > 0) {
+            setVPChecked(true);
+            setVPPreSelected(true);
+          }
+
+          const HPRDs = goDifference?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "HPRD"
+            );
+          });
+          if (HPRDs.length > 0) {
+            setHPChecked(true);
+            setHPPreSelected(true);
+          }
         }
       }
     }
@@ -157,7 +193,11 @@ const BookingPassengerItem = ({
       <section className="flex flex-col">
         <div className="flex flex-col mt-">
           <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-4">
-          SPECIAL ASSISTANCE <span className="italic">(Please let us know if you will require any special assistance at the airport)</span>
+            SPECIAL ASSISTANCE{" "}
+            <span className="italic">
+              (Please let us know if you will require any special assistance at
+              the airport)
+            </span>
           </h6>
 
           <div className="flex items-center mb-5 primary-checkbox">

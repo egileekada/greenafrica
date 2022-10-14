@@ -44,6 +44,9 @@ const initialState = {
 
   goDifference: [],
   returnDifference: [],
+
+  newSSRs: [],
+  newReturnSSRs: [],
 };
 
 export const bookingSlice = createSlice({
@@ -130,6 +133,13 @@ export const bookingSlice = createSlice({
     setReturnDifference: (state, { payload }) => {
       state.returnDifference = payload;
     },
+
+    setNewSSRS: (state, { payload }) => {
+      state.newSSRs = payload;
+    },
+    setNewReturnSSRS: (state, { payload }) => {
+      state.newReturnSSRs = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState);
@@ -167,6 +177,9 @@ export const {
 
   setGoDifference,
   setReturnDifference,
+
+  setNewSSRS,
+  setNewReturnSSRS,
 } = bookingSlice.actions;
 
 export const bookingSelector = (state) => state.booking;

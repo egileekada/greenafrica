@@ -7,7 +7,6 @@ import {
   bookingSelector,
   setNewBookingReturnSSRs,
 } from "redux/reducers/booking";
-import { v4 as uuid } from "uuid";
 import { uniqueId } from "lodash";
 
 const BookingReturnBaggageCard = ({
@@ -19,17 +18,15 @@ const BookingReturnBaggageCard = ({
   schedueIndex,
   ArrivalStation,
   DepartureStation,
-  activeTab,
   _limit,
 }) => {
   const [totalFare, setFare] = useState(0);
-  const [limit, setLimit] = useState(0);
   const [value, setValue] = useState(0);
+  const [limit, setLimit] = useState(0);
   const [newReturnSSRs, setNewReturnSSRs] = useState([]);
   const { bookingResponse } = useSelector(sessionSelector);
   const { bookingSessionReturnSSRs, newBookingReturnSSRs } =
     useSelector(bookingSelector);
-
   const KG = SSRItem?.SSRCode.substring(1);
   const dispatch = useDispatch();
 
@@ -51,7 +48,7 @@ const BookingReturnBaggageCard = ({
       }
     }
     mapsessionReturnSSRs();
-  }, [activeTab]);
+  }, []);
 
   useEffect(() => {
     async function setBaggageLimit() {
@@ -77,7 +74,9 @@ const BookingReturnBaggageCard = ({
 
   useEffect(() => {
     if (parseInt(schedueIndex) === 1) {
-      handleReturnSSR();
+      if (returnNewSelection) {
+        handleReturnSSR();
+      }
     }
   }, [value]);
 
@@ -110,15 +109,6 @@ const BookingReturnBaggageCard = ({
       const _existingSSRs = returnNewSelection
         ? [...newBookingReturnSSRs]
         : [...selectedReturnSSRs];
-
-      // const _existingSSRs = [...newBookingReturnSSRs];
-
-      // const _existingSSRs =
-      //   bookingSessionReturnSSRs?.length > 0
-      //     ? returnNewSelection
-      //       ? [...newBookingReturnSSRs]
-      //       : [...selectedReturnSSRs]
-      //     : [...newBookingReturnSSRs];
 
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
         const _ruleBasis =
@@ -186,12 +176,14 @@ const BookingReturnBaggageCard = ({
         <figure>
           <BaggageIcon />
         </figure>
-        <p className="font-body text-primary-main text-xs mb-1">Up to {KG}kg</p>
+        <p className="font-body text-primary-main text-xs mb-1">
+          {" "}
+          Return Extra Bag Up to {KG}kg
+        </p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}
         </p>
-        {/* <p>Limit : {limit}</p> */}
 
         <Counter
           value={value}
@@ -212,7 +204,6 @@ BookingReturnBaggageCard.defaultProps = {
   schedueIndex: 0,
   ArrivalStation: "",
   DepartureStation: "",
-  activeTab: "",
   _limit: 0,
 };
 
