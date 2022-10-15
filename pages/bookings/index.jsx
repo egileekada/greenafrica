@@ -46,15 +46,6 @@ const ManageBooking = () => {
         .unwrap()
         .then((data) => {
           checkPnr(values.pnr);
-          // router.push(
-          //   {
-          //     pathname: "/bookings/home",
-          //     query: {
-          //       pnr: values.pnr,
-          //     },
-          //   },
-          //   "/bookings/home"
-          // );
         })
         .catch((error) => {
           notification.error({
@@ -75,20 +66,7 @@ const ManageBooking = () => {
           )
         ) {
           setMessage(
-            "Unable to checkin, please contact our call centre for further information"
-          );
-          setIsModalOpen(true);
-        } else if (data.Booking.BookingSum.BalanceDue > 0) {
-          setMessage("Check-in is not available for unconfirmed bookings");
-          setIsModalOpen(true);
-        } else if (data.PackageIndicator == 0) {
-          setMessage(
-            "Online Check-in opens 2 days before the flight departure and closes 3 hours before the flight departure"
-          );
-          setIsModalOpen(true);
-        } else if (parseInt(data.LoginIndicator) > 1) {
-          setMessage(
-            "Please, try again or contact our call center to complete your booking."
+            "Unable to manage booking, please contact our call centre for further information"
           );
           setIsModalOpen(true);
         } else {
