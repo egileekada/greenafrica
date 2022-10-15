@@ -212,12 +212,12 @@ const CheckInDetails = () => {
                             <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10 mt-5">
                               <p className="tripType self-center">
                                 {
-                                  bookingData?.Booking?.Journeys[0]?.Segments[0]
-                                    ?.FlightDesignator.CarrierCode
+                                  Journey?.Segments[0]?.FlightDesignator
+                                    .CarrierCode
                                 }
                                 {
-                                  bookingData?.Booking?.Journeys[0]?.Segments[0]
-                                    ?.FlightDesignator.FlightNumber
+                                  Journey?.Segments[0]?.FlightDesignator
+                                    .FlightNumber
                                 }
                               </p>
                               <div className="flex justify-between">
