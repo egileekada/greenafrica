@@ -16,7 +16,6 @@ import { useGetLocationsQuery } from "services/widgetApi.js";
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
-  startSession,
   retrieveSeatAvailability,
   tryAssignSeat,
 } from "redux/reducers/session";
@@ -146,6 +145,18 @@ const SeatSelection = () => {
                       key={index + 1}
                     >
                       <SeatWrapper
+                        departureStation={
+                          !locationLoading &&
+                          resolveAbbreviation(
+                            journey.Segments[0].DepartureStation
+                          )
+                        }
+                        arrivalStation={
+                          !locationLoading &&
+                          resolveAbbreviation(
+                            journey.Segments[0].ArrivalStation
+                          )
+                        }
                         setShow={setShow}
                         ticketIndex={index}
                         key={index + 2}
