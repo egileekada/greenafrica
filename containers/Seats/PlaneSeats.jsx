@@ -11,7 +11,7 @@ import XIcon from "assets/svgs/seats/x.svg";
 import EmergrncyIcon from "assets/svgs/seats/emergency.svg";
 import CaretLeft from "assets/svgs/seats/caretleft.svg";
 import CaretRight from "assets/svgs/seats/caretright.svg";
-
+import useDeviceSize from "hooks/useWindowSize";
 import {
   sessionSelector,
   tryAssignSeat,
@@ -35,23 +35,25 @@ const PlaneSeats = forwardRef(
     },
     ref
   ) => {
+    const [clicked, setClicked] = useState(false);
+    const [width] = useDeviceSize();
+
+    const hide = () => {
+      setClicked(false);
+    };
+
+    const handleClickChange = (open) => {
+      setClicked(open);
+    };
+
     const dispatch = useDispatch();
     const { data: legend, isLoading } = useGetSeatlegendsQuery();
-    const {
-      signature,
-      sessionLoading,
-      bookingResponseLoading,
-      bookingResponse,
-      bookingState,
-    } = useSelector(sessionSelector);
+    const { bookingState } = useSelector(sessionSelector);
 
     const [segmentSeatRequests, setSegmentSeatRequests] = useState([]);
     const [selected, setSelected] = useState(0);
 
     const setSeat = async (seat) => {
-      //TODO pass journey type to this component
-      //TODO watch for situation where not all users select seat
-
       if (passengerNumber === null) {
         alert("Kindly choose a passenger");
       } else {
@@ -108,6 +110,7 @@ const PlaneSeats = forwardRef(
         });
 
         await setSegmentSeatRequests(newItems);
+        setClicked(true);
       }
     };
 
@@ -172,13 +175,6 @@ const PlaneSeats = forwardRef(
           break;
       }
 
-      // return SeatAvailability === 14 ||
-      //   SeatAvailability === 12 ||
-      //   SeatAvailability === 1 ||
-      //   SeatAvailability === 8
-      //   ? "seats__item unavailable w-[38px]"
-      //   : `seats__item w-[38px] ${seatCode}`;
-
       if (selectedSeat.some((el) => el.seatDesignator === SeatDesignator)) {
         return "seats__item bg-[#292053] w-[38px]";
       } else {
@@ -209,6 +205,33 @@ const PlaneSeats = forwardRef(
           </p>
           {propertylist.filter((list) => list.TypeCode === "INFANT").length >
             0 && <p className="font-light">Customer with infant</p>}
+        </div>
+      );
+    };
+
+    const clickContent = (seat) => {
+      return (
+        <div className="text-primary-main text-base p-2">
+          <p className="mb-2 font-light">
+            <span className="font-semibold">{seat.SeatDesignator}</span> Front
+            Seat
+          </p>
+
+          <p className="font-semibold mb-2 text-base">
+            {productClass === "SAVR" && mapSeatGroup(seat.SeatGroup)}
+          </p>
+          {seat.PropertyList.filter((list) => list.TypeCode === "INFANT")
+            .length > 0 && <p className="font-light">Customer with infant</p>}
+
+          <button
+            className="btn btn-outline !py-2 !px-1 !text-xs !border-[1px] !rounded-lg mt-4"
+            onClick={() => {
+              setSeat(seat);
+              hide();
+            }}
+          >
+            Select
+          </button>
         </div>
       );
     };
@@ -399,42 +422,80 @@ const PlaneSeats = forwardRef(
                         return (
                           seat.Assignable && (
                             <>
-                              <Popover
-                                key={index + Math.random()}
-                                content={content(
-                                  seat.PropertyList,
-                                  seat.SeatAvailability,
-                                  seat.SeatGroup,
-                                  seat.SeatDesignator
-                                )}
-                                overlayInnerStyle={{
-                                  width: 237,
-                                  background: "#F7F7FF",
-                                  borderRadius: "10px",
-                                  border: "1px solid rgba(158, 155, 191, 0.31)",
-                                }}
-                              >
-                                <div
-                                  className={`${mapClass(
+                              {width < 769 ? (
+                                <Popover
+                                  key={index}
+                                  content={clickContent(seat)}
+                                  overlayInnerStyle={{
+                                    width: 237,
+                                    background: "#F7F7FF",
+                                    borderRadius: "10px",
+                                    border:
+                                      "1px solid rgba(158, 155, 191, 0.31)",
+                                  }}
+                                  trigger="click"
+                                  open={clicked}
+                                  onOpenChange={handleClickChange}
+                                >
+                                  <div
+                                    className={`${mapClass(
+                                      seat.SeatAvailability,
+                                      seat.SeatGroup,
+                                      seat.SeatDesignator,
+                                      seat.PropertyList
+                                    )}`}
+                                    key={index}
+                                  >
+                                    <p className="text-sm">
+                                      {detectPassengerState(
+                                        seat.SeatAvailability,
+                                        seat.PropertyList,
+                                        pasengerState,
+                                        seat.SeatDesignator
+                                      )}
+                                    </p>
+                                  </div>
+                                </Popover>
+                              ) : (
+                                <Popover
+                                  key={index}
+                                  content={content(
+                                    seat.PropertyList,
                                     seat.SeatAvailability,
                                     seat.SeatGroup,
-                                    seat.SeatDesignator,
-                                    seat.PropertyList
-                                  )}`}
-                                  key={index}
-                                  onClick={() => setSeat(seat)}
-                                  role="button"
+                                    seat.SeatDesignator
+                                  )}
+                                  overlayInnerStyle={{
+                                    width: 237,
+                                    background: "#F7F7FF",
+                                    borderRadius: "10px",
+                                    border:
+                                      "1px solid rgba(158, 155, 191, 0.31)",
+                                  }}
                                 >
-                                  <p className="text-sm">
-                                    {detectPassengerState(
+                                  <div
+                                    className={`${mapClass(
                                       seat.SeatAvailability,
-                                      seat.PropertyList,
-                                      pasengerState,
-                                      seat.SeatDesignator
-                                    )}
-                                  </p>
-                                </div>
-                              </Popover>
+                                      seat.SeatGroup,
+                                      seat.SeatDesignator,
+                                      seat.PropertyList
+                                    )}`}
+                                    key={index}
+                                    onClick={() => setSeat(seat)}
+                                    role="button"
+                                  >
+                                    <p className="text-sm">
+                                      {detectPassengerState(
+                                        seat.SeatAvailability,
+                                        seat.PropertyList,
+                                        pasengerState,
+                                        seat.SeatDesignator
+                                      )}
+                                    </p>
+                                  </div>
+                                </Popover>
+                              )}
+
                               {index == 1 && (
                                 <div className="seats__item seatRow">
                                   <p>{cIndex + 1}</p>
@@ -492,36 +553,6 @@ const PlaneSeats = forwardRef(
                   LEGEND
                 </h2>
                 <section className="seats__legend">
-                  {/* <div className="seats__legend__item">
-                    <figure>
-                      <div className="seat-box bg-[#584CB6]"></div>
-                    </figure>
-                    <p>Extra Legroom Seat</p>
-                  </div>
-                  <div className="seats__legend__item">
-                    <figure>
-                      <div className="seat-box bg-[#ADFFCB]"></div>
-                    </figure>
-                    <p>First Out Seat</p>
-                  </div>
-                  <div className="seats__legend__item">
-                    <figure>
-                      <div className="seat-box bg-primary-main"></div>
-                    </figure>
-                    <p>Front Seat</p>
-                  </div>
-                  <div className="seats__legend__item">
-                    <figure>
-                      <div className="seat-box bg-[#777093]"></div>
-                    </figure>
-                    <p>Standard Seat</p>
-                  </div>
-                  <div className="seats__legend__item">
-                    <figure>
-                      <div className="seat-box bg-[#B9B5D6]"></div>
-                    </figure>
-                    <p>Extra Legroom Seat</p>
-                  </div> */}
 
                   {!isLoading &&
                     legend?.data.items.map((legend, index) => (

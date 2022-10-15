@@ -140,7 +140,12 @@ const SeatSelection = () => {
         .then((data) => {
           router.push("/checkin/confirm");
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          notification.error({
+            message: "Error",
+            description: error?.data?.Error?.ErrorText,
+          });
+        });
     }
   };
 
