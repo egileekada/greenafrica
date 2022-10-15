@@ -353,7 +353,7 @@ const ConfrimPageFares = () => {
                                             <h6>
                                               {" "}
                                               ₦
-                                              {_SSRSum?.XBAG20.toLocaleString()}
+                                              {_SSRSum?.XBAG20?.toLocaleString()}
                                             </h6>
                                           </div>
                                         </div>
@@ -374,7 +374,7 @@ const ConfrimPageFares = () => {
                                               {" "}
                                               ₦
                                               {_SSRSum?.XBAG15
-                                                ? _SSRSum?.XBAG15.toLocaleString()
+                                                ? _SSRSum?.XBAG15?.toLocaleString()
                                                 : 0}
                                             </h6>
                                           </div>

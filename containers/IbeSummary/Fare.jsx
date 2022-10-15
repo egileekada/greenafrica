@@ -49,6 +49,7 @@ const Fare = ({ isRoundTrip }) => {
 
                 const tempSum = {};
                 const _SSRSum = {};
+
                 bookingResponse?.Booking?.Passengers.map((_pax) => {
                   return _pax.PassengerFees.map((_paxFee) => {
                     tempSum[_paxFee?.FeeCode] = _paxFee.ServiceCharges;
@@ -59,6 +60,9 @@ const Fare = ({ isRoundTrip }) => {
                       0
                     );
                     _SSRSum[_paxFee?.FeeCode] = totalServiceCharge;
+                    {
+                      /* console.log(_paxFee?.FeeCode, totalServiceCharge); */
+                    }
                   });
                 });
 
@@ -73,6 +77,7 @@ const Fare = ({ isRoundTrip }) => {
                   HPRD: 0,
                 };
 
+                console.log("_segment.PaxSSRs", _segment.PaxSSRs);
                 _segment.PaxSSRs?.map((_segSSR) => {
                   _SSRsCount[_segSSR?.FeeCode] = _segment.PaxSSRs?.filter(
                     (_segCode) => {
@@ -80,6 +85,11 @@ const Fare = ({ isRoundTrip }) => {
                     }
                   ).length;
                 });
+
+                {
+                  /* console.log("_SSRsCount", _SSRsCount);
+                console.log("_SSRSum", _SSRSum); */
+                }
 
                 return (
                   <>
@@ -266,7 +276,13 @@ const Fare = ({ isRoundTrip }) => {
                                     </h6>
                                   </div>
                                   <div>
-                                    <h6> ₦{_SSRSum?.WCHR.toLocaleString()}</h6>
+                                    <h6>
+                                      {" "}
+                                      ₦
+                                      {_SSRSum?.WCHR
+                                        ? _SSRSum?.WCHR?.toLocaleString()
+                                        : 0}
+                                    </h6>
                                   </div>
                                 </div>
                               )}
@@ -283,7 +299,13 @@ const Fare = ({ isRoundTrip }) => {
                                     </h6>
                                   </div>
                                   <div>
-                                    <h6> ₦{_SSRSum?.VPRD.toLocaleString()}</h6>
+                                    <h6>
+                                      {" "}
+                                      ₦
+                                      {_SSRSum?.VPRD
+                                        ? _SSRSum?.VPRD?.toLocaleString()
+                                        : 0}
+                                    </h6>
                                   </div>
                                 </div>
                               )}
@@ -300,7 +322,13 @@ const Fare = ({ isRoundTrip }) => {
                                     </h6>
                                   </div>
                                   <div>
-                                    <h6> ₦{_SSRSum?.HPRD.toLocaleString()}</h6>
+                                    <h6>
+                                      {" "}
+                                      ₦
+                                      {_SSRSum?.HPRD
+                                        ? _SSRSum?.HPRD?.toLocaleString()
+                                        : 0}
+                                    </h6>
                                   </div>
                                 </div>
                               )}
@@ -319,7 +347,10 @@ const Fare = ({ isRoundTrip }) => {
                                   <div>
                                     <h6>
                                       {" "}
-                                      ₦{_SSRSum?.XBAG20.toLocaleString()}
+                                      ₦
+                                      {_SSRSum?.XBAG20
+                                        ? _SSRSum?.XBAG20?.toLocaleString()
+                                        : 0}
                                     </h6>
                                   </div>
                                 </div>
@@ -338,7 +369,10 @@ const Fare = ({ isRoundTrip }) => {
                                   <div>
                                     <h6>
                                       {" "}
-                                      ₦{_SSRSum?.XBAG15.toLocaleString()}
+                                      ₦
+                                      {_SSRSum?.XBAG15
+                                        ? _SSRSum?.XBAG15.toLocaleString()
+                                        : 0}
                                     </h6>
                                   </div>
                                 </div>
@@ -357,7 +391,10 @@ const Fare = ({ isRoundTrip }) => {
                                   <div>
                                     <h6>
                                       {" "}
-                                      ₦{_SSRSum?.XBAG10.toLocaleString()}
+                                      ₦
+                                      {_SSRSum?.XBAG10
+                                        ? _SSRSum?.XBAG10.toLocaleString()
+                                        : 0}
                                     </h6>
                                   </div>
                                 </div>
