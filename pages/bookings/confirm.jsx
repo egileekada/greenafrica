@@ -129,7 +129,7 @@ const ConfirmManageBooking = () => {
               )
             )}
             <PageInfo />
-            <PageCTA />
+            {/* <PageCTA /> */}
             <PassengersSection />
             <ConfrimPageFares />
           </>

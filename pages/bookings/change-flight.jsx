@@ -57,7 +57,7 @@ const ManageUpdateItenary = () => {
 
   const proceedToTripView = () => {
     if (goTrip?.journey || returnTrip?.journey) {
-      router.push("/bookings/view");
+      router.push("/bookings/payment");
     } else {
       notification.error({
         message: "Error",

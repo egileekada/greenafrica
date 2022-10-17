@@ -76,14 +76,14 @@ const PageFares = () => {
                             VPRD: 0,
                             HPRD: 0,
                           };
-                          {
-                            _segment.PaxSSRs?.map((_segSSR) => {
-                              _SSRsCount[_segSSR?.FeeCode] =
-                                _segment.PaxSSRs?.filter((_segCode) => {
-                                  return _segSSR?.FeeCode === _segCode?.FeeCode;
-                                }).length;
-                            });
-                          }
+
+                          _segment.PaxSSRs?.map((_segSSR) => {
+                            _SSRsCount[_segSSR?.FeeCode] =
+                              _segment.PaxSSRs?.filter((_segCode) => {
+                                return _segSSR?.FeeCode === _segCode?.FeeCode;
+                              }).length;
+                          });
+                          console.log("_SSRsCoutn", _SSRsCount);
 
                           return (
                             <>
@@ -103,7 +103,7 @@ const PageFares = () => {
 
                               <div className="ibe__sidebar__row">
                                 <div className="flex items-center">
-                                  <span className="text-sm text-primary-main">
+                                  <span className="text-sm text-primary-main font-bold">
                                     {
                                       bookingResponse?.Booking?.Passengers
                                         .length

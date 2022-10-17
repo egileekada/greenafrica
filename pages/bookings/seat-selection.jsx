@@ -70,7 +70,7 @@ const SeatSelection = () => {
           message: "Success",
           description: "Seat Assignment successful",
         });
-        router.push("/bookings/confirm");
+        router.push("/payment");
       })
       .catch((error) => {
         notification.error({
