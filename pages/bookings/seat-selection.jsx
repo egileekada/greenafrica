@@ -12,7 +12,6 @@ import Seatslegend from "./Seats/SeatPopUp";
 import { useSelector, useDispatch } from "react-redux";
 import LogoIcon from "assets/svgs/logo.svg";
 
-
 import {
   sessionSelector,
   retrieveCheckinSeatAvailability,
@@ -23,6 +22,7 @@ import {
 import SeatWrapper from "./Seats/SeatWrapper";
 import { useGetLocationsQuery } from "services/widgetApi.js";
 import { useTryAssignSeatMutation } from "services/bookingApi";
+import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
 
 const SeatSelection = () => {
   const router = useRouter();
@@ -35,6 +35,8 @@ const SeatSelection = () => {
 
   const { signature, isLoading, bookingResponse, seats, checkInSelection } =
     useSelector(sessionSelector);
+  const [bookingCommitWithoutPayment, { isLoading: commitPaymentLoading }] =
+    useBookingCommitWithoutPaymentMutation();
 
   const { TabPane } = Tabs;
 
@@ -66,11 +68,50 @@ const SeatSelection = () => {
     await assignUserseat()
       .unwrap()
       .then((data) => {
-        notification.success({
-          message: "Success",
-          description: "Seat Assignment successful",
-        });
-        router.push("/bookings/payment");
+        console.log(
+          "seat data",
+          data?.BookingUpdateResponseData?.Success?.PNRAmount?.BalanceDue
+        );
+
+        let BalanceDue = parseInt(
+          data?.BookingUpdateResponseData?.Success?.PNRAmount?.BalanceDue
+        );
+        console.log("seat dBalnaceDue", BalanceDue);
+
+        if (BalanceDue) {
+          if (BalanceDue > 0) {
+            console.log("gong to heaven");
+            router.push(`/bookings/payment`);
+          } else {
+            console.log("gong to hell");
+
+            bookingCommitWithoutPayment()
+              .unwrap()
+              .then((data) => {
+                router.push(
+                  {
+                    pathname: "/bookings/home",
+                    query: {
+                      pnr: data?.BookingUpdateResponseData?.Success
+                        ?.RecordLocator,
+                    },
+                  },
+                  "/bookings/home"
+                );
+              })
+              .catch((error) => {
+                notification.error({
+                  message: "Error",
+                  description: "Booking Commit Failed",
+                });
+              });
+          }
+        } else {
+          notification.error({
+            message: "Error",
+            description: "Error",
+          });
+        }
       })
       .catch((error) => {
         notification.error({
@@ -181,7 +222,9 @@ const SeatSelection = () => {
                 onClick={initAssignSeats}
                 disabled={isLoading}
               >
-                {isLoading ? "Assigning..." : "Continue"}
+                {isLoading || commitPaymentLoading
+                  ? "Assigning..."
+                  : "Continue"}
               </button>
             )}
           </div>

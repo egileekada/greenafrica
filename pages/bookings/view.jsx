@@ -11,12 +11,12 @@ import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { bookingSelector, ResellNewJourney } from "redux/reducers/booking";
+import { bookingSelector } from "redux/reducers/booking";
 import { sessionSelector } from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import { notification } from "antd";
-
+import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
 
 import {
   useResellNewJourneyMutation,
@@ -36,6 +36,9 @@ const TripView = () => {
   const [CancelSSR, { isLoading: cancellingSSR }] = useCancelSSRMutation();
   const [ResellNewJourney, { isLoading: resellingJourney }] =
     useResellNewJourneyMutation();
+
+  const [bookingCommitWithoutPayment, { isLoading: commitPaymentLoading }] =
+    useBookingCommitWithoutPaymentMutation();
 
   const onCheckChange = (e) => {
     setChecked(e.target.checked);
@@ -362,7 +365,49 @@ const TripView = () => {
               .then((data) => {
                 // dispatch(setGoTrip(null));
                 // dispatch(setReturnTrip(null));
-                router.push(`/bookings/confirm`);
+
+                let BalanceDue;
+                data?.BookingUpdateResponseData?.Success?.PNRAmount?.BalanceDue
+                  ? (BalanceDue = parseInt(
+                      data?.BookingUpdateResponseData?.Success?.PNRAmount
+                        ?.BalanceDue
+                    ))
+                  : null;
+
+                console.log("dBalnaceDue", BalanceDue);
+
+                if (BalanceDue) {
+                  if (BalanceDue > 0) {
+                    router.push(`/bookings/payment`);
+                  } else {
+                    bookingCommitWithoutPayment()
+                      .unwrap()
+                      .then((data) => {
+                        router.push(
+                          {
+                            pathname: "/bookings/home",
+                            query: {
+                              pnr: data?.BookingUpdateResponseData?.Success
+                                ?.RecordLocator,
+                            },
+                          },
+                          "/bookings/home"
+                        );
+                      })
+                      .catch((error) => {
+                        notification.error({
+                          message: "Error",
+                          description: "Booking Commit Failed",
+                        });
+                      });
+                  }
+                } else {
+                  notification.error({
+                    message: "Error",
+                    description: "An Error Occured",
+                  });
+                }
+                // router.push(`/bookings/confirm`);
               })
               .catch(() => {
                 notification.error({
@@ -445,7 +490,10 @@ const TripView = () => {
                     onClick={resellJourney}
                     disabled={resellingJourney || resellingSSR || cancellingSSR}
                   >
-                    {resellingJourney || resellingSSR || cancellingSSR
+                    {resellingJourney ||
+                    resellingSSR ||
+                    cancellingSSR ||
+                    commitPaymentLoading
                       ? "Saving...."
                       : "Continue"}
                   </button>
