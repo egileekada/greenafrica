@@ -67,7 +67,6 @@ const IbeHeader = () => {
         _fareDateList.push(newObj);
       });
       setFareDateList([..._fareDateList]);
-      // console.log("list", _fareDateList);
 
       if (flightParams?.recurrent) {
         const _selectedDate = new Date(flightParams?.beginDate);

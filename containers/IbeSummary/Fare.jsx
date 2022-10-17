@@ -77,7 +77,9 @@ const Fare = ({ isRoundTrip }) => {
                   HPRD: 0,
                 };
 
-                console.log("_segment.PaxSSRs", _segment.PaxSSRs);
+                {
+                  /* console.log("_segment.PaxSSRs", _segment.PaxSSRs); */
+                }
                 _segment.PaxSSRs?.map((_segSSR) => {
                   _SSRsCount[_segSSR?.FeeCode] = _segment.PaxSSRs?.filter(
                     (_segCode) => {
@@ -85,11 +87,6 @@ const Fare = ({ isRoundTrip }) => {
                     }
                   ).length;
                 });
-
-                {
-                  /* console.log("_SSRsCount", _SSRsCount);
-                console.log("_SSRSum", _SSRSum); */
-                }
 
                 return (
                   <>
@@ -132,6 +129,16 @@ const Fare = ({ isRoundTrip }) => {
                       const FuelTax = _fare.PaxFares[0].ServiceCharges.filter(
                         (_charge) => {
                           return _charge.ChargeCode === "YQ";
+                        }
+                      );
+
+                      const Discount = _fare.PaxFares[0].ServiceCharges.filter(
+                        (_charge) => {
+                          return (
+                            _charge.ChargeCode === "IROPC" ||
+                            _charge.ChargeCode === "IROPC2" ||
+                            _charge.ChargeCode === "IROPC3"
+                          );
                         }
                       );
 
@@ -184,6 +191,28 @@ const Fare = ({ isRoundTrip }) => {
                                   </h6>
                                 </div>
                               </div>
+                              {Discount.length > 0 && (
+                                <div className="trip__summary__row subrow">
+                                  <div className="flex items-center">
+                                    {fareConfig?.data ? (
+                                      <h6>
+                                        {" "}
+                                        {
+                                          bookingResponse?.Booking?.Passengers
+                                            .length
+                                        }
+                                        x {resolveAbbreviation("IROPC")}:
+                                      </h6>
+                                    ) : null}
+                                  </div>
+                                  <div>
+                                    <h6>
+                                      ₦{Discount[0].Amount.toLocaleString()}
+                                    </h6>
+                                  </div>
+                                </div>
+                              )}
+
                               <div className="trip__summary__row subrow">
                                 <div className="flex items-center">
                                   {fareConfig?.data ? (
@@ -246,7 +275,6 @@ const Fare = ({ isRoundTrip }) => {
                                   </h6>
                                 </div>
                               </div>
-
                               {parseInt(_SSRsCount?.INFT) > 0 && (
                                 <div className="trip__summary__row subrow">
                                   <div className="flex items-center">
@@ -263,7 +291,6 @@ const Fare = ({ isRoundTrip }) => {
                                   </div>
                                 </div>
                               )}
-
                               {parseInt(_SSRsCount?.WCHR) > 0 && (
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
@@ -286,7 +313,6 @@ const Fare = ({ isRoundTrip }) => {
                                   </div>
                                 </div>
                               )}
-
                               {parseInt(_SSRsCount?.VPRD) > 0 && (
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
@@ -309,7 +335,6 @@ const Fare = ({ isRoundTrip }) => {
                                   </div>
                                 </div>
                               )}
-
                               {parseInt(_SSRsCount?.HPRD) > 0 && (
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
@@ -332,7 +357,6 @@ const Fare = ({ isRoundTrip }) => {
                                   </div>
                                 </div>
                               )}
-
                               {parseInt(_SSRsCount?.XBAG20) > 0 && (
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
@@ -399,7 +423,6 @@ const Fare = ({ isRoundTrip }) => {
                                   </div>
                                 </div>
                               )}
-
                               {_seat && parseInt(_seat) > 0 ? (
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">

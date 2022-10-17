@@ -83,7 +83,6 @@ const PageFares = () => {
                                 return _segSSR?.FeeCode === _segCode?.FeeCode;
                               }).length;
                           });
-                          console.log("_SSRsCoutn", _SSRsCount);
 
                           return (
                             <>
@@ -157,6 +156,17 @@ const PageFares = () => {
                                     }
                                   );
 
+                                const Discount =
+                                  _fare.PaxFares[0].ServiceCharges.filter(
+                                    (_charge) => {
+                                      return (
+                                        _charge.ChargeCode === "IROPC" ||
+                                        _charge.ChargeCode === "IROPC2" ||
+                                        _charge.ChargeCode === "IROPC3"
+                                      );
+                                    }
+                                  );
+
                                 const ChangeTax =
                                   _fare.PaxFares[0].ServiceCharges.filter(
                                     (_charge) => {
@@ -206,6 +216,29 @@ const PageFares = () => {
                                       <h6>₦{ChangeTax.toLocaleString()}</h6>
                                     </div>
                                   </div> */}
+
+                                    {Discount.length > 0 && (
+                                      <div className="trip__summary__row subrow">
+                                        <div className="flex items-center">
+                                          {fareConfig?.data ? (
+                                            <h6>
+                                              {" "}
+                                              {
+                                                bookingResponse?.Booking
+                                                  ?.Passengers.length
+                                              }
+                                              x {resolveAbbreviation("IROPC")}:
+                                            </h6>
+                                          ) : null}
+                                        </div>
+                                        <div>
+                                          <h6>
+                                            ₦
+                                            {Discount[0].Amount.toLocaleString()}
+                                          </h6>
+                                        </div>
+                                      </div>
+                                    )}
 
                                     {parseInt(_SSRsCount?.WCHR) > 0 && (
                                       <div className="trip__summary__row subrow">
