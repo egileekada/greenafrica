@@ -68,49 +68,33 @@ const SeatSelection = () => {
     await assignUserseat()
       .unwrap()
       .then((data) => {
-        console.log(
-          "seat data",
-          data?.BookingUpdateResponseData?.Success?.PNRAmount?.BalanceDue
-        );
-
-        let BalanceDue = parseInt(
-          data?.BookingUpdateResponseData?.Success?.PNRAmount?.BalanceDue
-        );
-        console.log("seat dBalnaceDue", BalanceDue);
-
-        if (BalanceDue) {
-          if (BalanceDue > 0) {
-            console.log("gong to heaven");
-            router.push(`/bookings/payment`);
-          } else {
-            console.log("gong to hell");
-
-            bookingCommitWithoutPayment()
-              .unwrap()
-              .then((data) => {
-                router.push(
-                  {
-                    pathname: "/bookings/home",
-                    query: {
-                      pnr: data?.BookingUpdateResponseData?.Success
-                        ?.RecordLocator,
-                    },
-                  },
-                  "/bookings/home"
-                );
-              })
-              .catch((error) => {
-                notification.error({
-                  message: "Error",
-                  description: "Booking Commit Failed",
-                });
-              });
-          }
+        if (
+          parseInt(
+            data?.BookingUpdateResponseData?.Success?.PNRAmount?.BalanceDue
+          ) > 0
+        ) {
+          router.push(`/bookings/payment`);
         } else {
-          notification.error({
-            message: "Error",
-            description: "Error",
-          });
+          bookingCommitWithoutPayment()
+            .unwrap()
+            .then((data) => {
+              router.push(
+                {
+                  pathname: "/bookings/home",
+                  query: {
+                    pnr: data?.BookingUpdateResponseData?.Success
+                      ?.RecordLocator,
+                  },
+                },
+                "/bookings/home"
+              );
+            })
+            .catch((error) => {
+              notification.error({
+                message: "Error",
+                description: "Booking Commit Failed",
+              });
+            });
         }
       })
       .catch((error) => {
