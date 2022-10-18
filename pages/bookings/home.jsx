@@ -355,7 +355,7 @@ const ManageBookings = (props) => {
   };
 
   const handlePayment = () => {
-    router.push("/bookings/confirm");
+    router.push("/bookings/payment");
   };
 
   if (!props.pnr) {
