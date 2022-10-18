@@ -366,47 +366,39 @@ const TripView = () => {
                 // dispatch(setGoTrip(null));
                 // dispatch(setReturnTrip(null));
 
-                let BalanceDue;
-                data?.BookingUpdateResponseData?.Success?.PNRAmount?.BalanceDue
-                  ? (BalanceDue = parseInt(
-                      data?.BookingUpdateResponseData?.Success?.PNRAmount
-                        ?.BalanceDue
-                    ))
-                  : null;
-
-                console.log("dBalnaceDue", BalanceDue);
-
-                if (BalanceDue) {
-                  if (BalanceDue > 0) {
-                    router.push(`/bookings/payment`);
-                  } else {
-                    bookingCommitWithoutPayment()
-                      .unwrap()
-                      .then((data) => {
-                        router.push(
-                          {
-                            pathname: "/bookings/home",
-                            query: {
-                              pnr: data?.BookingUpdateResponseData?.Success
-                                ?.RecordLocator,
-                            },
-                          },
-                          "/bookings/home"
-                        );
-                      })
-                      .catch((error) => {
-                        notification.error({
-                          message: "Error",
-                          description: "Booking Commit Failed",
-                        });
-                      });
-                  }
+                if (
+                  parseInt(
+                    data?.BookingUpdateResponseData?.Success?.PNRAmount
+                      ?.BalanceDue
+                  ) > 0
+                ) {
+                  console.log("making payment");
+                  router.push(`/bookings/payment`);
                 } else {
-                  notification.error({
-                    message: "Error",
-                    description: "An Error Occured",
-                  });
+                  console.log("making booking commmit");
+
+                  bookingCommitWithoutPayment()
+                    .unwrap()
+                    .then((data) => {
+                      router.push(
+                        {
+                          pathname: "/bookings/home",
+                          query: {
+                            pnr: data?.BookingUpdateResponseData?.Success
+                              ?.RecordLocator,
+                          },
+                        },
+                        "/bookings/home"
+                      );
+                    })
+                    .catch((error) => {
+                      notification.error({
+                        message: "Error",
+                        description: "Booking Commit Failed",
+                      });
+                    });
                 }
+
                 // router.push(`/bookings/confirm`);
               })
               .catch(() => {
