@@ -46,16 +46,6 @@ const ManageBooking = () => {
         .unwrap()
         .then((data) => {
           checkPnr(values.pnr);
-
-          // router.push(
-          //   {
-          //     pathname: "/bookings/home",
-          //     query: {
-          //       pnr: values.pnr,
-          //     },
-          //   },
-          //   "/bookings/home"
-          // );
         })
         .catch((error) => {
           notification.error({

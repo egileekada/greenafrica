@@ -81,14 +81,9 @@ const CheckIn = () => {
         } else if (data.Booking.BookingSum.BalanceDue > 0) {
           setMessage("Check-in is not available for unconfirmed bookings");
           setIsModalOpen(true);
-        } else if (data.PackageIndicator == 0) {
+        } else if (data.PackageIndicator == 0 && data.LoginIndicator == 0) {
           setMessage(
             "Online Check-in opens 2 days before the flight departure and closes 3 hours before the flight departure"
-          );
-          setIsModalOpen(true);
-        } else if (parseInt(data.LoginIndicator) > 1) {
-          setMessage(
-            "Please, try again or contact our call center to complete your booking."
           );
           setIsModalOpen(true);
         } else {
