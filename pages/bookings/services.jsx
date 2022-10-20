@@ -40,8 +40,13 @@ const PassengerDetails = () => {
   const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
   const NEW_SSRS = ["x20", "x15", "x10", "vprd", "wchr", "hprd"];
 
-  const { signature, bookingResponseLoading, bookingResponse } =
-    useSelector(sessionSelector);
+  const {
+    signature,
+    bookingResponseLoading,
+    bookingResponse,
+    tripParams,
+    returnParams,
+  } = useSelector(sessionSelector);
 
   const {
     SSRAvailabilityLoading,
@@ -214,7 +219,6 @@ const PassengerDetails = () => {
           return true;
       });
 
-      console.log("Extras", Extras);
       if (Extras?.length > 0) {
         const _Arrival =
           bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
@@ -384,17 +388,17 @@ const PassengerDetails = () => {
       });
     }
 
-    // ResellSSR(segmentSSRRequests)
-    //   .unwrap()
-    //   .then((data) => {
-    //     router.push(`/bookings/confirm`);
-    //   })
-    //   .catch(() => {
-    //     notification.error({
-    //       message: "Error",
-    //       description: "Sell Services failed",
-    //     });
-    //   });
+    ResellSSR(segmentSSRRequests)
+      .unwrap()
+      .then((data) => {
+        router.push(`/bookings/confirm`);
+      })
+      .catch(() => {
+        notification.error({
+          message: "Error",
+          description: "Sell Services failed",
+        });
+      });
   };
 
   const goBackToHome = () => {
