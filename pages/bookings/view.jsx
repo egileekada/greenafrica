@@ -266,10 +266,10 @@ const TripView = () => {
       };
       _journeySellKeys.push(newObj);
       _serviceBundleList.push(returnTrip?.fare?.RuleNumber);
+      const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
 
       const JourneyTwoSSRsExSeat =
-        bookingResponse?.Booking?.Journeys[1].Segments[0]
-          .PaxSSRs;
+        bookingResponse?.Booking?.Journeys[1].Segments[0].PaxSSRs;
 
       JourneyTwoSegmentSSRRequest = {
         flightDesignator: {
