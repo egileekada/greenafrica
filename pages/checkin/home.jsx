@@ -333,14 +333,17 @@ const CheckInDetails = (props) => {
                               <label
                                 htmlFor={`passenger-${index}-${pIndex}`}
                                 className={`${
-                                  Journey?.Segments[0]?.PaxSegments[pIndex]
-                                    ?.LiftStatus === 1 && "text-gray-300"
+                                  (Journey?.Segments[0]?.PaxSegments[pIndex]
+                                    ?.LiftStatus === 1 ||
+                                    Journey?.PackageIndicator == 0) &&
+                                  "text-gray-300"
                                 } ml-2 text-lg font-semibold capitalize w-full flex items-center`}
                               >
                                 <input
                                   disabled={
                                     Journey?.Segments[0]?.PaxSegments[pIndex]
-                                      .LiftStatus
+                                      .LiftStatus ||
+                                    Journey?.PackageIndicator == 0
                                   }
                                   className="w-5 h-5 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2 mr-3"
                                   type="checkbox"
@@ -352,7 +355,7 @@ const CheckInDetails = (props) => {
                                   }
                                 />
                                 {passenger.Names[0].FirstName}{" "}
-                                {passenger.Names[0].LastName}
+                                {passenger.Names[0].LastName}{" "}
                               </label>
                             </div>
                           </div>
