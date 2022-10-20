@@ -239,30 +239,38 @@ const PassengerDetails = () => {
         let newBookingReturnSSRsPayload = [];
 
         if (bookingSessionSSRs.length > 0) {
-          newBookingSSRsPayload = _extractUniqueDiffrenceById(
-            newBookingSSRs,
-            bookingSessionSSRs,
-            newSSRs
-          );
+          if (tripParams && parseInt(tripParams?.LiftStatus) === 0) {
+            newBookingSSRsPayload = _extractUniqueDiffrenceById(
+              newBookingSSRs,
+              bookingSessionSSRs,
+              newSSRs
+            );
+          }
         } else {
-          newBookingSSRsPayload = _extractDiffrenceById(
-            newBookingSSRs,
-            bookingSessionSSRs
-          );
+          if (tripParams && parseInt(tripParams?.LiftStatus) === 0) {
+            newBookingSSRsPayload = _extractDiffrenceById(
+              newBookingSSRs,
+              bookingSessionSSRs
+            );
+          }
         }
 
         if (bookingResponse?.Booking?.Journeys?.length > 1) {
           if (bookingSessionReturnSSRs.length > 0) {
-            newBookingReturnSSRsPayload = _extractUniqueDiffrenceById(
-              existingReturnSSRs,
-              bookingSessionReturnSSRs,
-              newReturnSSRs
-            );
+            if (returnParams && parseInt(returnParams?.LiftStatus) === 0) {
+              newBookingReturnSSRsPayload = _extractUniqueDiffrenceById(
+                existingReturnSSRs,
+                bookingSessionReturnSSRs,
+                newReturnSSRs
+              );
+            }
           } else {
-            newBookingReturnSSRsPayload = _extractDiffrenceById(
-              existingReturnSSRs,
-              bookingSessionReturnSSRs
-            );
+            if (returnParams && parseInt(returnParams?.LiftStatus) === 0) {
+              newBookingReturnSSRsPayload = _extractDiffrenceById(
+                existingReturnSSRs,
+                bookingSessionReturnSSRs
+              );
+            }
           }
         }
 
@@ -312,6 +320,9 @@ const PassengerDetails = () => {
   const sendSellRequest = async (payload, returnPayload = []) => {
     dispatch(setGoDifference(payload));
     dispatch(setReturnDifference(returnPayload));
+
+    console.log("go payload", payload);
+    console.log("return payload", returnPayload);
 
     const segmentSSRRequests = [];
     const _bookingResponse = bookingResponse;
