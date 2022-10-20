@@ -177,6 +177,7 @@ const ReturnBookingIbeHeader = () => {
       dispatch(fetchFlightAvailability(tripParams, flightRequest));
     }
   };
+
   const resolveAbbreviation = (abrreviation) => {
     if (data) {
       const [{ name, code }] = data?.data?.items.filter(
@@ -190,13 +191,28 @@ const ReturnBookingIbeHeader = () => {
   };
 
   return (
-    <section className="ibe__flight__info mt-20" id="returnContainer">
+    <section
+      className={`ibe__flight__info mt-20 ${
+        returnParams
+          ? parseInt(returnParams?.LiftStatus) !== 0
+            ? "pointer-events-none opacity-50 cursor-not-allowed"
+            : ""
+          : ""
+      } `}
+      id="returnContainer"
+    >
       <section className="ibe__flight__info__destination">
-        <p className="mx-4">{returnParams?.departureStation}</p>
+        <p className="mx-4">
+          {returnParams?.departureStation &&
+            resolveAbbreviation(returnParams?.departureStation)}
+        </p>
         <figure>
           <ArrowTo />
         </figure>
-        <p className="mx-4">{returnParams?.arrivalStation}</p>
+        <p className="mx-4">
+          {returnParams?.arrivalStation &&
+            resolveAbbreviation(returnParams?.arrivalStation)}
+        </p>
 
         <figure className="flightCircle">
           <FlightIcon />

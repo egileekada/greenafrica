@@ -22,7 +22,8 @@ const BoookingBaggageCard = ({
   const [limit, setLimit] = useState(0);
   const [newSSRs, setNewSSRs] = useState([]);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { bookingSessionSSRs, newBookingSSRs } = useSelector(bookingSelector);
+  const { tripParams, bookingSessionSSRs, newBookingSSRs } =
+    useSelector(bookingSelector);
   const KG = SSRItem?.SSRCode.substring(1);
   const dispatch = useDispatch();
 

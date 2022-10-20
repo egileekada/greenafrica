@@ -1,82 +1,116 @@
-const _selectedSSRs = [
-  {
-    id: "16644520919410ABVLOS27",
-    passengerNumber: 0,
-    ssrCode: "X15",
-    schedueIndex: 0,
-    ArrivalStation: "ABV",
-    DepartureStation: "LOS",
-  },
-  {
-    id: "16644520919411ABVLOS28",
-    passengerNumber: 0,
-    ssrCode: "X20",
-    schedueIndex: 0,
-    ArrivalStation: "ABV",
-    DepartureStation: "LOS",
-  },
-];
+// // // var counter = (function () {
+// // //   var i = 0;
 
-const ids = _selectedSSRs.map((ssr) => ssr?.ssrCode.toLowerCase());
-const NEW_SSRS = ["x20", "x15", "x10", "vprd", "wchr", "hprd"];
+const { number } = require("yup");
 
-const newArr = NEW_SSRS.filter((ssr) => {
-  return !ids.includes(ssr.toLowerCase());
-});
+// // //   return {
+// // //     get: function () {
+// // //       return i;
+// // //     }
+// // //     set: function
+// // //   }
+// // // })
 
-console.log("new SSRS", newArr);
-// console.log("new SSRS", ids);
+// // const solution = (transactions, taxRate) => {
+// //   let numCalls = 0;
 
-// const _newCheckinSSRs = [
-//   {
-//     id: "1664444129912013",
-//     passengerNumber: 0,
-//     ssrCode: "X15",
-//     schedueIndex: 0,
-//     ArrivalStation: "ABV",
-//     DepartureStation: "LOS",
-//   },
-//   {
-//     id: "1664444186171a409ac20-746b-465d-98a3-a3a1f2e7a6ba",
-//     passengerNumber: 0,
-//     ssrCode: "X20",
-//     schedueIndex: 0,
-//     ArrivalStation: "ABV",
-//     DepartureStation: "LOS",
-//   },
-//   {
-//     id: "1664444186171a409ac20-746b-465d-98a3-a3a1f2e7a6ba",
-//     passengerNumber: 0,
-//     ssrCode: "X20",
-//     schedueIndex: 0,
-//     ArrivalStation: "ABV",
-//     DepartureStation: "LOS",
-//   },
-// ];
+// //   const calculateCostAfterTax = (cost, taxRate) => {
+// //     numCalls = numCalls + 1;
+// //     return cost * taxRate;
+// //   };
 
-// const extractUniqueDiffrenceById = (array1, array2) => {
-//   const getDifference = (array1, array2) => {
-//     return array1.filter((object1) => {
-//       return !array2.some((object2) => {
-//         return object1.id === object2.id;
-//       });
-//     });
-//   };
+// //   const computeTotal = (taxRate) => {
+// //     const treated = [];
+// //     return (cost) => {
+// //       if (treated.includes(cost)) {
+// //         return;
+// //       } else {
+// //         treated.push(cost);
+// //         return calculateCostAfterTax(cost, taxRate);
+// //       }
+// //     };
+// //   };
 
-//   const diff = getDifference(array1, array2);
+// //   transactions.map(computeTotal(taxRate));
+// //   return numCalls;
+// // };
 
-//   const uniqueIds = new Set();
-//   const unique = diff.filter((element) => {
-//     const isDuplicate = uniqueIds.has(element.id);
-//     uniqueIds.add(element.id);
-//     if (!isDuplicate) {
-//       return true;
+// // // const _transactions = [10, 24, 12, 8, 10, 24];
+// // // const _tax = 1.2;
+
+// // const _transactions = [10, 5, 10, 5];
+// // const _tax = 1.1;
+
+// // const _soln = solution(_transactions, _tax);
+// // console.log("_soln", _soln);
+
+// // function findStep(n) {
+// //   if (n == 0) return 1;
+// //   else if (n < 0) return 0;
+// //   else return findStep(n - 3) + findStep(n - 2) + findStep(n - 1);
+// // }
+
+// // console.log("_soln", findStep(3));
+
+// function areDistinct(str, i, j) {
+//   var visited = new [26]();
+//   for (var k = i; k <= j; k++) {
+//     if (visited[str.charAt(k) - "a"] == true) return false;
+//     visited[str.charAt(k) - "a"] = true;
+//   }
+//   return true;
+// }
+
+// function longestUniqueSubsttr(str) {
+//   var n = str.length;
+//   var res = 0;
+//   for (var i = 0; i < n; i++)
+//     for (var j = i; j < n; j++)
+//       if (areDistinct(str, i, j)) res = Math.max(res, j - i + 1);
+
+//   return res;
+// }
+
+// function lengthOfLongestSubstring(check) {
+//   var letters = check.split("");
+//   var max = 0;
+//   var result = new Map();
+//   var start = 0;
+
+//   for (var i = 0; i < letters.length; i++) {
+//     if (!result.has(letters[i])) {
+//       result.set(letters[i], i);
+//     } else {
+//       i = result.get(letters[i]);
+//       result.clear();
 //     }
-//     return false;
-//   });
 
-//   return unique && unique?.length > 0 ? unique : [];
-// };
+//     if (max < result.size) {
+//       max = result.size;
+//     }
+//   }
+//   return max;
+// }
 
-// const _unique = extractUniqueDiffrenceById(_newCheckinSSRs, _selectedSSRs);
-// console.log("unique", _unique);
+// var len = lengthOfLongestSubstring("nndNfdfdf");
+
+// console.log("len", len);
+
+// const bar = () => console.log("bar");
+// const baz = () => console.log("baz");
+
+// const foo = () => {
+//   console.log('foo')
+//   setTimeout(bar,0)
+//   baz()
+// }
+
+// foo()
+
+
+var num = 24;
+setTimeout(() => {
+  console.log(num)
+}, 0)
+
+num = 5

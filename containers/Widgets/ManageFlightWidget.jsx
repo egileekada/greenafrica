@@ -11,7 +11,8 @@ const ManageFlightWidget = () => {
   const [showPromo, setShowPromo] = useState(false);
   const [saveStatus, setSaveStatus] = useState(false);
 
-  const { bookingResponse } = useSelector(sessionSelector);
+  const { bookingResponse } =
+    useSelector(sessionSelector);
 
   useEffect(() => {
     if (bookingResponse) {

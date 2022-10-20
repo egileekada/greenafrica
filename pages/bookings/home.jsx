@@ -11,7 +11,11 @@ import {
   sessionSelector,
   GetBookingDetailsWithPNR,
 } from "redux/reducers/session";
-import { saveTripParams, saveReturnParams } from "redux/reducers/booking";
+import {
+  bookingSelector,
+  saveTripParams,
+  saveReturnParams,
+} from "redux/reducers/booking";
 import { paymentSelector } from "redux/reducers/payment";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -32,6 +36,7 @@ const ManageBookings = (props) => {
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
   const { verifyManageBookingResponse } = useSelector(paymentSelector);
+  const { tripParams, returnParams } = useSelector(bookingSelector);
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
 
   const ScrollToTop = () => {
@@ -58,19 +63,19 @@ const ManageBookings = (props) => {
     fetchBookingDetails();
   }, [router]);
 
-  useEffect(() => {
-    if (
-      bookingResponse &&
-      bookingResponse?.Booking &&
-      bookingResponse?.Booking?.Journeys?.length > 0
-    ) {
-      bookingResponse?.Booking?.Journeys.map((_journey) => {
-        _journey.Segments[0].PaxSegments.map((_paxSegment) => {
-          parseInt(_paxSegment?.LiftStatus) === 1 && setCheckedIn(true);
-        });
-      });
-    }
-  }, [bookingResponse]);
+  // useEffect(() => {
+  //   if (
+  //     bookingResponse &&
+  //     bookingResponse?.Booking &&
+  //     bookingResponse?.Booking?.Journeys?.length > 0
+  //   ) {
+  //     bookingResponse?.Booking?.Journeys.map((_journey) => {
+  //       _journey.Segments[0].PaxSegments.map((_paxSegment) => {
+  //         parseInt(_paxSegment?.LiftStatus) === 1 && setCheckedIn(true);
+  //       });
+  //     });
+  //   }
+  // }, [bookingResponse]);
 
   const TripHeader = () => {
     return (
@@ -199,6 +204,7 @@ const ManageBookings = (props) => {
         bookingResponse?.Booking?.Journeys[0].Segments[0].Fares[0].RuleNumber,
       scheduleIndex: 0,
       currentDate: new Date(),
+      LiftStatus: bookingResponse?.Booking?.Journeys[0]?.State,
     };
 
     // const goStd = bookingResponse?.Booking?.Journeys[0].Segments[0].STD;
@@ -246,22 +252,38 @@ const ManageBookings = (props) => {
           bookingResponse?.Booking?.Journeys[1].Segments[0].Fares[0].RuleNumber,
         scheduleIndex: 1,
         currentDate: new Date(),
+        LiftStatus: bookingResponse?.Booking?.Journeys[1]?.State,
       };
 
       dispatch(saveTripParams(tripPayload));
       dispatch(saveReturnParams(returnPayload));
-      // console.log("tripParams", tripPayload);
-      // console.log("returnPayloa", returnPayload);
       router.push("/bookings/change-flight");
     } else {
-      // console.log("tripParams", tripPayload);
       dispatch(saveTripParams(tripPayload));
       router.push("/bookings/change-flight");
     }
   };
 
   const handleServices = () => {
-    router.push("/bookings/services");
+    if (bookingResponse && bookingResponse?.Booking?.Journeys) {
+      const tripPayload = {
+        ...tripParams,
+        LiftStatus: bookingResponse?.Booking?.Journeys[0]?.State,
+      };
+
+      if (bookingResponse?.Booking?.Journeys.length > 1) {
+        const returnPayload = {
+          ...returnParams,
+          LiftStatus: bookingResponse?.Booking?.Journeys[1]?.State,
+        };
+        dispatch(saveTripParams(tripPayload));
+        dispatch(saveReturnParams(returnPayload));
+        router.push("/bookings/services");
+      } else {
+        dispatch(saveTripParams(tripPayload));
+        router.push("/bookings/services");
+      }
+    }
   };
 
   const resolveAbbreviation = (abrreviation) => {

@@ -268,7 +268,7 @@ const TripView = () => {
       _serviceBundleList.push(returnTrip?.fare?.RuleNumber);
 
       const JourneyTwoSSRsExSeat =
-        currentSession?.bookingResponse?.Booking?.Journeys[1].Segments[0]
+        bookingResponse?.Booking?.Journeys[1].Segments[0]
           .PaxSSRs;
 
       JourneyTwoSegmentSSRRequest = {

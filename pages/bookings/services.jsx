@@ -214,6 +214,7 @@ const PassengerDetails = () => {
           return true;
       });
 
+      console.log("Extras", Extras);
       if (Extras?.length > 0) {
         const _Arrival =
           bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
@@ -234,17 +235,12 @@ const PassengerDetails = () => {
         let newBookingReturnSSRsPayload = [];
 
         if (bookingSessionSSRs.length > 0) {
-          // console.log("called _extractUniqueDiffrenceById");
-          // console.log("newBookingSSRs", newBookingSSRs);
-          // console.log("bookingSessionSSRs", bookingSessionSSRs);
-          // console.log(" newSSRs", newSSRs);
           newBookingSSRsPayload = _extractUniqueDiffrenceById(
             newBookingSSRs,
             bookingSessionSSRs,
             newSSRs
           );
         } else {
-          // console.log("called extractDiffrenceByID");
           newBookingSSRsPayload = _extractDiffrenceById(
             newBookingSSRs,
             bookingSessionSSRs
@@ -265,12 +261,6 @@ const PassengerDetails = () => {
             );
           }
         }
-
-        console.log(
-          "extras",
-          newBookingSSRsPayload,
-          newBookingReturnSSRsPayload
-        );
 
         await sendSellRequest(newBookingSSRsPayload, [
           ...newBookingReturnSSRsPayload,
@@ -304,12 +294,6 @@ const PassengerDetails = () => {
             bookingSessionReturnSSRs
           );
         }
-
-        console.log(
-          "no extras",
-          newBookingSSRsPayload,
-          newBookingReturnSSRsPayload
-        );
 
         await sendSellRequest(
           newBookingSSRsPayload,
@@ -400,17 +384,17 @@ const PassengerDetails = () => {
       });
     }
 
-    ResellSSR(segmentSSRRequests)
-      .unwrap()
-      .then((data) => {
-        router.push(`/bookings/confirm`);
-      })
-      .catch(() => {
-        notification.error({
-          message: "Error",
-          description: "Sell Services failed",
-        });
-      });
+    // ResellSSR(segmentSSRRequests)
+    //   .unwrap()
+    //   .then((data) => {
+    //     router.push(`/bookings/confirm`);
+    //   })
+    //   .catch(() => {
+    //     notification.error({
+    //       message: "Error",
+    //       description: "Sell Services failed",
+    //     });
+    //   });
   };
 
   const goBackToHome = () => {

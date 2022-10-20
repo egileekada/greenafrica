@@ -33,6 +33,8 @@ const BookingPassengerBaggage = ({
 
   const { bookingResponse } = useSelector(sessionSelector);
   const {
+    tripParams,
+    returnParams,
     SSRAvailabilityResponse,
     bookingSessionSSRs,
     bookingSessionReturnSSRs,
@@ -100,7 +102,15 @@ const BookingPassengerBaggage = ({
         </h2>
 
         {bookingResponse?.Booking?.Journeys?.length > 0 && (
-          <section className="flex flex-col mt-4">
+          <section
+            className={`flex flex-col mt-4 ${
+              tripParams
+                ? parseInt(tripParams?.LiftStatus) !== 0
+                  ? "pointer-events-none opacity-50 cursor-not-allowed"
+                  : ""
+                : ""
+            }`}
+          >
             <div className="flex h-16 border-b mb-6">
               {bookingResponse?.Booking?.Journeys?.length > 0 && (
                 <button className={`ssr__tab active-ssr`}>
@@ -180,7 +190,15 @@ const BookingPassengerBaggage = ({
         )}
 
         {bookingResponse?.Booking?.Journeys?.length > 1 && (
-          <section className="flex flex-col mt-4">
+          <section
+            className={`flex flex-col mt-4 ${
+              returnParams
+                ? parseInt(returnParams?.LiftStatus) !== 0
+                  ? "pointer-events-none opacity-50 cursor-not-allowed"
+                  : ""
+                : ""
+            }`}
+          >
             <div className="flex h-16 border-b mb-6">
               {bookingResponse?.Booking?.Journeys?.length > 1 && (
                 <button className={`ssr__tab active-ssr`}>

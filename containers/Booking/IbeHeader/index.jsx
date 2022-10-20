@@ -193,7 +193,15 @@ const BookingIbeHeader = () => {
   };
 
   return (
-    <section className="ibe__flight__info">
+    <section
+      className={`ibe__flight__info ${
+        tripParams
+          ? parseInt(tripParams?.LiftStatus) !== 0
+            ? "pointer-events-none opacity-50 cursor-not-allowed"
+            : ""
+          : ""
+      } `}
+    >
       <section className="ibe__flight__info__destination">
         <p className="mx-4">
           {tripParams?.departureStation &&

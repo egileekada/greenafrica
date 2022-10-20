@@ -99,6 +99,8 @@ const ManageUpdateItenary = () => {
                 </div>
               ) : (
                 <>
+                  {/* <p>Trip {tripParams?.LiftStatus}</p>
+                  <p>Return Trip {returnParams?.LiftStatus}</p> */}
                   {manageFlightAvailabilityResponse ? (
                     manageFlightAvailabilityResponse?.Schedules.length > 0 ? (
                       <>
@@ -115,6 +117,11 @@ const ManageUpdateItenary = () => {
                                 <IbeTrips
                                   flightSchedule={_schedule}
                                   schedueIndex={_schedueIndex}
+                                  liftStatus={
+                                    parseInt(_schedueIndex) === 0
+                                      ? tripParams?.LiftStatus
+                                      : returnParams?.LiftStatus
+                                  }
                                 />
                               </>
                             );
