@@ -138,7 +138,7 @@ const SeatSelection = () => {
 
               <section className="flex flex-col bg-white pb-24 pt-5 px-3 md:px-8 rounded-lg">
                 <Tabs
-                  defaultActiveKey="1"
+                  defaultActiveKey=""
                   tabBarStyle={{ color: "#47FF5A" }}
                   onChange={(e) => setTicketIndex(e - 1)}
                 >
@@ -177,13 +177,23 @@ const SeatSelection = () => {
                         </div>
                       }
                       key={index + 1}
+                      disabled={journey.State == 1}
                     >
-                      <SeatWrapper
-                        setShow={setShow}
-                        ticketIndex={index}
-                        key={index + 2}
-                        productClass={journey?.Segments[0].Fares[0].RuleNumber}
-                      />
+                      <div
+                        className={
+                          journey.State == 1 &&
+                          "pointer-events-none opacity-50 cursor-not-allowed"
+                        }
+                      >
+                        <SeatWrapper
+                          setShow={setShow}
+                          ticketIndex={index}
+                          key={index + 2}
+                          productClass={
+                            journey?.Segments[0].Fares[0].RuleNumber
+                          }
+                        />
+                      </div>
                     </TabPane>
                   ))}
                 </Tabs>
