@@ -42,6 +42,13 @@ export const widgetApi = createApi({
     verifyPayment: builder.query({
       query: (reference) => `payments/verify/${reference}`,
     }),
+    sendBoardingPass: builder.mutation({
+      query: (body) => ({
+        url: "send/boardingpass",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -59,5 +66,6 @@ export const {
   useGetFareconfigsQuery,
   useGetSSRconfigsQuery,
   useInitiatePaymentMutation,
+  useSendBoardingPassMutation,
   useVerifyPaymentQuery,
 } = widgetApi;

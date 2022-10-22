@@ -14,6 +14,7 @@ import { timeConvert } from "utils/common";
 import {
   useGetLocationsQuery,
   useGetProductsQuery,
+  useSendBoardingPassMutation,
 } from "services/widgetApi.js";
 import { useGetBookingMutation } from "services/bookingApi";
 
@@ -25,7 +26,8 @@ const CheckInDetails = () => {
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   const [initGetBooking, { isLoading, error, isError, data: bookingData }] =
     useGetBookingMutation();
-
+  const [sendBoardingPass, { isLoading: LoadingPass }] =
+    useSendBoardingPassMutation();
   const { bookingResponse } = useSelector(sessionSelector);
 
   const ScrollToTop = () => {
@@ -85,6 +87,75 @@ const CheckInDetails = () => {
     }
     fetchBookingDetails();
   }, []);
+
+  const triggerEmailBoardingPass = (id, departureStation, arrivalStation) => {
+    const data = {
+      signature,
+      recordLocator: bookingResponse?.Booking?.RecordLocator,
+      requestType: "email",
+      boardingPassRequests: [
+        {
+          passengerIdArray: [id],
+          departureStation,
+          arrivalStation,
+        },
+      ],
+    };
+    sendBoardingPass(data)
+      .unwrap()
+      .then((data) => {
+        notification.success({
+          message: "Success",
+          description: data.data.message,
+        });
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error",
+          description: "An Error Occured",
+        });
+      });
+  };
+
+  const triggerDownloadBoardingPass = (
+    id,
+    departureStation,
+    arrivalStation
+  ) => {
+    const data = {
+      signature,
+      recordLocator: bookingResponse?.Booking?.RecordLocator,
+      requestType: "download",
+      boardingPassRequests: [
+        {
+          passengerIdArray: [id],
+          departureStation,
+          arrivalStation,
+        },
+      ],
+    };
+    sendBoardingPass(data)
+      .unwrap()
+      .then((data) => {
+        const link = document.createElement("a");
+        link.href = data.data.urls[0];
+        link.setAttribute("target", "_blank");
+        link.setAttribute("download", "boarding pass");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        notification.success({
+          message: "Success",
+          description: data.data.message,
+        });
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error",
+          description: "An Error Occured",
+        });
+      });
+  };
 
   return (
     <BaseLayout>
@@ -329,10 +400,34 @@ const CheckInDetails = () => {
                                           )}
 
                                           <div className="flex flex-wrap md:flex-nowrap items-center justify-between ml-auto">
-                                            <button className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0">
+                                            <button
+                                              className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0"
+                                              onClick={() =>
+                                                triggerDownloadBoardingPass(
+                                                  passenger.PassengerNumber,
+                                                  Journey?.Segments[0]
+                                                    ?.DepartureStation,
+                                                  Journey?.Segments[0]
+                                                    ?.ArrivalStation
+                                                )
+                                              }
+                                              disabled={LoadingPass}
+                                            >
                                               Download Boarding Pass
                                             </button>
-                                            <button className="btn btn-outline  basis-full md:basis-auto">
+                                            <button
+                                              className="btn btn-outline  basis-full md:basis-auto"
+                                              onClick={() =>
+                                                triggerEmailBoardingPass(
+                                                  passenger.PassengerNumber,
+                                                  Journey?.Segments[0]
+                                                    ?.DepartureStation,
+                                                  Journey?.Segments[0]
+                                                    ?.ArrivalStation
+                                                )
+                                              }
+                                              disabled={LoadingPass}
+                                            >
                                               Email Boarding Pass
                                             </button>
                                           </div>
