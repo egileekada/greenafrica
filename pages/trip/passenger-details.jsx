@@ -167,6 +167,8 @@ const PassengerDetails = () => {
             {SSRAvailabilityLoading ? (
               <section className="flex flex-col">
                 <SkeletonLoader />
+                <SkeletonLoader />
+                <SkeletonLoader />
               </section>
             ) : SSRAvailabilityResponse ? (
               <>
