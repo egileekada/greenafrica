@@ -23,6 +23,7 @@ import {
   useCancelSSRMutation,
   useResellSSRMutation,
 } from "services/bookingApi";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 
 const TripView = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const TripView = () => {
   const { goTrip, returnTrip, tripParams, returnParams } =
     useSelector(bookingSelector);
   const { bookingResponse } = useSelector(sessionSelector);
+  const { data, isLoading } = useGetLocationsQuery();
 
   const [ResellSSR, { isLoading: resellingSSR }] = useResellSSRMutation();
   const [CancelSSR, { isLoading: cancellingSSR }] = useCancelSSRMutation();
@@ -69,7 +71,8 @@ const TripView = () => {
       <section className="flex flex-col mb-8">
         <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
           {trip?.segment?.schedueIndex === 1 && "Return"} Trip To{" "}
-          {trip?.segment?.ArrivalStation} On{" "}
+          {trip?.segment && resolveAbbreviation(trip?.segment?.ArrivalStation)}{" "}
+          On{" "}
           {trip?.segment?.schedueIndex === 1
             ? format(new Date(returnParams?.returnDate), "EEEE, LLLL dd yyyy")
             : format(new Date(tripParams?.beginDate), "EEEE, LLLL dd yyyy")}
@@ -77,11 +80,19 @@ const TripView = () => {
 
         {/* TripHeader */}
         <section className="ibe__flight__info__destination">
-          <p> {trip?.segment?.DepartureStation}</p>
+          <p>
+            {" "}
+            {trip?.segment &&
+              resolveAbbreviation(trip?.segment?.DepartureStation)}
+          </p>
           <figure>
             <ArrowTo />
           </figure>
-          <p> {trip?.segment?.ArrivalStation}</p>
+          <p>
+            {" "}
+            {trip?.segment &&
+              resolveAbbreviation(trip?.segment?.ArrivalStation)}
+          </p>
 
           <figure className="flightCircle">
             <FlightIcon />
@@ -425,6 +436,14 @@ const TripView = () => {
       });
 
     //Refactor End
+  };
+
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
   };
 
   return (
