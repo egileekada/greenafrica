@@ -40,13 +40,8 @@ const PassengerDetails = () => {
   const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
   const NEW_SSRS = ["x20", "x15", "x10", "vprd", "wchr", "hprd"];
 
-  const {
-    signature,
-    bookingResponseLoading,
-    bookingResponse,
-    tripParams,
-    returnParams,
-  } = useSelector(sessionSelector);
+  const { signature, bookingResponseLoading, bookingResponse, returnParams } =
+    useSelector(sessionSelector);
 
   const {
     SSRAvailabilityLoading,
@@ -63,6 +58,8 @@ const PassengerDetails = () => {
 
     newSSRs,
     newReturnSSRs,
+
+    tripParams,
   } = useSelector(bookingSelector);
 
   const ScrollToTop = () => {
