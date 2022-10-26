@@ -115,7 +115,11 @@ const TripView = () => {
                   {trip?.segment &&
                     format(new Date(trip?.segment?.STD), "HH:mm")}
                 </h5>
-                <p className="tripCity"> {trip?.segment?.DepartureStation}</p>
+                <p className="tripCity">
+                  {" "}
+                  {trip?.segment &&
+                    resolveAbbreviation(trip?.segment?.DepartureStation)}
+                </p>
               </div>
               <div className="tripIconPath">
                 <DottedLine className="dotted-svg" />
@@ -130,7 +134,8 @@ const TripView = () => {
                 </h5>
                 <p className="tripCity right-text">
                   {" "}
-                  {trip?.segment?.ArrivalStation}
+                  {trip?.segment &&
+                    resolveAbbreviation(trip?.segment?.ArrivalStation)}
                 </p>
               </div>
             </div>
