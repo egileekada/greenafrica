@@ -66,7 +66,7 @@ const ManageBooking = () => {
           )
         ) {
           setMessage(
-            "Unable to manage booking, please contact our call centre for further information"
+            "Currently, the system is unable to handle your request. Please call 0700-GREEN-AFRICA (0700-47336-237422) or send an email to gcare@greenafrica.com if you need further information. You will receive a response from a dedicated gCare Specialist."
           );
           setIsModalOpen(true);
         } else {

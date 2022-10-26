@@ -9,10 +9,12 @@ import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import SkeletonLoader from "components/SkeletonLoader";
 import IbeAdbar from "containers/IbeAdbar";
+import { notification } from "antd";
 
 import {
   useGetLocationsQuery,
   useGetProductsQuery,
+  useSendBoardingPassMutation,
 } from "services/widgetApi.js";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -31,6 +33,7 @@ const CheckInDetails = (props) => {
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   const [passengers, setPassengers] = useState([]);
+  const [sendBoardingPass, { isLoading }] = useSendBoardingPassMutation();
 
   const dispatch = useDispatch();
   const { signature, sessionLoading, bookingResponseLoading, bookingResponse } =
@@ -191,6 +194,75 @@ const CheckInDetails = (props) => {
     router.push("/checkin/manage-services");
   };
 
+  const triggerEmailBoardingPass = (id, departureStation, arrivalStation) => {
+    const data = {
+      signature,
+      recordLocator: props.pnr,
+      requestType: "email",
+      boardingPassRequests: [
+        {
+          passengerIdArray: [id],
+          departureStation,
+          arrivalStation,
+        },
+      ],
+    };
+    sendBoardingPass(data)
+      .unwrap()
+      .then((data) => {
+        notification.success({
+          message: "Success",
+          description: data.data.message,
+        });
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error",
+          description: "An Error Occured",
+        });
+      });
+  };
+
+  const triggerDownloadBoardingPass = (
+    id,
+    departureStation,
+    arrivalStation
+  ) => {
+    const data = {
+      signature,
+      recordLocator: props.pnr,
+      requestType: "download",
+      boardingPassRequests: [
+        {
+          passengerIdArray: [id],
+          departureStation,
+          arrivalStation,
+        },
+      ],
+    };
+    sendBoardingPass(data)
+      .unwrap()
+      .then((data) => {
+        const link = document.createElement("a");
+        link.href = data.data.urls[0];
+        link.setAttribute("target", "_blank");
+        link.setAttribute("download", "boarding pass");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        notification.success({
+          message: "Success",
+          description: data.data.message,
+        });
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error",
+          description: "An Error Occured",
+        });
+      });
+  };
+
   if (!props.pnr) {
     router.push("/checkin");
   }
@@ -301,23 +373,6 @@ const CheckInDetails = (props) => {
                       </div>
                     </section>
 
-                    {/* <section className="checkin__info mx-6 my-3">
-                      <p>
-                        <span className="text-primary text-primary-main font-bold">
-                          NOTE:&nbsp;
-                        </span>
-                        You do not need to select pasengers for manage services
-                      </p>
-                    </section>
-                    <section className="mx-6">
-                      <button
-                        onClick={handleServices}
-                        className={`basis-full md:basis-auto btn btn-outline checkin-services mb-3 md:mb-0 md:mr-3`}
-                      >
-                        Manage Services
-                      </button>
-                    </section> */}
-
                     <section className="mx-6">
                       <h3 className="title-text no-mb">PASSENGERS</h3>
                     </section>
@@ -393,10 +448,30 @@ const CheckInDetails = (props) => {
                               ?.LiftStatus === 1 && (
                               <>
                                 <div className="flex flex-wrap md:flex-nowrap items-center justify-between ml-auto">
-                                  <button className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0">
+                                  <button
+                                    className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0"
+                                    onClick={() =>
+                                      triggerDownloadBoardingPass(
+                                        passenger.PassengerNumber,
+                                        Journey?.Segments[0]?.DepartureStation,
+                                        Journey?.Segments[0]?.ArrivalStation
+                                      )
+                                    }
+                                    disabled={isLoading}
+                                  >
                                     Download Boarding Pass
                                   </button>
-                                  <button className="btn btn-outline  basis-full md:basis-auto">
+                                  <button
+                                    className="btn btn-outline  basis-full md:basis-auto"
+                                    onClick={() =>
+                                      triggerEmailBoardingPass(
+                                        passenger.PassengerNumber,
+                                        Journey?.Segments[0]?.DepartureStation,
+                                        Journey?.Segments[0]?.ArrivalStation
+                                      )
+                                    }
+                                    disabled={isLoading}
+                                  >
                                     Email Boarding Pass
                                   </button>
                                 </div>

@@ -249,7 +249,7 @@ const PassengerForm = () => {
                     })}
                   {/* Contact Details */}
                   <div className="passenger__form__box">
-                    <h3 className="text-[#8F8CA4] font-header text-xxs mb-6">
+                    <h3 className="text-[#8F8CA4] font-header mb-6">
                       CONTACT INFORMATION
                     </h3>
 
@@ -268,22 +268,24 @@ const PassengerForm = () => {
                     </div>
 
                     <div className="mb-6 flex flex-wrap">
-                      <div className="form-group select-group  mr-0 md:mr-4">
-                        <label>TITLE</label>
-                        <select
-                          name="c_title"
-                          {...formik.getFieldProps("c_title")}
-                        >
-                          <option value="">Select</option>
-                          {!isLoading &&
-                            data?.data.items.map((salutation, index) => (
-                              <option value={salutation.title} key={index}>
-                                {salutation.title}
-                              </option>
-                            ))}
-                        </select>
-                        <div className="select-icon">
-                          <SelectIcon />
+                      <div className="mr-0 md:mr-4">
+                        <div className="form-group select-group">
+                          <label>TITLE</label>
+                          <select
+                            name="c_title"
+                            {...formik.getFieldProps("c_title")}
+                          >
+                            <option value="">Select</option>
+                            {!isLoading &&
+                              data?.data.items.map((salutation, index) => (
+                                <option value={salutation.title} key={index}>
+                                  {salutation.title}
+                                </option>
+                              ))}
+                          </select>
+                          <div className="select-icon">
+                            <SelectIcon />
+                          </div>
                         </div>
                         {formik.touched.c_title && formik.errors.c_title ? (
                           <p className="errorText mt-2">
@@ -292,15 +294,18 @@ const PassengerForm = () => {
                         ) : null}
                       </div>
 
-                      <div className="form-group flex-grow md:mr-4">
-                        <label>FIRST NAME</label>
-                        <input
-                          type="text"
-                          placeholder="Enter first name"
-                          id="c_firstName"
-                          name="c_firstName"
-                          {...formik.getFieldProps("c_firstName")}
-                        />
+                      <div className="flex-grow md:mr-4">
+                        <div className="form-group">
+                          <label>FIRST NAME</label>
+                          <input
+                            type="text"
+                            placeholder="Enter first name"
+                            id="c_firstName"
+                            name="c_firstName"
+                            {...formik.getFieldProps("c_firstName")}
+                          />
+                        </div>
+
                         {formik.touched.c_firstName &&
                         formik.errors.c_firstName ? (
                           <p className="errorText mt-2">
@@ -308,15 +313,17 @@ const PassengerForm = () => {
                           </p>
                         ) : null}
                       </div>
-                      <div className="form-group flex-grow md:mr-4">
-                        <label>LAST NAME</label>
-                        <input
-                          type="text"
-                          placeholder="Enter last name"
-                          id="c_lastName"
-                          name="c_lastName"
-                          {...formik.getFieldProps("c_lastName")}
-                        />
+                      <div className="flex-grow md:mr-4">
+                        <div className="form-group">
+                          <label>LAST NAME</label>
+                          <input
+                            type="text"
+                            placeholder="Enter last name"
+                            id="c_lastName"
+                            name="c_lastName"
+                            {...formik.getFieldProps("c_lastName")}
+                          />
+                        </div>
                         {formik.touched.c_lastName &&
                         formik.errors.c_lastName ? (
                           <p className="errorText mt-2">
@@ -327,102 +334,62 @@ const PassengerForm = () => {
                     </div>
 
                     <div className="mb-6 flex flex-wrap">
-                      <div className="phone-group flex-grow mr-0 md:mr-4">
-                        <label>PHONE NUMBER</label>
-                        <div className="flex">
-                          {/* <div className="phone-select">
-                            <select
-                              name="c_code"
-                              {...formik.getFieldProps("c_code")}
-                            >
-                              <option value="+234">+234</option>
-                              <option value="+229">+234</option>
-                              <option value="+63">+234</option>
-                              <option value="+63">+234</option>
-                            </select>
-                            <div className="select-icon">
-                              <SelectIcon />
-                            </div>
-                          </div> */}
-                          <IntlTelInput
-                            onPhoneNumberBlur={() => {
-                              setTouched(true);
-                              if (formik.values.c_phone.length < 1) {
-                                formik.setFieldError(
-                                  "c_phone",
-                                  "Phone number is required"
-                                );
-                              }
-                            }}
-                            onSelectFlag={(e, country) => {
-                              formik.setFieldValue(
-                                "c_code",
-                                `+${country?.dialCode}`
-                              );
-                            }}
-                            onPhoneNumberChange={(e, fullnumber, numObj) => {
-                              let num = fullnumber;
-                              let code = numObj?.dialCode;
-                              // setTouched(true);
-
-                              formik.setFieldValue("c_code", `+${code}`);
-
-                              if (num.length > 0) {
-                                const regex =
-                                  /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
-
-                                const _test = regex.test(num.toString());
-                                if (_test) {
-                                  formik.setFieldValue("c_phone", `${num}`);
-                                } else {
-                                  formik.setFieldValue(
-                                    "c_phone",
-                                    formik.values.c_phone
-                                  );
+                      <div className="flex-grow mr-0 md:mr-4">
+                        <div className="phone-group">
+                          <label>PHONE NUMBER</label>
+                          <div className="flex">
+                            <IntlTelInput
+                              onPhoneNumberBlur={() => {
+                                setTouched(true);
+                                if (formik.values.c_phone.length < 1) {
                                   formik.setFieldError(
                                     "c_phone",
-                                    "Invalid Phone Number"
+                                    "Phone number is required"
                                   );
-                                  return false;
                                 }
-                              } else {
-                                formik.setFieldValue("c_phone", "");
-                              }
-                            }}
-                            preferredCountries={["ng", "bn"]}
-                            inputClassName="w-full"
-                            value={formik.values.c_phone}
-                          />
+                              }}
+                              onSelectFlag={(e, country) => {
+                                formik.setFieldValue(
+                                  "c_code",
+                                  `+${country?.dialCode}`
+                                );
+                              }}
+                              onPhoneNumberChange={(e, fullnumber, numObj) => {
+                                let num = fullnumber;
+                                let code = numObj?.dialCode;
+                                // setTouched(true);
 
-                          {/* <div className="phone-input">
-                            <input
-                              type="tel"
-                              pattern="[0-9]*"
-                              id="c_phone"
-                              name="c_phone"
-                              placeholder="9056789087"
-                              {...formik.getFieldProps("c_phone")}
-                              onChange={(e) => {
-                                e.preventDefault();
-                                const { value } = e.target;
-                                if (value.length > 0) {
+                                formik.setFieldValue("c_code", `+${code}`);
+
+                                if (num.length > 0) {
                                   const regex =
                                     /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
-                                  if (regex.test(value.toString())) {
-                                    formik.setFieldValue("c_phone", value);
+
+                                  const _test = regex.test(num.toString());
+                                  if (_test) {
+                                    formik.setFieldValue("c_phone", `${num}`);
+                                  } else {
+                                    formik.setFieldValue(
+                                      "c_phone",
+                                      formik.values.c_phone
+                                    );
+                                    formik.setFieldError(
+                                      "c_phone",
+                                      "Invalid Phone Number"
+                                    );
+                                    return false;
                                   }
                                 } else {
                                   formik.setFieldValue("c_phone", "");
                                 }
                               }}
+                              preferredCountries={["ng", "bn"]}
+                              inputClassName="w-full"
+                              value={formik.values.c_phone}
                             />
-                          </div> */}
+                          </div>
                         </div>
-                        {/* {formik.touched.c_phone && formik.errors.c_phone ? (
-                          <p className="errorText mt-2">
-                            {formik.errors.c_phone}
-                          </p>
-                        ) : null} */}
+
                         {touched &&
                         formik.errors.c_phone &&
                         formik.errors.c_phone?.length > 0 ? (
@@ -431,30 +398,34 @@ const PassengerForm = () => {
                           </p>
                         ) : null}
                       </div>
-                      <div className="form-group flex-grow md:mr-4">
-                        <label>EMAIL</label>
-                        <input
-                          type="email"
-                          placeholder="Enter your email"
-                          id="c_email"
-                          name="c_email"
-                          {...formik.getFieldProps("c_email")}
-                        />
+                      <div className="flex-grow md:mr-4">
+                        <div className="form-group">
+                          <label>EMAIL</label>
+                          <input
+                            type="email"
+                            placeholder="Enter your email"
+                            id="c_email"
+                            name="c_email"
+                            {...formik.getFieldProps("c_email")}
+                          />
+                        </div>
                         {formik.touched.c_email && formik.errors.c_email ? (
                           <p className="errorText mt-2">
                             {formik.errors.c_email}
                           </p>
                         ) : null}
                       </div>
-                      <div className="form-group flex-grow md:mr-4">
-                        <label>CONFIRM EMAIL ADDRESS</label>
-                        <input
-                          type="email"
-                          placeholder="Enter your email"
-                          id="cc_email"
-                          name="cc_email"
-                          {...formik.getFieldProps("cc_email")}
-                        />
+                      <div className="flex-grow md:mr-4">
+                        <div className="form-group">
+                          <label>CONFIRM EMAIL ADDRESS</label>
+                          <input
+                            type="email"
+                            placeholder="Enter your email"
+                            id="cc_email"
+                            name="cc_email"
+                            {...formik.getFieldProps("cc_email")}
+                          />
+                        </div>
                         {formik.touched.cc_email && formik.errors.cc_email ? (
                           <p className="errorText mt-2">
                             {formik.errors.cc_email}

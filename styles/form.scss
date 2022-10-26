@@ -1,104 +1,104 @@
 .form {
-    @apply flex justify-between flex-wrap;
+  @apply flex justify-between flex-wrap;
 
-    .form-row-half {
-      @apply mb-4 flex flex-col basis-full md:basis-[48%];
-    }
+  .form-row-half {
+    @apply mb-4 flex flex-col basis-full md:basis-[48%];
+  }
 
-    .form-row-full {
-      @apply mb-4 flex flex-col basis-[100%];
+  .form-row-full {
+    @apply mb-4 flex flex-col basis-[100%];
+  }
+}
+
+.form-group {
+  &.icon {
+    @apply relative;
+
+    svg {
+      @apply absolute bottom-3 right-2;
     }
   }
 
-  .form-group {
-    &.icon {
-      @apply relative;
+  label {
+    @apply font-display text-black mb-3 font-semibold;
 
-      svg {
-        @apply absolute bottom-3 right-2;
-      }
+    &.filter-label {
+      @apply text-xl;
+    }
+  }
+  input {
+    @apply bg-[#F0F3F5] border-[1px] border-[#e4e9f2] rounded-lg outline-none text-[#656B7C] text-opacity-70 font-normal  w-full p-4 focus:ring-0 focus:border-primary-main focus:outline-none block placeholder-[#656B7C] placeholder-opacity-70;
+
+    &.white-bg {
+      @apply bg-white;
     }
 
-    label {
-      @apply font-display text-black text-sm mb-3 font-semibold;
-
-      &.filter-label {
-        @apply text-xl;
-      }
+    &.filter-input-form {
+      @apply bg-transparent  rounded-none border-transparent border-b-[#e4e9f2] px-0 text-xl;
     }
+  }
+
+  textarea {
+    @apply block p-4 w-full text-sm text-[#656B7C] bg-[#F0F3F5] rounded-lg border-none outline-none focus:ring-0 focus:ring-blue focus:border-blue;
+
+    &.white-bg {
+      @apply bg-white;
+    }
+  }
+
+  .file-input {
+    @apply relative;
     input {
-      @apply bg-[#F0F3F5] border-[1px] border-[#e4e9f2] rounded-lg outline-none text-[#656B7C] text-opacity-70 text-sm font-normal  w-full p-4 focus:ring-0 focus:border-primary-main focus:outline-none block placeholder-[#656B7C] placeholder-opacity-70;
-
-      &.white-bg {
-        @apply bg-white;
-      }
-
-      &.filter-input-form {
-        @apply bg-transparent  rounded-none border-transparent border-b-[#e4e9f2] px-0 text-xl;
-      }
+      @apply cursor-pointer absolute opacity-0 w-full h-full;
     }
 
-    textarea {
-      @apply block p-4 w-full text-sm text-[#656B7C] bg-[#F0F3F5] rounded-lg border-none outline-none focus:ring-0 focus:ring-blue focus:border-blue;
-
-      &.white-bg {
-        @apply bg-white;
-      }
-    }
-
-    .file-input {
-      @apply relative;
-      input {
-        @apply cursor-pointer absolute opacity-0 w-full h-full;
-      }
-
-      &-helper {
-        @apply flex items-center justify-center
+    &-helper {
+      @apply flex items-center justify-center
             bg-[#F0F3F5] border-[1px] border-[#e4e9f2]
              rounded-lg outline-none 
              text-[#656B7C] text-sm font-normal
              w-full p-4 hover:text-opacity-70;
+    }
+  }
+
+  .select--container {
+    @apply flex flex-col  relative w-full;
+    label {
+      // @apply mb-4;
+    }
+
+    .ant-select {
+      @apply w-full h-auto;
+
+      .ant-select-selector {
+        @apply bg-[#F0F3F5] block appearance-none w-full border-[1px] border-[#e4e9f2] rounded-lg outline-none text-[#656B7C] text-opacity-70 text-sm font-normal  p-4 focus:ring-0 focus:border-primary-main   leading-tight focus:outline-none h-[50px];
       }
     }
 
-    .select--container {
-      @apply flex flex-col  relative w-full;
-      label {
-        // @apply mb-4;
-      }
-
-      .ant-select {
-        @apply w-full h-auto;
-
-        .ant-select-selector {
-          @apply bg-[#F0F3F5] block appearance-none w-full border-[1px] border-[#e4e9f2] rounded-lg outline-none text-[#656B7C] text-opacity-70 text-sm font-normal  p-4 focus:ring-0 focus:border-primary-main   leading-tight focus:outline-none h-[50px];
-        }
-      }
-
-      select {
-        @apply bg-[#F0F3F5] block appearance-none w-full border-[1px] border-[#e4e9f2] rounded-lg outline-none text-[#656B7C] text-opacity-70 text-sm font-normal  p-4 focus:ring-0 focus:border-primary-main   leading-tight focus:outline-none;
-      }
-
-      .icon {
-        @apply pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400;
-      }
+    select {
+      @apply bg-[#F0F3F5] block appearance-none w-full border-[1px] border-[#e4e9f2] rounded-lg outline-none text-[#656B7C] text-opacity-70 text-sm font-normal  p-4 focus:ring-0 focus:border-primary-main   leading-tight focus:outline-none;
     }
 
-    .form-checkbox {
-      @apply flex items-center;
-      input.checkbox {
-        @apply basis-[20px] flex-grow-0 flex-shrink-0
+    .icon {
+      @apply pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400;
+    }
+  }
+
+  .form-checkbox {
+    @apply flex items-center;
+    input.checkbox {
+      @apply basis-[20px] flex-grow-0 flex-shrink-0
            appearance-none h-3 w-3 border border-gray-300 rounded-sm bg-[#E7ECF2F2] checked:bg-primary-main checked:border-none focus:outline-none transition 
            duration-200 mt-1 
             bg-no-repeat bg-center bg-contain mr-2 cursor-pointer;
-      }
-
-      label {
-        @apply mb-0;
-      }
     }
 
-    p.error {
-      @apply font-display text-[orangered] mt-2 text-xs font-normal;
+    label {
+      @apply mb-0;
     }
   }
+
+  p.error {
+    @apply font-display text-[orangered] mt-2 text-xs font-normal;
+  }
+}

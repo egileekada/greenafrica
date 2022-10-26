@@ -208,20 +208,20 @@
     }
 
     label {
-      @apply font-body text-[#979797] text-[11px] mb-[7px] font-normal;
+      @apply font-body text-[#6A6A6A] text-[13px] mb-[7px] font-normal;
     }
 
     input,
     input[type="date"] {
-      @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
+      @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-[14px] font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-80 capitalize;
     }
 
     select {
-      @apply bg-transparent appearance-none w-full border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal focus:ring-0 focus:outline-none min-w-[130px];
+      @apply bg-transparent appearance-none w-full border-none outline-none text-[#979797] text-opacity-90 text-[14px] font-normal focus:ring-0 focus:outline-none min-w-[130px];
     }
 
     .select-icon {
-      @apply absolute right-[10%] bottom-[40%] z-[2];
+      @apply absolute right-[10%] bottom-[34%] z-[2];
       transform: translateY(50%);
     }
 
@@ -231,6 +231,7 @@
         width: 100%;
         padding-left: 0;
         padding-right: 0;
+        padding: 0px;
       }
 
       .ant-picker-focused {
@@ -243,17 +244,17 @@
 
   .phone-group {
     border: 1px solid #d8d7e2;
-    @apply flex flex-col  mb-4 py-[8px] px-[22px] rounded-md;
+    @apply flex flex-col  mb-4 py-3 px-[22px] rounded-md;
 
     label {
-      @apply font-body text-[#979797] text-[10px] mb-[7px] font-normal;
+      @apply font-body text-[#6A6A6A] text-[13px] mb-[7px] font-normal;
     }
 
     .phone-select {
       @apply w-[80px] relative mr-4;
 
       select {
-        @apply bg-transparent appearance-none w-full border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal focus:ring-0 focus:outline-none;
+        @apply bg-transparent appearance-none w-full border-none outline-none text-[#979797] text-opacity-90 text-[14px] font-normal focus:ring-0 focus:outline-none;
       }
 
       .select-icon {
@@ -844,7 +845,7 @@
       @apply bg-white mb-10 py-8 tab:py-11 px-5 md:px-9 flex flex-col;
 
       label.check-label {
-        @apply text-[#101010] text-xs font-body;
+        @apply text-[#101010] text-[14px] font-body;
 
         span {
           @apply font-title;
