@@ -280,6 +280,7 @@ const TripConfirm = () => {
             <SkeletonLoader />
             <SkeletonLoader />
             <SkeletonLoader />
+            <SkeletonLoader />
           </section>
         ) : (
           <section className="ga__section">
