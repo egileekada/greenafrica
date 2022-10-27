@@ -11,9 +11,11 @@ import Preloader from "components/Preloader";
 import { store, persistor } from "redux/store";
 import { Provider } from "react-redux";
 
+import IdleMonitor from "components/session-check";
+
 const MyApp = ({ Component, pageProps }) => {
   const router = useRouter();
-  
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Broadcast that you're opening a page.
@@ -90,6 +92,7 @@ const MyApp = ({ Component, pageProps }) => {
           </Head>
           <Fragment>
             <main className="main">
+              <IdleMonitor />
               <Preloader />
               <Toaster />
               <Component {...pageProps} />
