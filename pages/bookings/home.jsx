@@ -23,7 +23,10 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import { setManageBookingPnr } from "redux/reducers/booking";
-import { useGetLocationsQuery } from "services/widgetApi.js";
+import {
+  useGetLocationsQuery,
+  useGetPaymentConfigsQuery,
+} from "services/widgetApi.js";
 import PageFares from "./components/PageFares";
 import LogoIcon from "assets/svgs/logo.svg";
 import Spinner from "components/Spinner";
@@ -38,6 +41,8 @@ const ManageBookings = (props) => {
   const { verifyManageBookingResponse } = useSelector(paymentSelector);
   const { tripParams, returnParams } = useSelector(bookingSelector);
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
+  const { data: paymentConfigs, isLoading: paymentConfigLoading } =
+    useGetPaymentConfigsQuery();
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -168,7 +173,10 @@ const ManageBookings = (props) => {
                           <h5>Type:</h5>
                         </div>
                         <div className="f-1">
-                          <h6>{_payment?.PaymentMethodCode}</h6>
+                          <h6>
+                            {paymentConfigs &&
+                              resolvePaymnet(_payment?.PaymentMethodCode)}
+                          </h6>
                         </div>
                       </div>
                       <div className="trip__summary__details">
@@ -181,11 +189,12 @@ const ManageBookings = (props) => {
                               new Date(
                                 bookingResponse?.Booking?.BookingInfo?.CreatedDate
                               ),
-                              "yyyy-MM-dd"
+                              "d MMMM yyyy"
                             )}
                           </h6>
                         </div>
                       </div>
+                      {/* 28 October 2022 */}
                       <div className="trip__summary__details">
                         <div className="f-1">
                           <h5>Status:</h5>
@@ -193,10 +202,12 @@ const ManageBookings = (props) => {
                         <div className="f-1">
                           <h6>
                             {" "}
-                            {
+                            {parseInt(
                               bookingResponse?.Booking?.BookingInfo
                                 ?.BookingStatus
-                            }
+                            ) === 2
+                              ? "Approved"
+                              : "Pending"}
                           </h6>
                         </div>
                       </div>
@@ -409,7 +420,15 @@ const ManageBookings = (props) => {
       (location) => location.code === abrreviation
     );
 
-    return `${name} (${code})`;
+    return `${name}`;
+  };
+
+  const resolvePaymnet = (abrreviation) => {
+    const [{ name, code }] = paymentConfigs?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name}`;
   };
 
   const SingleJourneyItem = ({ journey, journeyIndex }) => {

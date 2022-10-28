@@ -32,6 +32,9 @@ export const widgetApi = createApi({
     getSSRconfigs: builder.query({
       query: () => `/ssrconfigs`,
     }),
+    getPaymentConfigs: builder.query({
+      query: () => `/paymentgateways`,
+    }),
     initiatePayment: builder.mutation({
       query: (body) => ({
         url: "payments/initialize",
@@ -68,4 +71,5 @@ export const {
   useInitiatePaymentMutation,
   useSendBoardingPassMutation,
   useVerifyPaymentQuery,
+  useGetPaymentConfigsQuery
 } = widgetApi;

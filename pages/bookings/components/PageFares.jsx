@@ -18,14 +18,14 @@ const PageFares = () => {
       (location) => location.code === abrreviation
     );
 
-    return `${name} (${code})`;
+    return `${name}`;
   };
 
   const resolveSpecialAbbreviation = (abrreviation) => {
     const [{ name, code }] = specialConfig?.data?.items.filter(
       (location) => location.code === abrreviation
     );
-    return `${name} (${code})`;
+    return `${name}`;
   };
 
   return (
@@ -227,7 +227,7 @@ const PageFares = () => {
                                                 bookingResponse?.Booking
                                                   ?.Passengers.length
                                               }
-                                              x {resolveAbbreviation("IROPC")}:
+                                              x {resolveAbbreviation("IROPC")}
                                             </h6>
                                           ) : null}
                                         </div>
@@ -323,7 +323,7 @@ const PageFares = () => {
                                             bookingResponse?.Booking?.Passengers
                                               .length
                                           }
-                                          x {resolveAbbreviation("NG")}:
+                                          x {resolveAbbreviation("NG")}
                                         </h6>
                                       </div>
                                       <div>
@@ -338,7 +338,7 @@ const PageFares = () => {
                                             bookingResponse?.Booking?.Passengers
                                               .length
                                           }
-                                          x {resolveAbbreviation("QT")}:
+                                          x {resolveAbbreviation("QT")}
                                         </h6>
                                       </div>
                                       <div>
@@ -359,7 +359,7 @@ const PageFares = () => {
                                             bookingResponse?.Booking?.Passengers
                                               .length
                                           }
-                                          x {resolveAbbreviation("YQ")}:
+                                          x {resolveAbbreviation("YQ")}
                                         </h6>
                                       </div>
                                       <div>
