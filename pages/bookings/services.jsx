@@ -60,7 +60,7 @@ const PassengerDetails = () => {
     newReturnSSRs,
 
     tripParams,
-    , returnParams 
+    returnParams 
   } = useSelector(bookingSelector);
 
   const ScrollToTop = () => {
