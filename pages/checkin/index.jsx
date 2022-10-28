@@ -10,11 +10,15 @@ import {
   useGetBookingMutation,
 } from "services/bookingApi";
 
+import FormError from "components/formError";
+
 import { startSession } from "redux/reducers/session";
 import { resetStore } from "redux/store";
 
 const validationSchema = Yup.object().shape({
-  pnr: Yup.string().length(6).required("Required"),
+  pnr: Yup.string()
+    .length(6, "Booking Reference must be exactly 6 values")
+    .required("Required"),
   email: Yup.string()
     .email("Must be a valid email address")
     .required("Required"),
@@ -46,15 +50,6 @@ const CheckIn = () => {
         .unwrap()
         .then((data) => {
           checkPnr(values.pnr);
-          // router.push(
-          //   {
-          //     pathname: "/checkin/home",
-          //     query: {
-          //       pnr: values.pnr,
-          //     },
-          //   },
-          //   "/checkin/home"
-          // );
         })
         .catch((error) => {
           notification.error({
@@ -84,6 +79,14 @@ const CheckIn = () => {
         } else if (data.PackageIndicator == 0 && data.LoginIndicator == 0) {
           setMessage(
             "Online Check-in opens 2 days before the flight departure and closes 3 hours before the flight departure"
+          );
+          setIsModalOpen(true);
+        } else if (
+          data.Booking.Passengers.length === 1 &&
+          data.Booking.Passengers[0].PassengerTypeInfo.PaxType === "CHD"
+        ) {
+          setMessage(
+            "Currently, the system is unable to handle your request.Please call 0700-GREEN-AFRICA (0700-47336-237422) or send an email to gcare@greenafrica.com if you need further information. You will receive a response from a dedicated gCare Specialist."
           );
           setIsModalOpen(true);
         } else {
@@ -191,6 +194,10 @@ const CheckIn = () => {
                         Booking Reference
                       </label>
                     </div>
+                    <FormError
+                      touched={formik.touched.pnr}
+                      message={formik.errors.pnr}
+                    />
                   </div>
 
                   <div className="my-3 col-span-2">
@@ -218,13 +225,17 @@ const CheckIn = () => {
                         Email
                       </label>
                     </div>
+                    <FormError
+                      touched={formik.touched.email}
+                      message={formik.errors.email}
+                    />
                   </div>
 
                   <div className="my-3 lg:ml-auto">
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="btn btn-primary font-bold h-full block w-full"
+                      className="btn btn-primary font-bold block w-full"
                     >
                       {isLoading ? "Processing.." : "Confirm"}
                     </button>

@@ -387,7 +387,7 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Continue With gClassic
+                  Continue with gClassic
                 </button>
               </div>
               <div className="mobile__benefits__item">

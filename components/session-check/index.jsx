@@ -1,64 +1,59 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
+import { useIdleTimer, workerTimers } from "react-idle-timer";
+
 import { resetStore } from "redux/store";
 
 function IdleMonitor() {
-  //Modal
   const [idleModal, setIdleModal] = useState(false);
 
-  let idleTimeout = 1000 * 60 * 15; //15 minute
-  let idleLogout = 1000 * 60 * 2; //2 Minutes
-  let idleEvent;
-  let idleLogoutEvent;
+  const [remaining, setRemaining] = useState(0);
 
-  /**
-   * Add any other events listeners here
-   */
-  const events = ["mousemove", "click", "keypress"];
+  const timeout = 1000 * 60 * 15;
+  const promptTimeout = 1000 * 60;
 
-  /**
-   * @method logOut
-   * This function will destroy current user session.
-   */
+  const onPrompt = () => {
+    setIdleModal(true);
+    setRemaining(promptTimeout);
+  };
 
-  const logOut = () => {
+  const onIdle = () => {
     setIdleModal(false);
+    setRemaining(0);
     resetStore();
+
     window.location.assign("https://dev-website.gadevenv.com/");
   };
 
-  /**
-   * @method sessionTimeout
-   * This function is called with each event listener to set a timeout or clear a timeout.
-   */
-  const sessionTimeout = () => {
-    if (!!idleEvent) clearTimeout(idleEvent);
-    if (!!idleLogoutEvent) clearTimeout(idleLogoutEvent);
-
-    idleEvent = setTimeout(() => setIdleModal(true), idleTimeout); //show session warning modal.
-    idleLogoutEvent = setTimeout(() => logOut(), idleLogout); //Call logged out on session expire.
-  };
-
-  /**
-   * @method extendSession
-   * This function will extend current user session.
-   */
-  const extendSession = () => {
+  const onActive = () => {
     setIdleModal(false);
-    sessionTimeout();
+    setRemaining(0);
   };
+
+  const handleStillHere = () => {
+    setIdleModal(false);
+    activate();
+  };
+
+  const { getRemainingTime, isPrompted, activate } = useIdleTimer({
+    timers: workerTimers,
+    timeout,
+    promptTimeout,
+    onPrompt,
+    onIdle,
+    onActive,
+  });
 
   useEffect(() => {
-    for (let e in events) {
-      window.addEventListener(events[e], sessionTimeout);
-    }
-
-    return () => {
-      for (let e in events) {
-        window.removeEventListener(events[e], sessionTimeout);
+    const interval = setInterval(() => {
+      if (isPrompted()) {
+        setRemaining(Math.ceil(getRemainingTime() / 1000));
       }
+    }, 1000);
+    return () => {
+      clearInterval(interval);
     };
-  }, []);
+  }, [getRemainingTime, isPrompted]);
 
   return (
     <Modal
@@ -70,21 +65,20 @@ function IdleMonitor() {
     >
       <div className="px-5 pb-5 pt-10 text-center">
         <h1 className="text-lg font-normal mb-5">
-          {" "}
-          Your session will expire in {idleLogout / 60 / 1000} minutes. Do you
-          want to extend the session?
+          Your session will expire in {remaining} seconds. Do you want to extend
+          the session?
         </h1>
 
         <div className="grid gap-8 md:grid-cols-2">
           <button
-            onClick={() => logOut()}
+            onClick={() => onIdle()}
             className="btn btn-primary w-full md:basis-auto my-10 md:mb-0 mx-auto"
           >
             Logout
           </button>
 
           <button
-            onClick={() => extendSession()}
+            onClick={() => handleStillHere()}
             className="btn btn-outline w-full md:basis-auto my-10 md:mb-0 mx-auto"
           >
             Extend session
