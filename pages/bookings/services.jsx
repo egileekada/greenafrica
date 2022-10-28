@@ -40,7 +40,7 @@ const PassengerDetails = () => {
   const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
   const NEW_SSRS = ["x20", "x15", "x10", "vprd", "wchr", "hprd"];
 
-  const { signature, bookingResponseLoading, bookingResponse} =
+  const { signature, bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
 
   const {
@@ -60,7 +60,7 @@ const PassengerDetails = () => {
     newReturnSSRs,
 
     tripParams,
-    , returnParams 
+    returnParams,
   } = useSelector(bookingSelector);
 
   const ScrollToTop = () => {
@@ -98,7 +98,7 @@ const PassengerDetails = () => {
           const _TRIPS = bookingResponse?.Booking?.Journeys;
           if (_TRIPS?.length > 0) {
             if (goDifference?.length > 0 || returnDifference?.length > 0) {
-              // /set nEw sssrs and return ssrs
+              // Do Nothing Gnihton Od
             } else {
               if (_TRIPS?.length === 1) {
                 const _SingleJourneySSRs = _TRIPS[0]?.Segments[0]?.PaxSSRs;
@@ -318,9 +318,6 @@ const PassengerDetails = () => {
   const sendSellRequest = async (payload, returnPayload = []) => {
     dispatch(setGoDifference(payload));
     dispatch(setReturnDifference(returnPayload));
-
-    console.log("go payload", payload);
-    console.log("return payload", returnPayload);
 
     const segmentSSRRequests = [];
     const _bookingResponse = bookingResponse;
