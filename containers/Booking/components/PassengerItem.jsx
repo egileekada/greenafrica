@@ -6,6 +6,8 @@ import { sessionSelector } from "redux/reducers/session";
 const ManagePassengerItem = ({ passenger, paxIndex }) => {
   const { bookingResponse } = useSelector(sessionSelector);
 
+  const _Infants = passenger?.PassengerInfants;
+
   const _Seats =
     passenger &&
     passenger?.PassengerFees.filter((pax) => {
@@ -64,6 +66,27 @@ const ManagePassengerItem = ({ passenger, paxIndex }) => {
             <span>{_Baggages?.length}</span>
           </h5>
         </div>
+
+        {_Infants?.length > 0 && (
+          <div className="trip-details-item">
+            <h6>INFANTS</h6>
+            <h5 className="flex items-center">
+              {" "}
+              {passenger?.PassengerInfants.length
+                ? passenger?.PassengerInfants.map((_paxInfant) => {
+                    return _paxInfant.Names.map((_infName) => {
+                      return (
+                        <span>
+                          {_infName?.FirstName}&nbsp;
+                          {_infName?.LastName}
+                        </span>
+                      );
+                    });
+                  })
+                : null}
+            </h5>
+          </div>
+        )}
       </div>
     </div>
   );

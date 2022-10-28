@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "antd";
 import { useIdleTimer, workerTimers } from "react-idle-timer";
-
 import { resetStore } from "redux/store";
 
 function IdleMonitor() {

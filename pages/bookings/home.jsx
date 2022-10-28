@@ -63,19 +63,20 @@ const ManageBookings = (props) => {
     fetchBookingDetails();
   }, [router]);
 
-  // useEffect(() => {
-  //   if (
-  //     bookingResponse &&
-  //     bookingResponse?.Booking &&
-  //     bookingResponse?.Booking?.Journeys?.length > 0
-  //   ) {
-  //     bookingResponse?.Booking?.Journeys.map((_journey) => {
-  //       _journey.Segments[0].PaxSegments.map((_paxSegment) => {
-  //         parseInt(_paxSegment?.LiftStatus) === 1 && setCheckedIn(true);
-  //       });
-  //     });
-  //   }
-  // }, [bookingResponse]);
+  useEffect(() => {
+    if (
+      bookingResponse &&
+      bookingResponse?.Booking &&
+      bookingResponse?.Booking?.Journeys?.length > 0
+    ) {
+      const _manageIndicator = parseInt(bookingResponse?.ManageIndicator);
+      if (_manageIndicator > 0) {
+        setCheckedIn(true);
+      } else {
+        setCheckedIn(false);
+      }
+    }
+  }, [bookingResponse]);
 
   const TripHeader = () => {
     return (
@@ -149,6 +150,122 @@ const ManageBookings = (props) => {
     );
   };
 
+  const PaymentContact = () => {
+    return (
+      <section className=" mx-6 mt-6 flex justify-between">
+        <div className="basis-[48%]">
+          <div className="trip__summary__item">
+            <h2 className="trip-title mb-2 font-semibold text-primary-main">
+              PAYMENT DETAILS
+            </h2>
+            <div className="flex flex-col">
+              <section className="flex flex-col">
+                {bookingResponse?.Booking?.Payments?.map((_payment) => {
+                  return (
+                    <>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Type:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>{_payment?.PaymentMethodCode}</h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Date:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>
+                            {format(
+                              new Date(
+                                bookingResponse?.Booking?.BookingInfo?.CreatedDate
+                              ),
+                              "yyyy-MM-dd"
+                            )}
+                          </h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Status:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>
+                            {" "}
+                            {
+                              bookingResponse?.Booking?.BookingInfo
+                                ?.BookingStatus
+                            }
+                          </h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Total Fare:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>
+                            ₦
+                            {bookingResponse?.Booking?.BookingSum?.TotalCost.toLocaleString(
+                              "NGN"
+                            )}
+                          </h6>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div className=" basis-[48%]">
+          <div className="trip__summary__item">
+            <h2 className="trip-title mb-2 font-semibold text-primary-main">
+              CONTACT DETAILS
+            </h2>
+            <div className="flex flex-col">
+              <section className="flex flex-col ">
+                {bookingResponse?.Booking?.BookingContacts?.map((_contact) => {
+                  return (
+                    <>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Name:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>{`${_contact?.Names[0]?.FirstName} ${_contact?.Names[0]?.LastName}`}</h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Email:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>{_contact?.EmailAddress}</h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Phone Number:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>{_contact?.HomePhone}</h6>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
   const TabContent = () => {
     return (
       <>
@@ -159,6 +276,7 @@ const ManageBookings = (props) => {
             ))}
             <PageCTA />
             <PassengersSection />
+            <PaymentContact />
             <PageFares />
           </>
         ) : (

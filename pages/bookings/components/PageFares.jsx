@@ -458,7 +458,8 @@ const PageFares = () => {
                                         <div className="flex items-center">
                                           <h6>
                                             {_SSRCount?.SEAT}
-                                            x&nbsp;{resolveAbbreviation("SEAT")}
+                                            x&nbsp;
+                                            {resolveAbbreviation("SEAT")}
                                             {_SSRCount?.SEAT > 1 ? "s" : ""}
                                           </h6>
                                         </div>
