@@ -81,6 +81,14 @@ const CheckIn = () => {
             "Online Check-in opens 2 days before the flight departure and closes 3 hours before the flight departure"
           );
           setIsModalOpen(true);
+        } else if (
+          data.Booking.Passengers.length === 1 &&
+          data.Booking.Passengers[0].PassengerTypeInfo.PaxType === "CHD"
+        ) {
+          setMessage(
+            "Currently, the system is unable to handle your request.Please call 0700-GREEN-AFRICA (0700-47336-237422) or send an email to gcare@greenafrica.com if you need further information. You will receive a response from a dedicated gCare Specialist."
+          );
+          setIsModalOpen(true);
         } else {
           router.push(
             {
