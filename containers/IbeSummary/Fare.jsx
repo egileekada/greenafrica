@@ -279,7 +279,7 @@ const Fare = ({ isRoundTrip }) => {
                                 <div className="trip__summary__row subrow">
                                   <div className="flex items-center">
                                     <h6>
-                                      {_SSRsCount?.INFT}x&nbsp;
+                                      {_SSRsCount?.INFT} X&nbsp;
                                       {fareConfig?.data
                                         ? resolveAbbreviation("INFT")
                                         : null}
@@ -295,7 +295,7 @@ const Fare = ({ isRoundTrip }) => {
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
                                     <h6>
-                                      {_SSRsCount?.WCHR}x&nbsp;
+                                      {_SSRsCount?.WCHR} X&nbsp;
                                       {specialConfig?.data
                                         ? resolveSpecialAbbreviation("WCHR")
                                         : "WCHR"}
@@ -317,7 +317,7 @@ const Fare = ({ isRoundTrip }) => {
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
                                     <h6>
-                                      {_SSRsCount?.VPRD}x&nbsp;
+                                      {_SSRsCount?.VPRD} X&nbsp;
                                       {specialConfig?.data
                                         ? resolveSpecialAbbreviation("VPRD")
                                         : "VPRD"}
@@ -339,7 +339,7 @@ const Fare = ({ isRoundTrip }) => {
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
                                     <h6>
-                                      {_SSRsCount?.HPRD}x&nbsp;
+                                      {_SSRsCount?.HPRD} X&nbsp;
                                       {specialConfig?.data
                                         ? resolveSpecialAbbreviation("HPRD")
                                         : "HPRD"}
@@ -361,7 +361,7 @@ const Fare = ({ isRoundTrip }) => {
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
                                     <h6>
-                                      {_SSRsCount?.XBAG20}x&nbsp;
+                                      {_SSRsCount?.XBAG20} X&nbsp;
                                       {fareConfig?.data
                                         ? resolveAbbreviation("XBAG20")
                                         : null}
@@ -383,7 +383,7 @@ const Fare = ({ isRoundTrip }) => {
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
                                     <h6>
-                                      {_SSRsCount?.XBAG15}x&nbsp;
+                                      {_SSRsCount?.XBAG15} X&nbsp;
                                       {fareConfig?.data
                                         ? resolveAbbreviation("XBAG15")
                                         : null}
@@ -405,7 +405,7 @@ const Fare = ({ isRoundTrip }) => {
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
                                     <h6>
-                                      {_SSRsCount?.XBAG10}x&nbsp;
+                                      {_SSRsCount?.XBAG10} X&nbsp;
                                       {fareConfig?.data
                                         ? resolveAbbreviation("XBAG10")
                                         : null}
@@ -427,7 +427,7 @@ const Fare = ({ isRoundTrip }) => {
                                 <div className="trip__summary__row">
                                   <div className="flex items-center">
                                     <h6>
-                                      {_seat}x&nbsp;
+                                      {_seat} X&nbsp;
                                       {fareConfig?.data
                                         ? resolveAbbreviation("SEAT")
                                         : null}
