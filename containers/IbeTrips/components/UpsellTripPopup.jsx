@@ -375,7 +375,7 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Upgrade to gClassic"}
+                          : "Continue gClassic"}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -391,7 +391,7 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Upgrade to gFlex"}
+                          : "Continue with gFlex"}
                       </button>
                     </div>
                   </div>
@@ -454,7 +454,7 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Upgrade to gClassic
+                  Continue with gClassic
                 </button>
               </div>
 
@@ -483,7 +483,7 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Upgrade to gFlex
+                  Continue with gFlex
                 </button>
               </div>
             </section>
