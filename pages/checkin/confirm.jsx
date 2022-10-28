@@ -28,7 +28,7 @@ const CheckInDetails = () => {
     useGetBookingMutation();
   const [sendBoardingPass, { isLoading: LoadingPass }] =
     useSendBoardingPassMutation();
-  const { bookingResponse } = useSelector(sessionSelector);
+  const { signature, bookingResponse } = useSelector(sessionSelector);
 
   const ScrollToTop = () => {
     window.scrollTo({
