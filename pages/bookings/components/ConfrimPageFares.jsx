@@ -17,14 +17,14 @@ const ConfrimPageFares = () => {
       (location) => location.code === abrreviation
     );
 
-    return `${name} (${code})`;
+    return `${name}`;
   };
 
   const resolveSpecialAbbreviation = (abrreviation) => {
     const [{ name, code }] = specialConfig?.data?.items.filter(
       (location) => location.code === abrreviation
     );
-    return `${name} (${code})`;
+    return `${name}`;
   };
 
   return (
@@ -75,6 +75,11 @@ const ConfrimPageFares = () => {
                               XBAG10: 0,
                               XBAG15: 0,
                               XBAG20: 0,
+
+                              IBAG20: 0,
+                              IBAG15: 0,
+                              IBAG10: 0,
+
                               INFT: 0,
                               SEAT: 0,
                               WCHR: 0,
@@ -352,6 +357,57 @@ const ConfrimPageFares = () => {
                                                 ? _SSRSum?.HPRD?.toLocaleString()
                                                 : 0}
                                             </h6>
+                                          </div>
+                                        </div>
+                                      )}
+
+                                      {parseInt(_SSRsCount?.IBAG20) > 0 && (
+                                        <div className="trip__summary__row">
+                                          <div className="flex items-center">
+                                            <h6>
+                                              {_SSRsCount?.IBAG20}x&nbsp;
+                                              {resolveAbbreviation("IBAG20")}
+                                              {_SSRsCount?.IBAG20 > 1
+                                                ? "s"
+                                                : ""}
+                                            </h6>
+                                          </div>
+                                          <div>
+                                            <h6> ₦0</h6>
+                                          </div>
+                                        </div>
+                                      )}
+
+                                      {parseInt(_SSRsCount?.IBAG15) > 0 && (
+                                        <div className="trip__summary__row">
+                                          <div className="flex items-center">
+                                            <h6>
+                                              {_SSRsCount?.IBAG15}x&nbsp;
+                                              {resolveAbbreviation("IBAG15")}
+                                              {_SSRsCount?.IBAG15 > 1
+                                                ? "s"
+                                                : ""}
+                                            </h6>
+                                          </div>
+                                          <div>
+                                            <h6> ₦0</h6>
+                                          </div>
+                                        </div>
+                                      )}
+
+                                      {parseInt(_SSRsCount?.IBAG10) > 0 && (
+                                        <div className="trip__summary__row">
+                                          <div className="flex items-center">
+                                            <h6>
+                                              {_SSRsCount?.IBAG10}x&nbsp;
+                                              {resolveAbbreviation("IBAG10")}
+                                              {_SSRsCount?.IBAG10 > 1
+                                                ? "s"
+                                                : ""}
+                                            </h6>
+                                          </div>
+                                          <div>
+                                            <h6> ₦0</h6>
                                           </div>
                                         </div>
                                       )}
