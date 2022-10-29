@@ -28,8 +28,10 @@ const ManagePassengerItem = ({ passenger, paxIndex }) => {
         <div className="flex items-center primary-checkbox">
           <p className="check-label">
             <h3 className="font-header font-bold text-sm ">
-              {passenger?.Names[0]?.FirstName}&nbsp;
-              {passenger?.Names[0]?.LastName}
+              {passenger?.Names[0]?.Title} {passenger?.Names[0]?.FirstName}
+              &nbsp;
+              {passenger?.Names[0]?.LastName} ({" "}
+              {passenger?.PassengerTypeInfo?.PaxType})
             </h3>
           </p>
         </div>

@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import ProfileIcon from "assets/svgs/profile.svg";
 import { capitalizeFirstLetter } from "lib/utils";
-
 import { useGetProductsQuery } from "services/widgetApi.js";
 
 const SummaryDetails = ({ isRoundTrip }) => {
@@ -51,6 +50,8 @@ const SummaryDetails = ({ isRoundTrip }) => {
                 {_contact.Names.map((_name) => {
                   return (
                     <h5 className="text-sm font-extrabold text-primary-main font-display mb-[6px]">
+                      {capitalizeFirstLetter(_name?.Title)}
+                      &nbsp;
                       {capitalizeFirstLetter(_name?.FirstName)}
                       &nbsp;
                       {capitalizeFirstLetter(_name?.LastName)}
@@ -114,6 +115,8 @@ const SummaryDetails = ({ isRoundTrip }) => {
                   {_passenger.Names.map((_name) => {
                     return (
                       <h5 className="text-sm font-extrabold text-primary-main font-display mb-[6px]">
+                        {capitalizeFirstLetter(_name?.Title)}
+                        &nbsp;
                         {capitalizeFirstLetter(_name?.FirstName)}
                         &nbsp;
                         {capitalizeFirstLetter(_name?.LastName)}
