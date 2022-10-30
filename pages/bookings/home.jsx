@@ -424,11 +424,11 @@ const ManageBookings = (props) => {
   };
 
   const resolvePaymnet = (abrreviation) => {
-    const [{ name, code }] = paymentConfigs?.data?.items.filter(
+    const chosen = paymentConfigs?.data?.items.filter(
       (location) => location.code === abrreviation
     );
 
-    return `${name}`;
+    return chosen?.length > 0 ? chosen[0]?.name : ``;
   };
 
   const SingleJourneyItem = ({ journey, journeyIndex }) => {
