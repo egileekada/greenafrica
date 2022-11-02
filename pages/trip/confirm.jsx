@@ -110,17 +110,7 @@ const TripConfirm = () => {
           <h2 className="trip-title mb-3">FLIGHT SUMMARY</h2>
         </div>
 
-        <ReactToPrint
-          trigger={() => (
-            <button
-              className="basis-full md:basis-auto btn btn-outline"
-              onClick={() => print()}
-            >
-              Download Ticket
-            </button>
-          )}
-          content={() => componentRef}
-        />
+        
         {/* <button
           className="basis-full md:basis-auto btn btn-outline"
           onClick={() => print()}
