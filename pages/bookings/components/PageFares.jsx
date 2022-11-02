@@ -521,6 +521,19 @@ const PageFares = () => {
                                         </div>
                                       </div>
                                     )}
+                                    <div className="trip__summary__row">
+                                      <div className="flex items-center">
+                                        <h6>SubTotal</h6>
+                                      </div>
+                                      <div>
+                                        <h6>
+                                          ₦
+                                          {_journey?.TotalAmount.toLocaleString(
+                                            "NGN"
+                                          )}
+                                        </h6>
+                                      </div>
+                                    </div>
                                   </>
                                 );
                               })}

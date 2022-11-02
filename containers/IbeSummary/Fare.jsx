@@ -32,6 +32,7 @@ const Fare = ({ isRoundTrip }) => {
       <div className="flex flex-col">
         {bookingResponse?.Booking?.Journeys?.map((_journey, _journeyIndex) => {
           const _seat = _journey?.Segments[0].PaxSeats?.length;
+          const _subTotal = 0;
 
           return (
             <>
@@ -60,9 +61,6 @@ const Fare = ({ isRoundTrip }) => {
                       0
                     );
                     _SSRSum[_paxFee?.FeeCode] = totalServiceCharge;
-                    {
-                      /* console.log(_paxFee?.FeeCode, totalServiceCharge); */
-                    }
                   });
                 });
 
@@ -82,9 +80,6 @@ const Fare = ({ isRoundTrip }) => {
                   HPRD: 0,
                 };
 
-                {
-                  /* console.log("_segment.PaxSSRs", _segment.PaxSSRs); */
-                }
                 _segment.PaxSSRs?.map((_segSSR) => {
                   _SSRsCount[_segSSR?.FeeCode] = _segment.PaxSSRs?.filter(
                     (_segCode) => {
@@ -490,6 +485,19 @@ const Fare = ({ isRoundTrip }) => {
                                   </div>
                                 </div>
                               ) : null}
+                              <div className="trip__summary__row">
+                                <div className="flex items-center">
+                                  <h6>SubTotal</h6>
+                                </div>
+                                <div>
+                                  <h6>
+                                    ₦
+                                    {_journey?.TotalAmount.toLocaleString(
+                                      "NGN"
+                                    )}
+                                  </h6>
+                                </div>
+                              </div>
                             </>
                           )}
                         </>
