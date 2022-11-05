@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PlaneSeats from "./PlaneSeats";
 import Spinner from "components/Spinner";
 import { useSelector } from "react-redux";
@@ -22,12 +22,33 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
   const [seatSelected, setSeatSelected] = useState(false);
   const [selectedSeat, setSelectedSeat] = useState([]);
 
-  const handleChange = (e, isWithInfant) => {
+  const handleChange = (PassengerNumber, isWithInfant) => {
     setPassengerState(isWithInfant);
-    setpassengerNumber(e.target.value);
+    setpassengerNumber(PassengerNumber);
   };
 
   const childRef = useRef(null);
+
+  const test = bookingResponse?.Booking?.Passengers.flatMap(
+    (passenger, index) => {
+      if (
+        selectedPassengers.some(
+          (e) =>
+            e.PassengerNumber === passenger.PassengerNumber &&
+            e.journey === ticketIndex
+        )
+      ) {
+        return passenger;
+      } else {
+        return [];
+      }
+    }
+  );
+
+  useEffect(() => {
+    setpassengerNumber(test[0].PassengerNumber);
+    handleChange(test[0].PassengerNumber, test[0]?.PassengerInfants.length);
+  }, []);
 
   return (
     <>
@@ -57,8 +78,12 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
                       type="radio"
                       value={passenger.PassengerNumber}
                       name={`passenger-state-${ticketIndex}`}
+                      checked={passenger.PassengerNumber === passengerNumber}
                       onChange={(e) =>
-                        handleChange(e, passenger.PassengerInfants.length)
+                        handleChange(
+                          passenger.PassengerNumber,
+                          passenger.PassengerInfants.length
+                        )
                       }
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mb-2"
                     />

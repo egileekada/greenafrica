@@ -38,7 +38,8 @@ const PlaneSeats = forwardRef(
   ) => {
     const dispatch = useDispatch();
     const { data: legend, isLoading, isSuccess } = useGetSeatlegendsQuery();
-    const { bookingResponse } = useSelector(sessionSelector);
+    const { bookingResponse, selectedPassengers } =
+      useSelector(sessionSelector);
 
     const [segmentSeatRequests, setSegmentSeatRequests] = useState([]);
     const [selected, setSelected] = useState(0);
@@ -76,7 +77,7 @@ const PlaneSeats = forwardRef(
         );
 
         const newItems = segmentSeatRequests.map((item, index) => {
-          if (passengerNumber == index) {
+          if (passengerNumber == item.passengerNumbers[0]) {
             const newItem = {
               ...item,
               flightDesignator: {
@@ -402,7 +403,7 @@ const PlaneSeats = forwardRef(
       const arrayGenerator = () => {
         let i = 0;
         const newArray = [];
-        for (i = 0; i < pasengerCount; i++) {
+        for (i = 0; i < selectedPassengers.length; i++) {
           newArray.push({
             flightDesignator: {
               carrierCode: "",
@@ -414,19 +415,19 @@ const PlaneSeats = forwardRef(
             departureStation: "",
             arrivalStation: "",
             unitDesignator: "",
-            passengerNumbers: [i],
+            passengerNumbers: [selectedPassengers[i].PassengerNumber],
             compartmentDesignator: "Y",
             passengerSeatPreferences: [
               {
                 actionStatusCode: "HK",
-                passengerNumber: i,
+                passengerNumber: selectedPassengers[i].PassengerNumber,
                 passengerNumberSpecified: true,
                 propertyTypeCode: "",
                 propertyCode: "",
                 met: "",
               },
             ],
-            passengerIDs: [i],
+            passengerIDs: [selectedPassengers[i].PassengerNumber],
             requestedSSRs: [""],
           });
         }

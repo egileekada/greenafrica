@@ -27,8 +27,8 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
 
   useEffect(() => {
     handleChange(
-      bookingState?.Passengers[0].PassengerNumber,
-      bookingState?.Passengers[0].PassengerInfants.length
+      bookingResponse?.Booking?.Passengers[0].PassengerNumber,
+      bookingResponse?.Booking?.Passengers[0].PassengerInfants.length
     );
   }, []);
 
