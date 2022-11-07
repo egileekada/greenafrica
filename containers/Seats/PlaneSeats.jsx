@@ -323,10 +323,10 @@ const PlaneSeats = forwardRef(
 
           <p className="font-semibold mb-2 text-base">
             {productClass === "SAVR"
-              ? mapSeatGroup(seatGroup).price
+              ? mapSeatGroup(seat.SeatGroup).price
               : productClass === "CLSC" &&
-                mapSeatGroup(seatGroup).name !== "Standard Seats"
-              ? mapSeatGroup(seatGroup).price
+                mapSeatGroup(seat.SeatGroup).name !== "Standard Seats"
+              ? mapSeatGroup(seat.SeatGroup).price
               : ""}
           </p>
           {seat.PropertyList.filter((list) => list.TypeCode === "INFANT")
