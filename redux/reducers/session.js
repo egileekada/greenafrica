@@ -911,6 +911,12 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
               paxCount: totalPaxCount,
               paxCountSpecified: true,
               loyaltyFilter: 0,
+              typeOfSale: {
+                state: 0,
+                stateSpecified: true,
+                paxResidentCountry: "",
+                promotionCode: promoCode && promoCode.length > 0 ? promoCode : ""
+              },
               loyaltyFilterSpecified: true,
               isAllotmentMarketFare: false,
               isAllotmentMarketFareSpecified: true,
@@ -1100,6 +1106,12 @@ export const saveMultipleSellRequest =
                 paxCount: totalPaxCount,
                 paxCountSpecified: true,
                 loyaltyFilter: 0,
+                typeOfSale: {
+                  state: 0,
+                  stateSpecified: true,
+                  paxResidentCountry: "",
+                  promotionCode: promoCode && promoCode.length > 0 ? promoCode : ""
+                },
                 loyaltyFilterSpecified: true,
                 isAllotmentMarketFare: false,
                 isAllotmentMarketFareSpecified: true,
