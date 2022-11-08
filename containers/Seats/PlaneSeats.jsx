@@ -268,7 +268,7 @@ const PlaneSeats = forwardRef(
             {productClass === "SAVR"
               ? mapSeatGroup(seatGroup).price
               : productClass === "CLSC" &&
-                mapSeatGroup(seatGroup).name !== "Standard Seats"
+                mapSeatGroup(seatGroup).name !== "Standard Seat"
               ? mapSeatGroup(seatGroup).price
               : ""}
           </p>
@@ -291,7 +291,7 @@ const PlaneSeats = forwardRef(
             {productClass === "SAVR"
               ? mapSeatGroup(seat.SeatGroup).price
               : productClass === "CLSC" &&
-                mapSeatGroup(seat.SeatGroup).name !== "Standard Seats"
+                mapSeatGroup(seat.SeatGroup).name !== "Standard Seat"
               ? mapSeatGroup(seat.SeatGroup).price
               : ""}
           </p>

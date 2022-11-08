@@ -266,7 +266,7 @@ const PlaneSeats = forwardRef(
             {productClass === "SAVR"
               ? mapSeatGroup(seatGroup).price
               : productClass === "CLSC" &&
-                mapSeatGroup(seatGroup).name !== "Standard Seats"
+                mapSeatGroup(seatGroup).name !== "Standard Seat"
               ? mapSeatGroup(seatGroup).price
               : ""}
           </p>

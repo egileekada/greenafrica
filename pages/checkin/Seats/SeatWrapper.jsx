@@ -187,6 +187,7 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
               setSelectedSeat={setSelectedSeat}
               selectedSeat={selectedSeat}
               ticketIndex={ticketIndex}
+              productClass={productClass}
             />
           )}
         </div>
