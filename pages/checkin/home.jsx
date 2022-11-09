@@ -74,6 +74,40 @@ const CheckInDetails = (props) => {
     );
   };
 
+  const SpecialAssistance = (_passenger, PassengerNumber) => {
+    const _Baggages = _passenger.filter((pax) => {
+      if (pax.PassengerNumber == PassengerNumber)
+        return (
+          pax.FeeCode === "HPRD" ||
+          pax.FeeCode === "VPRD" ||
+          pax.FeeCode === "WCHR"
+        );
+    });
+
+    return (
+      <div className="trip-details-item">
+        {_Baggages.length > 1 && (
+          <>
+            <h6 className="uppercase">Special Assistance </h6>
+            {_Baggages.map((item, index) => (
+              <h5 className="flex items-center" key={index}>
+                <span>
+                  {item.FeeCode === "WCHR"
+                    ? "Wheelchair"
+                    : item.FeeCode === "HPRD"
+                    ? "Hearing Impaired"
+                    : item.FeeCode === "VPRD"
+                    ? "Visually Impaired"
+                    : ""}
+                </span>
+              </h5>
+            ))}
+          </>
+        )}
+      </div>
+    );
+  };
+
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation
@@ -444,6 +478,15 @@ const CheckInDetails = (props) => {
                                 )}
                               </>
                             )}
+                            {Journey.Segments[0].PaxSSRs.length > 0 && (
+                              <>
+                                {SpecialAssistance(
+                                  Journey.Segments[0].PaxSSRs,
+                                  passenger.PassengerNumber
+                                )}
+                              </>
+                            )}
+
                             {Journey?.Segments[0]?.PaxSegments[pIndex]
                               ?.LiftStatus === 1 && (
                               <>

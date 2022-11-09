@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect, useRef } from "react";
-import { notification } from "antd";
+import { notification, Tabs } from "antd";
 import { useRouter } from "next/router";
-import { Tabs } from "antd";
 import BaseLayout from "layouts/Base";
 
 import Popup from "components/Popup";

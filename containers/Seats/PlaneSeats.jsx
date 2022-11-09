@@ -195,90 +195,56 @@ const PlaneSeats = forwardRef(
       }
     };
 
-    const mapClass = (
-      SeatAvailability,
+    const generateStyle = (
       SeatGroup,
+      SeatAvailability,
       SeatDesignator,
       propertylist
     ) => {
       let seatCode;
       switch (SeatGroup) {
         case (SeatGroup = 1):
-          seatCode = `bg-[${
-            legend?.data?.items.filter(
-              (seat) => seat.seat_group === SeatGroup
-            )[0].color_code
-          }]`;
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
           break;
         case (SeatGroup = 2):
-          seatCode = "bg-[#ADFFCB]";
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
           break;
         case (SeatGroup = 3):
-          const code3 = legend?.data?.items.filter(
+          seatCode = legend?.data?.items.filter(
             (seat) => seat.seat_group === SeatGroup
           )[0].color_code;
-          seatCode = `!bg-[${code3}]`;
           break;
         case (SeatGroup = 4):
-          seatCode = "bg-[#777093]";
-          break;
-        case (SeatGroup = 5):
-          seatCode = "bg-[#ADFFCB]";
-          break;
-        case (SeatGroup = 6):
-          const code = legend?.data?.items.filter(
+          seatCode = legend?.data?.items.filter(
             (seat) => seat.seat_group === SeatGroup
           )[0].color_code;
-          seatCode = `!bg-[${code}]`;
+          break;
+        case (SeatGroup = 5):
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
+          break;
+        case (SeatGroup = 6):
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
           break;
       }
 
       if (selectedSeat.some((el) => el.seatDesignator === SeatDesignator)) {
-        return "seats__item bg-[#292053] w-[38px]";
-      } else {
-        return SeatAvailability === 12 ||
-          SeatAvailability === 1 ||
-          SeatAvailability === 8 ||
-          SeatAvailability === 14 ||
-          propertylist.filter((list) => list.TypeCode === "RESTRICT").length > 0
-          ? "seats__item unavailable w-[38px]"
-          : `seats__item w-[38px] ${seatCode}`;
-      }
-    };
-
-    const generateStyle = (SeatGroup) => {
-      let seatCode;
-      switch (SeatGroup) {
-        case (SeatGroup = 1):
-          seatCode = legend?.data?.items.filter(
-            (seat) => seat.seat_group === SeatGroup
-          )[0].color_code;
-          break;
-        case (SeatGroup = 2):
-          seatCode = legend?.data?.items.filter(
-            (seat) => seat.seat_group === SeatGroup
-          )[0].color_code;
-          break;
-        case (SeatGroup = 3):
-          seatCode = legend?.data?.items.filter(
-            (seat) => seat.seat_group === SeatGroup
-          )[0].color_code;
-          break;
-        case (SeatGroup = 4):
-          seatCode = legend?.data?.items.filter(
-            (seat) => seat.seat_group === SeatGroup
-          )[0].color_code;
-          break;
-        case (SeatGroup = 5):
-          seatCode = legend?.data?.items.filter(
-            (seat) => seat.seat_group === SeatGroup
-          )[0].color_code;
-          break;
-        case (SeatGroup = 6):
-          seatCode = legend?.data?.items.filter(
-            (seat) => seat.seat_group === SeatGroup
-          )[0].color_code;
-          break;
+        seatCode = "#292053";
+      } else if (
+        SeatAvailability === 12 ||
+        SeatAvailability === 1 ||
+        SeatAvailability === 8 ||
+        SeatAvailability === 14 ||
+        propertylist.filter((list) => list.TypeCode === "RESTRICT").length > 0
+      ) {
+        seatCode = "#F1F1F1";
       }
 
       return seatCode;
@@ -302,7 +268,7 @@ const PlaneSeats = forwardRef(
             {productClass === "SAVR"
               ? mapSeatGroup(seatGroup).price
               : productClass === "CLSC" &&
-                mapSeatGroup(seatGroup).name !== "Standard Seats"
+                mapSeatGroup(seatGroup).name !== "Standard Seat"
               ? mapSeatGroup(seatGroup).price
               : ""}
           </p>
@@ -323,10 +289,10 @@ const PlaneSeats = forwardRef(
 
           <p className="font-semibold mb-2 text-base">
             {productClass === "SAVR"
-              ? mapSeatGroup(seatGroup).price
+              ? mapSeatGroup(seat.SeatGroup).price
               : productClass === "CLSC" &&
-                mapSeatGroup(seatGroup).name !== "Standard Seats"
-              ? mapSeatGroup(seatGroup).price
+                mapSeatGroup(seat.SeatGroup).name !== "Standard Seat"
+              ? mapSeatGroup(seat.SeatGroup).price
               : ""}
           </p>
           {seat.PropertyList.filter((list) => list.TypeCode === "INFANT")
@@ -548,16 +514,14 @@ const PlaneSeats = forwardRef(
                                     onOpenChange={handleClickChange}
                                   >
                                     <div
-                                      className={`${mapClass(
-                                        seat.SeatAvailability,
-                                        seat.SeatGroup,
-                                        seat.SeatDesignator,
-                                        seat.PropertyList
-                                      )}`}
+                                      className="seats__item w-[38px]"
                                       key={index}
                                       style={{
                                         backgroundColor: generateStyle(
-                                          seat.SeatGroup
+                                          seat.SeatGroup,
+                                          seat.SeatAvailability,
+                                          seat.SeatDesignator,
+                                          seat.PropertyList
                                         ),
                                       }}
                                     >
@@ -589,18 +553,16 @@ const PlaneSeats = forwardRef(
                                     }}
                                   >
                                     <div
-                                      className={`${mapClass(
-                                        seat.SeatAvailability,
-                                        seat.SeatGroup,
-                                        seat.SeatDesignator,
-                                        seat.PropertyList
-                                      )}`}
+                                      className="seats__item w-[38px]"
                                       key={index}
                                       onClick={() => setSeat(seat)}
                                       role="button"
                                       style={{
                                         backgroundColor: generateStyle(
-                                          seat.SeatGroup
+                                          seat.SeatGroup,
+                                          seat.SeatAvailability,
+                                          seat.SeatDesignator,
+                                          seat.PropertyList
                                         ),
                                       }}
                                     >

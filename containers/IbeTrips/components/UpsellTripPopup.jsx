@@ -405,7 +405,7 @@ const IbeTripPopup = ({
               </h4>
 
               <div className="mobile__benefits__item">
-                <p>Our Recommendation</p>
+                <p></p>
                 <h5>gSaver</h5>
                 <ul>
                   {gSaver.map((_gSaver, _i) => {
@@ -432,7 +432,7 @@ const IbeTripPopup = ({
               </div>
 
               <div className="mobile__benefits__item">
-                {/* <p>You selected:</p> */}
+              <p>Our Recommendation</p>
                 <h5>gClassic</h5>
                 <ul>
                   {gClassic.map((_gClassic, _i) => {
@@ -460,7 +460,7 @@ const IbeTripPopup = ({
               </div>
 
               <div className="mobile__benefits__item">
-                <p>Our Recommendation</p>
+                <p>For Comfort</p>
                 <h5>gFlex</h5>
                 <ul>
                   {gFlex.map((_gFlex, _i) => {

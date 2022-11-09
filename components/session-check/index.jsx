@@ -71,14 +71,14 @@ function IdleMonitor() {
         <div className="grid gap-8 md:grid-cols-2">
           <button
             onClick={() => onIdle()}
-            className="btn btn-primary w-full md:basis-auto my-10 md:mb-0 mx-auto"
+            className="btn btn-primary w-full md:basis-auto md:my-10 md:mb-0 mx-auto"
           >
             Logout
           </button>
 
           <button
             onClick={() => handleStillHere()}
-            className="btn btn-outline w-full md:basis-auto my-10 md:mb-0 mx-auto"
+            className="btn btn-outline w-full md:basis-auto md:my-10 md:mb-0 mx-auto"
           >
             Extend session
           </button>
