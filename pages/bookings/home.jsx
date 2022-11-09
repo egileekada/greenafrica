@@ -83,6 +83,33 @@ const ManageBookings = (props) => {
     }
   }, [bookingResponse]);
 
+  const formatPaymentStatus = (status) => {
+    let res = "";
+    switch (parseInt(status)) {
+      case 1:
+        res = "Pending";
+        break;
+      case 2:
+        res = "Under Paid";
+        break;
+      case 3:
+        res = "Approved";
+        break;
+      case 4:
+        res = "Over Paid";
+        break;
+      case 5:
+        res = "Pending Customer Action";
+        break;
+      case 6:
+        res = "Pending Customer Action";
+        break;
+      default:
+        res = "";
+    }
+    return res;
+  };
+
   const TripHeader = () => {
     return (
       <section className="ibe__flight__info__destination">
@@ -198,13 +225,7 @@ const ManageBookings = (props) => {
                           <h5>Status:</h5>
                         </div>
                         <div className="f-1">
-                          <h6>
-                            {parseInt(_payment?.Status) === 3
-                              ? "Approved"
-                              : "Pending"}
-                            {/* 1=Pending 2=Under Paid 3=Approved 4=Over Paid
-                            6=Pending Customer Action */}
-                          </h6>
+                          <h6>{formatPaymentStatus(_payment?.Status)}</h6>
                         </div>
                       </div>
                       <div className="trip__summary__details">
