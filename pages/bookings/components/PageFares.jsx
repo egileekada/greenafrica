@@ -80,6 +80,8 @@ const PageFares = () => {
                             WCHR: 0,
                             VPRD: 0,
                             HPRD: 0,
+
+                            CHG: 0,
                           };
 
                           _segment.PaxSSRs?.map((_segSSR) => {
@@ -179,6 +181,13 @@ const PageFares = () => {
                                     }
                                   );
 
+                                const _ChangeTaxFares =
+                                  _fare.PaxFares[0].ServiceCharges.filter(
+                                    (_charge) => {
+                                      return _charge.ChargeCode === "CHG";
+                                    }
+                                  );
+
                                 return (
                                   <>
                                     <div className="trip__summary__row subrow">
@@ -206,21 +215,27 @@ const PageFares = () => {
                                       </div>
                                     </div>
 
-                                    {/* <div className="trip__summary__row subrow">
-                                    <div className="flex items-center">
-                                      <h6>
-                                        {" "}
-                                        {
-                                          bookingResponse?.Booking?.Passengers
-                                            .length
-                                        }
-                                        x Change Service Charge:
-                                      </h6>
-                                    </div>
-                                    <div>
-                                      <h6>₦{ChangeTax.toLocaleString()}</h6>
-                                    </div>
-                                  </div> */}
+                                    {parseInt(_SSRsCount?.CHG) > 0 && (
+                                      <div className="trip__summary__row subrow">
+                                        <div className="flex items-center">
+                                          <h6>
+                                            {
+                                              bookingResponse?.Booking
+                                                ?.Passengers.length
+                                            }
+                                            x {resolveAbbreviation("CHG")}
+                                          </h6>
+                                        </div>
+                                        <div>
+                                          <h6>
+                                            ₦
+                                            {_SSRSum?.CHG
+                                              ? _SSRSum?.CHG?.toLocaleString()
+                                              : 0}
+                                          </h6>
+                                        </div>
+                                      </div>
+                                    )}
 
                                     {Discount.length > 0 && (
                                       <div className="trip__summary__row subrow">
@@ -537,6 +552,21 @@ const PageFares = () => {
                                   </>
                                 );
                               })}
+
+                              {/* TotalCost */}
+                              <div className="trip__summary__row totalRow">
+                                <div className="flex items-center">
+                                  <h5>TOTAL</h5>
+                                </div>
+                                <div>
+                                  <h6>
+                                    {" "}
+                                    ₦{" "}
+                                    {bookingResponse?.Booking?.BookingSum?.TotalCost?.toLocaleString()}
+                                  </h6>
+                                </div>
+                              </div>
+                              {/* TotalCost */}
                             </>
                           );
                         })}

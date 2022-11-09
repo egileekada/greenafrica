@@ -5,6 +5,7 @@ import { sessionSelector } from "redux/reducers/session";
 import ProfileIcon from "assets/svgs/profile.svg";
 import { capitalizeFirstLetter } from "lib/utils";
 import { useGetProductsQuery } from "services/widgetApi.js";
+import format from "date-fns/format";
 
 const SummaryDetails = ({ isRoundTrip }) => {
   const { data: products, isLoading } = useGetProductsQuery();
@@ -134,6 +135,12 @@ const SummaryDetails = ({ isRoundTrip }) => {
                       : "INFANT"}
                   </h6>
 
+                  {_passenger?.PassengerTypeInfo?.PaxType === "CHD" && (
+                    <h6 className="text-[10px] font-normal text-[#5F5B82] font-title">
+                      DOB
+                    </h6>
+                  )}
+
                   {/* {_passenger?.PassengerInfants.length
                     ? _passenger?.PassengerInfants.map((_paxInfant) => {
                         return _paxInfant.Names.map((_infName) => {
@@ -161,7 +168,12 @@ const SummaryDetails = ({ isRoundTrip }) => {
                             return (
                               <h6>
                                 {_infName?.FirstName}&nbsp;
-                                {_infName?.LastName}
+                                {_infName?.LastName} ({" "}
+                                {format(
+                                  new Date(_paxInfant?.DOB),
+                                  "d MMMM, yyyy"
+                                )}
+                                )
                               </h6>
                             );
                           });
@@ -184,6 +196,24 @@ const SummaryDetails = ({ isRoundTrip }) => {
                   </h6>
                 </div>
               </div>
+
+              {_passenger?.PassengerTypeInfo?.PaxType === "CHD" && (
+                <div className="trip__summary__details">
+                  <div className="f-1">
+                    <h6>Dob:</h6>
+                  </div>
+                  <div className="f-1">
+                    <h6>
+                      {_passenger?.PassengerTypeInfos[0]?.DOB &&
+                        format(
+                          new Date(_passenger?.PassengerTypeInfos[0]?.DOB),
+                          "d MMMM, yyyy"
+                        )}
+                    </h6>
+                  </div>
+                </div>
+              )}
+
               {_Seats.length > 0
                 ? bookingResponse?.Booking?.Journeys.map((_journey) => {
                     return _journey?.Segments.map((_segment) => {

@@ -360,7 +360,8 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Continue with gSaver"}
+                          : "Continue with gSaver"}{" "}
+                        {/* {selected?.AmountDifference} */}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">

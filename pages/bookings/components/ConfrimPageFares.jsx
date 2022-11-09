@@ -85,6 +85,8 @@ const ConfrimPageFares = () => {
                               WCHR: 0,
                               VPRD: 0,
                               HPRD: 0,
+
+                              CHG: 0,
                             };
 
                             _segment.PaxSSRs?.map((_segSSR) => {
@@ -260,6 +262,28 @@ const ConfrimPageFares = () => {
                                           </h6>
                                         </div>
                                       </div>
+
+                                      {parseInt(_SSRsCount?.CHG) > 0 && (
+                                        <div className="trip__summary__row subrow">
+                                          <div className="flex items-center">
+                                            <h6>
+                                              {
+                                                bookingResponse?.Booking
+                                                  ?.Passengers.length
+                                              }
+                                              x {resolveAbbreviation("CHG")}
+                                            </h6>
+                                          </div>
+                                          <div>
+                                            <h6>
+                                              ₦
+                                              {_SSRSum?.CHG
+                                                ? _SSRSum?.CHG?.toLocaleString()
+                                                : 0}
+                                            </h6>
+                                          </div>
+                                        </div>
+                                      )}
 
                                       {Discount.length > 0 && (
                                         <div className="trip__summary__row subrow">

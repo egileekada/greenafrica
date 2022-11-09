@@ -1,5 +1,4 @@
-import { Checkbox } from "antd";
-import { useState } from "react";
+import format from "date-fns/format";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
@@ -69,6 +68,21 @@ const ManagePassengerItem = ({ passenger, paxIndex }) => {
           </h5>
         </div>
 
+        {passenger?.PassengerTypeInfo?.PaxType.toLowerCase() === "chd" && (
+          <div className="trip-details-item">
+            <h6>DOB</h6>
+            <h5 className="flex items-center">
+              <span>
+                {passenger?.PassengerTypeInfos[0]?.DOB &&
+                  format(
+                    new Date(passenger?.PassengerTypeInfos[0]?.DOB),
+                    "d MMMM, yyyy"
+                  )}
+              </span>
+            </h5>
+          </div>
+        )}
+
         {_Infants?.length > 0 && (
           <div className="trip-details-item">
             <h6>INFANTS</h6>
@@ -80,7 +94,8 @@ const ManagePassengerItem = ({ passenger, paxIndex }) => {
                       return (
                         <span>
                           {_infName?.FirstName}&nbsp;
-                          {_infName?.LastName}
+                          {_infName?.LastName} ({" "}
+                          {format(new Date(_paxInfant?.DOB), "d MMMM, yyyy")})
                         </span>
                       );
                     });

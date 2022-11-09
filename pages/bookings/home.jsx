@@ -186,9 +186,7 @@ const ManageBookings = (props) => {
                         <div className="f-1">
                           <h6>
                             {format(
-                              new Date(
-                                bookingResponse?.Booking?.BookingInfo?.CreatedDate
-                              ),
+                              new Date(_payment?.ApprovalDate),
                               "d MMMM yyyy"
                             )}
                           </h6>
@@ -201,11 +199,7 @@ const ManageBookings = (props) => {
                         </div>
                         <div className="f-1">
                           <h6>
-                            {" "}
-                            {parseInt(
-                              bookingResponse?.Booking?.BookingInfo
-                                ?.BookingStatus
-                            ) === 2
+                            {parseInt(_payment?.Status) === 3
                               ? "Approved"
                               : "Pending"}
                           </h6>
@@ -217,10 +211,7 @@ const ManageBookings = (props) => {
                         </div>
                         <div className="f-1">
                           <h6>
-                            ₦
-                            {bookingResponse?.Booking?.BookingSum?.TotalCost.toLocaleString(
-                              "NGN"
-                            )}
+                            ₦{_payment?.PaymentAmount?.toLocaleString("NGN")}
                           </h6>
                         </div>
                       </div>

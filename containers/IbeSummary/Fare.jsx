@@ -88,6 +88,8 @@ const Fare = ({ isRoundTrip }) => {
                   ).length;
                 });
 
+               
+
                 return (
                   <>
                     <div className="flex items-center justify-between my-5">
@@ -102,6 +104,8 @@ const Fare = ({ isRoundTrip }) => {
                     </div>
 
                     {_segment.Fares.map((_fare) => {
+                     
+
                       const _fares = _fare.PaxFares[0].ServiceCharges.filter(
                         (_charge) => {
                           return _charge.ChargeCode === "";
@@ -481,7 +485,7 @@ const Fare = ({ isRoundTrip }) => {
                                     </h6>
                                   </div>
                                   <div>
-                                    <h6> ₦{_SSRSum?.SEAT.toLocaleString()}</h6>
+                                    <h6> ₦{_SSRSum?.SEAT?.toLocaleString()}</h6>
                                   </div>
                                 </div>
                               ) : null}
@@ -518,8 +522,8 @@ const Fare = ({ isRoundTrip }) => {
           <div>
             <h6>
               {" "}
-              ₦{" "}
-              {bookingResponse?.Booking?.Payments[0]?.PaymentAmount.toLocaleString()}
+              ₦
+              {bookingResponse?.Booking?.BookingSum?.TotalCost?.toLocaleString()}
             </h6>
           </div>
         </div>
