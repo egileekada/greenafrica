@@ -202,6 +202,8 @@ const ManageBookings = (props) => {
                             {parseInt(_payment?.Status) === 3
                               ? "Approved"
                               : "Pending"}
+                            {/* 1=Pending 2=Under Paid 3=Approved 4=Over Paid
+                            6=Pending Customer Action */}
                           </h6>
                         </div>
                       </div>
