@@ -577,8 +577,8 @@ const ManageBookings = (props) => {
             <section className="ga__section relative">
               {(verifyManageBookingResponse &&
                 verifyManageBookingResponse?.pnr.toLowerCase() ===
-                  statePNR.toLowerCase()) ||
-              managedPnrWithoutPayment.toLowerCase() ===
+                  statePNR.toLowerCase()) || managedPnrWithoutPayment &&
+              managedPnrWithoutPayment?.toLowerCase() ===
                 statePNR.toLowerCase() ? (
                 <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
                   <p>Your booking has been confirmed</p>
