@@ -19,6 +19,8 @@ import {
   setLoading,
 } from "redux/reducers/session";
 
+import { setManagedPnrWithoutPayment } from "redux/reducers/booking";
+
 import SeatWrapper from "./Seats/SeatWrapper";
 import { useGetLocationsQuery } from "services/widgetApi.js";
 import { useTryAssignSeatMutation } from "services/bookingApi";
@@ -78,6 +80,11 @@ const SeatSelection = () => {
           bookingCommitWithoutPayment()
             .unwrap()
             .then((data) => {
+              dispatch(
+                setManagedPnrWithoutPayment(
+                  data?.BookingUpdateResponseData?.Success?.RecordLocator
+                )
+              );
               router.push(
                 {
                   pathname: "/bookings/home",

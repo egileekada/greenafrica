@@ -39,7 +39,8 @@ const ManageBookings = (props) => {
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
   const { verifyManageBookingResponse } = useSelector(paymentSelector);
-  const { tripParams, returnParams } = useSelector(bookingSelector);
+  const { tripParams, returnParams, managedPnrWithoutPayment } =
+    useSelector(bookingSelector);
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: paymentConfigs, isLoading: paymentConfigLoading } =
     useGetPaymentConfigsQuery();
@@ -574,8 +575,10 @@ const ManageBookings = (props) => {
             </div>
           ) : (
             <section className="ga__section relative">
-              {verifyManageBookingResponse &&
-              verifyManageBookingResponse?.pnr.toLowerCase() ===
+              {(verifyManageBookingResponse &&
+                verifyManageBookingResponse?.pnr.toLowerCase() ===
+                  statePNR.toLowerCase()) ||
+              managedPnrWithoutPayment.toLowerCase() ===
                 statePNR.toLowerCase() ? (
                 <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
                   <p>Your booking has been confirmed</p>

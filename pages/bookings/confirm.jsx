@@ -18,7 +18,10 @@ import ConfrimPageFares from "./components/ConfrimPageFares";
 import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
 import LogoIcon from "assets/svgs/logo.svg";
 import { notification } from "antd";
-import { bookingSelector } from "redux/reducers/booking";
+import {
+  bookingSelector,
+  setManagedPnrWithoutPayment,
+} from "redux/reducers/booking";
 
 const ConfirmManageBooking = () => {
   const router = useRouter();
@@ -334,7 +337,13 @@ const ConfirmManageBooking = () => {
       ? router.push("/bookings/payment")
       : bookingCommitWithoutPayment()
           .unwrap()
-          .then((data) => {
+        .then((data) => {
+            
+            dispatch(
+              setManagedPnrWithoutPayment(
+                sessionStateResponse?.BookingData?.RecordLocator
+              )
+            );
             router.push(
               {
                 pathname: "/bookings/home",

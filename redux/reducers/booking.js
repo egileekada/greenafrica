@@ -13,6 +13,7 @@ import { GetSSRAvailabilityForBooking } from "services/bookingService";
 
 const initialState = {
   manageBookingPnr: null,
+  managedPnrWithoutPayment: null,
   testBooking: "tee",
   tripParams: null,
   returnParams: null,
@@ -55,6 +56,9 @@ export const bookingSlice = createSlice({
   reducers: {
     setManageBookingPnr: (state, { payload }) => {
       state.manageBookingPnr = payload;
+    },
+    setManagedPnrWithoutPayment: (state, { payload }) => {
+      state.managedPnrWithoutPayment = payload;
     },
     setTripParams: (state, { payload }) => {
       state.tripParams = payload;
@@ -148,6 +152,7 @@ export const bookingSlice = createSlice({
 
 export const {
   setManageBookingPnr,
+  setManagedPnrWithoutPayment,
   setTripParams,
   setReturnParams,
   setLowFareAvailabilityLoading,

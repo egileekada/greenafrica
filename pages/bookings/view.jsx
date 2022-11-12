@@ -11,7 +11,10 @@ import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { bookingSelector } from "redux/reducers/booking";
+import {
+  bookingSelector,
+  setManagedPnrWithoutPayment,
+} from "redux/reducers/booking";
 import { sessionSelector } from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
@@ -396,6 +399,12 @@ const TripView = () => {
                   bookingCommitWithoutPayment()
                     .unwrap()
                     .then((data) => {
+                      dispatch(
+                        setManagedPnrWithoutPayment(
+                          data?.BookingUpdateResponseData?.Success
+                            ?.RecordLocator
+                        )
+                      );
                       router.push(
                         {
                           pathname: "/bookings/home",
