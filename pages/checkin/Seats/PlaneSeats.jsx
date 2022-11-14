@@ -67,7 +67,17 @@ const PlaneSeats = forwardRef(
         setSelectedSeat(
           selectedSeat.map((item) =>
             passengerNumber == parseInt(item.passengerNumber)
-              ? { ...item, seatDesignator: SeatDesignator }
+              ? {
+                  ...item,
+                  seatDesignator: SeatDesignator,
+                  cost:
+                    productClass === "SAVR"
+                      ? `${mapSeatGroup(seat.SeatGroup).price}`
+                      : productClass === "CLSC" &&
+                        mapSeatGroup(seat.SeatGroup).name !== "Standard Seat"
+                      ? `${mapSeatGroup(seat.SeatGroup).price}`
+                      : 0,
+                }
               : item
           )
         );
@@ -145,7 +155,7 @@ const PlaneSeats = forwardRef(
             name: legend?.data?.items.filter(
               (seat) => seat.seat_group === value
             )[0].name,
-            price: `₦ ${
+            price: `${
               legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
                 .price
             }`,
@@ -156,7 +166,7 @@ const PlaneSeats = forwardRef(
             name: legend?.data?.items.filter(
               (seat) => seat.seat_group === value
             )[0].name,
-            price: `₦ ${
+            price: `${
               legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
                 .price
             }`,
@@ -167,7 +177,7 @@ const PlaneSeats = forwardRef(
             name: legend?.data?.items.filter(
               (seat) => seat.seat_group === value
             )[0].name,
-            price: `₦ ${
+            price: `${
               legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
                 .price
             }`,
@@ -178,7 +188,7 @@ const PlaneSeats = forwardRef(
             name: legend?.data?.items.filter(
               (seat) => seat.seat_group === value
             )[0].name,
-            price: `₦ ${
+            price: `${
               legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
                 .price
             }`,
@@ -189,7 +199,7 @@ const PlaneSeats = forwardRef(
             name: legend?.data?.items.filter(
               (seat) => seat.seat_group === value
             )[0].name,
-            price: `₦ ${
+            price: `${
               legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
                 .price
             }`,
@@ -264,10 +274,10 @@ const PlaneSeats = forwardRef(
 
           <p className="font-semibold mb-2 text-base">
             {productClass === "SAVR"
-              ? mapSeatGroup(seatGroup).price
+              ? `₦ ${mapSeatGroup(seatGroup).price}`
               : productClass === "CLSC" &&
                 mapSeatGroup(seatGroup).name !== "Standard Seat"
-              ? mapSeatGroup(seatGroup).price
+              ? `₦ ${mapSeatGroup(seatGroup).price}`
               : ""}
           </p>
           {propertylist.filter((list) => list.TypeCode === "INFANT").length >
@@ -369,6 +379,7 @@ const PlaneSeats = forwardRef(
         newArray.push({
           passengerNumber: passenger.PassengerNumber,
           seatDesignator: getSeat(passenger.PassengerNumber),
+          cost: 0,
         });
       });
       setSelectedSeat(newArray);

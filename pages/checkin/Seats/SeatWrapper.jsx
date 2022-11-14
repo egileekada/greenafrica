@@ -7,7 +7,7 @@ import { sessionSelector } from "redux/reducers/session";
 import ProfileIcon from "assets/svgs/profile.svg";
 import InfoIcon from "assets/svgs/seats/info.svg";
 
-const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
+const SeatWrapper = ({ ticketIndex, setShow, productClass, setCost }) => {
   const {
     seatResponseLoading,
     seatAvailability,
@@ -28,6 +28,7 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
   };
 
   const childRef = useRef(null);
+  const firstTimeRender = useRef(true);
 
   const test = bookingResponse?.Booking?.Passengers.flatMap(
     (passenger, index) => {
@@ -49,6 +50,22 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
     setpassengerNumber(test[0].PassengerNumber);
     handleChange(test[0].PassengerNumber, test[0]?.PassengerInfants.length);
   }, []);
+
+  const calculateNewCost = () => {
+    const sum = selectedSeat.reduce((accumulator, seat) => {
+      return accumulator + parseInt(seat.cost);
+    }, 0);
+
+    setCost(sum);
+  };
+
+  useEffect(() => {
+    if (!firstTimeRender.current) {
+      return (firstTimeRender.current = true);
+    }
+
+    calculateNewCost();
+  }, [selectedSeat]);
 
   return (
     <>
@@ -188,6 +205,7 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
               selectedSeat={selectedSeat}
               ticketIndex={ticketIndex}
               productClass={productClass}
+              setCost={setCost}
             />
           )}
         </div>
