@@ -33,20 +33,14 @@ const Navigation = () => {
 
         <ul className="hidden tab:flex items-center">
           <li className="py-6">
-            <a
-              className="mr-16 text-white font-body text-sm"
-              href="https://dev-ibe.gadevenv.com/checkin"
-            >
-              Check In
-            </a>
+            <Link href="/check-in">
+              <a className="mr-16 text-white font-body text-sm">Check In</a>
+            </Link>
           </li>
           <li>
-            <a
-              className="mr-16 text-white font-body text-sm"
-              href="https://dev-ibe.gadevenv.com/bookings"
-            >
-              My Bookings
-            </a>
+            <Link href="/my-bookings">
+              <a className="mr-16 text-white font-body text-sm">My Bookings</a>
+            </Link>
           </li>
 
           <li className="nav-item py-6">
