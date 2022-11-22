@@ -42,7 +42,7 @@ export const MobileFooter = () => {
         <li className="mobileNavItem">
           <NavLink
             className="mobileNavItem__link"
-            href="https://dev-ibe.gadevenv.com/checkin"
+            href="/check-in"
             activeClassName="mobileNavItem--active"
           >
             <a>

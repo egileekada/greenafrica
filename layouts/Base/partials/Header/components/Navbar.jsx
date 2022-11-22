@@ -61,7 +61,7 @@ const Navigation = () => {
                       <h3 className="uppercase">PLAN YOUR TRIP</h3>
                       <ul className="list-unstyled with-sub">
                         <li className="mt-0">
-                          <Link href="#">Destinations</Link>
+                          <Link href="/destinations">Destinations</Link>
                         </li>
                       </ul>
                     </div>
@@ -282,7 +282,7 @@ const Navigation = () => {
           <li className="nav--list">
             <div className="mobile--div">
               <h3 className="uppercase">TRAVEL INFORMATION</h3>
-              <ul className="with-sub grid grid-cols-2 gap-4">
+              <ul className="with-sub flex justify-start items-start flex-col gap-2">
                 <li className="mt-0">
                   <Link href="/fare-categories">Fare Categories</Link>
                 </li>

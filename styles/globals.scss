@@ -70,6 +70,10 @@
   }
   // Button
 
+  body {
+    overflow: auto !important;
+  }
+
   // Form
   .form {
     @apply flex justify-between flex-wrap;
@@ -664,6 +668,7 @@ select:focus {
   p {
     font-size: 16px !important;
     font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
+    line-height: 1.5rem !important;
   }
   ul {
     margin-left: 20px !important;
