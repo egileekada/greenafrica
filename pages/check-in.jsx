@@ -1,7 +1,33 @@
 import React from "react";
 import BaseLayout from "layouts/Base";
+import { Formik, Form, Field, useFormik } from "formik";
+import * as Yup from "yup";
+
+const BookingReferenceSchema = Yup.object().shape({
+  bookingReference: Yup.string()
+    .required("Booking Reference must be exactly 6 values")
+    .max(6, "Booking Reference must be exactly 6 values")
+    .min(6, "Booking Reference must be exactly 6 values"),
+  email: Yup.string().email().required("Email is required"),
+});
 
 const CheckIn = () => {
+  const { values, errors, touched, isSubmitting, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: {
+        bookingReference: "",
+        email: "",
+      },
+      validationSchema: BookingReferenceSchema,
+      onSubmit,
+    });
+
+  const onSubmit = async (values, actions) => {
+    console.log(values);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    actions.resetForm();
+  };
+
   return (
     <BaseLayout>
       {/* <HomeHero /> */}
@@ -65,40 +91,70 @@ const CheckIn = () => {
               <p className="text-primary-main font-bold text-base">
                 Enter flight details to view your booking
               </p>
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-3">
-                <div className="my-3 col-span-2">
-                  <div className="select__wrapper px-5">
-                    <p className="text-xs uppercase mb-1 mt-1">
-                      Booking Reference
-                    </p>
-                    <input
-                      type="text"
-                      placeholder=""
-                      className="border-none pl-0 block w-full py-1"
-                    />
+
+              <form onSubmit={handleSubmit}>
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-3">
+                  <div class="my-3 col-span-2">
+                    <div class="border-gray-300 relative select__wrapper rounded-md z-0  pt-4 px-4">
+                      <input
+                        type="text"
+                        id="bookingReference"
+                        class="block py-2.5 pt-3 px-0 w-full text-sm text-gray-900 bg-transparent border-transparent focus:border-transparent focus:ring-0 peer"
+                        placeholder=" "
+                        name="bookingReference"
+                        value={values.bookingReference}
+                        onChange={handleChange}
+                      />
+
+                      <label
+                        for="bookingReference"
+                        class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 -z-10 origin-[0] peer-focus:left-4 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 uppercase"
+                      >
+                        Booking Reference
+                      </label>
+                    </div>
+                    {errors.bookingReference && touched.bookingReference && (
+                      <p className="small text-red-600 text-sm mb-0 mt-2">
+                        {errors.bookingReference}
+                      </p>
+                    )}
+                  </div>
+                  <div class="my-3 col-span-2">
+                    <div class="border-gray-300 relative select__wrapper rounded-md z-0 pt-4 px-4">
+                      <input
+                        type="email"
+                        id="email"
+                        class="block py-2.5 pt-3 px-0 w-full text-sm text-gray-900 bg-transparent border-transparent focus:border-transparent focus:ring-0 peer"
+                        placeholder=" "
+                        name="email"
+                        value={values.email}
+                        onChange={handleChange}
+                      />
+
+                      <label
+                        for="email"
+                        class="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 -z-10 origin-[0] peer-focus:left-4 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 uppercase"
+                      >
+                        Email
+                      </label>
+                    </div>
+                    {errors.email && touched.email && (
+                      <p className=" text-red-600 text-sm mb-0 mt-2">
+                        {errors.email}{" "}
+                      </p>
+                    )}
+                  </div>
+                  <div class="my-3 lg:ml-auto">
+                    <button
+                      type="submit"
+                      class="btn btn-primary font-bold block w-full"
+                      disabled={isSubmitting}
+                    >
+                      Confirm
+                    </button>
                   </div>
                 </div>
-
-                <div className="my-3 col-span-2">
-                  <div className="select__wrapper px-5">
-                    <p className="text-xs uppercase mb-1 mt-1">last name</p>
-                    <input
-                      type="text"
-                      placeholder=""
-                      className="border-none pl-0 block w-full py-1"
-                    />
-                  </div>
-                </div>
-
-                <div className="my-3 lg:ml-auto">
-                  <button
-                    type="submit"
-                    className="btn btn-primary font-bold h-full block w-full"
-                  >
-                    Confirm
-                  </button>
-                </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
