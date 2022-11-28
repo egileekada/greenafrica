@@ -42,7 +42,7 @@ export const MobileFooter = () => {
         <li className="mobileNavItem">
           <NavLink
             className="mobileNavItem__link"
-            href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}/checkin`}
+            href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}checkin`}
             activeClassName="mobileNavItem--active"
           >
             <a>
@@ -87,7 +87,7 @@ export const MobileFooter = () => {
         <li className="mobileNavItem mobileNavItem--call-href-action">
           <NavLink
             className="mobileNavItem__link"
-            href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}/bookings`}
+            href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}bookings`}
             activeClassName="mobileNavItem--active"
           >
             <a>
