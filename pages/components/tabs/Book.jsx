@@ -332,8 +332,8 @@ const Book = ({
                     formatOptionLabel={formatOptionLabel}
                     components={{ Option }}
                     name="origin"
-                    defaultValue={formik.values.origin}
-                    value={formik.values.origin}
+                    defaultValue={fromTo.from}
+                    value={fromTo.from}
                     onChange={(value) => setFromDate(value)}
                     options={data?.data?.values}
                     className="border-0"
@@ -398,8 +398,8 @@ const Book = ({
                     className="border-0 invalid:border-pink-500 invalid:text-pink-600"
                     styles={colourStyles}
                     name="destination"
-                    defaultValue={formik.values.destination}
-                    value={formik.values.destination}
+                    defaultValue={fromTo.to}
+                    value={fromTo.to}
                     onChange={(value) => setToDate(value)}
                     noOptionsMessage={() => "Kindly choose an origin"}
                   />
