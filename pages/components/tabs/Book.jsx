@@ -291,8 +291,8 @@ const Book = ({
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-flex-col xl:grid-cols-4 sm:grid-flex-col items-center gap-2">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:col-span-2">
+        <div className="grid grid-cols-1 lg:grid-flex-col xl:flex sm:grid-flex-col items-center gap-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:flex-1 gap-3 md:col-span-2">
             <div
               className={`${
                 formik.touched.origin && formik.errors.origin
@@ -422,8 +422,8 @@ const Book = ({
 
           <div
             className={`${
-              type && "lg:grid-cols-2 md:col-span-2"
-            } hidden md:grid grid-cols-1 gap-2 md:col-auto`}
+              type && "lg:grid-cols-2 md:col-span-2 xl:flex-1"
+            } hidden md:grid grid-cols-1 xl:flex-1 gap-2 md:col-auto`}
           >
             <div
               onClick={() => {
@@ -516,7 +516,7 @@ const Book = ({
             )}
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 xl:max-w-[250px] xl:flex-1">
             <div
               className="booking__wrapper hidden md:flex flex-auto relative"
               data-modal-toggle="defaultModal"
@@ -529,9 +529,7 @@ const Book = ({
                 }}
                 className="px-4 md:px-0"
               >
-                <p className="mb-1 text-xs md:mx-4 text-[#979797]">
-                  PASSENGERS
-                </p>
+                <p className="mb-1 text-xs text-[#979797]">PASSENGERS</p>
                 <div
                   className="flex items-center relative"
                   onClick={() =>
@@ -539,7 +537,7 @@ const Book = ({
                   }
                   role="button"
                 >
-                  <span className="ml-4 mr-0 pb-1 hidden md:block">
+                  <span className="mr-0 pb-1 hidden md:block">
                     <svg
                       width="18"
                       height="17"

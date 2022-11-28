@@ -58,6 +58,16 @@ const HeroSlider = () => {
     }
   });
 
+  const setSlide = (index) => {
+    console.log(index);
+    if (slide.current !== null) {
+      let size = slide?.current?.clientWidth;
+      item.current.style.transition = "transform 1s ease-in-out";
+      setCurrIndex(index);
+      item.current.style.transform = "translateX(" + -size * index + "px)";
+    }
+  };
+
   return (
     <section className="carousel">
       {isLoading ? (
@@ -98,9 +108,10 @@ const HeroSlider = () => {
                 {desktopBanners.map((bg, index) => {
                   return (
                     <div
+                      onClick={() => setSlide(index)}
                       key={bg.id + 1}
                       data-key={bg.id + 1}
-                      className={`dots-item ${
+                      className={`cursor-pointer dots-item ${
                         index === currIndex ? "active" : ""
                       }`}
                     ></div>
@@ -136,6 +147,20 @@ const HeroSlider = () => {
                       </div>
                     );
                   })}
+              </div>
+              <div className="dots">
+                {desktopBanners.map((bg, index) => {
+                  return (
+                    <div
+                      onClick={() => setSlide(index)}
+                      key={bg.id + 1}
+                      data-key={bg.id + 1}
+                      className={`cursor-pointer dots-item ${
+                        index === currIndex ? "active" : ""
+                      }`}
+                    ></div>
+                  );
+                })}
               </div>
             </>
           )}

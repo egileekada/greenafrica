@@ -33,12 +33,12 @@ const Navigation = () => {
 
         <ul className="hidden tab:flex items-center">
           <li className="py-6">
-            <Link href="/check-in">
+            <Link href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}checkin`}>
               <a className="mr-16 text-white font-body text-sm">Check In</a>
             </Link>
           </li>
           <li>
-            <Link href="/my-bookings">
+            <Link href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}bookings`}>
               <a className="mr-16 text-white font-body text-sm">My Bookings</a>
             </Link>
           </li>

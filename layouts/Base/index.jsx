@@ -4,7 +4,7 @@ import { MobileFooter } from "layouts/Base/partials/Footer/mobile";
 const BaseLayout = ({ children }) => {
   return (
     <>
-      <section className="w-full bg-white relative">
+      <section className="overflow-hidden w-full bg-white relative">
         <Header />
         <div>{children}</div>
         <MobileFooter />
