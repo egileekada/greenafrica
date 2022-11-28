@@ -152,14 +152,11 @@ $cream: #fff6f6;
     @include flexCenter;
     bottom: 15%;
     right: 50%;
-    cursor: pointer;
-
-    @include respond(lg) {
-      display: none;
-    }
 
     @include respond(phone) {
-      // left: 50%;
+      left: 50%;
+      right: 0%;
+      bottom: 22.5%;
       transform: translateX(-50%);
     }
 

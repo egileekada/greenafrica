@@ -147,11 +147,6 @@ $cream: #fff6f6;
     @include flexCenter;
     bottom: 25%;
     right: 15rem;
-    cursor: pointer;
-
-    @include respond(lg) {
-      display: none;
-    }
 
     @include respond(phone) {
       // left: 50%;

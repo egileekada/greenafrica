@@ -61,22 +61,22 @@ const DesktopFilter = () => {
           >
             Round Trip
           </button>
-          <button
-            onClick={() => setActiveTab(3)}
+          <a
+            href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}checkin`}
             className={`btn ${
               activeTab === 3 ? "btn-primary white font-title" : "btn-text"
             } mr-[22px] hidden lg:inline`}
           >
             Check In
-          </button>
-          <button
-            onClick={() => setActiveTab(4)}
+          </a>
+          <a
+            href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}bookings`}
             className={`btn ${
               activeTab === 4 ? "btn-primary white font-title" : "btn-text"
             } mr-[22px] hidden lg:inline`}
           >
             My Booking
-          </button>
+          </a>
 
           <a
             className={`btn ${
