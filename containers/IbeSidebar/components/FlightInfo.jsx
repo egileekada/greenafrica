@@ -6,13 +6,9 @@ import { sessionSelector } from "redux/reducers/session";
 import { showWidget } from "redux/reducers/general";
 import format from "date-fns/format";
 
-const FlightInfo = () => {
+const FlightInfo = ({ enableEdit }) => {
   const dispatch = useDispatch();
   const { flightParams, sessionStateResponse } = useSelector(sessionSelector);
-
-  // const totalPassengers = sessionStateResponse
-  //   ? sessionStateResponse?.BookingData?.Passengers.length
-  //   : 0;
 
   const totalPassengers =
     parseInt(flightParams?.ADT) +
@@ -36,12 +32,15 @@ const FlightInfo = () => {
             </h5>
           </div>
         </div>
-        <button
-          className="text-white underline"
-          onClick={() => dispatch(showWidget())}
-        >
-          Edit
-        </button>
+
+        {enableEdit && (
+          <button
+            className="text-white underline"
+            onClick={() => dispatch(showWidget())}
+          >
+            Edit
+          </button>
+        )}
       </div>
     </section>
   );

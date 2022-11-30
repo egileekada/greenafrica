@@ -284,7 +284,7 @@ const Home = () => {
                 </section>
               </div>
               <div className="ga__section__side">
-                <IbeSidebar />
+                <IbeSidebar enableEdit={true} />
               </div>
             </section>
           </Fragment>

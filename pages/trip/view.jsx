@@ -424,7 +424,7 @@ const TripView = (props) => {
           </div>
 
           <div className="ga__section__side">
-            <IbeSidebar />
+            <IbeSidebar enableEdit={true} />
           </div>
         </section>
       </section>

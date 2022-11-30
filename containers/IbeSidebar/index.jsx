@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
-const IbeSidebar = () => {
+const IbeSidebar = ({ enableEdit = false }) => {
   const { sessionStateLoading } = useSelector(sessionSelector);
 
   return (
@@ -17,7 +17,7 @@ const IbeSidebar = () => {
         <Spinner />
       ) : (
         <>
-          <FlightInfo />
+          <FlightInfo enableEdit={enableEdit} />
           <TripInfo />
           <PassengerInfo />
           <SeatInfo />
