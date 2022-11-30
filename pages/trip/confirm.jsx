@@ -8,7 +8,12 @@ import DottedLine from "assets/svgs/dotted-line.svg";
 import Fare from "containers/IbeSummary/Fare";
 import SummaryDetails from "containers/IbeSummary/SummaryDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBookingDetails, sessionSelector } from "redux/reducers/session";
+import {
+  GetBookingDetails,
+  setSelectedSessionFare,
+  setSelectedSessionJourney,
+  sessionSelector,
+} from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
@@ -45,18 +50,26 @@ const TripConfirm = () => {
   }, []);
 
   // Don't re work - it currently breaks code
-  useEffect(() => {
-    async function fetchBookingDetails() {
-      dispatch(GetBookingDetails());
-    }
-    fetchBookingDetails();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchBookingDetails() {
+  //     dispatch(GetBookingDetails());
+  //   }
+  //   fetchBookingDetails();
+  // }, []);
 
   useEffect(() => {
     if (bookingResponse) {
       bookingResponse?.Booking?.Journeys.length > 1 && setIsRoundTrip(true);
     }
   }, [bookingResponse]);
+
+  useEffect(() => {
+    async function resetSelectedJourneys() {
+      dispatch(setSelectedSessionFare(null));
+      dispatch(setSelectedSessionJourney(null));
+    }
+    resetSelectedJourneys();
+  }, []);
 
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
@@ -110,7 +123,6 @@ const TripConfirm = () => {
           <h2 className="trip-title mb-3">FLIGHT SUMMARY</h2>
         </div>
 
-        
         {/* <button
           className="basis-full md:basis-auto btn btn-outline"
           onClick={() => print()}

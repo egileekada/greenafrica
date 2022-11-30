@@ -496,7 +496,7 @@ const Fare = ({ isRoundTrip }) => {
                                 <div>
                                   <h6>
                                     ₦
-                                    {_journey?.TotalAmount.toLocaleString(
+                                    {_journey?.TotalAmount?.toLocaleString(
                                       "NGN"
                                     )}
                                   </h6>

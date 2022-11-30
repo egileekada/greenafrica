@@ -57,7 +57,7 @@ const initialState = {
   bookingCommitResponse: null,
   bookingResponseLoading: false,
   bookingResponse: null,
-  // bookingResponse: bookingResponse,
+  bookingResponse: bookingResponse,
   seatAvailability: null,
   seatResponseLoading: true,
   SSRAvailabilityLoading: false,
@@ -68,7 +68,7 @@ const initialState = {
   bookingState: null,
   sessionStateLoading: false,
   sessionStateResponse: null,
-  // sessionStateResponse: sessionStateResponse,
+  sessionStateResponse: sessionStateResponse,
   seats: [],
   checkInSelection: [],
   selectedPassengers: [],
@@ -113,9 +113,18 @@ export const sessionSlice = createSlice({
     },
     setSelectedSessionJourney: (state, { payload }) => {
       state.selectedSessionJourney = payload;
+      payload !== null
+        ? sessionStorage.setItem(
+            "selectedSessionJourney",
+            JSON.stringify(payload)
+          )
+        : null;
     },
     setSelectedSessionFare: (state, { payload }) => {
       state.selectedSessionFare = payload;
+      payload !== null
+        ? sessionStorage.setItem("selectedSessionFare", JSON.stringify(payload))
+        : null;
     },
     setSelectedSessionReturnFare: (state, { payload }) => {
       state.selectedSessionReturnFare = payload;

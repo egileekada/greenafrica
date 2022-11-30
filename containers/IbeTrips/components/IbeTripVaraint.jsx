@@ -145,7 +145,9 @@ const IbeTripVariant = ({
                 parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
               }`}
             >
-              {totalServiceCharge.toLocaleString("NGN")}
+              {parseInt(fare?.AvailableCount) < 1
+                ? "Sold Out"
+                : `₦ ${totalServiceCharge.toLocaleString("NGN")}`}
             </button>
           )}
         </div>

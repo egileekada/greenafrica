@@ -64,7 +64,6 @@ const IbeTripPopup = ({
       (_newFare) => _newFare?.RuleNumber?.toLowerCase() === fareId.toLowerCase()
     );
 
-    // console.log("latestFare", latestFare[0]);
     if (latestFare.length > 0) {
       if (flightParams?.isRoundTrip === 1) {
         const existingFares = selectedSessionFare

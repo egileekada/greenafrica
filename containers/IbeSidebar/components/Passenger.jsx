@@ -52,8 +52,6 @@ const PassengerInfo = () => {
               });
             });
 
-            console.log("_SSRCount", _SSRCount);
-
             return (
               <section className="flex flex-col">
                 <div className="flex mb-6">
@@ -178,6 +176,60 @@ const PassengerInfo = () => {
 
       {showContent && (
         <>
+          {sessionStateResponse &&
+            sessionStateResponse?.BookingData?.BookingContacts?.length > 0 &&
+            sessionStateResponse?.BookingData?.BookingContacts?.map(
+              (_contact) => {
+                return (
+                  <section className="flex flex-col mt-3">
+                    <h2 className="text-primary-main font-bold text-sm mb-3">
+                      CONTACT DETAILS
+                    </h2>
+
+                    <div className="flex mb-6">
+                      <div className="flex flex-col w-[53px] mr-4">
+                        <div className="bg-purple-light h-[50px] rounded-t-[3px] flex justify-center items-center">
+                          <ProfileIcon />
+                        </div>
+                      </div>
+                      <div className="flex flex-col">
+                        {_contact.Names.map((_name) => {
+                          return (
+                            <>
+                              <h5 className="text-sm font-extrabold text-primary-main font-display">
+                                {`${capitalizeFirstLetter(
+                                  _name?.FirstName
+                                )} ${capitalizeFirstLetter(_name?.LastName)}`}
+                              </h5>
+
+                              <h6 className="text-[12px] font-normal text-[#9692B8] font-title ">
+                                <span className="mr-2">
+                                  {capitalizeFirstLetter(
+                                    _contact?.EmailAddress
+                                  )}
+                                  {/* Taiwo.aiyeri Taiwo.aiyeri
+                                Taiwo.aiyeriTaiwo.aiyeri
+                                Taiwo.aiyeriTaiwo.aiyerin@scenariodevelopers.com */}
+                                </span>
+                              </h6>
+                              <h6 className="text-[12px] font-normal text-[#9692B8] font-title">
+                                <span className="mr-2">
+                                  {capitalizeFirstLetter(_contact?.HomePhone)}
+                                </span>
+                              </h6>
+                            </>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </section>
+                );
+              }
+            )}
+
+          <h2 className="text-primary-main font-bold text-sm -mb-3">
+            PASSENGERS
+          </h2>
           {sessionStateResponse &&
           sessionStateResponse?.BookingData.Passengers.length > 0 &&
           sessionStateResponse?.BookingData.Passengers[0].Names.length > 0 ? (
