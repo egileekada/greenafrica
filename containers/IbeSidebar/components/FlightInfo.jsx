@@ -25,7 +25,9 @@ const FlightInfo = ({ enableEdit }) => {
           </figure>
           <div className="flex flex-col">
             <h4 className="text-white text-[10px] leading-[13px] font-display font-extrabold mb-1">
-              {flightParams?.beginDate}
+              {flightParams?.beginDate
+                ? format(new Date(flightParams?.beginDate), "EEEE, LLL dd yyyy")
+                : "Date"}
             </h4>
             <h5 className="text-[#928DC0]  text-[10px] leading-[13px] font-display font-extrabold">
               {totalPassengers} PASSENGER{totalPassengers > 1 ? "S" : ""}
