@@ -16,6 +16,7 @@ const PaymentInfo = ({ isRoundTrip }) => {
 
   const { data: fareConfig, isLoading } = useGetFareconfigsQuery();
   const { data: specialConfig } = useGetSpecialAssistancesQuery();
+  const { bookingResponse } = useSelector(sessionSelector);
 
   const resolveAbbreviation = (abrreviation) => {
     const [{ name, code }] = fareConfig?.data?.items.filter(
@@ -265,6 +266,25 @@ const PaymentInfo = ({ isRoundTrip }) => {
 
                                         <div className="trip__summary__row subrow">
                                           <div className="flex items-center">
+                                            <h6>
+                                              {" "}
+                                              {
+                                                sessionStateResponse
+                                                  ?.BookingData?.Passengers
+                                                  .length
+                                              }
+                                              x Passenger Service Charge:
+                                            </h6>
+                                          </div>
+                                          <div>
+                                            <h6>
+                                              ₦{TotalTax.toLocaleString()}
+                                            </h6>
+                                          </div>
+                                        </div>
+
+                                        <div className="trip__summary__row subrow">
+                                          <div className="flex items-center">
                                             {fareConfig?.data ? (
                                               <h6>
                                                 {" "}
@@ -286,16 +306,15 @@ const PaymentInfo = ({ isRoundTrip }) => {
 
                                         <div className="trip__summary__row subrow">
                                           <div className="flex items-center">
-                                            {fareConfig?.data ? (
-                                              <h6>
-                                                {
-                                                  sessionStateResponse
-                                                    ?.BookingData?.Passengers
-                                                    .length
-                                                }
-                                                x {resolveAbbreviation("QT")}:
-                                              </h6>
-                                            ) : null}
+                                            <h6>
+                                              {" "}
+                                              {
+                                                sessionStateResponse
+                                                  ?.BookingData?.Passengers
+                                                  .length
+                                              }
+                                              x Airport Tax:
+                                            </h6>
                                           </div>
                                           <div>
                                             <h6>
@@ -307,20 +326,17 @@ const PaymentInfo = ({ isRoundTrip }) => {
                                             </h6>
                                           </div>
                                         </div>
-
                                         <div className="trip__summary__row subrow">
                                           <div className="flex items-center">
-                                            {fareConfig?.data ? (
-                                              <h6>
-                                                {" "}
-                                                {
-                                                  sessionStateResponse
-                                                    ?.BookingData?.Passengers
-                                                    .length
-                                                }
-                                                x {resolveAbbreviation("YQ")}:
-                                              </h6>
-                                            ) : null}
+                                            <h6>
+                                              {" "}
+                                              {
+                                                sessionStateResponse
+                                                  ?.BookingData?.Passengers
+                                                  .length
+                                              }
+                                              x Fuel Subcharge:
+                                            </h6>
                                           </div>
                                           <div>
                                             <h6>
@@ -332,69 +348,12 @@ const PaymentInfo = ({ isRoundTrip }) => {
                                             </h6>
                                           </div>
                                         </div>
-
-                                        {parseInt(_SSRsCount?.IBAG20) > 0 && (
+                                        {_SSRCount?.INFT && (
                                           <div className="trip__summary__row subrow">
                                             <div className="flex items-center">
                                               <h6>
-                                                {_SSRsCount?.IBAG20}x&nbsp;
-                                                {resolveAbbreviation("IBAG20")}
-                                                {_SSRsCount?.IBAG20 > 1
-                                                  ? "s"
-                                                  : ""}
-                                              </h6>
-                                            </div>
-                                            <div>
-                                              <h6> ₦0</h6>
-                                            </div>
-                                          </div>
-                                        )}
-
-                                        {parseInt(_SSRsCount?.IBAG15) > 0 && (
-                                          <div className="trip__summary__row subrow">
-                                            <div className="flex items-center">
-                                              <h6>
-                                                {_SSRsCount?.IBAG15}x&nbsp;
-                                                {resolveAbbreviation("IBAG15")}
-                                                {_SSRsCount?.IBAG15 > 1
-                                                  ? "s"
-                                                  : ""}
-                                              </h6>
-                                            </div>
-                                            <div>
-                                              <h6> ₦0</h6>
-                                            </div>
-                                          </div>
-                                        )}
-
-                                        {parseInt(_SSRsCount?.IBAG10) > 0 && (
-                                          <div className="trip__summary__row subrow">
-                                            <div className="flex items-center">
-                                              <h6>
-                                                {_SSRsCount?.IBAG10}x&nbsp;
-                                                {resolveAbbreviation("IBAG10")}
-                                                {_SSRsCount?.IBAG10 > 1
-                                                  ? "s"
-                                                  : ""}
-                                              </h6>
-                                            </div>
-                                            <div>
-                                              <h6>₦0</h6>
-                                            </div>
-                                          </div>
-                                        )}
-
-                                        {parseInt(_SSRsCount?.INFT) > 0 && (
-                                          <div className="trip__summary__row subrow">
-                                            <div className="flex items-center">
-                                              <h6>
-                                                {_SSRsCount?.INFT} X&nbsp;
-                                                {fareConfig?.data
-                                                  ? resolveAbbreviation("INFT")
-                                                  : null}
-                                                {_SSRsCount?.INFT > 1
-                                                  ? "s"
-                                                  : ""}
+                                                {_SSRCount?.INFT}x&nbsp;Infant
+                                                {_SSRCount?.INFT > 1 ? "s" : ""}
                                               </h6>
                                             </div>
                                             <div>
@@ -406,97 +365,13 @@ const PaymentInfo = ({ isRoundTrip }) => {
                                             </div>
                                           </div>
                                         )}
-                                        {parseInt(_SSRsCount?.WCHR) > 0 && (
-                                          <div className="trip__summary__row">
-                                            <div
-                                              v
-                                              className="flex items-center"
-                                            >
-                                              <h6>
-                                                {_SSRsCount?.WCHR} X&nbsp;
-                                                {specialConfig?.data
-                                                  ? resolveSpecialAbbreviation(
-                                                      "WCHR"
-                                                    )
-                                                  : "WCHR"}
-                                                {_SSRsCount?.WCHR > 1
-                                                  ? "s"
-                                                  : ""}
-                                              </h6>
-                                            </div>
-                                            <div>
-                                              <h6>
-                                                {" "}
-                                                ₦
-                                                {_SSRSum?.WCHR
-                                                  ? _SSRSum?.WCHR?.toLocaleString()
-                                                  : 0}
-                                              </h6>
-                                            </div>
-                                          </div>
-                                        )}
-                                        {parseInt(_SSRsCount?.VPRD) > 0 && (
-                                          <div className="trip__summary__row">
-                                            <div className="flex items-center">
-                                              <h6>
-                                                {_SSRsCount?.VPRD} X&nbsp;
-                                                {specialConfig?.data
-                                                  ? resolveSpecialAbbreviation(
-                                                      "VPRD"
-                                                    )
-                                                  : "VPRD"}
-                                                {_SSRsCount?.VPRD > 1
-                                                  ? "s"
-                                                  : ""}
-                                              </h6>
-                                            </div>
-                                            <div>
-                                              <h6>
-                                                {" "}
-                                                ₦
-                                                {_SSRSum?.VPRD
-                                                  ? _SSRSum?.VPRD?.toLocaleString()
-                                                  : 0}
-                                              </h6>
-                                            </div>
-                                          </div>
-                                        )}
-                                        {parseInt(_SSRsCount?.HPRD) > 0 && (
-                                          <div className="trip__summary__row">
-                                            <div className="flex items-center">
-                                              <h6>
-                                                {_SSRsCount?.HPRD} X&nbsp;
-                                                {specialConfig?.data
-                                                  ? resolveSpecialAbbreviation(
-                                                      "HPRD"
-                                                    )
-                                                  : "HPRD"}
-                                                {_SSRsCount?.HPRD > 1
-                                                  ? "s"
-                                                  : ""}
-                                              </h6>
-                                            </div>
-                                            <div>
-                                              <h6>
-                                                {" "}
-                                                ₦
-                                                {_SSRSum?.HPRD
-                                                  ? _SSRSum?.HPRD?.toLocaleString()
-                                                  : 0}
-                                              </h6>
-                                            </div>
-                                          </div>
-                                        )}
+
                                         {parseInt(_SSRsCount?.XBAG20) > 0 && (
                                           <div className="trip__summary__row">
                                             <div className="flex items-center">
                                               <h6>
-                                                {_SSRsCount?.XBAG20} X&nbsp;
-                                                {fareConfig?.data
-                                                  ? resolveAbbreviation(
-                                                      "XBAG20"
-                                                    )
-                                                  : null}
+                                                {_SSRsCount?.XBAG20}x&nbsp;20KG
+                                                Baggage
                                                 {_SSRsCount?.XBAG20 > 1
                                                   ? "s"
                                                   : ""}
@@ -506,9 +381,7 @@ const PaymentInfo = ({ isRoundTrip }) => {
                                               <h6>
                                                 {" "}
                                                 ₦
-                                                {_SSRSum?.XBAG20
-                                                  ? _SSRSum?.XBAG20?.toLocaleString()
-                                                  : 0}
+                                                {_SSRSum?.XBAG20?.toLocaleString()}
                                               </h6>
                                             </div>
                                           </div>
@@ -517,12 +390,8 @@ const PaymentInfo = ({ isRoundTrip }) => {
                                           <div className="trip__summary__row">
                                             <div className="flex items-center">
                                               <h6>
-                                                {_SSRsCount?.XBAG15} X&nbsp;
-                                                {fareConfig?.data
-                                                  ? resolveAbbreviation(
-                                                      "XBAG15"
-                                                    )
-                                                  : null}
+                                                {_SSRsCount?.XBAG15}x&nbsp;15KG
+                                                Baggage
                                                 {_SSRsCount?.XBAG15 > 1
                                                   ? "s"
                                                   : ""}
@@ -532,23 +401,18 @@ const PaymentInfo = ({ isRoundTrip }) => {
                                               <h6>
                                                 {" "}
                                                 ₦
-                                                {_SSRSum?.XBAG15
-                                                  ? _SSRSum?.XBAG15.toLocaleString()
-                                                  : 0}
+                                                {_SSRSum?.XBAG15.toLocaleString()}
                                               </h6>
                                             </div>
                                           </div>
                                         )}
+
                                         {parseInt(_SSRsCount?.XBAG10) > 0 && (
                                           <div className="trip__summary__row">
                                             <div className="flex items-center">
                                               <h6>
-                                                {_SSRsCount?.XBAG10} X&nbsp;
-                                                {fareConfig?.data
-                                                  ? resolveAbbreviation(
-                                                      "XBAG10"
-                                                    )
-                                                  : null}
+                                                {_SSRsCount?.XBAG10}x&nbsp;10KG
+                                                Baggage
                                                 {_SSRsCount?.XBAG10 > 1
                                                   ? "s"
                                                   : ""}
@@ -558,69 +422,35 @@ const PaymentInfo = ({ isRoundTrip }) => {
                                               <h6>
                                                 {" "}
                                                 ₦
-                                                {_SSRSum?.XBAG10
-                                                  ? _SSRSum?.XBAG10.toLocaleString()
-                                                  : 0}
+                                                {_SSRSum?.XBAG10.toLocaleString()}
                                               </h6>
                                             </div>
                                           </div>
                                         )}
 
-                                        {_seat && parseInt(_seat) > 0 ? (
+                                        {_SSRCount?.SEAT && (
                                           <div className="trip__summary__row">
                                             <div className="flex items-center">
                                               <h6>
-                                                {_seat} X&nbsp;
-                                                {fareConfig?.data
-                                                  ? resolveAbbreviation("SEAT")
-                                                  : null}
-                                                {_seat > 1 ? "s" : ""}
+                                                {_SSRCount?.SEAT}x&nbsp;Seat
+                                                {_SSRCount?.SEAT > 1 ? "s" : ""}
                                               </h6>
                                             </div>
                                             <div>
                                               <h6>
                                                 {" "}
                                                 ₦
-                                                {_SSRSum?.SEAT?.toLocaleString()}
+                                                {_SSRSum?.SEAT.toLocaleString()}
                                               </h6>
                                             </div>
                                           </div>
-                                        ) : null}
-
-                                        <div className="trip__summary__row">
-                                          <div className="flex items-center">
-                                            <h6>SubTotal</h6>
-                                          </div>
-                                          <div>
-                                            <h6>
-                                              ₦
-                                              {_journey?.TotalAmount?.toLocaleString(
-                                                "NGN"
-                                              )}
-                                            </h6>
-                                          </div>
-                                        </div>
+                                        )}
                                       </>
                                     );
                                   })}
                                 </>
                               );
                             })}
-
-                          {/* TotalCost */}
-                          <div className="trip__summary__row totalRow">
-                            <div className="flex items-center">
-                              <h5>TOTAL</h5>
-                            </div>
-                            <div>
-                              <h6>
-                                {" "}
-                                ₦
-                                {sessionStateResponse?.BookingData?.BookingSum?.TotalCost?.toLocaleString()}
-                              </h6>
-                            </div>
-                          </div>
-                          {/* TotalCost */}
                         </div>
                       </div>
                     );

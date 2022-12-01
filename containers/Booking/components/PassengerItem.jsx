@@ -1,9 +1,28 @@
 import format from "date-fns/format";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
 const ManagePassengerItem = ({ passenger, paxIndex }) => {
   const { bookingResponse } = useSelector(sessionSelector);
+  const [specials, setSpecials] = useState([]);
+
+  useEffect(() => {
+    const data = [];
+    passenger.PassengerFees.filter((pax) => {
+      return (
+        pax.FeeCode === "HPRD" ||
+        pax.FeeCode === "VPRD" ||
+        pax.FeeCode === "WCHR"
+      );
+    }).map((_item) => {
+      if (parseInt(data.indexOf(_item.FeeCode.toLowerCase())) > -1) {
+      } else {
+        data.push(_item.FeeCode.toLowerCase());
+      }
+    });
+    setSpecials(data);
+  }, [passenger]);
 
   const _Infants = passenger?.PassengerInfants;
 
@@ -20,6 +39,8 @@ const ManagePassengerItem = ({ passenger, paxIndex }) => {
       pax.FeeCode === "XBAG10"
     );
   });
+
+  // console.log("_Specials", _Specials);
 
   return (
     <div className="flex flex-col ibe__trip__item checkinView pt-0 rounded-none">
@@ -102,6 +123,29 @@ const ManagePassengerItem = ({ passenger, paxIndex }) => {
                   })
                 : null}
             </h5>
+          </div>
+        )}
+
+        {specials && specials.length > 0 && (
+          <div className="trip-details-item">
+            <h6>SPECIAL ASSISTANCE</h6>
+
+            {specials.map((_special) => {
+              return (
+                <h5 className="flex items-center">
+                  <span>
+                    {" "}
+                    {_special.toLowerCase() === "wchr"
+                      ? "Wheelchair"
+                      : _special.toLowerCase() === "hprd"
+                      ? "Hearing Impaired"
+                      : _special.toLowerCase() === "vprd"
+                      ? "Visually Impaired"
+                      : ""}
+                  </span>
+                </h5>
+              );
+            })}
           </div>
         )}
       </div>

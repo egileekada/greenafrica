@@ -537,10 +537,6 @@
 
             button.btn-outline {
               min-width: 48px;
-              // max-width: 50px;
-              // max-width: 150px;
-              // width: 48.8px;
-
               height: 22px;
               @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display w-max;
             }
@@ -620,27 +616,25 @@
 
       .trip-details {
         background: rgba(158, 155, 191, 0.12);
-        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full mt-5;
+        min-height: 80px;
+        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full mt-3;
 
         &-item {
           @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
 
           h5,
           h5 span {
-            @apply font-display font-bold text-sm text-primary-main;
+            @apply font-display font-bold text-xs text-primary-main;
 
             button.btn-outline {
               min-width: 48px;
-              // max-width: 50px;
-              // max-width: 150px;
-              // width: 48.8px;
 
               height: 22px;
               @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display w-max;
             }
           }
           h6 {
-            @apply font-title font-medium text-xxs text-primary-main mb-[10px];
+            @apply font-title font-medium text-xxs text-primary-main mb-[5px];
           }
         }
       }

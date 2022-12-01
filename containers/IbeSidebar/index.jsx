@@ -9,7 +9,16 @@ import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
 const IbeSidebar = ({ enableEdit = false }) => {
-  const { sessionStateLoading } = useSelector(sessionSelector);
+  const { sessionStateResponse, sessionStateLoading } =
+    useSelector(sessionSelector);
+  const [isRoundTrip, setIsRoundTrip] = useState(false);
+
+  useEffect(() => {
+    if (sessionStateResponse) {
+      sessionStateResponse?.BookingData?.Journeys.length > 1 &&
+        setIsRoundTrip(true);
+    }
+  }, [sessionStateResponse]);
 
   return (
     <section className="ibe__sidebar">
@@ -21,7 +30,7 @@ const IbeSidebar = ({ enableEdit = false }) => {
           <TripInfo />
           <PassengerInfo />
           <SeatInfo />
-          <PaymentInfo />
+          <PaymentInfo isRoundTrip={isRoundTrip} />
         </>
       )}
     </section>

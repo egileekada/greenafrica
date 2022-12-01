@@ -15,12 +15,14 @@ const Navbar = () => {
         <ul className="hidden tab:flex items-center">
           <li>
             <Link href="/checkin">
-              <a className="mr-16 text-white font-body text-sm">Check-in</a>
+              <a className="mr-16 text-white font-body text-sm hover:text-green">
+                Check-in
+              </a>
             </Link>
           </li>
           <li>
             <Link href="/bookings">
-              <a className="mr-16 text-white font-body text-sm">
+              <a className="mr-16 text-white font-body text-sm hover:text-green">
                 Manage Booking
               </a>
             </Link>

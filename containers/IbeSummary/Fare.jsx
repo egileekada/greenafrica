@@ -32,12 +32,14 @@ const Fare = ({ isRoundTrip }) => {
       <div className="flex flex-col">
         {bookingResponse?.Booking?.Journeys?.map((_journey, _journeyIndex) => {
           const _seat = _journey?.Segments[0].PaxSeats?.length;
-          const _subTotal = 0;
 
           return (
             <>
               {_journey.Segments.map((_segment) => {
                 const _SSRCount = {};
+                const tempSum = {};
+                const _SSRSum = {};
+
                 bookingResponse?.Booking?.Passengers.map((_pax) => {
                   return _pax.PassengerFees.map((_paxFee) => {
                     _SSRCount[_paxFee?.FeeCode] = _pax.PassengerFees.filter(
@@ -47,9 +49,6 @@ const Fare = ({ isRoundTrip }) => {
                     ).length;
                   });
                 });
-
-                const tempSum = {};
-                const _SSRSum = {};
 
                 bookingResponse?.Booking?.Passengers.map((_pax) => {
                   return _pax.PassengerFees.map((_paxFee) => {
@@ -88,8 +87,6 @@ const Fare = ({ isRoundTrip }) => {
                   ).length;
                 });
 
-               
-
                 return (
                   <>
                     <div className="flex items-center justify-between my-5">
@@ -104,8 +101,6 @@ const Fare = ({ isRoundTrip }) => {
                     </div>
 
                     {_segment.Fares.map((_fare) => {
-                     
-
                       const _fares = _fare.PaxFares[0].ServiceCharges.filter(
                         (_charge) => {
                           return _charge.ChargeCode === "";
@@ -325,7 +320,7 @@ const Fare = ({ isRoundTrip }) => {
                                 </div>
                               )}
 
-                              {parseInt(_SSRsCount?.INFT) > 0 && (
+                             {parseInt(_SSRsCount?.INFT) > 0 && (
                                 <div className="trip__summary__row subrow">
                                   <div className="flex items-center">
                                     <h6>
@@ -343,7 +338,7 @@ const Fare = ({ isRoundTrip }) => {
                               )}
                               {parseInt(_SSRsCount?.WCHR) > 0 && (
                                 <div className="trip__summary__row">
-                                  <div className="flex items-center">
+                                  <div v className="flex items-center">
                                     <h6>
                                       {_SSRsCount?.WCHR} X&nbsp;
                                       {specialConfig?.data
