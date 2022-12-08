@@ -3,7 +3,7 @@ import Link from "next/link";
 import PlaneSeats from "./PlaneSeats";
 import Spinner from "components/Spinner";
 import { useSelector, useDispatch } from "react-redux";
-import { sessionSelector } from "redux/reducers/session";
+import { sessionSelector, tryUpdateSeat } from "redux/reducers/session";
 import Popup from "components/Popup";
 
 import ProfileIcon from "assets/svgs/profile.svg";
@@ -39,6 +39,25 @@ const SeatWrapper = ({
       bookingState?.Passengers[0].PassengerInfants.length
     );
   }, []);
+
+  const resetSeat = (passengerNumber) => {
+    dispatch(
+      tryUpdateSeat({
+        passengerNumber: passengerNumber,
+        arrivalStation:
+          bookingState?.Journeys[ticketIndex].Segments[0].ArrivalStation,
+      })
+    );
+    setSeatSelected(false);
+
+    setSelectedSeat(
+      selectedSeat.map((item) =>
+        passengerNumber == parseInt(item.passengerNumber)
+          ? { ...item, seatDesignator: "" }
+          : item
+      )
+    );
+  };
 
   return (
     <>
@@ -93,11 +112,23 @@ const SeatWrapper = ({
                             : "No Seat Selected"}
                         </h6>
                       </div>
+                      {selectedSeat[index]?.seatDesignator.length > 0 && (
+                        <img
+                          src="/images/delete.svg"
+                          alt="remove seat"
+                          role="button"
+                          width="30"
+                          height="30"
+                          className="ml-2"
+                          onClick={() => resetSeat(passenger.PassengerNumber)}
+                        />
+                      )}
                     </div>
                   </label>
                 </div>
               </>
             ))}
+
             <button className="flex xxl:hidden mb-3">
               <figure>
                 <InfoIcon className="mr-2" />
