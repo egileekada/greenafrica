@@ -798,6 +798,7 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
   const ADULT_COUNT = parseInt(flightParams?.ADT);
   const CHILD_COUNT = parseInt(flightParams?.CHD);
   const INFANT_COUNT = parseInt(flightParams?.INF);
+  const promoCode = currentState.flightParams.promoCode;
   const totalPaxCount = ADULT_COUNT + CHILD_COUNT;
   let infantPayload = {};
 
@@ -930,6 +931,12 @@ export const saveSellRequest = (payload) => async (dispatch, getState) => {
               serviceBundleList: [payload?.RuleNumber],
               applyServiceBundle: 1,
               applyServiceBundleSpecified: true,
+              typeOfSale: {
+                state: 0,
+                stateSpecified: true,
+                paxResidentCountry: "",
+                promotionCode: promoCode,
+              },
             },
           },
         },
@@ -978,6 +985,8 @@ export const saveMultipleSellRequest =
     const CHILD_COUNT = parseInt(flightParams?.CHD);
     const INFANT_COUNT = parseInt(flightParams?.INF);
     const totalPaxCount = ADULT_COUNT + CHILD_COUNT;
+    const promoCode = currentState.flightParams.promoCode;
+
     let infantPayload = {};
 
     if (ADULT_COUNT > 0) {
@@ -1119,6 +1128,12 @@ export const saveMultipleSellRequest =
                 serviceBundleList: [..._serviceBundleList],
                 applyServiceBundle: 1,
                 applyServiceBundleSpecified: true,
+                typeOfSale: {
+                  state: 0,
+                  stateSpecified: true,
+                  paxResidentCountry: "",
+                  promotionCode: promoCode,
+                },
               },
             },
           },

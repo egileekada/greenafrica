@@ -103,27 +103,69 @@ const IbeTripPopup = ({
     const newSelected = segment.Fares.filter((_item) => {
       return _item.RuleNumber.toLowerCase() === fareId.toLowerCase();
     });
+    console.log("newSelected", newSelected);
     if (newSelected && newSelected.length > 0) {
-      const _selected = newSelected[0];
-      setSelected({ ..._selected, sellKey });
-      handleFare(fareId);
+      setSelected({ ...newSelected[0], sellKey });
+    }
 
-      if (flightParams?.isRoundTrip === 1) {
-        const existingJourneys = selectedSessionJourney
-          ? [...selectedSessionJourney]
-          : [];
-        const _cleanedJourneys = existingJourneys.filter((_item) => {
-          const _ruleBasis =
-            parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
-          return !_ruleBasis;
-        });
+    handleFare(fareId);
 
-        const _newJourney = {
+    if (flightParams?.isRoundTrip === 1) {
+      const existingJourneys = selectedSessionJourney
+        ? [...selectedSessionJourney]
+        : [];
+      const _cleanedJourneys = existingJourneys.filter((_item) => {
+        const _ruleBasis =
+          parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
+        return !_ruleBasis;
+      });
+
+      const _newJourney = {
+        ...journey,
+        sellKey,
+        segmentStd,
+        segmentFlightNumber,
+        fareKey: selected?.FareSellKey,
+        schedueIndex,
+        FlightDesignator: {
+          CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
+          FlightNumber: journey?.Segments[0]?.FlightDesignator?.FlightNumber,
+        },
+        arrivalStation: journey?.Segments[0]?.ArrivalStation,
+        departureStation: journey?.Segments[0]?.DepartureStation,
+        std: journey?.Segments[0]?.STD,
+        RuleNumber: selected?.RuleNumber,
+      };
+
+      const _newJourneys = [..._cleanedJourneys, _newJourney];
+      let orderedJourneys = [];
+
+      _newJourneys.map((_item) => {
+        if (_item) {
+          if (parseInt(_item?.schedueIndex) === 0) {
+            orderedJourneys[0] = _item;
+          }
+
+          if (parseInt(_item?.schedueIndex) === 1) {
+            orderedJourneys[1] = _item;
+          }
+        }
+      });
+
+      dispatch(setSelectedSessionJourney([...orderedJourneys]));
+      // document
+      //   .getElementById("returnContainer")
+      //   .scrollIntoView({ behavior: "smooth" });
+      closePopUp();
+      setIsVisible(false);
+    } else {
+      const _selectedJorney = [
+        {
           ...journey,
           sellKey,
           segmentStd,
           segmentFlightNumber,
-          fareKey: _selected?.FareSellKey,
+          fareKey: selected?.FareSellKey,
           schedueIndex,
           FlightDesignator: {
             CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
@@ -132,53 +174,11 @@ const IbeTripPopup = ({
           arrivalStation: journey?.Segments[0]?.ArrivalStation,
           departureStation: journey?.Segments[0]?.DepartureStation,
           std: journey?.Segments[0]?.STD,
-          RuleNumber: _selected?.RuleNumber,
-        };
-
-        const _newJourneys = [..._cleanedJourneys, _newJourney];
-        let orderedJourneys = [];
-
-        _newJourneys.map((_item) => {
-          if (_item) {
-            if (parseInt(_item?.schedueIndex) === 0) {
-              orderedJourneys[0] = _item;
-            }
-
-            if (parseInt(_item?.schedueIndex) === 1) {
-              orderedJourneys[1] = _item;
-            }
-          }
-        });
-
-        dispatch(setSelectedSessionJourney([...orderedJourneys]));
-        // document
-        //   .getElementById("returnContainer")
-        //   .scrollIntoView({ behavior: "smooth" });
-        closePopUp();
-        setIsVisible(false);
-      } else {
-        const _selectedJorney = [
-          {
-            ...journey,
-            sellKey,
-            segmentStd,
-            segmentFlightNumber,
-            fareKey: _selected?.FareSellKey,
-            schedueIndex,
-            FlightDesignator: {
-              CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
-              FlightNumber:
-                journey?.Segments[0]?.FlightDesignator?.FlightNumber,
-            },
-            arrivalStation: journey?.Segments[0]?.ArrivalStation,
-            departureStation: journey?.Segments[0]?.DepartureStation,
-            std: journey?.Segments[0]?.STD,
-            RuleNumber: _selected?.RuleNumber,
-          },
-        ];
-        dispatch(setSelectedSessionJourney(_selectedJorney));
-        router.push("/trip/view");
-      }
+          RuleNumber: selected?.RuleNumber,
+        },
+      ];
+      dispatch(setSelectedSessionJourney(_selectedJorney));
+      router.push("/trip/view");
     }
   };
 
