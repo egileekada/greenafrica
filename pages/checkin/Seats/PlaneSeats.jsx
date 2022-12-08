@@ -208,6 +208,20 @@ const PlaneSeats = forwardRef(
       }
     };
 
+    const mapClass = (SeatAvailability, SeatDesignator, propertylist) => {
+      if (selectedSeat.some((el) => el.seatDesignator === SeatDesignator)) {
+        return "seats__item w-[38px]";
+      } else {
+        return SeatAvailability === 12 ||
+          SeatAvailability === 1 ||
+          SeatAvailability === 8 ||
+          SeatAvailability === 14 ||
+          propertylist.filter((list) => list.TypeCode === "RESTRICT").length > 0
+          ? "seats__item unavailable w-[38px]"
+          : `seats__item w-[38px]`;
+      }
+    };
+
     const generateStyle = (
       SeatGroup,
       SeatAvailability,
@@ -504,7 +518,11 @@ const PlaneSeats = forwardRef(
                                   }}
                                 >
                                   <div
-                                    className="seats__item w-[38px]"
+                                    className={`${mapClass(
+                                      seat.SeatAvailability,
+                                      seat.SeatDesignator,
+                                      seat.PropertyList
+                                    )}`}
                                     key={index}
                                     onClick={() => setSeat(seat)}
                                     role="button"

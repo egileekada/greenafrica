@@ -262,6 +262,24 @@ export const sessionSlice = createSlice({
         };
       }
     },
+    removeSeatByPassengerTicket: (state, { payload }) => {
+      console.log(payload);
+      const hasItem = state.seats.some(
+        (l) =>
+          l.arrivalStation === payload.arrivalStation &&
+          l.passengerNumbers[0] === payload.passengerNumber
+      );
+
+      return {
+        ...state,
+        seats: state.seats.filter(function (seat) {
+          return (
+            seat.arrivalStation !== payload.arrivalStation &&
+            seat.passengerNumbers[0] === payload.passengerNumber
+          );
+        }),
+      };
+    },
     resetSeat: (state) => {
       state.seats = [];
     },
@@ -364,6 +382,7 @@ export const {
   setCheckInSelection,
   addSeatToCheckInSelection,
   setSelectedPassengers,
+  removeSeatByPassengerTicket,
 } = sessionSlice.actions;
 export const sessionSelector = (state) => state.session;
 export default sessionSlice.reducer;
@@ -2400,6 +2419,12 @@ export const tryClearSeat = (payload) => async (dispatch, getState) => {
   dispatch(setLoading(true));
   await dispatch(resetSeat());
   dispatch(setLoading(false));
+};
+
+export const tryUpdateSeat = (payload) => async (dispatch, getState) => {
+  // dispatch(setLoading(true));
+  await dispatch(removeSeatByPassengerTicket(payload));
+  // dispatch(setLoading(false));
 };
 
 export const saveCheckInSelection = (payload) => async (dispatch, getState) => {
