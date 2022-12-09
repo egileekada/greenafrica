@@ -204,7 +204,7 @@ const HomePopup = ({ show, setShow }) => {
 
               <div class="flex flex-wrap -mx-3 mb-2">
                 <div class="w-full px-3 mb-6">
-                  <label class="block">
+                  <label htmlFor="group_1" class="block">
                     <input
                       class={`${
                         formik.errors["group[38698][1]"] &&
@@ -213,7 +213,6 @@ const HomePopup = ({ show, setShow }) => {
                           : ""
                       } mr-2 leading-tight`}
                       type="checkbox"
-                      value={formik.values["group[38698][1]"] ? 1 : 0}
                       id="group_1"
                       {...formik.getFieldProps("group[38698][1]")}
                     />
