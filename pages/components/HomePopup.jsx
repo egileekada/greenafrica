@@ -13,6 +13,9 @@ const validationSchema = Yup.object().shape({
     .min(2, "Must be at least 2 characters")
     .required("Last name is required"),
   MERGE8: Yup.string().required("Country is required"),
+  MERGE4: Yup.number("Only digits are allowed").required(
+    "Phone number is required"
+  ),
   MERGE9: Yup.string().required("State is required"),
   MERGE0: Yup.string()
     .email("Invalid email address")
@@ -30,6 +33,7 @@ const HomePopup = ({ show, setShow }) => {
       MERGE0: "",
       MERGE1: "",
       MERGE2: "",
+      MERGE4: "",
       MERGE8: "",
       MERGE9: "",
       "group[38698][1]": false,
@@ -138,7 +142,21 @@ const HomePopup = ({ show, setShow }) => {
                 <div class="w-full md:w-1/2 px-3">
                   <div className="select__wrapper px-5">
                     <p className="text-xs my-2">Phone Number</p>
-                    <PhoneInput
+                    <input
+                      type="number"
+                      placeholder=""
+                      id="MERGE4"
+                      {...formik.getFieldProps("MERGE4")}
+                      className="border-none pl-0 block w-full py-1"
+                    />{" "}
+                  </div>
+                  {formik.touched.MERGE4 && formik.errors.MERGE4 && (
+                    <span className="text-[#de0150] text-sm">
+                      {formik.errors.MERGE4}
+                    </span>
+                  )}
+                  {/*
+										<PhoneInput
                       country={"ng"}
                       className="w-full"
                       name="MERGE4"
@@ -146,7 +164,7 @@ const HomePopup = ({ show, setShow }) => {
                       value={phone}
                       onChange={(phone) => setPhone(phone)}
                     />
-                  </div>
+										*/}
                 </div>
               </div>
 
@@ -235,13 +253,13 @@ const HomePopup = ({ show, setShow }) => {
                   <button
                     type="submit"
                     disabled={
-                      formik.errors.firstName ||
-                      formik.errors.lastName ||
-                      formik.errors.email ||
-                      formik.errors.consent ||
-                      formik.errors.country ||
-                      formik.errors.country ||
-                      phone === ""
+                      formik.errors.MERGE0 ||
+                      formik.errors.MERGE1 ||
+                      formik.errors.MERGE2 ||
+                      formik.errors.MERGE4 ||
+                      formik.errors.MERGE8 ||
+                      formik.errors.MERGE9 ||
+                      formik.errors["group[38698][1]"]
                     }
                     className="btn btn-primary w-[133px] font-semibold py-4 px-6"
                   >

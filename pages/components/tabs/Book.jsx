@@ -122,14 +122,6 @@ const Book = ({
     }
     return <p></p>;
   }
-
-  const onClick = () => {
-    const aTemp = formik.values.origin;
-    const bTemp = formik.values.destination;
-    formik.setFieldValue("origin", bTemp); // swap a
-    formik.setFieldValue("destination", aTemp); // swap b
-  };
-
   const updateInfant = (value) => {
     if (infant >= 0) {
       setInfant(infant + value);
@@ -253,6 +245,17 @@ const Book = ({
   const setReturnDateFormik = (value) => {
     formik.setFieldValue("return", value);
     setReturningDate(value);
+  };
+
+  const onClick = () => {
+    const aTemp = formik.values.origin;
+    const bTemp = formik.values.destination;
+    formik.setFieldValue("origin", bTemp); // swap a
+    formik.setFieldValue("destination", aTemp); // swap b
+    setFromTo({
+      from: fromTo.to,
+      to: fromTo.from,
+    });
   };
 
   const setOrigin = (value) => {
@@ -468,7 +471,7 @@ const Book = ({
               </div>
             </div>
 
-            {type && (
+            {type === "round_trip" && (
               <div
                 onClick={() => {
                   if (width < 769) {

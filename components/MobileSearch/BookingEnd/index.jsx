@@ -163,7 +163,7 @@ const BookingEnd = ({
             }}
             className="rounded-[14px] px-[24px] cursor-pointer py-[16px] flex border border-[#D8D7E2]  shadow-none items-end"
           >
-            <span className="mr-2 ml-1 pb-1 block">
+            <span className="mr-2 px-2.5 ml-1 pb-1 block">
               <svg
                 width="26"
                 height="22"
@@ -198,7 +198,7 @@ const BookingEnd = ({
               }}
               className="rounded-[14px] cursor-pointer px-[24px] py-[16px] border border-[#D8D7E2] flex items-end"
             >
-              <span className="mr-2 ml-1 pb-1 block">
+              <span className="mr-2 px-2.5 ml-1 pb-1 block">
                 <svg
                   width="26"
                   height="22"
@@ -234,30 +234,27 @@ const BookingEnd = ({
             onClick={() => {
               setScreen(4);
             }}
-            className="rounded-[14px] cursor-pointer px-[24px] py-[16px] flex flex-auto  shadow-none border border-[#D8D7E2] relative"
+            className="w-full rounded-[14px] px-[24px] cursor-pointer py-[16px] flex border border-[#D8D7E2]  shadow-none items-end"
           >
-            <div className="px-0">
+            <span className="mr-2 px-3 ml-1 pb-1 block">
+              <svg
+                width="18"
+                height="17"
+                viewBox="0 0 18 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9 0.5C7.63608 0.5 6.32799 0.991931 5.36341 1.86753C4.39898 2.74327 3.85714 3.93087 3.85714 5.16917C3.85714 6.40747 4.39898 7.59508 5.36341 8.47081C6.32799 9.34642 7.63608 9.83835 9 9.83835C10.3639 9.83835 11.672 9.34642 12.6366 8.47081C13.601 7.59508 14.1429 6.40747 14.1429 5.16917C14.1429 3.93087 13.601 2.74327 12.6366 1.86753C11.672 0.991931 10.3639 0.5 9 0.5ZM4.83649 9.60255C1.96343 10.9672 0 13.6944 0 16.8421H18C18 13.6943 16.0366 10.967 13.1635 9.60255C12.0394 10.4748 10.5855 11.0058 9 11.0058C7.41453 11.0058 5.96064 10.4748 4.83649 9.60255Z"
+                  fill="#261F5E"
+                />
+              </svg>
+            </span>
+            <div className="flex-auto px-4 md:px-0">
               <p className="mb-2 text-xs text-[#979797]">PASSENGERS</p>
-              <div className="flex items-center relative">
-                <span className="mr-2 pb-1 block">
-                  <svg
-                    width="18"
-                    height="17"
-                    viewBox="0 0 18 17"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9 0.5C7.63608 0.5 6.32799 0.991931 5.36341 1.86753C4.39898 2.74327 3.85714 3.93087 3.85714 5.16917C3.85714 6.40747 4.39898 7.59508 5.36341 8.47081C6.32799 9.34642 7.63608 9.83835 9 9.83835C10.3639 9.83835 11.672 9.34642 12.6366 8.47081C13.601 7.59508 14.1429 6.40747 14.1429 5.16917C14.1429 3.93087 13.601 2.74327 12.6366 1.86753C11.672 0.991931 10.3639 0.5 9 0.5ZM4.83649 9.60255C1.96343 10.9672 0 13.6944 0 16.8421H18C18 13.6943 16.0366 10.967 13.1635 9.60255C12.0394 10.4748 10.5855 11.0058 9 11.0058C7.41453 11.0058 5.96064 10.4748 4.83649 9.60255Z"
-                      fill="#261F5E"
-                    />
-                  </svg>
-                </span>
-
-                <div className="w-1/6 text-center">
-                  <span>{passengers}</span>
-                </div>
-              </div>
+              <p className="flex justify-start mb-0 items-center text-base font-medium text-primary-main">
+                <span>{passengers}</span>
+              </p>
             </div>
           </div>
         </div>

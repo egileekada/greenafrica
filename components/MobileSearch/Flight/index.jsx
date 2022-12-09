@@ -28,6 +28,9 @@ const Flight = ({
     } else {
       setDepartureDate(value);
       setFlightDate(value);
+      if (type === "round_trip") {
+        setReturnFlight(true);
+      }
     }
     // console.log("r", returningDate);
     // console.log("d", departureDate);
