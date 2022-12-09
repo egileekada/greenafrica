@@ -6,18 +6,18 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string()
+  MERGE1: Yup.string()
     .min(2, "Must be at least 2 characters")
     .required("First name is required"),
-  lastName: Yup.string()
+  MERGE2: Yup.string()
     .min(2, "Must be at least 2 characters")
     .required("Last name is required"),
-  country: Yup.string().required("Country is required"),
-  state: Yup.string().required("State is required"),
-  email: Yup.string()
+  MERGE8: Yup.string().required("Country is required"),
+  MERGE9: Yup.string().required("State is required"),
+  MERGE0: Yup.string()
     .email("Invalid email address")
     .required("Email address is required"),
-  consent: Yup.boolean()
+  "group[38698][1]": Yup.boolean()
     .required("Required")
     .oneOf([true], "You must accept the terms and conditions."),
 });
@@ -27,12 +27,12 @@ const HomePopup = ({ show, setShow }) => {
     validateOnBlur: true,
     validateOnChange: false,
     initialValues: {
-      email: "",
-      firstName: "",
-      lastName: "",
-      country: "",
-      state: "",
-      consent: false,
+      MERGE0: "",
+      MERGE1: "",
+      MERGE2: "",
+      MERGE8: "",
+      MERGE9: "",
+      "group[38698][1]": false,
     },
     validationSchema,
     onSubmit: (values) => {},
@@ -65,7 +65,7 @@ const HomePopup = ({ show, setShow }) => {
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <div
                     className={`select__wrapper px-5 ${
-                      formik.errors.firstName && formik.touched.firstName
+                      formik.errors.MERGE1 && formik.touched.MERGE1
                         ? "!border-[#de0150]"
                         : ""
                     }`}
@@ -74,21 +74,22 @@ const HomePopup = ({ show, setShow }) => {
                     <input
                       type="text"
                       placeholder=""
-                      id="firstName"
-                      {...formik.getFieldProps("firstName")}
+                      id="MERGE1"
+                      name="MERGE1"
+                      {...formik.getFieldProps("MERGE1")}
                       className="border-none pl-0 block w-full py-1"
                     />
                   </div>
-                  {formik.touched.firstName && formik.errors.firstName && (
+                  {formik.touched.MERGE1 && formik.errors.MERGE1 && (
                     <span className="text-[#de0150] text-sm">
-                      {formik.errors.firstName}
+                      {formik.errors.MERGE1}
                     </span>
                   )}
                 </div>
                 <div class="w-full md:w-1/2 px-3">
                   <div
                     className={`select__wrapper px-5 ${
-                      formik.errors.lastName && formik.touched.lastName
+                      formik.errors.MERGE2 && formik.touched.MERGE2
                         ? "!border-[#de0150]"
                         : ""
                     }`}
@@ -97,14 +98,14 @@ const HomePopup = ({ show, setShow }) => {
                     <input
                       type="text"
                       placeholder=""
-                      id="lastName"
-                      {...formik.getFieldProps("lastName")}
+                      id="MERGE2"
+                      {...formik.getFieldProps("MERGE2")}
                       className="border-none pl-0 block w-full py-1"
                     />
                   </div>
-                  {formik.touched.lastName && formik.errors.lastName && (
+                  {formik.touched.MERGE2 && formik.errors.MERGE2 && (
                     <span className="text-[#de0150] text-sm">
-                      {formik.errors.lastName}
+                      {formik.errors.MERGE2}
                     </span>
                   )}
                 </div>
@@ -114,23 +115,23 @@ const HomePopup = ({ show, setShow }) => {
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <div
                     className={`select__wrapper px-5 ${
-                      formik.errors.email && formik.touched.email
+                      formik.errors.MERGE0 && formik.touched.MERGE0
                         ? "!border-[#de0150]"
                         : ""
                     }`}
                   >
                     <p className="text-xs my-2">Email Address</p>
                     <input
-                      type="text"
+                      type="email"
                       placeholder=""
-                      id="email"
-                      {...formik.getFieldProps("email")}
+                      id="MERGE0"
+                      {...formik.getFieldProps("MERGE0")}
                       className="border-none pl-0 block w-full py-1"
                     />
                   </div>
-                  {formik.touched.email && formik.errors.email && (
+                  {formik.touched.MERGE0 && formik.errors.MERGE0 && (
                     <span className="text-[#de0150] text-sm">
-                      {formik.errors.email}
+                      {formik.errors.MERGE0}
                     </span>
                   )}{" "}
                 </div>
@@ -140,6 +141,8 @@ const HomePopup = ({ show, setShow }) => {
                     <PhoneInput
                       country={"ng"}
                       className="w-full"
+                      name="MERGE4"
+                      id="MERGE4"
                       value={phone}
                       onChange={(phone) => setPhone(phone)}
                     />
@@ -151,39 +154,39 @@ const HomePopup = ({ show, setShow }) => {
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <div
                     className={`select__wrapper px-5 ${
-                      formik.errors.country && formik.touched.country
+                      formik.errors.MERGE8 && formik.touched.MERGE8
                         ? "!border-[#de0150]"
                         : ""
                     }`}
                   >
                     <p className="text-xs text-uppercase my-2">Country</p>
                     <select
-                      id="country"
-                      {...formik.getFieldProps("country")}
+                      id="MERGE8"
+                      {...formik.getFieldProps("MERGE8")}
                       className="border-none pl-0 block w-full"
                     >
                       <option disabled hidden></option>
                       <option value="Nigeria">Nigeria</option>
                     </select>
                   </div>
-                  {formik.touched.country && formik.errors.country && (
+                  {formik.touched.MERGE8 && formik.errors.MERGE8 && (
                     <span className="text-[#de0150] text-sm">
-                      {formik.errors.country}
+                      {formik.errors.MERGE8}
                     </span>
                   )}{" "}
                 </div>
                 <div class="w-full md:w-1/2 px-3">
                   <div
                     className={`select__wrapper px-5 ${
-                      formik.errors.state && formik.touched.state
+                      formik.errors.MERGE9 && formik.touched.MERGE9
                         ? "!border-[#de0150]"
                         : ""
                     }`}
                   >
-                    <p className="text-xs text-uppercase my-2">State</p>
+                    <p className="text-xs text-uppercase my-2">MERGE9</p>
                     <select
-                      id="state"
-                      {...formik.getFieldProps("state")}
+                      id="MERGE9"
+                      {...formik.getFieldProps("MERGE9")}
                       className="border-none pl-0 block w-full"
                     >
                       <option disabled hidden></option>
@@ -191,9 +194,9 @@ const HomePopup = ({ show, setShow }) => {
                       <option value="Abuja">Abuja</option>
                     </select>
                   </div>
-                  {formik.touched.state && formik.errors.state && (
+                  {formik.touched.MERGE9 && formik.errors.MERGE9 && (
                     <span className="text-[#de0150] text-sm">
-                      {formik.errors.state}
+                      {formik.errors.MERGE9}
                     </span>
                   )}{" "}
                 </div>
@@ -204,24 +207,27 @@ const HomePopup = ({ show, setShow }) => {
                   <label class="block">
                     <input
                       class={`${
-                        formik.errors.consent && formik.touched.consent
+                        formik.errors["group[38698][1]"] &&
+                        formik.touched["group[38698][1]"]
                           ? "text-[#de0150]"
                           : ""
                       } mr-2 leading-tight`}
                       type="checkbox"
-                      id="consent"
-                      {...formik.getFieldProps("consent")}
+                      value={formik.values["group[38698][1]"] ? 1 : 0}
+                      id="group_1"
+                      {...formik.getFieldProps("group[38698][1]")}
                     />
                     <span class="text-sm font-light text-primary-main">
                       I agree to join the gFlyer Community by submitting my
                       details.
                     </span>
                   </label>{" "}
-                  {formik.touched.consent && formik.errors.consent && (
-                    <span className="text-[#de0150] text-sm">
-                      {formik.errors.consent}
-                    </span>
-                  )}
+                  {formik.touched["group[38698][1]"] &&
+                    formik.errors["group[38698][1]"] && (
+                      <span className="text-[#de0150] text-sm">
+                        {formik.errors["group[38698][1]"]}
+                      </span>
+                    )}
                 </div>
               </div>
 
