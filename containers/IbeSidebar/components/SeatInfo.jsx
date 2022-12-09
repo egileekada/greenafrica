@@ -59,6 +59,8 @@ const SeatInfo = () => {
                         (_journey) => {
                           return _journey?.Segments.map((_segment) => {
                             return (
+                              <>
+                              {_segment?.PaxSeats.length > 0 && (
                               <h6 className="text-[12px] font-normal text-[#9692B8] font-title">
                                 <span className="mr-2">
                                   {`${_segment?.PaxSeats[passengerIndex]?.DepartureStation} -  ${_segment?.PaxSeats[passengerIndex]?.ArrivalStation}`}
@@ -69,6 +71,8 @@ const SeatInfo = () => {
                                     ?.UnitDesignator
                                 }
                               </h6>
+                              )}
+                              </>
                             );
                           });
                         }
