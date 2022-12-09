@@ -60,8 +60,8 @@ const MobileSearch = ({
             : screen === 4
             ? "Select Passengers"
             : type === "round_trip"
-            ? "Round Trip"
-            : "One Way"}
+            ? "Flight Details"
+            : "Flight Details"}
         </h2>
         <button onClick={() => setShowModal(false)} className="">
           <CloseIcon />
@@ -117,6 +117,8 @@ const MobileSearch = ({
             child={child}
             fromTo={fromTo}
             type={type}
+            setType={setType}
+            setScreen={setScreen}
             promocode={promocode}
             setPromocode={setPromocode}
             returningDate={returningDate}

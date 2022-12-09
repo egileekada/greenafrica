@@ -26,6 +26,49 @@
     font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
   }
 }
+.react-tel-input .selected-flag {
+  outline: none;
+  position: relative;
+  width: 52px;
+  height: 100%;
+  padding: 0 !important;
+  border-radius: 3px 0 0 3px;
+  border: 0px solid !important;
+
+  &:focus {
+    background-color: #fff;
+    border: 0px solid !important;
+    outline: none;
+    box-shadow: 0 0 0 0rem rgb(0 123 255 / 25%) !important;
+  }
+}
+
+.react-tel-input .selected-flag:focus:before {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0rem rgb(0 123 255 / 25%) !important;
+  outline: none;
+  border: 0px solid !important;
+}
+
+.selected-flag.open:before {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0rem rgb(0 123 255 / 25%) !important;
+  outline: none;
+  border: 0px solid !important;
+}
+
+.react-tel-input .form-control {
+  width: 100% !important;
+  border: 0px solid !important;
+  padding: 0.25rem 0 0.125rem 3rem !important;
+
+  &:focus {
+    background-color: #fff;
+    border: 0px solid !important;
+    outline: none;
+    box-shadow: 0 0 0 0rem rgb(0 123 255 / 25%) !important;
+  }
+}
 
 @layer components {
   p {

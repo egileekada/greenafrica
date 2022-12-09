@@ -155,6 +155,7 @@ const DesktopFilter = () => {
             setPassengers={setPassengers}
             setFromTo={setFromTo}
             promocode={promocode}
+            type={"one_way"}
             infant={infant}
             setInfant={setInfant}
             adult={adult}

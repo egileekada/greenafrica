@@ -9,6 +9,7 @@ import NProgress from "nprogress";
 import Router from "next/router";
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
+import "react-phone-input-2/lib/bootstrap.css";
 import "../styles/globals.scss";
 import "../styles/loader.scss";
 import "nprogress/nprogress.css";
