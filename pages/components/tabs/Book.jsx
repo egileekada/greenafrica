@@ -468,7 +468,7 @@ const Book = ({
               </div>
             </div>
 
-            {type && (
+            {type === "round_trip" && (
               <div
                 onClick={() => {
                   if (width < 769) {
