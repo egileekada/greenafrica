@@ -7,6 +7,8 @@ const BookingEnd = ({
   departureDate,
   fromTo,
   promocode: code,
+  setScreen,
+  setType,
   type,
   child,
   infant,
@@ -67,10 +69,41 @@ const BookingEnd = ({
 
   return (
     <div className="w-full p-4">
+      <div className="mb-3 justify-center flex items-center">
+        <button
+          onClick={() => {
+            setScreen(1);
+            setType("one_way");
+          }}
+          className={`btn ${
+            type !== "round_trip"
+              ? "btn-primary white font-title"
+              : "btn-text hover:btn-primary hover:white"
+          } mr-[22px]`}
+        >
+          One Way
+        </button>
+        <button
+          onClick={() => {
+            setScreen(1);
+            setType("round_trip");
+          }}
+          className={`btn ${
+            type === "round_trip"
+              ? "btn-primary white font-title"
+              : "btn-text hover:btn-primary hover:white"
+          } mr-[22px]`}
+        >
+          Round Trip
+        </button>
+      </div>
       <div className="flex w-full flex-col justify-start items-start gap-4">
         <div className="grid w-full grid-cols-1 lg:grid-cols-2 gap-4 md:col-span-2">
           <div
-            className={`border border-[#D8D7E2] flex items-end  shadow-none rounded-[14px] px-[24px] py-[16px] relative`}
+            className={`border border-[#D8D7E2] flex items-end  shadow-none cursor-pointer rounded-[14px] px-[24px] py-[16px] relative`}
+            onClick={() => {
+              setScreen(1);
+            }}
           >
             <img
               src="/images/widget_from.svg"
@@ -96,7 +129,10 @@ const BookingEnd = ({
           </div>
 
           <div
-            className={`border border-[#D8D7E2] flex items-end  shadow-none rounded-[14px] px-[24px] py-[16px]`}
+            className={`border border-[#D8D7E2] flex items-end cursor-pointer  shadow-none rounded-[14px] px-[24px] py-[16px]`}
+            onClick={() => {
+              setScreen(1);
+            }}
           >
             <img
               src="/images/widget_to.svg"
@@ -121,7 +157,12 @@ const BookingEnd = ({
             type === "round_trip" && "lg:grid-cols-2 md:col-span-2"
           } grid w-full grid-cols-1 gap-4 md:col-auto`}
         >
-          <div className="rounded-[14px] px-[24px] py-[16px] flex border border-[#D8D7E2]  shadow-none items-end">
+          <div
+            onClick={() => {
+              setScreen(type === "round_trip" ? 3 : 2);
+            }}
+            className="rounded-[14px] px-[24px] cursor-pointer py-[16px] flex border border-[#D8D7E2]  shadow-none items-end"
+          >
             <span className="mr-2 ml-1 pb-1 block">
               <svg
                 width="26"
@@ -151,7 +192,12 @@ const BookingEnd = ({
           </div>
 
           {type === "round_trip" && (
-            <div className="rounded-[14px] px-[24px] py-[16px] border border-[#D8D7E2] flex items-end">
+            <div
+              onClick={() => {
+                setScreen(3);
+              }}
+              className="rounded-[14px] cursor-pointer px-[24px] py-[16px] border border-[#D8D7E2] flex items-end"
+            >
               <span className="mr-2 ml-1 pb-1 block">
                 <svg
                   width="26"
@@ -184,7 +230,12 @@ const BookingEnd = ({
         </div>
 
         <div className="flex gap-3 w-full">
-          <div className="rounded-[14px] px-[24px] py-[16px] flex flex-auto  shadow-none border border-[#D8D7E2] relative">
+          <div
+            onClick={() => {
+              setScreen(4);
+            }}
+            className="rounded-[14px] cursor-pointer px-[24px] py-[16px] flex flex-auto  shadow-none border border-[#D8D7E2] relative"
+          >
             <div className="px-0">
               <p className="mb-2 text-xs text-[#979797]">PASSENGERS</p>
               <div className="flex items-center relative">
