@@ -425,7 +425,7 @@ const Book = ({
 
           <div
             className={`${
-              type && "lg:grid-cols-2 md:col-span-2 xl:flex-1"
+              type === "round_trip" && "lg:grid-cols-2 md:col-span-2 xl:flex-1"
             } hidden md:grid grid-cols-1 xl:flex-1 gap-2 md:col-auto`}
           >
             <div
