@@ -16,13 +16,30 @@ const validationSchema = Yup.object().shape({
 });
 
 const BookingTab = ({ type, promocode }) => {
+  const ibeQuery = new URLSearchParams(window.location.search);
+  const flightOrigin = ibeQuery.get("origin");
+  const flightDestination = ibeQuery.get("destination");
+  const isRoundTrip = parseInt(ibeQuery.get("round")) === 1 ? true : false;
+
+  const flightRequest = {
+    departureStation: ibeQuery.get("origin"),
+    arrivalStation: ibeQuery.get("destination"),
+    departure: ibeQuery.get("departure"),
+    returnDate: isRoundTrip === 1 ? ibeQuery.get("return") : null,
+    promoCode: ibeQuery.get("promocode") ? ibeQuery.get("promocode") : "",
+    ADT: parseInt(ibeQuery.get("adt")) ? parseInt(ibeQuery.get("adt")) : 1,
+    CHD: parseInt(ibeQuery.get("chd")) ? parseInt(ibeQuery.get("chd")) : 0,
+    INF: parseInt(ibeQuery.get("inf")) ? parseInt(ibeQuery.get("inf")) : 0,
+    currentDate: new Date(),
+  };
+
   const dispatch = useDispatch();
   const { data, error, isLoading } = useGetDestinationQuery();
   const [arrivals, setArrivals] = useState([]);
   const [passengers, setPassengers] = useState(0);
-  const [infant, setInfant] = useState(0);
-  const [adult, setAdult] = useState(1);
-  const [child, setChild] = useState(0);
+  const [infant, setInfant] = useState(flightRequest.INF);
+  const [adult, setAdult] = useState(flightRequest.ADT);
+  const [child, setChild] = useState(flightRequest.CHD);
   const [show, setShow] = useState(false);
 
   const originSelect = useRef(null);
@@ -157,13 +174,22 @@ const BookingTab = ({ type, promocode }) => {
 
   const formik = useFormik({
     initialValues: {
-      origin: "",
-      destination: "",
-      departure: add(new Date(), { weeks: 1 }),
-      return: add(new Date(), { days: 10 }),
-      promocode,
+      origin: flightOrigin
+        ? data?.data?.values.filter(({ value }) => value === flightOrigin)
+        : "",
+      destination: flightDestination
+        ? data?.data?.values.filter(({ value }) => value === flightDestination)
+        : "",
+      departure: flightRequest.departure
+        ? format(new Date(flightRequest.departure), "yyyy-MM-dd")
+        : add(new Date(), { weeks: 1 }),
+      return: flightRequest.returnDate
+        ? format(new Date(flightRequest.returnDate), "yyyy-MM-dd")
+        : add(new Date(), { days: 10 }),
+      promocode: flightRequest.promoCode ? flightRequest.promoCode : promocode,
     },
     validationSchema,
+
     onSubmit: async (values) => {
       formik.setSubmitting(true);
 
@@ -175,7 +201,7 @@ const BookingTab = ({ type, promocode }) => {
       };
 
       const appendReturn = (returnDate) => {
-        if (type === "round_trip") {
+        if (type === "round_trip" || isRoundTrip) {
           return `&return=${format(
             new Date(returnDate),
             "yyyy-MM-dd"
@@ -201,6 +227,19 @@ const BookingTab = ({ type, promocode }) => {
   const forcusOrigin = (value) => {
     value.current.focus();
   };
+
+  useEffect(() => {
+    if (flightOrigin || flightDestination) {
+      formik.setFieldValue(
+        "origin",
+        data?.data?.values.filter(({ value }) => value === flightOrigin)
+      );
+      formik.setFieldValue(
+        "destination",
+        data?.data?.values.filter(({ value }) => value === flightDestination)
+      );
+    }
+  }, [isLoading]);
 
   return (
     <>
@@ -232,7 +271,9 @@ const BookingTab = ({ type, promocode }) => {
                   formatOptionLabel={formatOptionLabel}
                   components={{ Option }}
                   name="origin"
-                  defaultValue={formik.values.origin}
+                  defaultValue={data?.data?.values.filter(
+                    ({ value }) => value === flightOrigin
+                  )}
                   value={formik.values.origin}
                   onChange={(value) => (
                     formik.setFieldValue("origin", value),

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import PromoIcon from "assets/svgs/promo.svg";
 import Book from "./tabs/Book";
 
@@ -8,6 +8,7 @@ const DesktopFilter = () => {
   const [promocode, setPromocode] = useState(null);
   const [showPromo, setShowPromo] = useState(false);
   const [saveStatus, setSaveStatus] = useState(false);
+  const [type, setType] = useState("");
 
   const promo = useRef(null);
 
@@ -22,6 +23,16 @@ const DesktopFilter = () => {
     promo.current.value = null;
     setPromocode(null);
   };
+
+  const ibeQuery = new URLSearchParams(window.location.search);
+  const isRoundTrip = parseInt(ibeQuery.get("round")) === 1 ? true : false;
+
+  useEffect(() => {
+    if (isRoundTrip) {
+      setType("round_trip");
+      setActiveTab(2);
+    }
+  }, []);
 
   return (
     <section className="ga__desktop__filter w-full min-h-[168px] flex flex-col ">
@@ -91,7 +102,7 @@ const DesktopFilter = () => {
       </div>
       <section className="ga__desktop__filter__content px-5 py-[18px]">
         {activeTab === 1 && <Book promocode={promocode} />}
-        {activeTab === 2 && <Book type={"round_trip"} promocode={promocode} />}
+        {activeTab === 2 && <Book type={type} promocode={promocode} />}
       </section>
     </section>
   );
