@@ -47,7 +47,9 @@ const DesktopFilter = () => {
             One Way
           </button>
           <button
-            onClick={() => setActiveTab(2)}
+            onClick={() => {
+              setActiveTab(2), setType("round_trip");
+            }}
             className={`btn ${
               activeTab === 2 ? "btn-primary white font-title" : "btn-text"
             } mr-[22px]`}
