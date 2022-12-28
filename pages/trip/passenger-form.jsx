@@ -10,6 +10,7 @@ import {
   FetchStateFromServer,
   setSessionPassengers,
   setSessionInfants,
+  setUpdatePassengersResponse,
 } from "redux/reducers/session";
 import { useRouter } from "next/router";
 import { Checkbox, notification } from "antd";
@@ -17,7 +18,10 @@ import SelectIcon from "assets/svgs/select.svg";
 import PassengerFormItem from "containers/PassengerForm/PassengerFormItem";
 import LogoIcon from "assets/svgs/logo.svg";
 import { useGetSalutationsQuery } from "services/widgetApi.js";
-import { useUpdatePassengerInfoMutation } from "services/bookingApi";
+import {
+  useUpdatePassengerInfoMutation,
+  useUpdateContactInfoMutation,
+} from "services/bookingApi";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 
@@ -37,6 +41,8 @@ const PassengerForm = () => {
   } = useSelector(sessionSelector);
   const [updatePassengerInfo, { isLoading: updatingPassengerInfo }] =
     useUpdatePassengerInfoMutation();
+  const [updateContactInfo, { isLoading: updatingContactInfo }] =
+    useUpdateContactInfoMutation();
   const router = useRouter();
 
   const ScrollToTop = () => {
@@ -106,14 +112,14 @@ const PassengerForm = () => {
   }, []);
 
   // TODO watch for this
-  useEffect(() => {
-    async function redirectToSSR() {
-      if (passengersResponse && contactsResponse) {
-        router.push("/trip/passenger-details");
-      }
-    }
-    redirectToSSR();
-  }, [passengersResponse, contactsResponse]);
+  // useEffect(() => {
+  //   async function redirectToSSR() {
+  //     if (passengersResponse && contactsResponse) {
+  //       router.push("/trip/passenger-details");
+  //     }
+  //   }
+  //   redirectToSSR();
+  // }, [passengersResponse, contactsResponse]);
 
   useEffect(() => {
     async function fetchStateInfo() {
@@ -260,9 +266,11 @@ const PassengerForm = () => {
       updatePassengerInfo(requestPayload)
         .unwrap()
         .then((response) => {
-          // await dispatch(setUpdatePassengersResponse(Response.data));
-          // await dispatch(FetchStateFromServer());
-          // dispatch(updateContactsDetails(contactInfo));
+          console.log("rreee",response);
+          dispatch(setUpdatePassengersResponse(response));
+           console.log("requestPayload " );
+
+          // handleContact(contact);
         })
         .catch(() => {
           notification.error({
@@ -276,6 +284,70 @@ const PassengerForm = () => {
         description: "Error occured",
       });
     }
+  };
+
+  const handleContact = (payload) => {
+    const _requestPayload = {
+      updateContactsRequestDto: {
+        updateContactsRequest: {
+          updateContactsRequestData: {
+            bookingContactList: [
+              {
+                state: 0,
+                stateSpecified: true,
+                typeCode: "P",
+                names: [
+                  {
+                    firstName: payload.firstName,
+                    middleName: "",
+                    lastName: payload.lastName,
+                    suffix: "",
+                    title: payload.title,
+                    state: 0,
+                    stateSpecified: true,
+                  },
+                ],
+                emailAddress: payload.email,
+                homePhone: payload.phone,
+                workPhone: payload.phone,
+                otherPhone: payload.phone,
+                fax: "",
+                companyName: "GreenAfrica",
+                addressLine1: "Lagos",
+                addressLine2: "",
+                addressLine3: "",
+                city: "Lagos",
+                provinceState: "LA",
+                postalCode: "",
+                countryCode: "NG",
+                cultureCode: "",
+                distributionOption: 2,
+                distributionOptionSpecified: true,
+                customerNumber: "",
+                notificationPreference: 0,
+                notificationPreferenceSpecified: true,
+                sourceOrganization: "",
+              },
+            ],
+          },
+        },
+      },
+    };
+    console.log(" _requestPayload ",  _requestPayload );
+
+    // updateContactInfo(_requestPayload)
+    //   .unwrap()
+    //   .then((response) => {
+    //     dispatch(setUpdateContactsResponse(response));
+    //     dispatch(FetchStateFromServer());
+    //     router.push("/trip/passenger-details");
+    //   })
+    //   .catch(() => {
+    //     notification.error({
+    //       message: "Error",
+    //       description: "Update contact details failed",
+    //     });
+    //   });
   };
 
   const handleSubmit = async (values) => {
@@ -607,7 +679,9 @@ const PassengerForm = () => {
                       type="submit"
                       className="btn btn-primary cta basis-full md:basis-auto"
                     >
-                      {updatePassengersLoading ? "Saving....." : "Continue"}
+                      {updatingPassengerInfo || updatingContactInfo
+                        ? "Saving....."
+                        : "Continue"}
                     </button>
                   </div>
                   {/* CTA */}

@@ -314,7 +314,22 @@ export const bookingApi = createApi({
             enableExceptionStackTrace: false,
             contractVersion: 0,
           },
-          updatePassengersRequestDto: updatePassengersRequest
+          updatePassengersRequestDto: updatePassengersRequest,
+        },
+      }),
+    }),
+    updateContactInfo: builder.mutation({
+      query: (payload) => ({
+        url: "/Booking/UpdateContacts",
+        method: "POST",
+        body: {
+          header: {
+            signature: store.getState().session.signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: false,
+            contractVersion: 0,
+          },
+           updateContactsRequestDto: payload.updateContactsRequestDto
         },
       }),
     }),
@@ -336,5 +351,6 @@ export const {
   useResellNewJourneyMutation,
   useCancelSSRMutation,
   useResellSSRMutation,
-  useUpdatePassengerInfoMutation
+  useUpdatePassengerInfoMutation,
+  useUpdateContactInfoMutation
 } = bookingApi;
