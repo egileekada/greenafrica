@@ -376,11 +376,13 @@ const PassengerForm = () => {
           "Incomplete details, Please check through your form and fill-in appropriate details",
       });
     } else {
-      const firstNames = [];
+      const names = [];
 
       passengers.map((_pax) => {
-        firstNames.push(
-          `${_pax.type.trim().toLowerCase()} ${_pax.firstName.trim().toLowerCase()} ${_pax.lastName.trim().toLowerCase()}`
+        names.push(
+          `${_pax.title.trim().toLowerCase()} ${_pax.firstName
+            .trim()
+            .toLowerCase()} ${_pax.lastName.trim().toLowerCase()}`
         );
       });
 
@@ -388,16 +390,19 @@ const PassengerForm = () => {
         return new Set(arr).size !== arr.length;
       }
 
-      let duplicateExist = checkIfDuplicateExists(firstNames);
+      const duplicateExist = checkIfDuplicateExists(names);
+      console.log("names", names);
+      console.log("duplicateExist", duplicateExist);
 
       if (duplicateExist) {
         notification.error({
           message: "Error",
           description:
-            "You are not allowed to have the same passenger names on the same booking",
+            "You are not allowed to have the same passenger name for different passengers on the same booking",
         });
       } else {
-        updatePassengers(passengers, contactInfo);
+        // updatePassengers(passengers, contactInfo);
+        console.log("passengers, contactInfo");
       }
     }
   };
