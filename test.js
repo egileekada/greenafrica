@@ -114,6 +114,14 @@
 
 // num = 5
 
-console.log(!!(true && true));
-console.log(!!(true && false));
-console.log(!!(true || false));
+// console.log(!!(true && true));
+// console.log(!!(true && false));
+// console.log(!!(true || false));
+
+function checkIfDuplicateExists(arr) {
+  return new Set(arr).size !== arr.length;
+}
+
+var arr = ["mrs ola kehinde", "mrs ola kehinde"];
+let duplicateExist = checkIfDuplicateExists(arr);
+console.log("dupliacte",duplicateExist);

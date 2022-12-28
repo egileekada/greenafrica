@@ -11,6 +11,7 @@ import {
   setSessionPassengers,
   setSessionInfants,
   setUpdatePassengersResponse,
+  setUpdateContactsResponse,
 } from "redux/reducers/session";
 import { useRouter } from "next/router";
 import { Checkbox, notification } from "antd";
@@ -110,16 +111,6 @@ const PassengerForm = () => {
     }
     sumPassengerCount();
   }, []);
-
-  // TODO watch for this
-  // useEffect(() => {
-  //   async function redirectToSSR() {
-  //     if (passengersResponse && contactsResponse) {
-  //       router.push("/trip/passenger-details");
-  //     }
-  //   }
-  //   redirectToSSR();
-  // }, [passengersResponse, contactsResponse]);
 
   useEffect(() => {
     async function fetchStateInfo() {
@@ -266,11 +257,8 @@ const PassengerForm = () => {
       updatePassengerInfo(requestPayload)
         .unwrap()
         .then((response) => {
-          console.log("rreee",response);
           dispatch(setUpdatePassengersResponse(response));
-           console.log("requestPayload " );
-
-          // handleContact(contact);
+          handleContact(contact);
         })
         .catch(() => {
           notification.error({
@@ -333,21 +321,21 @@ const PassengerForm = () => {
         },
       },
     };
-    console.log(" _requestPayload ",  _requestPayload );
 
-    // updateContactInfo(_requestPayload)
-    //   .unwrap()
-    //   .then((response) => {
-    //     dispatch(setUpdateContactsResponse(response));
-    //     dispatch(FetchStateFromServer());
-    //     router.push("/trip/passenger-details");
-    //   })
-    //   .catch(() => {
-    //     notification.error({
-    //       message: "Error",
-    //       description: "Update contact details failed",
-    //     });
-    //   });
+    updateContactInfo(_requestPayload)
+      .unwrap()
+      .then((response) => {
+        dispatch(setUpdateContactsResponse(response));
+        dispatch(FetchStateFromServer());
+        // console.log("response payload", response );
+        router.push("/trip/passenger-details");
+      })
+      .catch(() => {
+        notification.error({
+          message: "Error",
+          description: "Update contact details failed",
+        });
+      });
   };
 
   const handleSubmit = async (values) => {
@@ -388,7 +376,29 @@ const PassengerForm = () => {
           "Incomplete details, Please check through your form and fill-in appropriate details",
       });
     } else {
-      updatePassengers(passengers);
+      const firstNames = [];
+
+      passengers.map((_pax) => {
+        firstNames.push(
+          `${_pax.type.trim().toLowerCase()} ${_pax.firstName.trim().toLowerCase()} ${_pax.lastName.trim().toLowerCase()}`
+        );
+      });
+
+      function checkIfDuplicateExists(arr) {
+        return new Set(arr).size !== arr.length;
+      }
+
+      let duplicateExist = checkIfDuplicateExists(firstNames);
+
+      if (duplicateExist) {
+        notification.error({
+          message: "Error",
+          description:
+            "You are not allowed to have the same passenger names on the same booking",
+        });
+      } else {
+        updatePassengers(passengers, contactInfo);
+      }
     }
   };
 
