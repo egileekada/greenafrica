@@ -401,8 +401,8 @@ const PassengerForm = () => {
             "You are not allowed to have the same passenger name for different passengers on the same booking",
         });
       } else {
-        // updatePassengers(passengers, contactInfo);
-        console.log("passengers, contactInfo");
+        updatePassengers(passengers, contactInfo);
+        // console.log("passengers, contactInfo");
       }
     }
   };
