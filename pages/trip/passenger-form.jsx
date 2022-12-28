@@ -7,9 +7,9 @@ import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
-  updatePassengersDetails,
-  updateContactsDetails,
   FetchStateFromServer,
+  setSessionPassengers,
+  setSessionInfants,
 } from "redux/reducers/session";
 import { useRouter } from "next/router";
 import { Checkbox, notification } from "antd";
@@ -17,7 +17,7 @@ import SelectIcon from "assets/svgs/select.svg";
 import PassengerFormItem from "containers/PassengerForm/PassengerFormItem";
 import LogoIcon from "assets/svgs/logo.svg";
 import { useGetSalutationsQuery } from "services/widgetApi.js";
-
+import { useUpdatePassengerInfoMutation } from "services/bookingApi";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 
@@ -29,11 +29,14 @@ const PassengerForm = () => {
   const [passengers, setPassengers] = useState([]);
   const [touched, setTouched] = useState(false);
   const {
+    signature,
     passengersResponse,
     contactsResponse,
     updatePassengersLoading,
     flightParams,
   } = useSelector(sessionSelector);
+  const [updatePassengerInfo, { isLoading: updatingPassengerInfo }] =
+    useUpdatePassengerInfoMutation();
   const router = useRouter();
 
   const ScrollToTop = () => {
@@ -101,6 +104,7 @@ const PassengerForm = () => {
     }
     sumPassengerCount();
   }, []);
+
   // TODO watch for this
   useEffect(() => {
     async function redirectToSSR() {
@@ -117,6 +121,162 @@ const PassengerForm = () => {
     }
     fetchStateInfo();
   }, []);
+
+  const updatePassengers = async (passenger, contact) => {
+    let requestPayload = {};
+    if (parseInt(flightParams.INF) > 0) {
+      const _Main = [];
+      const _Infants = [];
+      passenger.map((item) => {
+        if (item?.type === "INF") {
+          _Infants.push(item);
+        } else {
+          _Main.push(item);
+        }
+      });
+      dispatch(setSessionPassengers(_Main));
+      dispatch(setSessionInfants(_Main));
+      let _passengers = [];
+      let updatedPassengers = [];
+      _Main.map((_passenger, _i) => {
+        let passengerObj = {
+          state: 0,
+          customerNumber: "",
+          passengerNumber: parseInt(_i),
+          passengerNumberSpecified: true,
+          familyNumber: 0,
+          paxDiscountCode: "",
+          names: [
+            {
+              firstName: _passenger.firstName,
+              middleName: "",
+              lastName: _passenger.lastName,
+              suffix: "",
+              title: _passenger.title,
+              state: 0,
+            },
+          ],
+          passengerID: 0,
+          pseudoPassenger: false,
+          passengerTypeInfos: [
+            {
+              state: 0,
+              stateSpecified: true,
+              dob: _passenger?.dob || "9999-12-31T00:00:00Z",
+              dobSpecified: true,
+              paxType: _passenger.type,
+            },
+          ],
+        };
+        _passengers.push(passengerObj);
+      });
+      _passengers.map((item) => {
+        if (_Infants.length > 0) {
+          const INFANT_TO_BE_ATTACHED = _Infants.shift();
+          const infantObj = {
+            dob: INFANT_TO_BE_ATTACHED?.dob,
+            dobSpecified: true,
+            gender: 0,
+            nationality: "",
+            residentCountry: "",
+            names: [
+              {
+                firstName: INFANT_TO_BE_ATTACHED.firstName,
+                middleName: "",
+                lastName: INFANT_TO_BE_ATTACHED.lastName,
+                suffix: "",
+                title: INFANT_TO_BE_ATTACHED.title,
+                state: 0,
+              },
+            ],
+            paxType: "INFT",
+            state: 0,
+          };
+          const newPassengerObj = {
+            ...item,
+            infant: {
+              ...infantObj,
+            },
+          };
+          updatedPassengers.push(newPassengerObj);
+        } else {
+          updatedPassengers.push(item);
+        }
+      });
+      requestPayload = {
+        updatePassengerRequest: {
+          updatePassengersRequestData: {
+            passengers: [...updatedPassengers],
+            waiveNameChangeFee: false,
+          },
+        },
+      };
+    } else {
+      dispatch(setSessionPassengers(passenger));
+      let _passengers = [];
+      passenger.map((_passenger, _i) => {
+        let passengerObj = {
+          state: 0,
+          customerNumber: "",
+          passengerNumber: parseInt(_i),
+          passengerNumberSpecified: true,
+          familyNumber: 0,
+          paxDiscountCode: "",
+          names: [
+            {
+              firstName: _passenger.firstName,
+              middleName: "",
+              lastName: _passenger.lastName,
+              suffix: "",
+              title: _passenger.title,
+              state: 0,
+            },
+          ],
+          passengerID: 0,
+          pseudoPassenger: false,
+          passengerTypeInfos: [
+            {
+              state: 0,
+              stateSpecified: true,
+              dob: _passenger.dob || "9999-12-31T00:00:00Z",
+              dobSpecified: true,
+              paxType: _passenger.type,
+            },
+          ],
+        };
+        _passengers.push(passengerObj);
+      });
+      requestPayload = {
+        updatePassengerRequest: {
+          updatePassengersRequestData: {
+            passengers: [..._passengers],
+            waiveNameChangeFee: false,
+          },
+        },
+      };
+    }
+
+    try {
+      updatePassengerInfo(requestPayload)
+        .unwrap()
+        .then((response) => {
+          // await dispatch(setUpdatePassengersResponse(Response.data));
+          // await dispatch(FetchStateFromServer());
+          // dispatch(updateContactsDetails(contactInfo));
+        })
+        .catch(() => {
+          notification.error({
+            message: "Error",
+            description: "Update passenger(s) details failed",
+          });
+        });
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Error occured",
+      });
+    }
+  };
 
   const handleSubmit = async (values) => {
     const contactInfo = {
@@ -156,8 +316,7 @@ const PassengerForm = () => {
           "Incomplete details, Please check through your form and fill-in appropriate details",
       });
     } else {
-      dispatch(updatePassengersDetails(passengers));
-      dispatch(updateContactsDetails(contactInfo));
+      updatePassengers(passengers);
     }
   };
 

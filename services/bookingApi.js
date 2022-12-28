@@ -303,6 +303,21 @@ export const bookingApi = createApi({
         },
       }),
     }),
+    updatePassengerInfo: builder.mutation({
+      query: (updatePassengersRequest) => ({
+        url: "/Booking/UpdatePassengers",
+        method: "POST",
+        body: {
+          header: {
+            signature: store.getState().session.signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: false,
+            contractVersion: 0,
+          },
+          updatePassengersRequestDto: updatePassengersRequest
+        },
+      }),
+    }),
   }),
 });
 
@@ -321,4 +336,5 @@ export const {
   useResellNewJourneyMutation,
   useCancelSSRMutation,
   useResellSSRMutation,
+  useUpdatePassengerInfoMutation
 } = bookingApi;
