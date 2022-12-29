@@ -10,6 +10,7 @@ import {
   retrieveBookingFromState,
   sessionSelector,
   CommitBookingWithPNR,
+  FetchStateFromServer 
 } from "redux/reducers/session";
 import { setTripModified } from "redux/reducers/booking";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +24,9 @@ import { usePaystackPayment } from "react-paystack";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { useInitiatePaymentMutation } from "services/widgetApi";
 
-const PassengerDetails = () => {
+import BookingBar from "containers/IbeSidebar/BookingBar";
+
+const BookingPayment = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(1);
@@ -73,6 +76,16 @@ const PassengerDetails = () => {
   //   }
   //   _getBookingCommit();
   // }, [bookingState]);
+
+
+    useEffect(() => {
+      async function fetchBookingDetails() {
+        if (signature) {
+          dispatch(FetchStateFromServer());
+        }
+      }
+      fetchBookingDetails();
+    }, [signature]);
 
   useEffect(() => {
     async function fetchGateways() {
@@ -242,7 +255,8 @@ const PassengerDetails = () => {
                           <button
                             type="button"
                             onClick={handlePayment}
-                            className="btn btn-primary"
+                            className={`btn btn-primary ${loading ? 'disabled' : ''}`}
+                            
                           >
                             {loading ? "Paying" : "Pay"}
                           </button>
@@ -256,10 +270,13 @@ const PassengerDetails = () => {
               )}
             </section>
           </div>
+          <div className="ga__section__side">
+            <BookingBar />
+          </div>
         </section>
       </section>
     </BaseLayout>
   );
 };
 
-export default PassengerDetails;
+export default BookingPayment;
