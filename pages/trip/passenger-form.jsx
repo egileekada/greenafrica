@@ -9,6 +9,7 @@ import {
   sessionSelector,
   FetchStateFromServer,
   setSessionPassengers,
+  setSessionContact,
   setSessionInfants,
   setUpdatePassengersResponse,
   setUpdateContactsResponse,
@@ -33,13 +34,7 @@ const PassengerForm = () => {
   const [errorIds, setErrorIds] = useState([]);
   const [passengers, setPassengers] = useState([]);
   const [touched, setTouched] = useState(false);
-  const {
-    signature,
-    passengersResponse,
-    contactsResponse,
-    updatePassengersLoading,
-    flightParams,
-  } = useSelector(sessionSelector);
+  const { flightParams } = useSelector(sessionSelector);
   const [updatePassengerInfo, { isLoading: updatingPassengerInfo }] =
     useUpdatePassengerInfoMutation();
   const [updateContactInfo, { isLoading: updatingContactInfo }] =
@@ -84,7 +79,7 @@ const PassengerForm = () => {
             );
             _Passengers.push({
               id: newID,
-              firstName: "",
+              firstName: "" ,
               lastName: "",
               title: "",
               dob: "",
@@ -275,6 +270,8 @@ const PassengerForm = () => {
   };
 
   const handleContact = (payload) => {
+    dispatch(setSessionContact(payload));
+
     const _requestPayload = {
       updateContactsRequestDto: {
         updateContactsRequest: {
@@ -350,11 +347,18 @@ const PassengerForm = () => {
     let _formIsInValid = false;
     passengers.map((_pax) => {
       for (const key in _pax) {
-        if (_pax[key].length < 1) {
+        if (
+          _pax[key].length < 1 ||
+          _pax.firstName.length < 1 ||
+          _pax.lastName.length < 1 ||
+          _pax.title.length < 1
+        ) {
           _formIsInValid = true;
         }
       }
     });
+
+    console.log(" _formIsInValid ", _formIsInValid);
 
     passengers.map((_pax) => {
       if (_pax?.type === "CHD" || _pax?.type === "INF") {
@@ -364,10 +368,19 @@ const PassengerForm = () => {
         }
       } else {
         if (_pax?.dob?.length < 1) {
-          _formIsInValid = false;
+          if (
+            _pax.firstName.length > 0 &&
+            _pax.lastName.length > 0 &&
+            _pax.title.length > 0
+          ) {
+            _formIsInValid = false;
+          }
         }
       }
     });
+
+    console.log(" passengers", passengers);
+    console.log(" _formIsInValid ", _formIsInValid);
 
     if (_formIsInValid) {
       notification.error({
@@ -391,8 +404,6 @@ const PassengerForm = () => {
       }
 
       const duplicateExist = checkIfDuplicateExists(names);
-      console.log("names", names);
-      console.log("duplicateExist", duplicateExist);
 
       if (duplicateExist) {
         notification.error({
@@ -402,7 +413,7 @@ const PassengerForm = () => {
         });
       } else {
         updatePassengers(passengers, contactInfo);
-        // console.log("passengers, contactInfo");
+        console.log("passengers, contactInfo");
       }
     }
   };
