@@ -10,7 +10,7 @@ import {
   retrieveBookingFromState,
   sessionSelector,
   CommitBookingWithPNR,
-  FetchStateFromServer 
+  FetchStateFromServer,
 } from "redux/reducers/session";
 import { setTripModified } from "redux/reducers/booking";
 import { useDispatch, useSelector } from "react-redux";
@@ -77,15 +77,14 @@ const BookingPayment = () => {
   //   _getBookingCommit();
   // }, [bookingState]);
 
-
-    useEffect(() => {
-      async function fetchBookingDetails() {
-        if (signature) {
-          dispatch(FetchStateFromServer());
-        }
+  useEffect(() => {
+    async function fetchBookingDetails() {
+      if (signature) {
+        dispatch(FetchStateFromServer());
       }
-      fetchBookingDetails();
-    }, [signature]);
+    }
+    fetchBookingDetails();
+  }, [signature]);
 
   useEffect(() => {
     async function fetchGateways() {
@@ -255,8 +254,9 @@ const BookingPayment = () => {
                           <button
                             type="button"
                             onClick={handlePayment}
-                            className={`btn btn-primary ${loading ? 'disabled' : ''}`}
-                            
+                            className={`btn btn-primary ${
+                              loading ? "disabled" : ""
+                            }`}
                           >
                             {loading ? "Paying" : "Pay"}
                           </button>
