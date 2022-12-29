@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
+import FlightInfo from "./Booking/FlightInfo";
+
 const BookingBar = ({ enableEdit = false }) => {
   const { sessionStateResponse, sessionStateLoading } =
     useSelector(sessionSelector);
@@ -26,6 +28,7 @@ const BookingBar = ({ enableEdit = false }) => {
         <Spinner />
       ) : (
         <>
+          {/* <FlightInfo enableEdit={enableEdit} /> */}
           <TripInfo />
           <PassengerInfo />
           <SeatInfo />

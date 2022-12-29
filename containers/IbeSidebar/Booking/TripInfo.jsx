@@ -84,6 +84,17 @@ const TripInfo = () => {
               </h6>
             </div>
           </div>
+          <div className="ibe__sidebar__row bordered">
+            <div className="flex items-center">
+              <figure className="mr-2">
+                <CostIcon />
+              </figure>
+              <h6>Selected Product:</h6>
+            </div>
+            <div>
+              <h6>{segment.Fares[0]?.RuleNumber}</h6>
+            </div>
+          </div>
         </div>
       </div>
     );
