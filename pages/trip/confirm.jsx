@@ -8,19 +8,28 @@ import DottedLine from "assets/svgs/dotted-line.svg";
 import Fare from "containers/IbeSummary/Fare";
 import SummaryDetails from "containers/IbeSummary/SummaryDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBookingDetails, sessionSelector } from "redux/reducers/session";
+import {
+  GetBookingDetails,
+  setSelectedSessionFare,
+  setSelectedSessionJourney,
+  sessionSelector,
+} from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
 import ReactToPrint from "react-to-print";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
-import { useGetLocationsQuery } from "services/widgetApi.js";
+import {
+  useGetLocationsQuery,
+  useGetProductsQuery,
+} from "services/widgetApi.js";
 import SkeletonLoader from "components/SkeletonLoader";
 
 const TripConfirm = () => {
   const router = useRouter();
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
+  const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   let componentRef = useRef();
   const dispatch = useDispatch();
   // const [segmentInfo, setSegmentInfo] = useState(null);
@@ -40,7 +49,7 @@ const TripConfirm = () => {
     ScrollToTop();
   }, []);
 
-  //Don't re work - it currently breaks code
+  // Don't re work - it currently breaks code
   useEffect(() => {
     async function fetchBookingDetails() {
       dispatch(GetBookingDetails());
@@ -54,12 +63,16 @@ const TripConfirm = () => {
     }
   }, [bookingResponse]);
 
+  useEffect(() => {
+    async function resetSelectedJourneys() {
+      dispatch(setSelectedSessionFare(null));
+      dispatch(setSelectedSessionJourney(null));
+    }
+    resetSelectedJourneys();
+  }, []);
+
   const goBackToHome = () => {
     window.location.assign("https://dev-website.gadevenv.com/");
-  };
-
-  const goToCheckin = () => {
-    router.push("/checkin");
   };
 
   const resolveAbbreviation = (abrreviation) => {
@@ -68,6 +81,13 @@ const TripConfirm = () => {
     );
 
     return `${name} (${code})`;
+  };
+
+  const fare_name = (value) => {
+    const [{ name }] = products?.data?.items.filter(
+      (product) => product.code === value
+    );
+    return `${name}`;
   };
 
   const WelcomeNote = () => {
@@ -103,17 +123,6 @@ const TripConfirm = () => {
           <h2 className="trip-title mb-3">FLIGHT SUMMARY</h2>
         </div>
 
-        <ReactToPrint
-          trigger={() => (
-            <button
-              className="basis-full md:basis-auto btn btn-outline"
-              onClick={() => print()}
-            >
-              Download Ticket
-            </button>
-          )}
-          content={() => componentRef}
-        />
         {/* <button
           className="basis-full md:basis-auto btn btn-outline"
           onClick={() => print()}
@@ -129,7 +138,11 @@ const TripConfirm = () => {
       <>
         {bookingResponse?.Booking?.Journeys.map((_journey, _journeyIndex) => {
           return (
-            <section className="basis-full md:basis-[48%]">
+            <section className="basis-full md:basis-[48%] relative">
+              <p className="bg-primary-main text-green text-xs py-1 px-4 rounded-[4px] absolute left-6 top-11">
+                {!productsLoading &&
+                  fare_name(_journey?.Segments[0].Fares[0].ProductClass)}
+              </p>
               {_journey?.Segments.map((_segment) => {
                 return (
                   <p className="text-primary-main text-sm font-body font-normal mb-4">
@@ -266,6 +279,7 @@ const TripConfirm = () => {
       <section className="w-full">
         {bookingResponseLoading ? (
           <section className="py-32 lg:py-12 px-12">
+            <SkeletonLoader />
             <SkeletonLoader />
             <SkeletonLoader />
             <SkeletonLoader />

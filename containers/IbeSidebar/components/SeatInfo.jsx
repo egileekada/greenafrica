@@ -17,9 +17,17 @@ const SeatInfo = () => {
   useEffect(() => {
     if (
       sessionStateResponse &&
-      sessionStateResponse?.BookingData.Passengers.length > 0
+      sessionStateResponse?.BookingData?.Journeys?.length > 0
     ) {
-      setChecked(false);
+      const _Journeys = sessionStateResponse?.BookingData?.Journeys;
+
+      _Journeys.map((_item) => {
+        _item?.Segments.map((_seg) => {
+          if (_seg?.PaxSeats.length > 0) {
+            setChecked(true);
+          }
+        });
+      });
     }
   }, [sessionStateResponse]);
 
@@ -51,6 +59,8 @@ const SeatInfo = () => {
                         (_journey) => {
                           return _journey?.Segments.map((_segment) => {
                             return (
+                              <>
+                              {_segment?.PaxSeats.length > 0 && (
                               <h6 className="text-[12px] font-normal text-[#9692B8] font-title">
                                 <span className="mr-2">
                                   {`${_segment?.PaxSeats[passengerIndex]?.DepartureStation} -  ${_segment?.PaxSeats[passengerIndex]?.ArrivalStation}`}
@@ -61,6 +71,8 @@ const SeatInfo = () => {
                                     ?.UnitDesignator
                                 }
                               </h6>
+                              )}
+                              </>
                             );
                           });
                         }

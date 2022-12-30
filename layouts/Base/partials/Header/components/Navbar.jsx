@@ -14,11 +14,20 @@ const Navbar = () => {
         </a>
         <ul className="hidden tab:flex items-center">
           <li>
-            <Link href="/de">
-              <a className="mr-16 text-white font-body text-sm">Destinations</a>
+            <Link href="/checkin">
+              <a className="mr-16 text-white font-body text-sm hover:text-green">
+                Check-in
+              </a>
             </Link>
           </li>
           <li>
+            <Link href="/bookings">
+              <a className="mr-16 text-white font-body text-sm hover:text-green">
+                Manage Booking
+              </a>
+            </Link>
+          </li>
+          {/* <li>
             <Link href="/de">
               <a className="mr-16 text-white font-body text-sm">Support</a>
             </Link>
@@ -32,7 +41,7 @@ const Navbar = () => {
             <Link href="/de">
               <a className="mr-16 text-white font-body text-sm">English (NG)</a>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
       {/* <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50">

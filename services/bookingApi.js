@@ -225,6 +225,34 @@ export const bookingApi = createApi({
         },
       }),
     }),
+    ResellNewJourney: builder.mutation({
+      query: (payload) => ({
+        url: "/Booking/Sell",
+        method: "POST",
+        body: {
+          header: {
+            signature: store.getState().session.signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: false,
+            contractVersion: 0,
+          },
+          sellRequestDto: payload.sellRequestDto,
+        },
+      }),
+    }),
+    CancelSSR: builder.mutation({
+      query: (cancelSSRRequest) => ({
+        url: "/Booking/Cancel",
+        method: "POST",
+        body: {
+          signature: store.getState().session.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: false,
+          contractVersion: 0,
+          cancelRequestData: cancelSSRRequest.cancelRequestData,
+        },
+      }),
+    }),
     ResellSSR: builder.mutation({
       query: (segmentSSRRequests) => ({
         url: "/Booking/Sell",
@@ -275,6 +303,36 @@ export const bookingApi = createApi({
         },
       }),
     }),
+    updatePassengerInfo: builder.mutation({
+      query: (updatePassengersRequest) => ({
+        url: "/Booking/UpdatePassengers",
+        method: "POST",
+        body: {
+          header: {
+            signature: store.getState().session.signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: false,
+            contractVersion: 0,
+          },
+          updatePassengersRequestDto: updatePassengersRequest,
+        },
+      }),
+    }),
+    updateContactInfo: builder.mutation({
+      query: (payload) => ({
+        url: "/Booking/UpdateContacts",
+        method: "POST",
+        body: {
+          header: {
+            signature: store.getState().session.signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: false,
+            contractVersion: 0,
+          },
+           updateContactsRequestDto: payload.updateContactsRequestDto
+        },
+      }),
+    }),
   }),
 });
 
@@ -290,11 +348,9 @@ export const {
   useGetBookingMutation,
   useSaveNewCheckInSSRsMutation,
   useBookingCommitWithoutPaymentMutation,
+  useResellNewJourneyMutation,
+  useCancelSSRMutation,
   useResellSSRMutation,
+  useUpdatePassengerInfoMutation,
+  useUpdateContactInfoMutation
 } = bookingApi;
-
-// {
-//   parseInt(
-//     sessionStateResponse?.BookingData?.BookingSum?.BalanceDue
-//   ).toLocaleString("NGN");
-// }

@@ -67,7 +67,6 @@ const IbeHeader = () => {
         _fareDateList.push(newObj);
       });
       setFareDateList([..._fareDateList]);
-      // console.log("list", _fareDateList);
 
       if (flightParams?.recurrent) {
         const _selectedDate = new Date(flightParams?.beginDate);
@@ -111,7 +110,7 @@ const IbeHeader = () => {
 
       setLoaded(false);
     } else {
-      console.log("mot avvvv");
+      // console.log("mot avvvv");
     }
   }, [lowFareAvailabilityResponse]);
 

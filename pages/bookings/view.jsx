@@ -2,29 +2,48 @@
 import Link from "next/link";
 import { useState } from "react";
 import BaseLayout from "layouts/Base";
-import IbeSidebar from "containers/IbeSidebar";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import ArrowTo from "assets/svgs/arrowto.svg";
 import { Checkbox } from "antd";
-import BackIcon from "assets/svgs/seats/arrowleft.svg";
-import ToTop from "assets/svgs/toTop.svg";
 import LogoIcon from "assets/svgs/logo.svg";
-
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { bookingSelector, ResellNewJourney } from "redux/reducers/booking";
+import {
+  bookingSelector,
+  setManagedPnrWithoutPayment,
+} from "redux/reducers/booking";
+import { sessionSelector } from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
+import { notification } from "antd";
+import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
+
+import {
+  useResellNewJourneyMutation,
+  useCancelSSRMutation,
+  useResellSSRMutation,
+} from "services/bookingApi";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 
 const TripView = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const { goTrip, returnTrip, tripParams, returnParams, resellLoading } =
+  const { goTrip, returnTrip, tripParams, returnParams } =
     useSelector(bookingSelector);
+  const { bookingResponse } = useSelector(sessionSelector);
+  const { data, isLoading } = useGetLocationsQuery();
+
+  const [ResellSSR, { isLoading: resellingSSR }] = useResellSSRMutation();
+  const [CancelSSR, { isLoading: cancellingSSR }] = useCancelSSRMutation();
+  const [ResellNewJourney, { isLoading: resellingJourney }] =
+    useResellNewJourneyMutation();
+
+  const [bookingCommitWithoutPayment, { isLoading: commitPaymentLoading }] =
+    useBookingCommitWithoutPaymentMutation();
 
   const onCheckChange = (e) => {
     setChecked(e.target.checked);
@@ -55,7 +74,8 @@ const TripView = () => {
       <section className="flex flex-col mb-8">
         <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
           {trip?.segment?.schedueIndex === 1 && "Return"} Trip To{" "}
-          {trip?.segment?.ArrivalStation} On{" "}
+          {trip?.segment && resolveAbbreviation(trip?.segment?.ArrivalStation)}{" "}
+          On{" "}
           {trip?.segment?.schedueIndex === 1
             ? format(new Date(returnParams?.returnDate), "EEEE, LLLL dd yyyy")
             : format(new Date(tripParams?.beginDate), "EEEE, LLLL dd yyyy")}
@@ -63,11 +83,19 @@ const TripView = () => {
 
         {/* TripHeader */}
         <section className="ibe__flight__info__destination">
-          <p> {trip?.segment?.DepartureStation}</p>
+          <p>
+            {" "}
+            {trip?.segment &&
+              resolveAbbreviation(trip?.segment?.DepartureStation)}
+          </p>
           <figure>
             <ArrowTo />
           </figure>
-          <p> {trip?.segment?.ArrivalStation}</p>
+          <p>
+            {" "}
+            {trip?.segment &&
+              resolveAbbreviation(trip?.segment?.ArrivalStation)}
+          </p>
 
           <figure className="flightCircle">
             <FlightIcon />
@@ -90,7 +118,11 @@ const TripView = () => {
                   {trip?.segment &&
                     format(new Date(trip?.segment?.STD), "HH:mm")}
                 </h5>
-                <p className="tripCity"> {trip?.segment?.DepartureStation}</p>
+                <p className="tripCity">
+                  {" "}
+                  {trip?.segment &&
+                    resolveAbbreviation(trip?.segment?.DepartureStation)}
+                </p>
               </div>
               <div className="tripIconPath">
                 <DottedLine className="dotted-svg" />
@@ -105,7 +137,8 @@ const TripView = () => {
                 </h5>
                 <p className="tripCity right-text">
                   {" "}
-                  {trip?.segment?.ArrivalStation}
+                  {trip?.segment &&
+                    resolveAbbreviation(trip?.segment?.ArrivalStation)}
                 </p>
               </div>
             </div>
@@ -166,7 +199,265 @@ const TripView = () => {
   };
 
   const resellJourney = () => {
-    dispatch(ResellNewJourney());
+    // dispatch(ResellNewJourney());
+    //Refactor Begin
+    const paxPriceTypes = [];
+    const _serviceBundleList = [];
+
+    const ADULT_COUNT = bookingResponse?.Booking?.Passengers.filter((_pax) => {
+      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "adt";
+    }).length;
+
+    const CHILD_COUNT = bookingResponse?.Booking?.Passengers.filter((_pax) => {
+      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "chd";
+    }).length;
+
+    const totalPaxCount = bookingResponse?.Booking?.Passengers?.length;
+
+    if (ADULT_COUNT > 0) {
+      const _newPType = {
+        paxType: "ADT",
+        paxDiscountCode: "",
+        paxCount: ADULT_COUNT,
+        paxCountSpecified: true,
+      };
+      paxPriceTypes.push(_newPType);
+    }
+
+    if (CHILD_COUNT > 0) {
+      const _newPType = {
+        paxType: "CHD",
+        paxDiscountCode: "",
+        paxCount: CHILD_COUNT,
+        paxCountSpecified: true,
+      };
+      paxPriceTypes.push(_newPType);
+    }
+
+    const _journeySellKeys = [];
+    // SSR RELATED
+    let JourneyOneSegmentSSRRequest = null;
+    let JourneyTwoSegmentSSRRequest = null;
+    let JourneyOne = null;
+    let JourneyTwo = null;
+    // SSR RELATED
+    if (goTrip) {
+      let newObj = {
+        JourneySellKey: goTrip?.journey?.JourneySellKey,
+        FareSellKey: goTrip?.fare?.FareSellKey,
+        standbyPriorityCode: "",
+        packageIndicator: "",
+      };
+      _journeySellKeys.push(newObj);
+      _serviceBundleList.push(goTrip?.fare?.RuleNumber);
+
+      const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
+
+      const JourneyOneSSRsExSeat =
+        bookingResponse?.Booking?.Journeys[0].Segments[0].PaxSSRs.filter(
+          (ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode)
+        );
+
+      JourneyOneSegmentSSRRequest = {
+        flightDesignator: {
+          carrierCode: goTrip?.segment?.FlightDesignator?.CarrierCode,
+          flightNumber: goTrip?.segment?.FlightDesignator?.FlightNumber,
+          opSuffix: "",
+        },
+        std: goTrip?.segment?.STD,
+        stdSpecified: true,
+        departureStation: goTrip?.segment?.DepartureStation,
+        arrivalStation: goTrip?.segment?.ArrivalStation,
+        paxSSRs: [...JourneyOneSSRsExSeat],
+      };
+      JourneyOne = {
+        ...bookingResponse?.Booking?.Journeys[0],
+        State: 0,
+      };
+    }
+
+    if (returnTrip) {
+      let newObj = {
+        JourneySellKey: returnTrip?.journey?.JourneySellKey,
+        FareSellKey: returnTrip?.fare?.FareSellKey,
+        standbyPriorityCode: "",
+        packageIndicator: "",
+      };
+      _journeySellKeys.push(newObj);
+      _serviceBundleList.push(returnTrip?.fare?.RuleNumber);
+      const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
+
+      const JourneyTwoSSRsExSeat =
+        bookingResponse?.Booking?.Journeys[1].Segments[0].PaxSSRs;
+
+      JourneyTwoSegmentSSRRequest = {
+        flightDesignator: {
+          carrierCode: returnTrip?.segment?.FlightDesignator?.CarrierCode,
+          flightNumber: returnTrip?.segment?.FlightDesignator?.FlightNumber,
+          opSuffix: "",
+        },
+        std: returnTrip?.segment?.STD,
+        stdSpecified: true,
+        departureStation: returnTrip?.segment?.DepartureStation,
+        arrivalStation: returnTrip?.segment?.ArrivalStation,
+        paxSSRs: [
+          ...JourneyTwoSSRsExSeat.filter((ssrItem) =>
+            ALLOWED__SSRS.includes(ssrItem?.SSRCode)
+          ),
+        ],
+      };
+
+      JourneyTwo = {
+        ...bookingResponse?.Booking?.Journeys[1],
+        State: 0,
+      };
+    }
+
+    const requestPayload = {
+      sellRequestDto: {
+        sellRequest: {
+          sellRequestData: {
+            sellBy: 0,
+            sellBySpecified: true,
+            sellJourneyByKeyRequest: {
+              sellJourneyByKeyRequestData: {
+                actionStatusCode: "NN",
+                journeySellKeys: [..._journeySellKeys],
+                paxPriceType: [...paxPriceTypes],
+                currencyCode: "NGN",
+                paxCount: totalPaxCount,
+                paxCountSpecified: true,
+                loyaltyFilter: 0,
+                loyaltyFilterSpecified: true,
+                isAllotmentMarketFare: false,
+                isAllotmentMarketFareSpecified: true,
+                preventOverLap: false,
+                preventOverLapSpecified: true,
+                replaceAllPassengersOnUpdate: false,
+                replaceAllPassengersOnUpdateSpecified: true,
+                serviceBundleList: [..._serviceBundleList],
+                applyServiceBundle: 1,
+                applyServiceBundleSpecified: true,
+              },
+            },
+          },
+        },
+      },
+    };
+
+    ResellNewJourney(requestPayload)
+      .unwrap()
+      .then(() => {
+        const segmentSSRRequests = [];
+        JourneyOneSegmentSSRRequest &&
+          segmentSSRRequests.push(JourneyOneSegmentSSRRequest);
+        JourneyTwoSegmentSSRRequest &&
+          segmentSSRRequests.push(JourneyTwoSegmentSSRRequest);
+        ResellSSR(segmentSSRRequests)
+          .unwrap()
+          .then((data) => {
+            const _journeys = [];
+            JourneyOne && _journeys.push(JourneyOne);
+            JourneyTwo && _journeys.push(JourneyTwo);
+            const cancelSSRRequest = {
+              cancelRequestData: {
+                cancelBy: 0,
+                cancelBySpecified: true,
+                cancelJourney: {
+                  cancelJourneyRequest: {
+                    journeys: [..._journeys],
+                    waivePenaltyFee: false,
+                    waivePenaltyFeeSpecified: true,
+                    waiveSpoilageFee: false,
+                    waiveSpoilageFeeSpecified: true,
+                    preventReprice: false,
+                    preventRepriceSpecified: true,
+                    forceRefareForItineraryIntegrity: false,
+                    forceRefareForItineraryIntegritySpecified: true,
+                    recordLocator: bookingResponse?.Booking?.RecordLocator,
+                  },
+                },
+              },
+            };
+            CancelSSR(cancelSSRRequest)
+              .unwrap()
+              .then((data) => {
+                // dispatch(setGoTrip(null));
+                // dispatch(setReturnTrip(null));
+
+                if (
+                  parseInt(
+                    data?.BookingUpdateResponseData?.Success?.PNRAmount
+                      ?.BalanceDue
+                  ) > 0
+                ) {
+                  console.log("making payment");
+                  router.push(`/bookings/payment`);
+                } else {
+                  console.log("making booking commmit");
+
+                  bookingCommitWithoutPayment()
+                    .unwrap()
+                    .then((data) => {
+                      dispatch(
+                        setManagedPnrWithoutPayment(
+                          data?.BookingUpdateResponseData?.Success
+                            ?.RecordLocator
+                        )
+                      );
+                      router.push(
+                        {
+                          pathname: "/bookings/home",
+                          query: {
+                            pnr: data?.BookingUpdateResponseData?.Success
+                              ?.RecordLocator,
+                          },
+                        },
+                        "/bookings/home"
+                      );
+                    })
+                    .catch((error) => {
+                      notification.error({
+                        message: "Error",
+                        description: "Booking Commit Failed",
+                      });
+                    });
+                }
+
+                // router.push(`/bookings/confirm`);
+              })
+              .catch(() => {
+                notification.error({
+                  message: "Error",
+                  description: "Cancel Services failed",
+                });
+              });
+          })
+          .catch(() => {
+            notification.error({
+              message: "Error",
+              description: "Sell Services failed",
+            });
+          });
+      })
+      .catch((err) => {
+        const errText =
+          err?.response?.data?.BookingUpdateResponseData?.Error?.ErrorText;
+        notification.error({
+          message: "Error",
+          description: errText ? errText : "Sell Request failed",
+        });
+      });
+
+    //Refactor End
+  };
+
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name} (${code})`;
   };
 
   return (
@@ -180,7 +471,7 @@ const TripView = () => {
       </nav>
       <section className="w-full">
         <section className="ga__section">
-          <div className="ga__section__main">
+          <div className="ga__section__main flex-grow">
             <section className="flex flex-col mt-16 lg:mt-0">
               <section className="flex flex-col">
                 {goTrip?.journey && goTrip?.fare && goTrip?.segment && (
@@ -222,17 +513,19 @@ const TripView = () => {
                       checked ? "" : "opacity-50 pointer-events-none"
                     }`}
                     onClick={resellJourney}
-                    disabled={resellLoading}
+                    disabled={resellingJourney || resellingSSR || cancellingSSR}
                   >
-                    {resellLoading ? "Saving...." : "Continue"}
+                    {resellingJourney ||
+                    resellingSSR ||
+                    cancellingSSR ||
+                    commitPaymentLoading
+                      ? "Saving...."
+                      : "Continue"}
                   </button>
                 </div>
                 {/* Terms */}
               </section>
             </section>
-          </div>
-          <div className="ga__section__side">
-            <IbeSidebar />
           </div>
         </section>
       </section>

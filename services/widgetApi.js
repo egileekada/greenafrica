@@ -29,6 +29,12 @@ export const widgetApi = createApi({
     getFareconfigs: builder.query({
       query: () => `/fareconfigs`,
     }),
+    getSSRconfigs: builder.query({
+      query: () => `/ssrconfigs`,
+    }),
+    getPaymentConfigs: builder.query({
+      query: () => `/paymentgateways`,
+    }),
     initiatePayment: builder.mutation({
       query: (body) => ({
         url: "payments/initialize",
@@ -38,6 +44,13 @@ export const widgetApi = createApi({
     }),
     verifyPayment: builder.query({
       query: (reference) => `payments/verify/${reference}`,
+    }),
+    sendBoardingPass: builder.mutation({
+      query: (body) => ({
+        url: "send/boardingpass",
+        method: "POST",
+        body,
+      }),
     }),
   }),
 });
@@ -54,6 +67,9 @@ export const {
   useGetSalutationsQuery,
   useGetSpecialAssistancesQuery,
   useGetFareconfigsQuery,
+  useGetSSRconfigsQuery,
   useInitiatePaymentMutation,
+  useSendBoardingPassMutation,
   useVerifyPaymentQuery,
+  useGetPaymentConfigsQuery
 } = widgetApi;

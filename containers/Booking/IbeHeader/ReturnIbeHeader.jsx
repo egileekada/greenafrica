@@ -16,10 +16,11 @@ import {
 import { format } from "date-fns";
 import isBefore from "date-fns/isBefore";
 import { notification } from "antd";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 
 const ReturnBookingIbeHeader = () => {
   const dispatch = useDispatch();
-
+  const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const [dateList, setDateList] = useState([]);
   const [fareDateList, setFareDateList] = useState([]);
   //Pagination
@@ -177,16 +178,41 @@ const ReturnBookingIbeHeader = () => {
     }
   };
 
+  const resolveAbbreviation = (abrreviation) => {
+    if (data) {
+      const [{ name, code }] = data?.data?.items.filter(
+        (location) => location.code === abrreviation
+      );
+
+      return `${name} (${code})`;
+    } else {
+      return "";
+    }
+  };
+
   return (
-    <section className="ibe__flight__info mt-20" id="returnContainer">
+    <section
+      className={`ibe__flight__info mt-20 ${
+        returnParams
+          ? parseInt(returnParams?.LiftStatus) !== 0
+            ? "pointer-events-none opacity-50 cursor-not-allowed"
+            : ""
+          : ""
+      } `}
+      id="returnContainer"
+    >
       <section className="ibe__flight__info__destination">
-        <p className="mx-4">{returnParams?.departureStation}</p>
+        <p className="mx-4">
+          {returnParams?.departureStation &&
+            resolveAbbreviation(returnParams?.departureStation)}
+        </p>
         <figure>
           <ArrowTo />
         </figure>
-        <p className="mx-4">{returnParams?.arrivalStation}</p>
-
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>} */}
+        <p className="mx-4">
+          {returnParams?.arrivalStation &&
+            resolveAbbreviation(returnParams?.arrivalStation)}
+        </p>
 
         <figure className="flightCircle">
           <FlightIcon />
@@ -231,7 +257,13 @@ const ReturnBookingIbeHeader = () => {
                           <h6 className="text-center">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
-                          <p> ₦{_dateItem?.cost.toLocaleString()}</p>
+                          <p>
+                            {" "}
+                            ₦
+                            {parseInt(_dateItem?.cost) > -1
+                              ? _dateItem?.cost.toLocaleString()
+                              : 0}
+                          </p>
                         </button>
                       )}
                     </div>

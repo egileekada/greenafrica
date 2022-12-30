@@ -31,7 +31,7 @@ const PlaneSeats = forwardRef(
       selectedSeat,
       setSelectedSeat,
       ticketIndex,
-      productClass
+      productClass,
     },
     ref
   ) => {
@@ -126,91 +126,148 @@ const PlaneSeats = forwardRef(
     const mapSeatGroup = (value) => {
       switch (value) {
         case (value = 1):
-          return "₦2,500";
+          return (data = {
+            name: legend?.data?.items.filter(
+              (seat) => seat.seat_group === value
+            )[0].name,
+            price: `₦ ${
+              legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
+                .price
+            }`,
+          });
           break;
         case (value = 2):
-          return "₦2,500";
+          return (data = {
+            name: legend?.data?.items.filter(
+              (seat) => seat.seat_group === value
+            )[0].name,
+            price: `₦ ${
+              legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
+                .price
+            }`,
+          });
           break;
         case (value = 3):
-          return "₦2,000";
+          return (data = {
+            name: legend?.data?.items.filter(
+              (seat) => seat.seat_group === value
+            )[0].name,
+            price: `₦ ${
+              legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
+                .price
+            }`,
+          });
           break;
         case (value = 4):
-          return "₦1,000";
+          return (data = {
+            name: legend?.data?.items.filter(
+              (seat) => seat.seat_group === value
+            )[0].name,
+            price: `₦ ${
+              legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
+                .price
+            }`,
+          });
           break;
         case (value = 5):
-          return "₦2,500";
+          return (data = {
+            name: legend?.data?.items.filter(
+              (seat) => seat.seat_group === value
+            )[0].name,
+            price: `₦ ${
+              legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
+                .price
+            }`,
+          });
           break;
         case (value = 6):
-          return "₦5,000";
+          return (data = {
+            name: legend?.data?.items.filter(
+              (seat) => seat.seat_group === value
+            )[0].name,
+            price: `₦ ${
+              legend?.data?.items.filter((seat) => seat.seat_group === value)[0]
+                .price
+            }`,
+          });
           break;
       }
     };
 
-    const mapClass = (
-      SeatAvailability,
+    const generateStyle = (
       SeatGroup,
+      SeatAvailability,
       SeatDesignator,
       propertylist
     ) => {
       let seatCode;
       switch (SeatGroup) {
         case (SeatGroup = 1):
-          seatCode = "bg-[#292053]";
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
           break;
         case (SeatGroup = 2):
-          seatCode = "bg-[#ADFFCB]";
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
           break;
         case (SeatGroup = 3):
-          seatCode = "bg-[#B9B5D6]";
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
           break;
         case (SeatGroup = 4):
-          seatCode = "bg-[#777093]";
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
           break;
         case (SeatGroup = 5):
-          seatCode = "bg-[#ADFFCB]";
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
           break;
         case (SeatGroup = 6):
-          seatCode = "bg-[#584CB6]";
+          seatCode = legend?.data?.items.filter(
+            (seat) => seat.seat_group === SeatGroup
+          )[0].color_code;
           break;
       }
 
-      // return SeatAvailability === 14 ||
-      //   SeatAvailability === 12 ||
-      //   SeatAvailability === 1 ||
-      //   SeatAvailability === 8
-      //   ? "seats__item unavailable w-[38px]"
-      //   : `seats__item w-[38px] ${seatCode}`;
-
       if (selectedSeat.some((el) => el.seatDesignator === SeatDesignator)) {
-        return "seats__item bg-[#292053] w-[38px]";
-      } else {
-        return SeatAvailability === 12 ||
-          SeatAvailability === 1 ||
-          SeatAvailability === 8 ||
-          SeatAvailability === 14 ||
-          propertylist.filter((list) => list.TypeCode === "RESTRICT").length > 0
-          ? "seats__item unavailable w-[38px]"
-          : `seats__item w-[38px] ${seatCode}`;
+        seatCode = "#292053";
+      } else if (
+        SeatAvailability === 12 ||
+        SeatAvailability === 1 ||
+        SeatAvailability === 8 ||
+        SeatAvailability === 14 ||
+        propertylist.filter((list) => list.TypeCode === "RESTRICT").length > 0
+      ) {
+        seatCode = "#F1F1F1";
       }
+
+      return seatCode;
     };
 
-    const content = (
-      propertylist,
-      seatAvailability,
-      seatGroup,
-      SeatDesignator
-    ) => {
+    const content = (propertylist, seatGroup, SeatDesignator) => {
       return (
         <div className="text-primary-main text-base p-2">
           <p className="mb-2 font-light">
-            <span className="font-semibold">{SeatDesignator}</span> Front Seat
+            <span className="font-semibold">{SeatDesignator}</span>
+            {" - "}
+            {mapSeatGroup(seatGroup)?.name}
           </p>
 
           <p className="font-semibold mb-2 text-base">
-          {productClass === "SAVR" && mapSeatGroup(seatGroup)}
+            {productClass === "SAVR"
+              ? mapSeatGroup(seatGroup).price
+              : productClass === "CLSC" &&
+                mapSeatGroup(seatGroup).name !== "Standard Seat"
+              ? mapSeatGroup(seatGroup).price
+              : ""}
           </p>
           {propertylist.filter((list) => list.TypeCode === "INFANT").length >
-            0 && <p className="font-light">Customer with infant</p>}
+            0 && <p className="font-light">Customer with infant </p>}
         </div>
       );
     };
@@ -428,15 +485,18 @@ const PlaneSeats = forwardRef(
                                 }}
                               >
                                 <div
-                                  className={`${mapClass(
-                                    seat.SeatAvailability,
-                                    seat.SeatGroup,
-                                    seat.SeatDesignator,
-                                    seat.PropertyList
-                                  )}`}
+                                  className="seats__item w-[38px]"
                                   key={index}
                                   onClick={() => setSeat(seat)}
                                   role="button"
+                                  style={{
+                                    backgroundColor: generateStyle(
+                                      seat.SeatGroup,
+                                      seat.SeatAvailability,
+                                      seat.SeatDesignator,
+                                      seat.PropertyList
+                                    ),
+                                  }}
                                 >
                                   <p className="text-sm">
                                     {detectPassengerState(
@@ -538,7 +598,10 @@ const PlaneSeats = forwardRef(
 
                   {!isLoading &&
                     legend?.data.items.map((legend, index) => (
-                      <div className="seats__legend__item" key={index * Math.random()}>
+                      <div
+                        className="seats__legend__item"
+                        key={index * Math.random()}
+                      >
                         <figure>
                           <div
                             className={`eat-box bg-[${legend.color_code}]`}

@@ -300,7 +300,15 @@ const ManageBookingTab = ({ type, promocode }) => {
           <div
             className={`flex flex-wrap lg:flex-nowrap justify-between basis-auto flex-grow flex-shrink my-3 lg:my-0 lg:ml-4`}
           >
-            <div className="booking__wrapper flex items-end  basis-full lg:basis-[49%] flex-grow mb-2 lg:mb-0">
+            <div
+              className={`booking__wrapper flex items-end  basis-full lg:basis-[49%] flex-grow mb-2 lg:mb-0 ${
+                tripParams
+                  ? parseInt(tripParams?.LiftStatus) !== 0
+                    ? "pointer-events-none opacity-50 cursor-not-allowed"
+                    : ""
+                  : ""
+              }`}
+            >
               <span className="mr-2 ml-1 pb-1 hidden md:block">
                 <DatesIcon />
               </span>
@@ -322,7 +330,15 @@ const ManageBookingTab = ({ type, promocode }) => {
             </div>
 
             {type && type === "round_trip" && (
-              <div className="booking__wrapper flex items-end basis-full lg:basis-[49%]">
+              <div
+                className={`booking__wrapper flex items-end basis-full lg:basis-[49%] ${
+                  returnParams
+                    ? parseInt(returnParams?.LiftStatus) !== 0
+                      ? "pointer-events-none opacity-50 cursor-not-allowed"
+                      : ""
+                    : ""
+                } `}
+              >
                 <span className="mr-2 ml-1 pb-1 hidden md:block">
                   <DatesIcon />
                 </span>

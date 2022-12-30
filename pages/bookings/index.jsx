@@ -1,16 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import BaseLayout from "layouts/Base";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { notification } from "antd";
+import { notification, Modal } from "antd";
 import { useDispatch } from "react-redux";
-import { useFindBookingMutation } from "services/bookingApi";
-import { startSession, retrieveBooking } from "redux/reducers/session";
+import {
+  useFindBookingMutation,
+  useGetBookingMutation,
+} from "services/bookingApi";
+import { startSession } from "redux/reducers/session";
 import { resetStore } from "redux/store";
+import LogoIcon from "assets/svgs/logo.svg";
+
+import FormError from "components/formError";
 
 const validationSchema = Yup.object().shape({
-  pnr: Yup.string().required("Required"),
+  pnr: Yup.string()
+    .length(6, "Booking Reference must be exactly 6 values")
+    .required("Required"),
   email: Yup.string()
     .email("Must be a valid email address")
     .required("Required"),
@@ -18,7 +26,10 @@ const validationSchema = Yup.object().shape({
 
 const ManageBooking = () => {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const [findBooking, { isLoading }] = useFindBookingMutation();
+  const [initGetBooking] = useGetBookingMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,31 +49,59 @@ const ManageBooking = () => {
       findBooking(values)
         .unwrap()
         .then((data) => {
-          dispatch(retrieveBooking({ id: values.pnr }));
-          router.push(
-            {
-              pathname: "/bookings/home",
-              query: {
-                pnr: values.pnr,
-              },
-            },
-            "/bookings/home"
-          );
+          checkPnr(values.pnr);
         })
         .catch((error) => {
           notification.error({
             message: "Error",
             description: error?.data?.Error?.ErrorText,
           });
-
-          // console.log(error);
         });
     },
   });
 
+  const checkPnr = (pnr) => {
+    initGetBooking(pnr)
+      .unwrap()
+      .then((data) => {
+        if (
+          data.Booking.BookingQueueInfos.some(
+            (booking) => booking.QueueCode === "NOFLY"
+          )
+        ) {
+          setMessage(
+            "Currently, the system is unable to handle your request. Please call 0700-GREEN-AFRICA (0700-47336-237422) or send an email to gcare@greenafrica.com if you need further information. You will receive a response from a dedicated gCare Specialist."
+          );
+          setIsModalOpen(true);
+        } else {
+          router.push(
+            {
+              pathname: "/bookings/home",
+              query: {
+                pnr: pnr,
+              },
+            },
+            "/bookings/home"
+          );
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   return (
     <BaseLayout>
-      <section className="w-full px-3.5 py-10 lg:fit-x-bleed">
+      <nav className="top__bar logo-holder">
+        <button onClick={goBackToHome}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
+      <section className="w-full px-3.5 pt-32 lg:py-10 lg:fit-x-bleed">
         <div className="container mx-auto mb-10">
           <h1 className="text-primary-main text-2xl mb-4">Manage My Booking</h1>
           <p>
@@ -81,8 +120,8 @@ const ManageBooking = () => {
                       className={`${
                         formik.touched.pnr && formik.errors.pnr
                           ? "border border-[#de0150]"
-                          : ""
-                      } relative rounded-md z-0 border border-1 border-gray-300 pt-4 px-4`}
+                          : "border-gray-300"
+                      } relative rounded-md z-0 border border-1 pt-4 px-4`}
                     >
                       <input
                         type="text"
@@ -102,6 +141,10 @@ const ManageBooking = () => {
                         Booking Reference
                       </label>
                     </div>
+                    <FormError
+                      touched={formik.touched.pnr}
+                      message={formik.errors.pnr}
+                    />
                   </div>
 
                   <div className="my-3 col-span-2">
@@ -109,8 +152,8 @@ const ManageBooking = () => {
                       className={`${
                         formik.touched.email && formik.errors.email
                           ? "border border-[#de0150]"
-                          : ""
-                      } relative rounded-md z-0 border border-1 border-gray-300 pt-4 px-4`}
+                          : "border-gray-300"
+                      } relative rounded-md z-0 border border-1 pt-4 px-4`}
                     >
                       <input
                         type="email"
@@ -129,13 +172,17 @@ const ManageBooking = () => {
                         Email
                       </label>
                     </div>
+                    <FormError
+                      touched={formik.touched.email}
+                      message={formik.errors.email}
+                    />
                   </div>
 
                   <div className="my-3 lg:ml-auto">
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="btn btn-primary font-bold h-full block w-full"
+                      className="btn btn-primary font-bold block w-full"
                     >
                       {isLoading ? "Processing.." : "Confirm"}
                     </button>
@@ -146,6 +193,19 @@ const ManageBooking = () => {
           </form>
         </div>
       </section>
+
+      <Modal className="modalStyle" visible={isModalOpen} footer={null}>
+        <div className="px-5 pb-5 pt-10 text-center">
+          <h1 className="text-lg font-normal">{message}</h1>
+
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="btn btn-primary basis-full md:basis-auto my-10 md:mb-0 mx-auto"
+          >
+            Ok
+          </button>
+        </div>
+      </Modal>
     </BaseLayout>
   );
 };

@@ -1,17 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from "react";
-import { format, formatDistanceStrict } from "date-fns";
+import { format, differenceInMinutes } from "date-fns";
 import { useRouter } from "next/router";
+import { timeConvert } from "utils/common";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import SkeletonLoader from "components/SkeletonLoader";
 import IbeAdbar from "containers/IbeAdbar";
+import { notification } from "antd";
 
 import {
   useGetLocationsQuery,
   useGetProductsQuery,
+  useSendBoardingPassMutation,
 } from "services/widgetApi.js";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -30,6 +33,7 @@ const CheckInDetails = (props) => {
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   const [passengers, setPassengers] = useState([]);
+  const [sendBoardingPass, { isLoading }] = useSendBoardingPassMutation();
 
   const dispatch = useDispatch();
   const { signature, sessionLoading, bookingResponseLoading, bookingResponse } =
@@ -66,6 +70,40 @@ const CheckInDetails = (props) => {
             {_Baggages.length > 0 ? `${_Baggages.length}` : "No Baggage"}
           </span>
         </h5>
+      </div>
+    );
+  };
+
+  const SpecialAssistance = (_passenger, PassengerNumber) => {
+    const _Baggages = _passenger.filter((pax) => {
+      if (pax.PassengerNumber == PassengerNumber)
+        return (
+          pax.FeeCode === "HPRD" ||
+          pax.FeeCode === "VPRD" ||
+          pax.FeeCode === "WCHR"
+        );
+    });
+
+    return (
+      <div className="trip-details-item">
+        {_Baggages.length > 1 && (
+          <>
+            <h6 className="uppercase">Special Assistance </h6>
+            {_Baggages.map((item, index) => (
+              <h5 className="flex items-center" key={index}>
+                <span>
+                  {item.FeeCode === "WCHR"
+                    ? "Wheelchair"
+                    : item.FeeCode === "HPRD"
+                    ? "Hearing Impaired"
+                    : item.FeeCode === "VPRD"
+                    ? "Visually Impaired"
+                    : ""}
+                </span>
+              </h5>
+            ))}
+          </>
+        )}
       </div>
     );
   };
@@ -190,6 +228,75 @@ const CheckInDetails = (props) => {
     router.push("/checkin/manage-services");
   };
 
+  const triggerEmailBoardingPass = (id, departureStation, arrivalStation) => {
+    const data = {
+      signature,
+      recordLocator: props.pnr,
+      requestType: "email",
+      boardingPassRequests: [
+        {
+          passengerIdArray: [id],
+          departureStation,
+          arrivalStation,
+        },
+      ],
+    };
+    sendBoardingPass(data)
+      .unwrap()
+      .then((data) => {
+        notification.success({
+          message: "Success",
+          description: data.data.message,
+        });
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error",
+          description: "An Error Occured",
+        });
+      });
+  };
+
+  const triggerDownloadBoardingPass = (
+    id,
+    departureStation,
+    arrivalStation
+  ) => {
+    const data = {
+      signature,
+      recordLocator: props.pnr,
+      requestType: "download",
+      boardingPassRequests: [
+        {
+          passengerIdArray: [id],
+          departureStation,
+          arrivalStation,
+        },
+      ],
+    };
+    sendBoardingPass(data)
+      .unwrap()
+      .then((data) => {
+        const link = document.createElement("a");
+        link.href = data.data.urls[0];
+        link.setAttribute("target", "_blank");
+        link.setAttribute("download", "boarding pass");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        notification.success({
+          message: "Success",
+          description: data.data.message,
+        });
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error",
+          description: "An Error Occured",
+        });
+      });
+  };
+
   if (!props.pnr) {
     router.push("/checkin");
   }
@@ -248,14 +355,8 @@ const CheckInDetails = (props) => {
                       </p>
                       <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10 mt-5">
                         <p className="tripType self-center">
-                          {
-                            bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                              ?.FlightDesignator.CarrierCode
-                          }
-                          {
-                            bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                              ?.FlightDesignator.FlightNumber
-                          }
+                          {Journey?.Segments[0]?.FlightDesignator.CarrierCode}
+                          {Journey?.Segments[0]?.FlightDesignator.FlightNumber}
                         </p>
                         <div className="flex justify-between">
                           <div className="flex flex-col">
@@ -296,30 +397,15 @@ const CheckInDetails = (props) => {
                         </div>
                         <p className="tripTime self-center">
                           {bookingResponse &&
-                            formatDistanceStrict(
-                              new Date(Journey?.Segments[0]?.STD),
-                              new Date(Journey?.Segments[0]?.STA)
+                            timeConvert(
+                              differenceInMinutes(
+                                new Date(Journey?.Segments[0]?.STA),
+                                new Date(Journey?.Segments[0]?.STD)
+                              )
                             )}
                         </p>
                       </div>
                     </section>
-
-                    {/* <section className="checkin__info mx-6 my-3">
-                      <p>
-                        <span className="text-primary text-primary-main font-bold">
-                          NOTE:&nbsp;
-                        </span>
-                        You do not need to select pasengers for manage services
-                      </p>
-                    </section>
-                    <section className="mx-6">
-                      <button
-                        onClick={handleServices}
-                        className={`basis-full md:basis-auto btn btn-outline checkin-services mb-3 md:mb-0 md:mr-3`}
-                      >
-                        Manage Services
-                      </button>
-                    </section> */}
 
                     <section className="mx-6">
                       <h3 className="title-text no-mb">PASSENGERS</h3>
@@ -336,14 +422,17 @@ const CheckInDetails = (props) => {
                               <label
                                 htmlFor={`passenger-${index}-${pIndex}`}
                                 className={`${
-                                  Journey?.Segments[0]?.PaxSegments[pIndex]
-                                    ?.LiftStatus === 1 && "text-gray-300"
+                                  (Journey?.Segments[0]?.PaxSegments[pIndex]
+                                    ?.LiftStatus === 1 ||
+                                    Journey?.PackageIndicator == 0) &&
+                                  "text-gray-300"
                                 } ml-2 text-lg font-semibold capitalize w-full flex items-center`}
                               >
                                 <input
                                   disabled={
                                     Journey?.Segments[0]?.PaxSegments[pIndex]
-                                      .LiftStatus
+                                      .LiftStatus ||
+                                    Journey?.PackageIndicator == 0
                                   }
                                   className="w-5 h-5 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2 mr-3"
                                   type="checkbox"
@@ -355,7 +444,7 @@ const CheckInDetails = (props) => {
                                   }
                                 />
                                 {passenger.Names[0].FirstName}{" "}
-                                {passenger.Names[0].LastName}
+                                {passenger.Names[0].LastName}{" "}
                               </label>
                             </div>
                           </div>
@@ -387,6 +476,48 @@ const CheckInDetails = (props) => {
                                   Journey.Segments[0].PaxSSRs,
                                   passenger.PassengerNumber
                                 )}
+                              </>
+                            )}
+                            {Journey.Segments[0].PaxSSRs.length > 0 && (
+                              <>
+                                {SpecialAssistance(
+                                  Journey.Segments[0].PaxSSRs,
+                                  passenger.PassengerNumber
+                                )}
+                              </>
+                            )}
+
+                            {Journey?.Segments[0]?.PaxSegments[pIndex]
+                              ?.LiftStatus === 1 && (
+                              <>
+                                <div className="flex flex-wrap md:flex-nowrap items-center justify-between ml-auto">
+                                  <button
+                                    className="btn btn-primary md:mr-1 basis-full md:basis-auto mb-3 md:mb-0"
+                                    onClick={() =>
+                                      triggerDownloadBoardingPass(
+                                        passenger.PassengerNumber,
+                                        Journey?.Segments[0]?.DepartureStation,
+                                        Journey?.Segments[0]?.ArrivalStation
+                                      )
+                                    }
+                                    disabled={isLoading}
+                                  >
+                                    Download Boarding Pass
+                                  </button>
+                                  <button
+                                    className="btn btn-outline  basis-full md:basis-auto"
+                                    onClick={() =>
+                                      triggerEmailBoardingPass(
+                                        passenger.PassengerNumber,
+                                        Journey?.Segments[0]?.DepartureStation,
+                                        Journey?.Segments[0]?.ArrivalStation
+                                      )
+                                    }
+                                    disabled={isLoading}
+                                  >
+                                    Email Boarding Pass
+                                  </button>
+                                </div>
                               </>
                             )}
                           </div>

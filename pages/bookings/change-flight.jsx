@@ -16,6 +16,7 @@ import BookingIbeHeader from "containers/Booking/IbeHeader";
 import ReturnBookingIbeHeader from "containers/Booking/IbeHeader/ReturnIbeHeader";
 import { notification } from "antd";
 import ManageFlightWidget from "containers/Widgets/ManageFlightWidget";
+import LogoIcon from "assets/svgs/logo.svg";
 
 const ManageUpdateItenary = () => {
   const router = useRouter();
@@ -65,13 +66,24 @@ const ManageUpdateItenary = () => {
     }
   };
 
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   return (
     <BaseLayout>
-      <section className="w-full">
+      <nav className="top__bar logo-holder">
+        <button onClick={goBackToHome}>
+          <figure className="cursor-pointer">
+            <LogoIcon />
+          </figure>
+        </button>
+      </nav>
+      <section className="w-full pt-20 lg:pt-0">
         <section className="ga__section bg-normal">
           <div className="ga__section__main standalone">
             <h2 className="text-primary-main font-extrabold text-2xl mb-4 text-center">
-              UPDATE ITINERARY 
+              UPDATE ITINERARY
             </h2>
 
             <div className="flex flex-col mb-8">
@@ -82,9 +94,13 @@ const ManageUpdateItenary = () => {
               {manageFlightAvailabilityLoading ? (
                 <div className="px-12 py-12">
                   <SkeletonLoader />
+                  <SkeletonLoader />
+                  <SkeletonLoader />
                 </div>
               ) : (
                 <>
+                  {/* <p>Trip {tripParams?.LiftStatus}</p>
+                  <p>Return Trip {returnParams?.LiftStatus}</p> */}
                   {manageFlightAvailabilityResponse ? (
                     manageFlightAvailabilityResponse?.Schedules.length > 0 ? (
                       <>
@@ -101,6 +117,11 @@ const ManageUpdateItenary = () => {
                                 <IbeTrips
                                   flightSchedule={_schedule}
                                   schedueIndex={_schedueIndex}
+                                  liftStatus={
+                                    parseInt(_schedueIndex) === 0
+                                      ? tripParams?.LiftStatus
+                                      : returnParams?.LiftStatus
+                                  }
                                 />
                               </>
                             );

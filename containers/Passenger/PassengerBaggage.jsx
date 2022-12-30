@@ -91,7 +91,7 @@ const PassengerBaggage = ({
     <Fragment>
       <section className="flex flex-col">
         <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-4">
-          EXTRA BAGGAGE
+           EXTRA BAGGAGE <span className="italic">(Do you require any extra checked in baggage allowance. Its cheaper online than at the airport)</span>
         </h2>
 
         <div className="flex h-16 border-b mb-6">

@@ -270,7 +270,7 @@ const PaymentInfo = () => {
                                               <h6>
                                                 {" "}
                                                 ₦
-                                                {_SSRSum?.XBAG20.toLocaleString()}
+                                                {_SSRSum?.XBAG20?.toLocaleString()}
                                               </h6>
                                             </div>
                                           </div>

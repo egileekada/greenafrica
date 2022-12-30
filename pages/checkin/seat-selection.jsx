@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useEffect, useRef } from "react";
-import { notification } from "antd";
+import { notification, Tabs } from "antd";
 import { useRouter } from "next/router";
-import { Tabs } from "antd";
 import BaseLayout from "layouts/Base";
 
 import Popup from "components/Popup";
@@ -37,6 +36,7 @@ const SeatSelection = () => {
   const [showPopUp, setShow] = useState(false);
   const [ticketIndex, setTicketIndex] = useState(0);
   const [showEmergency, setEmergency] = useState(false);
+  const [cost, setCost] = useState(0);
 
   const {
     signature,
@@ -140,7 +140,12 @@ const SeatSelection = () => {
         .then((data) => {
           router.push("/checkin/confirm");
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          notification.error({
+            message: "Error",
+            description: error?.data?.Error?.ErrorText,
+          });
+        });
     }
   };
 
@@ -215,6 +220,7 @@ const SeatSelection = () => {
                               productClass={
                                 journey?.Segments[0].Fares[0].RuleNumber
                               }
+                              setCost={setCost}
                             />
                           </TabPane>
                         )
@@ -227,23 +233,34 @@ const SeatSelection = () => {
         </section>
 
         <div className="sticky bottom-0 border border-t-2 border-[#dadce0] z-40 bg-[#fff] p-6 w-full">
-          <div className="flex md:justify-items-end gap-2">
-            <button
-              onClick={skipSeatSelection}
-              className="btn btn-outline text-center mr-4 w-1/2 md:w-1/6 md:ml-auto"
-            >
-              {checkInLoading ? "Processing" : "Skip"}
-            </button>
-
-            {seats?.length > 0 && (
-              <button
-                className="btn btn-primary w-1/2 md:w-1/6"
-                onClick={initAssignSeats}
-                disabled={isLoading}
-              >
-                {isLoading ? "Assigning..." : "Continue"}
-              </button>
+          <div className="grid md:flex md:justify-items-end gap-2">
+            {cost > 0 && (
+              <div className="w-100">
+                <p>Total amount</p>
+                <h2 class="text-black font-semibold font-header text-xl mb-3">
+                  ₦ {cost}
+                </h2>
+              </div>
             )}
+
+            <div className="md:ml-auto w-75 flex">
+              <button
+                onClick={skipSeatSelection}
+                className="btn btn-outline text-center mr-4 w-1/2 md:w-3/4"
+              >
+                {checkInLoading ? "Processing" : "Skip"}
+              </button>
+
+              {seats?.length > 0 && (
+                <button
+                  className="btn btn-primary w-1/2 md:w-3/4"
+                  onClick={initAssignSeats}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Assigning..." : "Continue"}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </BaseLayout>

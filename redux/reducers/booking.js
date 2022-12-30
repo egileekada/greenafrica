@@ -13,6 +13,7 @@ import { GetSSRAvailabilityForBooking } from "services/bookingService";
 
 const initialState = {
   manageBookingPnr: null,
+  managedPnrWithoutPayment: null,
   testBooking: "tee",
   tripParams: null,
   returnParams: null,
@@ -41,6 +42,12 @@ const initialState = {
 
   ResellSSRLoading: false,
   ResellSSRResponse: null,
+
+  goDifference: [],
+  returnDifference: [],
+
+  newSSRs: [],
+  newReturnSSRs: [],
 };
 
 export const bookingSlice = createSlice({
@@ -49,6 +56,9 @@ export const bookingSlice = createSlice({
   reducers: {
     setManageBookingPnr: (state, { payload }) => {
       state.manageBookingPnr = payload;
+    },
+    setManagedPnrWithoutPayment: (state, { payload }) => {
+      state.managedPnrWithoutPayment = payload;
     },
     setTripParams: (state, { payload }) => {
       state.tripParams = payload;
@@ -120,6 +130,20 @@ export const bookingSlice = createSlice({
     setResellSSRResponse: (state, { payload }) => {
       state.ResellSSRResponse = payload;
     },
+
+    setGoDifference: (state, { payload }) => {
+      state.goDifference = payload;
+    },
+    setReturnDifference: (state, { payload }) => {
+      state.returnDifference = payload;
+    },
+
+    setNewSSRS: (state, { payload }) => {
+      state.newSSRs = payload;
+    },
+    setNewReturnSSRS: (state, { payload }) => {
+      state.newReturnSSRs = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState);
@@ -128,6 +152,7 @@ export const bookingSlice = createSlice({
 
 export const {
   setManageBookingPnr,
+  setManagedPnrWithoutPayment,
   setTripParams,
   setReturnParams,
   setLowFareAvailabilityLoading,
@@ -154,6 +179,12 @@ export const {
 
   setCancelBookingSSRLoading,
   setCancelBokingSSRResponse,
+
+  setGoDifference,
+  setReturnDifference,
+
+  setNewSSRS,
+  setNewReturnSSRS,
 } = bookingSlice.actions;
 
 export const bookingSelector = (state) => state.booking;
@@ -263,9 +294,9 @@ export const fetchLowFareAvailability =
       AvailabilityRequest: {
         DepartureStation: departureStation,
         ArrivalStation: arrivalStation,
-        beginDate: format(currentDate, "yyyy-MM-dd"),
+        beginDate: format(new Date(currentDate), "yyyy-MM-dd"),
         beginDateSpecified: true,
-        endDate: format(addDays(currentDate, 180), "yyyy-MM-dd"),
+        endDate: format(addDays(new Date(currentDate), 180), "yyyy-MM-dd"),
         endDateSpecified: true,
         CarrierCode: "Q9",
         FlightType: 5,
@@ -931,8 +962,115 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
 
 export const FetchSSRAvailability = () => async (dispatch, getState) => {
   dispatch(setSSRAvailabilityLoading(true));
-
+  const currentBooking = getState().booking;
   const currentSession = getState().session;
+
+  const _bookingResponse = currentSession?.bookingResponse;
+  let _segmentKeyList = [];
+
+  if (_bookingResponse) {
+    const JOURNEYS = _bookingResponse?.Booking?.Journeys;
+
+    if (JOURNEYS && JOURNEYS?.length > 0) {
+      if (currentBooking?.goTrip || currentBooking?.returnTrip) {
+        currentBooking?.goTrip &&
+          _segmentKeyList.push({
+            carrierCode:
+              currentBooking?.goTrip?.segment?.FlightDesignator?.CarrierCode,
+            flightNumber:
+              currentBooking?.goTrip?.segment?.FlightDesignator?.FlightNumber,
+            opSuffix: "",
+            departureDate: currentBooking?.goTrip?.segment?.STD,
+            departureDateSpecified: true,
+            arrivalStation: currentBooking?.goTrip?.segment?.ArrivalStation,
+            departureStation: currentBooking?.goTrip?.segment?.DepartureStation,
+          });
+        currentBooking?.returnTrip &&
+          _segmentKeyList.push({
+            carrierCode:
+              currentBooking?.returnTrip?.segment?.FlightDesignator
+                ?.CarrierCode,
+            flightNumber:
+              currentBooking?.returnTrip?.segment?.FlightDesignator
+                ?.FlightNumber,
+            opSuffix: "",
+            departureDate: currentBooking?.returnTrip?.segment?.STD,
+            departureDateSpecified: true,
+            arrivalStation: currentBooking?.returnTrip?.segment?.ArrivalStation,
+            departureStation:
+              currentBooking?.returnTrip?.segment?.DepartureStation,
+          });
+      } else {
+        JOURNEYS.map((_sessionJourney) => {
+          let newObj = {
+            carrierCode:
+              _sessionJourney?.Segments[0]?.FlightDesignator?.CarrierCode,
+            flightNumber:
+              _sessionJourney?.Segments[0]?.FlightDesignator?.FlightNumber,
+            opSuffix: "",
+            departureDate: _sessionJourney?.Segments[0]?.STD,
+            departureDateSpecified: true,
+            arrivalStation: _sessionJourney?.Segments[0]?.ArrivalStation,
+            departureStation: _sessionJourney?.Segments[0]?.DepartureStation,
+          };
+
+          _segmentKeyList.push(newObj);
+        });
+      }
+
+      let requestPayload = {
+        header: {
+          signature: currentSession?.signature,
+          messageContractVersion: "",
+          enableExceptionStackTrace: true,
+          contractVersion: 0,
+        },
+        getSsrAvailabilityForBookingRequestDto: {
+          getSsrAvailabilityForBookingRequest: {
+            ssrAvailabilityForBookingRequest: {
+              segmentKeyList: [..._segmentKeyList],
+              PassengerNumberList: [0],
+              inventoryControlled: true,
+              inventoryControlledSpecified: true,
+              nonInventoryControlled: true,
+              nonInventoryControlledSpecified: true,
+              seatDependent: true,
+              seatDependentSpecified: true,
+              nonSeatDependent: true,
+              nonSeatDependentSpecified: true,
+              currencyCode: "NGN",
+              ssrAvailabilityMode: 0,
+              ssrAvailabilityModeSpecified: true,
+              feePricingMode: 0,
+              feePricingModeSpecified: true,
+            },
+          },
+        },
+      };
+      try {
+        const SSRAvailabilityResponse = await GetSSRAvailabilityForBooking(
+          requestPayload
+        );
+        await dispatch(
+          setSSRAvailabilityResponse(SSRAvailabilityResponse.data)
+        );
+      } catch (err) {}
+    }
+  } else {
+    notification.error({
+      message: "Error",
+      description: "Fetch Additional Services Failed",
+    });
+  }
+
+  dispatch(setSSRAvailabilityLoading(false));
+};
+
+export const _FetchSSRAvailability = () => async (dispatch, getState) => {
+  dispatch(setSSRAvailabilityLoading(true));
+  const currentBooking = getState().booking;
+  const currentSession = getState().session;
+
   const _bookingResponse = currentSession?.bookingResponse;
   let _segmentKeyList = [];
 
@@ -1001,8 +1139,7 @@ export const FetchSSRAvailability = () => async (dispatch, getState) => {
   } else {
     notification.error({
       message: "Error",
-      description:
-        "Fetch Additional Services Failed,Please go back and fill-in relevant details",
+      description: "Fetch Additional Services Failed",
     });
   }
 

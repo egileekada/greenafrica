@@ -16,12 +16,11 @@ import {
   fetchLowFareAvailability,
   returnLowFareAvailability,
   fetchFlightAvailability,
+  setSelectedSessionFare,
+  setSelectedSessionJourney,
 } from "redux/reducers/session";
 import { resetStore } from "redux/store";
 import { showWidget, hideWidget } from "redux/reducers/general";
-import Spinner from "components/Spinner";
-// import BackIcon from "assets/svgs/seats/arrowleft.svg";
-// import ToTop from "assets/svgs/toTop.svg";
 import LogoIcon from "assets/svgs/logo.svg";
 import { notification } from "antd";
 import { useRouter } from "next/router";
@@ -56,6 +55,29 @@ const Home = () => {
       }
     }
     checkParams();
+  }, []);
+
+  useEffect(() => {
+    async function prefillSelectedJourneys() {
+      const _selectedSessionJourney =
+        typeof window !== "undefined"
+          ? sessionStorage?.selectedSessionJourney
+            ? JSON.parse(sessionStorage.getItem("selectedSessionJourney"))
+            : null
+          : null;
+      const _selectedSessionFare =
+        typeof window !== "undefined"
+          ? sessionStorage?.selectedSessionFare
+            ? JSON.parse(sessionStorage.getItem("selectedSessionFare"))
+            : null
+          : null;
+
+      if (_selectedSessionJourney && _selectedSessionFare) {
+        dispatch(setSelectedSessionFare(_selectedSessionFare));
+        dispatch(setSelectedSessionJourney(_selectedSessionJourney));
+      }
+    }
+    prefillSelectedJourneys();
   }, []);
 
   useEffect(() => {
@@ -195,6 +217,17 @@ const Home = () => {
                   SELECT FLIGHT
                 </h2>
 
+                {/* <h2>
+                  {sessionStorage?.selectedSessionJourney
+                    ? "selectedSessionJourney exists"
+                    : " selectedSessionJourneynot exits"}
+                </h2>
+                <h2>
+                  {sessionStorage?.selectedSessionFare
+                    ? "jselectedSessionFare exists"
+                    : "selectedSessionFare not exits"}
+                </h2> */}
+
                 <section className="flex flex-col scrollable">
                   <div className="flex flex-col mb-10">
                     {flightAvailabilityLoading ? (
@@ -251,7 +284,7 @@ const Home = () => {
                 </section>
               </div>
               <div className="ga__section__side">
-                <IbeSidebar />
+                <IbeSidebar enableEdit={true} />
               </div>
             </section>
           </Fragment>

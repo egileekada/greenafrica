@@ -54,12 +54,11 @@ const IbeTripVariant = ({
     return `${name}`;
   };
 
-  const totalServiceCharge = fare.PaxFares[0].ServiceCharges.reduce(
-    (accumulator, object) => {
-      return accumulator + object.Amount;
-    },
-    0
-  );
+  const totalServiceCharge = fare?.PaxFares
+    ? fare?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
+        return accumulator + object.Amount;
+      }, 0)
+    : 0;
 
   const handleBtnClick = (_fare) => {
     setSelected({
@@ -93,7 +92,7 @@ const IbeTripVariant = ({
                 ) : fare?.RuleNumber.toLowerCase() === "flex" ? (
                   "For Comfort & Convenience"
                 ) : (
-                  "We Recommend"
+                  "We Recommend "
                 )}
               </p>
             </div>
@@ -122,7 +121,9 @@ const IbeTripVariant = ({
                 parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
               }`}
             >
-              ₦{totalServiceCharge.toLocaleString("NGN")}
+              {parseInt(fare?.AvailableCount) < 1
+                ? "Sold Out"
+                : `₦ ${totalServiceCharge.toLocaleString("NGN")}`}
             </button>
           )}
           {fare_variant === "clsc" && (
@@ -132,7 +133,9 @@ const IbeTripVariant = ({
                 parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
               }`}
             >
-              ₦{totalServiceCharge.toLocaleString("NGN")}
+              {parseInt(fare?.AvailableCount) < 1
+                ? "Sold Out"
+                : `₦ ${totalServiceCharge.toLocaleString("NGN")}`}
             </button>
           )}
           {fare_variant === "flexi" && (
@@ -142,7 +145,9 @@ const IbeTripVariant = ({
                 parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
               }`}
             >
-              ₦{totalServiceCharge.toLocaleString("NGN")}
+              {parseInt(fare?.AvailableCount) < 1
+                ? "Sold Out"
+                : `₦ ${totalServiceCharge.toLocaleString("NGN")}`}
             </button>
           )}
         </div>

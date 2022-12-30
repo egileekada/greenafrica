@@ -25,6 +25,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
+  blacklist: ["widgetApi", "bookingApi"],
 };
 
 const rootReducer = combineReducers({

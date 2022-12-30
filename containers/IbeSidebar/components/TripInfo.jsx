@@ -3,6 +3,7 @@
 import { useState } from "react";
 import CheckIcon from "assets/svgs/done.svg";
 import OneIcon from "assets/svgs/one.svg";
+import CostIcon from "assets/svgs/cost.svg";
 import FlightIcon from "assets/svgs/plane-oultine.svg";
 import CaretLeft from "assets/svgs/sidebar/caretleft.svg";
 import { useSelector } from "react-redux";
@@ -64,6 +65,22 @@ const TripInfo = () => {
               <h6>
                 {segment?.FlightDesignator?.CarrierCode}{" "}
                 {segment?.FlightDesignator?.FlightNumber}
+              </h6>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <div className="ibe__sidebar__row bordered">
+            <div className="flex items-center">
+              <figure className="mr-2">
+                <CostIcon />
+              </figure>
+              <h6>Flight Cost :</h6>
+            </div>
+            <div>
+              <h6>
+                ₦
+                {sessionStateResponse?.BookingData?.BookingSum?.BalanceDue.toLocaleString()}
               </h6>
             </div>
           </div>

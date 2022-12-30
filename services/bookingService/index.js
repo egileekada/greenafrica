@@ -59,7 +59,10 @@ export const GetLowFareAvailability = async (payload) => {
 };
 
 export const BookingCommit = async (payload) => {
-  let request = axios.post(`${BOOKING}BookingCommit`, payload);
+  // let request = axios.post(`${BOOKING}BookingCommit`, payload);
+  console.log("calling here ffffg");
+  let request = axios.post(`${BOOKING}GeneratePNR`, payload);
+
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

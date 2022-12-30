@@ -25,6 +25,7 @@ const antIcon = (
 
 const IbeTripPopup = ({
   selected,
+  setSelected,
   showPopUp,
   closePopUp,
   sellKey,
@@ -64,7 +65,6 @@ const IbeTripPopup = ({
       (_newFare) => _newFare?.RuleNumber?.toLowerCase() === fareId.toLowerCase()
     );
 
-    // console.log("latestFare", latestFare[0]);
     if (latestFare.length > 0) {
       if (flightParams?.isRoundTrip === 1) {
         const existingFares = selectedSessionFare
@@ -100,66 +100,30 @@ const IbeTripPopup = ({
 
   const handleSell = async (fareId) => {
     //FareKey is Fare SellKey
-    // console.log("selected", selected);
+    const newSelected = segment.Fares.filter((_item) => {
+      return _item.RuleNumber.toLowerCase() === fareId.toLowerCase();
+    });
+    if (newSelected && newSelected.length > 0) {
+      const _selected = newSelected[0];
+      setSelected({ ..._selected, sellKey });
+      handleFare(fareId);
 
-    handleFare(fareId);
+      if (flightParams?.isRoundTrip === 1) {
+        const existingJourneys = selectedSessionJourney
+          ? [...selectedSessionJourney]
+          : [];
+        const _cleanedJourneys = existingJourneys.filter((_item) => {
+          const _ruleBasis =
+            parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
+          return !_ruleBasis;
+        });
 
-    if (flightParams?.isRoundTrip === 1) {
-      const existingJourneys = selectedSessionJourney
-        ? [...selectedSessionJourney]
-        : [];
-      const _cleanedJourneys = existingJourneys.filter((_item) => {
-        const _ruleBasis =
-          parseInt(_item?.schedueIndex) === parseInt(schedueIndex);
-        return !_ruleBasis;
-      });
-
-      const _newJourney = {
-        ...journey,
-        sellKey,
-        segmentStd,
-        segmentFlightNumber,
-        fareKey: selected?.FareSellKey,
-        schedueIndex,
-        FlightDesignator: {
-          CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
-          FlightNumber: journey?.Segments[0]?.FlightDesignator?.FlightNumber,
-        },
-        arrivalStation: journey?.Segments[0]?.ArrivalStation,
-        departureStation: journey?.Segments[0]?.DepartureStation,
-        std: journey?.Segments[0]?.STD,
-        RuleNumber: selected?.RuleNumber,
-      };
-
-      const _newJourneys = [..._cleanedJourneys, _newJourney];
-      let orderedJourneys = [];
-
-      _newJourneys.map((_item) => {
-        if (_item) {
-          if (parseInt(_item?.schedueIndex) === 0) {
-            orderedJourneys[0] = _item;
-          }
-
-          if (parseInt(_item?.schedueIndex) === 1) {
-            orderedJourneys[1] = _item;
-          }
-        }
-      });
-
-      dispatch(setSelectedSessionJourney([...orderedJourneys]));
-      document
-        .getElementById("returnContainer")
-        .scrollIntoView({ behavior: "smooth" });
-      closePopUp();
-      setIsVisible(false);
-    } else {
-      const _selectedJorney = [
-        {
+        const _newJourney = {
           ...journey,
           sellKey,
           segmentStd,
           segmentFlightNumber,
-          fareKey: selected?.FareSellKey,
+          fareKey: _selected?.FareSellKey,
           schedueIndex,
           FlightDesignator: {
             CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
@@ -168,11 +132,53 @@ const IbeTripPopup = ({
           arrivalStation: journey?.Segments[0]?.ArrivalStation,
           departureStation: journey?.Segments[0]?.DepartureStation,
           std: journey?.Segments[0]?.STD,
-          RuleNumber: selected?.RuleNumber,
-        },
-      ];
-      dispatch(setSelectedSessionJourney(_selectedJorney));
-      router.push("/trip/view");
+          RuleNumber: _selected?.RuleNumber,
+        };
+
+        const _newJourneys = [..._cleanedJourneys, _newJourney];
+        let orderedJourneys = [];
+
+        _newJourneys.map((_item) => {
+          if (_item) {
+            if (parseInt(_item?.schedueIndex) === 0) {
+              orderedJourneys[0] = _item;
+            }
+
+            if (parseInt(_item?.schedueIndex) === 1) {
+              orderedJourneys[1] = _item;
+            }
+          }
+        });
+
+        dispatch(setSelectedSessionJourney([...orderedJourneys]));
+        // document
+        //   .getElementById("returnContainer")
+        //   .scrollIntoView({ behavior: "smooth" });
+        closePopUp();
+        setIsVisible(false);
+      } else {
+        const _selectedJorney = [
+          {
+            ...journey,
+            sellKey,
+            segmentStd,
+            segmentFlightNumber,
+            fareKey: _selected?.FareSellKey,
+            schedueIndex,
+            FlightDesignator: {
+              CarrierCode: journey?.Segments[0]?.FlightDesignator?.CarrierCode,
+              FlightNumber:
+                journey?.Segments[0]?.FlightDesignator?.FlightNumber,
+            },
+            arrivalStation: journey?.Segments[0]?.ArrivalStation,
+            departureStation: journey?.Segments[0]?.DepartureStation,
+            std: journey?.Segments[0]?.STD,
+            RuleNumber: _selected?.RuleNumber,
+          },
+        ];
+        dispatch(setSelectedSessionJourney(_selectedJorney));
+        router.push("/trip/view");
+      }
     }
   };
 
@@ -301,22 +307,24 @@ const IbeTripPopup = ({
                       <h5>Checked Baggage</h5>
                     </div>
                     <div className="benefits__popup__row__item">
-                      <figure>
+                      <fdddddigure>
                         <NullIcon />
-                      </figure>
+                      </fdddddigure>
                       <p>₦500/kg</p>
                     </div>
                     <div className="benefits__popup__row__item">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>15 kg (extra ₦500/kg)</p>
+                      <p>15kg Included </p>
+                      <p>(Extra at ₦500/kg)</p>
                     </div>
                     <div className="benefits__popup__row__item border-b">
                       <figure>
                         <CheckIcon />
                       </figure>
-                      <p>20 kg (extra ₦500/kg)</p>
+                      <p>20kg Included</p>
+                      <p>(Extra at ₦500/kg)</p>
                     </div>
                   </div>
                   {/* Seat Selection */}
@@ -358,7 +366,8 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Upgrade to gSaver"}
+                          : "Continue with gSaver"}{" "}
+                        {/* {selected?.AmountDifference} */}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -373,7 +382,7 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Upgrade to gClassic"}
+                          : "Continue gClassic"}
                       </button>
                     </div>
                     <div className="benefits__popup__row__item cta-row">
@@ -389,7 +398,7 @@ const IbeTripPopup = ({
                       >
                         {sellFlightLoading
                           ? "Loading....."
-                          : "Upgrade to gFlex"}
+                          : "Continue with gFlex"}
                       </button>
                     </div>
                   </div>
@@ -397,8 +406,12 @@ const IbeTripPopup = ({
               </section>
             </section>
             <section className="w-full bg-white rounded-xl flex flex-col  lg:hidden p-8">
+              <h4 className="text-black font-bold text-xl mb-6">
+                Upgrade your fare and enjoy more benefits
+              </h4>
+
               <div className="mobile__benefits__item">
-                <p>Our Recommendation</p>
+                <p></p>
                 <h5>gSaver</h5>
                 <ul>
                   {gSaver.map((_gSaver, _i) => {
@@ -420,13 +433,12 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Upgrade to gSaver
+                  Continue with gSaver
                 </button>
               </div>
 
               <div className="mobile__benefits__item">
-                <h4>Upgrade your fare and enjoy more benefits</h4>
-                {/* <p>You selected:</p> */}
+                <p>Our Recommendation</p>
                 <h5>gClassic</h5>
                 <ul>
                   {gClassic.map((_gClassic, _i) => {
@@ -449,12 +461,12 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Upgrade to gClassic
+                  Continue with gClassic
                 </button>
               </div>
 
               <div className="mobile__benefits__item">
-                <p>Our Recommendation</p>
+                <p>For Comfort</p>
                 <h5>gFlex</h5>
                 <ul>
                   {gFlex.map((_gFlex, _i) => {
@@ -478,7 +490,7 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Upgrade to gFlex
+                  Continue with gFlex
                 </button>
               </div>
             </section>

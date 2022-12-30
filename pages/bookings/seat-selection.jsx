@@ -10,6 +10,7 @@ import Popup from "components/Popup";
 import Seatslegend from "./Seats/SeatPopUp";
 
 import { useSelector, useDispatch } from "react-redux";
+import LogoIcon from "assets/svgs/logo.svg";
 
 import {
   sessionSelector,
@@ -18,9 +19,12 @@ import {
   setLoading,
 } from "redux/reducers/session";
 
+import { setManagedPnrWithoutPayment } from "redux/reducers/booking";
+
 import SeatWrapper from "./Seats/SeatWrapper";
 import { useGetLocationsQuery } from "services/widgetApi.js";
 import { useTryAssignSeatMutation } from "services/bookingApi";
+import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
 
 const SeatSelection = () => {
   const router = useRouter();
@@ -33,6 +37,8 @@ const SeatSelection = () => {
 
   const { signature, isLoading, bookingResponse, seats, checkInSelection } =
     useSelector(sessionSelector);
+  const [bookingCommitWithoutPayment, { isLoading: commitPaymentLoading }] =
+    useBookingCommitWithoutPaymentMutation();
 
   const { TabPane } = Tabs;
 
@@ -64,11 +70,39 @@ const SeatSelection = () => {
     await assignUserseat()
       .unwrap()
       .then((data) => {
-        notification.success({
-          message: "Success",
-          description: "Seat Assignment successful",
-        });
-        router.push("/bookings/confirm");
+        if (
+          parseInt(
+            data?.BookingUpdateResponseData?.Success?.PNRAmount?.BalanceDue
+          ) > 0
+        ) {
+          router.push(`/bookings/payment`);
+        } else {
+          bookingCommitWithoutPayment()
+            .unwrap()
+            .then((data) => {
+              dispatch(
+                setManagedPnrWithoutPayment(
+                  data?.BookingUpdateResponseData?.Success?.RecordLocator
+                )
+              );
+              router.push(
+                {
+                  pathname: "/bookings/home",
+                  query: {
+                    pnr: data?.BookingUpdateResponseData?.Success
+                      ?.RecordLocator,
+                  },
+                },
+                "/bookings/home"
+              );
+            })
+            .catch((error) => {
+              notification.error({
+                message: "Error",
+                description: "Booking Commit Failed",
+              });
+            });
+        }
       })
       .catch((error) => {
         notification.error({
@@ -77,6 +111,10 @@ const SeatSelection = () => {
         });
       });
     dispatch(setLoading(false));
+  };
+
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
   };
 
   useEffect(() => {
@@ -89,7 +127,14 @@ const SeatSelection = () => {
   return (
     <>
       <BaseLayout>
-        <section className="w-full checkin">
+        <nav className="top__bar logo-holder">
+          <button onClick={goBackToHome}>
+            <figure className="cursor-pointer">
+              <LogoIcon />
+            </figure>
+          </button>
+        </nav>
+        <section className="w-full checkin pt-20 lg:pt-0">
           <section className="ga__section bg-normal">
             <div className="ga__section__main standalone">
               <div className="mb-8">
@@ -100,7 +145,7 @@ const SeatSelection = () => {
 
               <section className="flex flex-col bg-white pb-24 pt-5 px-3 md:px-8 rounded-lg">
                 <Tabs
-                  defaultActiveKey="1"
+                  defaultActiveKey=""
                   tabBarStyle={{ color: "#47FF5A" }}
                   onChange={(e) => setTicketIndex(e - 1)}
                 >
@@ -139,13 +184,23 @@ const SeatSelection = () => {
                         </div>
                       }
                       key={index + 1}
+                      disabled={journey.State == 1}
                     >
-                      <SeatWrapper
-                        setShow={setShow}
-                        ticketIndex={index}
-                        key={index + 2}
-                        productClass={journey?.Segments[0].Fares[0].RuleNumber}
-                      />
+                      <div
+                        className={
+                          journey.State == 1 &&
+                          "pointer-events-none opacity-50 cursor-not-allowed"
+                        }
+                      >
+                        <SeatWrapper
+                          setShow={setShow}
+                          ticketIndex={index}
+                          key={index + 2}
+                          productClass={
+                            journey?.Segments[0].Fares[0].RuleNumber
+                          }
+                        />
+                      </div>
                     </TabPane>
                   ))}
                 </Tabs>
@@ -168,7 +223,9 @@ const SeatSelection = () => {
                 onClick={initAssignSeats}
                 disabled={isLoading}
               >
-                {isLoading ? "Assigning..." : "Continue"}
+                {isLoading || commitPaymentLoading
+                  ? "Assigning..."
+                  : "Continue"}
               </button>
             )}
           </div>

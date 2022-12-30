@@ -24,6 +24,12 @@ const initialState = {
 
   cancelCheckinSSRLoading: false,
   cancelCheckinSSRResponse: null,
+
+  goDifference: [],
+  returnDifference: [],
+
+  newSSRs: [],
+  newReturnSSRs: [],
 };
 
 export const checkinSlice = createSlice({
@@ -67,6 +73,20 @@ export const checkinSlice = createSlice({
     setCancelCheckinSSRResponse: (state, { payload }) => {
       state.cancelCheckinSSRResponse = payload;
     },
+
+    setGoDifference: (state, { payload }) => {
+      state.goDifference = payload;
+    },
+    setReturnDifference: (state, { payload }) => {
+      state.returnDifference = payload;
+    },
+
+    setNewSSRS: (state, { payload }) => {
+      state.newSSRs = payload;
+    },
+    setNewReturnSSRS: (state, { payload }) => {
+      state.newReturnSSRs = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState);
@@ -90,6 +110,12 @@ export const {
 
   setCancelCheckinSSRLoading,
   setCancelCheckinSSRResponse,
+
+  setGoDifference,
+  setReturnDifference,
+
+  setNewSSRS,
+  setNewReturnSSRS,
 } = checkinSlice.actions;
 
 export const checkinSelector = (state) => state.checkin;

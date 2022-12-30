@@ -16,6 +16,12 @@ import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import ConfrimPageFares from "./components/ConfrimPageFares";
 import { useBookingCommitWithoutPaymentMutation } from "services/bookingApi";
+import LogoIcon from "assets/svgs/logo.svg";
+import { notification } from "antd";
+import {
+  bookingSelector,
+  setManagedPnrWithoutPayment,
+} from "redux/reducers/booking";
 
 const ConfirmManageBooking = () => {
   const router = useRouter();
@@ -25,6 +31,8 @@ const ConfirmManageBooking = () => {
 
   const [bookingCommitWithoutPayment, { isLoading: commitPaymentLoading }] =
     useBookingCommitWithoutPaymentMutation();
+
+  const { goTrip, returnTrip } = useSelector(bookingSelector);
 
   useEffect(() => {
     async function fetchBookingDetails() {
@@ -67,17 +75,29 @@ const ConfirmManageBooking = () => {
   };
 
   const PageCTA = () => {
+    const disabled =
+      parseInt(
+        sessionStateResponse?.BookingData?.BookingInfo?.BookingStatus
+      ) === 1 &&
+      parseInt(sessionStateResponse?.BookingData?.BookingSum?.BalanceDue) > 0;
+
     return (
       <section className="flex flex-wrap md:flex-nowrap mx-6">
         <button
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+            disabled ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+          } `}
           onClick={handleItenary}
         >
-          Change Flight
+          Change Flight{" "}
         </button>
         <button
           onClick={handleServices}
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+            goTrip || returnTrip
+              ? "pointer-events-none opacity-50 cursor-not-allowed"
+              : ""
+          } `}
         >
           Manage Services
         </button>
@@ -112,7 +132,7 @@ const ConfirmManageBooking = () => {
               )
             )}
             <PageInfo />
-            <PageCTA />
+            {/* <PageCTA /> */}
             <PassengersSection />
             <ConfrimPageFares />
           </>
@@ -235,6 +255,10 @@ const ConfirmManageBooking = () => {
     router.push("/bookings/services");
   };
 
+  const goBackToHome = () => {
+    window.location.assign("https://dev-website.gadevenv.com/");
+  };
+
   const SingleJourneyItem = ({ journey, journeyIndex }) => {
     return journey?.Segments.map((_segment) => {
       return (
@@ -313,7 +337,13 @@ const ConfirmManageBooking = () => {
       ? router.push("/bookings/payment")
       : bookingCommitWithoutPayment()
           .unwrap()
-          .then((data) => {
+        .then((data) => {
+            
+            dispatch(
+              setManagedPnrWithoutPayment(
+                sessionStateResponse?.BookingData?.RecordLocator
+              )
+            );
             router.push(
               {
                 pathname: "/bookings/home",
@@ -354,9 +384,19 @@ const ConfirmManageBooking = () => {
         </nav>
       )}
       <BaseLayout>
-        <section className="w-full checkin">
+        <nav className="top__bar logo-holder">
+          <button onClick={goBackToHome}>
+            <figure className="cursor-pointer">
+              <LogoIcon />
+            </figure>
+          </button>
+        </nav>
+        <section className="w-full checkin pt-4 lg:pt-0">
           {sessionStateLoading ? (
             <div className="px-12 py-12">
+              <SkeletonLoader />
+              <SkeletonLoader />
+              <SkeletonLoader />
               <SkeletonLoader />
             </div>
           ) : (

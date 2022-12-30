@@ -22,7 +22,8 @@ const BookingPassengerItem = ({
   const [vpPreSelected, setVPPreSelected] = useState(false);
   const [hpPreSelected, setHPPreSelected] = useState(false);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { newBookingSSRs, bookingSessionSSRs } = useSelector(bookingSelector);
+  const { newBookingSSRs, bookingSessionSSRs, goDifference } =
+    useSelector(bookingSelector);
   const dispatch = useDispatch();
 
   const _Arrival =
@@ -32,8 +33,8 @@ const BookingPassengerItem = ({
 
   useEffect(() => {
     async function mapSessionSSRs() {
-      if (bookingSessionSSRs && bookingSessionSSRs?.length > 0) {
-        const WCHRs = bookingSessionSSRs?.filter((_ssr) => {
+      if (goDifference && goDifference.length > 0) {
+        const WCHRs = goDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "WCHR"
@@ -41,10 +42,9 @@ const BookingPassengerItem = ({
         });
         if (WCHRs.length > 0) {
           setWCChecked(true);
-          setWCPreSelected(true);
         }
 
-        const VPRDs = bookingSessionSSRs?.filter((_ssr) => {
+        const VPRDs = goDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "VPRD"
@@ -52,10 +52,9 @@ const BookingPassengerItem = ({
         });
         if (VPRDs.length > 0) {
           setVPChecked(true);
-          setVPPreSelected(true);
         }
 
-        const HPRDs = bookingSessionSSRs?.filter((_ssr) => {
+        const HPRDs = goDifference?.filter((_ssr) => {
           return (
             _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
             _ssr?.ssrCode === "HPRD"
@@ -63,7 +62,41 @@ const BookingPassengerItem = ({
         });
         if (HPRDs.length > 0) {
           setHPChecked(true);
-          setHPPreSelected(true);
+        }
+      } else {
+        if (bookingSessionSSRs && bookingSessionSSRs?.length > 0) {
+          const WCHRs = bookingSessionSSRs?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "WCHR"
+            );
+          });
+          if (WCHRs.length > 0) {
+            setWCChecked(true);
+            setWCPreSelected(true);
+          }
+
+          const VPRDs = bookingSessionSSRs?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "VPRD"
+            );
+          });
+          if (VPRDs.length > 0) {
+            setVPChecked(true);
+            setVPPreSelected(true);
+          }
+
+          const HPRDs = bookingSessionSSRs?.filter((_ssr) => {
+            return (
+              _ssr?.passengerNumber === parseInt(passenger?.PassengerNumber) &&
+              _ssr?.ssrCode === "HPRD"
+            );
+          });
+          if (HPRDs.length > 0) {
+            setHPChecked(true);
+            setHPPreSelected(true);
+          }
         }
       }
     }
@@ -156,8 +189,12 @@ const BookingPassengerItem = ({
     <PassengerAccordion passenger={passenger}>
       <section className="flex flex-col">
         <div className="flex flex-col mt-">
-          <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-2">
-            SPECIAL ASSISTANCE
+          <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-4">
+            SPECIAL ASSISTANCE{" "}
+            <span className="italic">
+              (Please let us know if you will require any special assistance at
+              the airport)
+            </span>
           </h6>
 
           <div className="flex items-center mb-5 primary-checkbox">

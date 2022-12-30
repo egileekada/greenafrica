@@ -4,7 +4,7 @@ import Counter from "components/Counter";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import { bookingSelector, setNewBookingSSRs } from "redux/reducers/booking";
-import { v4 as uuid } from "uuid";
+import { uniqueId } from "lodash";
 
 const BoookingBaggageCard = ({
   passenger,
@@ -15,7 +15,6 @@ const BoookingBaggageCard = ({
   schedueIndex,
   ArrivalStation,
   DepartureStation,
-  activeTab,
   _limit,
 }) => {
   const [totalFare, setFare] = useState(0);
@@ -23,7 +22,8 @@ const BoookingBaggageCard = ({
   const [limit, setLimit] = useState(0);
   const [newSSRs, setNewSSRs] = useState([]);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { bookingSessionSSRs, newBookingSSRs } = useSelector(bookingSelector);
+  const { tripParams, bookingSessionSSRs, newBookingSSRs } =
+    useSelector(bookingSelector);
   const KG = SSRItem?.SSRCode.substring(1);
   const dispatch = useDispatch();
 
@@ -45,7 +45,7 @@ const BoookingBaggageCard = ({
       }
     }
     mapSessionSSRs();
-  }, [activeTab]);
+  }, []);
 
   useEffect(() => {
     async function setBaggageLimit() {
@@ -91,7 +91,7 @@ const BoookingBaggageCard = ({
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
-      const unique_id = uuid();
+      const unique_id = uniqueId(`${ArrivalStation}${DepartureStation}`);
       const SSRItemObj = new Array(value).fill({
         id: `${Date.now()}${unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
@@ -114,7 +114,7 @@ const BoookingBaggageCard = ({
         return !_ruleBasis;
       });
 
-      const _unique_id = uuid();
+      const _unique_id = uniqueId(`${ArrivalStation}${DepartureStation}`);
       const _SSRItemObj = new Array(value).fill({
         id: `${Date.now()}${_unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
@@ -173,14 +173,13 @@ const BoookingBaggageCard = ({
           <BaggageIcon />
         </figure>
         <p className="font-body text-primary-main text-xs mb-1">
-          Extra Bag Up to {KG}kg
+          Go Extra Bag Up to {KG}kg
         </p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}
         </p>
-        {/* <p>Limit : {limit}</p> */}
-        {/* <p>newSelection : {newSelection ? "newTrue" : "newFalse"}</p> */}
+
         <Counter
           value={value}
           onValueChange={onValueChange}
@@ -200,7 +199,6 @@ BoookingBaggageCard.defaultProps = {
   schedueIndex: 0,
   ArrivalStation: "",
   DepartureStation: "",
-  activeTab: "",
   _limit: 0,
 };
 

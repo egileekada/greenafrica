@@ -6,13 +6,20 @@ import { bookingSelector } from "redux/reducers/booking";
 import Spinner from "components/Spinner";
 import format from "date-fns/format";
 
-const IbeTrips = ({ flightSchedule, schedueIndex }) => {
+const IbeTrips = ({ flightSchedule, schedueIndex, liftStatus }) => {
   const { tripParams, returnParams, manageFlightAvailabilityLoading } =
     useSelector(bookingSelector);
 
-  
   return (
-    <section className="ibe__flight__trips">
+    <section
+      className={`ibe__flight__trips ${
+        liftStatus
+          ? parseInt(liftStatus) !== 0
+            ? "pointer-events-none opacity-50 cursor-not-allowed"
+            : ""
+          : ""
+      }`}
+    >
       <h2 className="text-primary-main font-extrabold text-base mb-8 uppercase">
         {parseInt(schedueIndex) === 0
           ? `DEPARTURE ON ${format(
@@ -29,7 +36,7 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
         {manageFlightAvailabilityLoading ? (
           <Spinner />
         ) : (
-          <section className="flex flex-col">
+          <section className={`flex flex-col`}>
             {flightSchedule ? (
               flightSchedule.length > 0 ? (
                 flightSchedule.map((_schedule) => {
@@ -62,6 +69,7 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
 IbeTrips.defaultProps = {
   flightSchedule: {},
   schedueIndex: "",
+  liftStatus: null,
 };
 
 export default IbeTrips;

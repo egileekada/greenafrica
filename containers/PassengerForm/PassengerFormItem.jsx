@@ -160,7 +160,7 @@ const PassengerFormItem = ({
 
   return (
     <div className="passenger__form__box">
-      <h3 className="font font-header font-bold text-xxs mb-4">
+      <h3 className="font font-header font-bold mb-4">
         {passenger.type === "ADT"
           ? `ADULT ${passenger.typeCount}`
           : passenger.type === "CHD"
@@ -170,71 +170,80 @@ const PassengerFormItem = ({
 
       <div className="mb-6 flex flex-wrap lg:flex-nowrap">
         {/* <p>{JSON.stringify(passenger)}</p> */}
-        <div className="form-group select-field select-group mr-0 md:mr-4">
-          <label>TITLE*</label>
-          <select
-            id="title"
-            name="title"
-            onBlur={handleFieldBlur}
-            onChange={handleFieldChange}
-            required
-          >
-            <option value="">Select</option>
-            {salutations.map((salutation, index) => (
-              <option value={salutation.title} key={index}>
-                {salutation.title}
-              </option>
-            ))}
-          </select>
-          <div className="select-icon">
-            <SelectIcon />
+        <div className="mr-0 md:mr-4">
+          <div className="form-group select-field select-group">
+            <label>TITLE*</label>
+            <select
+              id="title"
+              name="title"
+              onBlur={handleFieldBlur}
+              onChange={handleFieldChange}
+              required
+            >
+              <option value="">Select</option>
+              {salutations.map((salutation, index) => (
+                <option value={salutation.title} key={index}>
+                  {salutation.title}
+                </option>
+              ))}
+            </select>
+            <div className="select-icon">
+              <SelectIcon />
+            </div>
           </div>
           {error?.title && error?.title.length > 1 ? (
             <p className="errorText mt-2">{error?.title}</p>
           ) : null}
         </div>
 
-        <div className="form-group flex-grow mr-0 md:mr-4">
-          <label>FIRST NAME*</label>
-          <input
-            type="text"
-            placeholder="Enter first name"
-            id="firstName"
-            name="firstName"
-            onChange={handleFieldChange}
-            onBlur={handleFieldBlur}
-            required
-          />
+        <div className="flex-grow mr-0 md:mr-4">
+          <div className="form-group">
+            <label>FIRST NAME*</label>
+            <input
+              type="text"
+              placeholder="Enter first name"
+              id="firstName"
+              name="firstName"
+              onChange={handleFieldChange}
+              onBlur={handleFieldBlur}
+              required
+            />
+          </div>
+
           {error?.firstName && error?.firstName.length > 1 ? (
             <p className="errorText mt-2">{error?.firstName}</p>
           ) : null}
         </div>
-        <div className="form-group flex-grow mr-0 md:mr-4">
-          <label>LAST NAME*</label>
-          <input
-            type="text"
-            placeholder="Enter last name"
-            id="lastName"
-            name="lastName"
-            onChange={handleFieldChange}
-            onBlur={handleFieldBlur}
-            required
-          />
+        <div className="flex-grow mr-0 md:mr-4">
+          <div className="form-group">
+            <label>LAST NAME*</label>
+            <input
+              type="text"
+              placeholder="Enter last name"
+              id="lastName"
+              name="lastName"
+              onChange={handleFieldChange}
+              onBlur={handleFieldBlur}
+              required
+            />
+          </div>
           {error?.lastName && error?.lastName.length > 1 ? (
             <p className="errorText mt-2">{error?.lastName}</p>
           ) : null}
         </div>
 
         <div className="flex flex-col flex-grow-0 flex-shrink w-full md:w-auto">
-          <div className="form-group w-full  h-20 md:h-auto">
-            <label>
-              DATE OF BIRTH
-              {passenger?.type === "INF" || passenger?.type === "CHD"
-                ? "*"
-                : ""}{" "}
-            </label>
-            <div className="date-picker">
-              <DatePicker onChange={onChange} disabledDate={disabledDate} />
+          <div className="w-full  h-20 md:h-auto">
+            <div className="form-group">
+              <label>
+                DATE OF BIRTH
+                {passenger?.type === "INF" || passenger?.type === "CHD"
+                  ? "*"
+                  : ""}{" "}
+              </label>
+              <div className="date-picker">
+                <DatePicker onChange={onChange} disabledDate={disabledDate} />
+              </div>
             </div>
             {error?.dob && error?.dob.length > 1 ? (
               <p className="errorText">{error?.dob}</p>

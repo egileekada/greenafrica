@@ -124,9 +124,9 @@ const IbeTripPopup = ({
 
       const _newJourneys = [..._cleanedJourneys, _newJourney];
       dispatch(setSelectedSessionJourney([..._newJourneys]));
-      document
-        .getElementById("returnContainer")
-        .scrollIntoView({ behavior: "smooth" });
+      // document
+      //   .getElementById("returnContainer")
+      //   .scrollIntoView({ behavior: "smooth" });
       closePopUp();
       setIsVisible(false);
     } else {
@@ -196,7 +196,7 @@ const IbeTripPopup = ({
                           : "hover:bg-green hover:bg-opacity-5"
                       } border-b cursor-pointer `}
                     >
-                      <h4>For max comfort</h4>
+                      <h4>For Comfort</h4>
                       <h3>gFlex</h3>
                     </div>
                   </div>
@@ -387,11 +387,11 @@ const IbeTripPopup = ({
                       : "disabled"
                   }`}
                 >
-                  Continue With gClassic
+                  Continue with gClassic
                 </button>
               </div>
               <div className="mobile__benefits__item">
-                <p>Our Recommendation</p>
+                <p></p>
                 <h5>gSaver</h5>
                 <ul>
                   {gSaver.map((_gSaver, _i) => {
@@ -417,7 +417,7 @@ const IbeTripPopup = ({
                 </button>
               </div>
               <div className="mobile__benefits__item">
-                <p>Our Recommendation</p>
+                <p>For Comfort</p>
                 <h5>gFlex</h5>
                 <ul>
                   {gFlex.map((_gFlex, _i) => {

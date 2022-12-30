@@ -3,43 +3,60 @@ import Link from "next/link";
 import PlaneSeats from "./PlaneSeats";
 import Spinner from "components/Spinner";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  sessionSelector,
-  startSession,
-  retrieveSeatAvailability,
-} from "redux/reducers/session";
+import { sessionSelector, tryUpdateSeat } from "redux/reducers/session";
+import Popup from "components/Popup";
 
 import ProfileIcon from "assets/svgs/profile.svg";
 import InfoIcon from "assets/svgs/seats/info.svg";
 
-const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
+const SeatWrapper = ({
+  ticketIndex,
+  setShow,
+  productClass,
+  departureStation,
+  arrivalStation,
+}) => {
   const dispatch = useDispatch();
-  const {
-    signature,
-    seatResponseLoading,
-    seatAvailability,
-    isLoading,
-    bookingCommitResponse,
-    sessionPassengers,
-    bookingState,
-  } = useSelector(sessionSelector);
+  const { seatResponseLoading, seatAvailability, bookingState } =
+    useSelector(sessionSelector);
   const [key] = useState(Math.random());
   const [pasengerState, setPassengerState] = useState(null);
-  const [passengerNumber, setpassengerNumber] = useState(null);
-
+  const [passengerNumber, setpassengerNumber] = useState(0);
+  const [showPopUp, setShowPopUp] = useState(false);
   const [seatSelected, setSeatSelected] = useState(false);
   const [selectedSeat, setSelectedSeat] = useState([]);
 
-  const handleChange = (e, isWithInfant) => {
+  const handleChange = (PassengerNumber, isWithInfant) => {
     setPassengerState(isWithInfant);
-    setpassengerNumber(e.target.value);
+    setpassengerNumber(PassengerNumber);
   };
 
   const childRef = useRef(null);
 
-  const handleClick = () => {
-    childRef.current.saveSeat();
-    // childRef.current.assignSeat();
+  useEffect(() => {
+    handleChange(
+      bookingState?.Passengers[0].PassengerNumber,
+      bookingState?.Passengers[0].PassengerInfants.length
+    );
+  }, []);
+
+  const resetSeat = (passengerNumber) => {
+    dispatch(
+      tryUpdateSeat({
+        passengerNumber: passengerNumber,
+        arrivalStation:
+          bookingState?.Journeys[ticketIndex].Segments[0].ArrivalStation,
+      })
+    );
+    setSeatSelected(false);
+
+    setSelectedSeat(
+      selectedSeat.map((item) =>
+        passengerNumber == parseInt(item.passengerNumber)
+          ? { ...item, seatDesignator: "" }
+          : item
+      )
+    );
   };
 
   return (
@@ -64,9 +81,13 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
                     id={`passenger-${index}-${ticketIndex}`}
                     type="radio"
                     value={passenger.PassengerNumber}
+                    checked={passenger.PassengerNumber === passengerNumber}
                     name={`passenger-state-${ticketIndex}`}
                     onChange={(e) =>
-                      handleChange(e, passenger.PassengerInfants.length)
+                      handleChange(
+                        passenger.PassengerNumber,
+                        passenger.PassengerInfants.length
+                      )
                     }
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mb-2"
                   />
@@ -91,11 +112,23 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
                             : "No Seat Selected"}
                         </h6>
                       </div>
+                      {selectedSeat[index]?.seatDesignator.length > 0 && (
+                        <img
+                          src="/images/delete.svg"
+                          alt="remove seat"
+                          role="button"
+                          width="30"
+                          height="30"
+                          className="ml-2"
+                          onClick={() => resetSeat(passenger.PassengerNumber)}
+                        />
+                      )}
                     </div>
                   </label>
                 </div>
               </>
             ))}
+
             <button className="flex xxl:hidden mb-3">
               <figure>
                 <InfoIcon className="mr-2" />
@@ -135,6 +168,57 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass }) => {
           )}
         </div>
       </div>
+
+      {showPopUp && (
+        <Popup
+          display={showPopUp}
+          closeModal={() => setShow(false)}
+          top={true}
+          width="w-[507px]"
+        >
+          <section className="w-full bg-white rounded-xl ">
+            <div className="flex flex-col items-center justify-center p-[50px]">
+              <h6 className="flex text-md mb-5">
+                No seat selected for the trip {departureStation}{" "}
+                <span className="mx-1">-{">"}</span>
+                {arrivalStation}
+              </h6>
+              <figure>
+                <svg
+                  width="155"
+                  height="137"
+                  viewBox="0 0 155 137"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M154.341 73.4766L154.35 73.2938C154.567 64.1833 137.446 61.9041 137.446 61.9041L107.399 56.8262L93.7788 35.1512C100.126 34.3048 104.739 31.6016 104.907 28.1772C105.124 23.7419 97.8062 19.7792 88.5626 19.3263C86.9459 19.2471 85.3794 19.2829 83.8905 19.4155L73.4325 2.77284L56.6356 0.599616L74.067 55.7296L21.2784 58.1116L10.0994 39.9234L2.5986 39.5505L0.0184341 92.2234L7.51904 92.5853L20.4229 75.5768L72.726 83.1084L49.9887 136.27L66.9176 135.749L78.9526 120.209C80.4216 120.486 81.9766 120.675 83.5938 120.754C92.8374 121.207 100.507 117.979 100.725 113.544C100.892 110.119 96.5655 106.978 90.3313 105.515L106.005 85.2756L136.405 83.1592C136.405 83.1594 153.667 82.565 154.341 73.4766Z"
+                    fill="#9E9BBF"
+                  />
+                </svg>
+              </figure>
+              <p className="text-center font-body text-sm my-6">
+                Are you sure you want to leave without selectiing a seat for
+                this trip?
+              </p>
+              <div className="flex flex-wrap lg:flex-nowrap items-center justify-between w-full">
+                <button
+                  onClick={() => setShowPopUp(false)}
+                  className="btn btn-primary basis-full lg:basis-[48%] lg:mr-2 mb-3 lg:mb-0"
+                >
+                  Select Seat
+                </button>
+                <button
+                  // onClick={proceedToSeatSelectionWithoutSSR}
+                  className="btn btn-outline basis-full lg:basis-[48%]"
+                >
+                  I don’t need it
+                </button>
+              </div>
+            </div>
+          </section>
+        </Popup>
+      )}
     </>
   );
 };

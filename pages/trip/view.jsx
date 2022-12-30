@@ -38,6 +38,7 @@ const TripView = (props) => {
     selectedSessionFare,
     selectedSessionJourney,
     sellResponse,
+    flightParams,
   } = useSelector(sessionSelector);
   const router = useRouter();
 
@@ -78,7 +79,6 @@ const TripView = (props) => {
         }
       } else {
         // router.push("/");
-        console.log("selectedSessionJourney && selectedSessionFar not resent");
       }
     }
     init();
@@ -127,12 +127,19 @@ const TripView = (props) => {
           description: "Please review your selected details and try again",
         });
   };
+
   const handleMultipleSell = async () => {
     dispatch(saveMultipleSellRequest(selectedSessionJourney));
   };
 
   const ChangeFlight = async () => {
-    window.location.assign("https://dev-website.gadevenv.com/");
+    if (roundTripEnabled) {
+      const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&return=${flightParams?.returnDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}&round=1`;
+      router.push(query);
+    } else {
+      const query = `/?origin=${flightParams?.departureStation}&destination=${flightParams?.arrivalStation}&departure=${flightParams?.beginDate}&adt=${flightParams?.ADT}&chd=${flightParams?.CHD}&inf=${flightParams?.INF}`;
+      router.push(query);
+    }
   };
 
   const resolveAbbreviation = (abrreviation) => {
@@ -292,12 +299,12 @@ const TripView = (props) => {
                           <div className="flex flex-col">
                             <h5>TRAVEL PACKAGE</h5>
                             {!productLoading && <h6>{fare_name()}</h6>}
-                            <button
+                            {/* <button
                               onClick={ChangeFlight}
                               className="text-primary-main underline text-xs lg:text-sm font-body mt-4"
                             >
                               Upgrade Trip
-                            </button>
+                            </button> */}
                           </div>
                           <div className="flex flex-col items-end">
                             <h5>FARE PRICE</h5>
@@ -417,7 +424,7 @@ const TripView = (props) => {
           </div>
 
           <div className="ga__section__side">
-            <IbeSidebar />
+            <IbeSidebar enableEdit={true} />
           </div>
         </section>
       </section>

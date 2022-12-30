@@ -1,12 +1,16 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap");
-@import url("../assets/fonts/Cosmical/fonts.css");
-@import url("../assets/fonts/plus-jakarta-sans-v3-latin/font.css");
-@import "antd/dist/antd.css";
-@import "./loader.scss";
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
+@import url('../assets/fonts/Cosmical/fonts.css');
+@import url('../assets/fonts/plus-jakarta-sans-v3-latin/font.css');
+@import 'antd/dist/antd.css';
+@import './loader.scss';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:focus-visible {
+  outline: none;
+}
 
 @media (min-width: 1200px) {
   html,
@@ -204,20 +208,20 @@
     }
 
     label {
-      @apply font-body text-[#979797] text-[11px] mb-[7px] font-normal;
+      @apply font-body text-[#6A6A6A] text-[13px] mb-[7px] font-normal;
     }
 
     input,
-    input[type="date"] {
-      @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
+    input[type='date'] {
+      @apply bg-transparent border-none outline-none text-opacity-90 text-[14px] font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-80;
     }
 
     select {
-      @apply bg-transparent appearance-none w-full border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal focus:ring-0 focus:outline-none min-w-[130px];
+      @apply bg-transparent appearance-none w-full border-none outline-none text-opacity-90 text-[14px] font-normal focus:ring-0 focus:outline-none min-w-[130px];
     }
 
     .select-icon {
-      @apply absolute right-[10%] bottom-[40%] z-[2];
+      @apply absolute right-[10%] bottom-[34%] z-[2];
       transform: translateY(50%);
     }
 
@@ -227,6 +231,7 @@
         width: 100%;
         padding-left: 0;
         padding-right: 0;
+        padding: 0px;
       }
 
       .ant-picker-focused {
@@ -239,17 +244,17 @@
 
   .phone-group {
     border: 1px solid #d8d7e2;
-    @apply flex flex-col  mb-4 py-[8px] px-[22px] rounded-md;
+    @apply flex flex-col  mb-4 py-3 px-[22px] rounded-md;
 
     label {
-      @apply font-body text-[#979797] text-[10px] mb-[7px] font-normal;
+      @apply font-body text-[#6A6A6A] text-[13px] mb-[7px] font-normal;
     }
 
     .phone-select {
       @apply w-[80px] relative mr-4;
 
       select {
-        @apply bg-transparent appearance-none w-full border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal focus:ring-0 focus:outline-none;
+        @apply bg-transparent appearance-none w-full border-none outline-none text-[#979797] text-opacity-90 text-[14px] font-normal focus:ring-0 focus:outline-none;
       }
 
       .select-icon {
@@ -260,7 +265,7 @@
 
     .phone-input {
       input,
-      input[type="date"] {
+      input[type='date'] {
         @apply bg-transparent border-none outline-none text-[#979797] text-opacity-90 text-sm font-normal w-full focus:ring-0 focus:outline-none placeholder-[#979797] placeholder-opacity-40;
       }
     }
@@ -308,6 +313,10 @@
       box-shadow: none !important;
       outline: 0;
     }
+
+    .ant-input[disabled] {
+      color: #26205e !important;
+    }
   }
 
   .vertical--marquee {
@@ -324,12 +333,12 @@
         -o-transition: opacity 2s ease-in-out;
         transition: opacity 2s ease-in-out;
         opacity: 0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
         filter: alpha(opacity=0);
 
         &.activeText {
           opacity: 1;
-          -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+          -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)';
           filter: alpha(opacity=1);
         }
       }
@@ -337,7 +346,12 @@
   }
 
   .ant-input[disabled] {
-    color: rgba(114, 106, 106, 0.93) !important;
+    // color: rgba(114, 106, 106, 0.93) !important;
+    color: black !important;
+  }
+
+  .ant-input[disabled] {
+    color: rgb(6, 6, 6);
   }
 
   .top__bar {
@@ -523,10 +537,6 @@
 
             button.btn-outline {
               min-width: 48px;
-              // max-width: 50px;
-              // max-width: 150px;
-              // width: 48.8px;
-
               height: 22px;
               @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display w-max;
             }
@@ -606,27 +616,25 @@
 
       .trip-details {
         background: rgba(158, 155, 191, 0.12);
-        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full mt-5;
+        min-height: 80px;
+        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full mt-3;
 
         &-item {
           @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
 
           h5,
           h5 span {
-            @apply font-display font-bold text-sm text-primary-main;
+            @apply font-display font-bold text-xs text-primary-main;
 
             button.btn-outline {
               min-width: 48px;
-              // max-width: 50px;
-              // max-width: 150px;
-              // width: 48.8px;
 
               height: 22px;
               @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display w-max;
             }
           }
           h6 {
-            @apply font-title font-medium text-xxs text-primary-main mb-[10px];
+            @apply font-title font-medium text-xxs text-primary-main mb-[5px];
           }
         }
       }
@@ -772,7 +780,8 @@
             @apply border-t;
 
             h5 {
-              @apply font-title text-xs text-primary-main;
+              // @apply font-title text-xs text-primary-main;
+              @apply font-title text-base text-primary-main;
             }
 
             h6 {
@@ -801,7 +810,8 @@
       }
 
       h6 {
-        @apply text-primary-main text-xs font-body;
+        // @apply text-primary-main text-xs font-body;
+        @apply text-primary-main text-xs font-body font-bold;
       }
     }
   }
@@ -829,7 +839,7 @@
       @apply bg-white mb-10 py-8 tab:py-11 px-5 md:px-9 flex flex-col;
 
       label.check-label {
-        @apply text-[#101010] text-xs font-body;
+        @apply text-[#101010] text-[14px] font-body;
 
         span {
           @apply font-title;
@@ -1037,7 +1047,8 @@
         @apply border-none;
 
         h5 {
-          @apply text-primary-main text-xs font-title font-bold;
+          // @apply text-primary-main text-xs font-title font-bold;
+          @apply font-title text-base text-primary-main font-bold;
         }
 
         h6 {
@@ -1047,7 +1058,7 @@
 
       h6 {
         // @apply text-primary-main text-xs font-body font-normal;
-        @apply text-primary-main text-sm font-body font-normal;
+        @apply text-primary-main text-sm font-body font-medium;
       }
     }
 
@@ -1432,7 +1443,7 @@
 }
 
 .plane-seats {
-  background-image: url("./bg/cab.png");
+  background-image: url('./bg/cab.png');
   background-size: 35%;
   background-repeat: no-repeat;
   background-position-x: 50%;
@@ -1447,6 +1458,35 @@
   @apply opacity-50 pointer-events-none;
 }
 
+.intl-tel-input {
+  @apply w-full;
+
+  &:focus-visible,
+  &:focus-within,
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+.flag-container {
+  &:focus-visible,
+  &:focus-within,
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  input {
+    &:focus-visible,
+    &:focus-within,
+    &:focus {
+      box-shadow: none;
+      outline: none;
+    }
+  }
+}
+
 // Clean up Styles
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -1456,7 +1496,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -1529,7 +1569,7 @@ svg.primary-main {
 
 .react-date-picker__inputGroup {
   padding: 0px !important;
-  font-family: "Plus Jakarta Sans";
+  font-family: 'Plus Jakarta Sans';
 }
 
 .react-date-picker__button {
@@ -1556,7 +1596,7 @@ svg.primary-main {
   font-weight: 700 !important;
   font-size: 15px !important;
   padding-bottom: 0px !important;
-  font-family: "Plus Jakarta Sans";
+  font-family: 'Plus Jakarta Sans';
 }
 
 .react-calendar__month-view__days__day--weekend {
@@ -1601,18 +1641,18 @@ div[disabled] {
   background-color: #1eff5a;
 }
 
-[type="text"]:focus,
-[type="email"]:focus,
-[type="url"]:focus,
-[type="password"]:focus,
-[type="number"]:focus,
-[type="date"]:focus,
-[type="datetime-local"]:focus,
-[type="month"]:focus,
-[type="search"]:focus,
-[type="tel"]:focus,
-[type="time"]:focus,
-[type="week"]:focus,
+[type='text']:focus,
+[type='email']:focus,
+[type='url']:focus,
+[type='password']:focus,
+[type='number']:focus,
+[type='date']:focus,
+[type='datetime-local']:focus,
+[type='month']:focus,
+[type='search']:focus,
+[type='tel']:focus,
+[type='time']:focus,
+[type='week']:focus,
 [multiple]:focus,
 textarea:focus,
 select:focus {
@@ -1648,4 +1688,10 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
+}
+
+.modalStyle {
+  .ant-modal-content {
+    border-radius: 10px;
+  }
 }

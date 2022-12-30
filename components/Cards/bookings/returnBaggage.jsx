@@ -7,7 +7,7 @@ import {
   bookingSelector,
   setNewBookingReturnSSRs,
 } from "redux/reducers/booking";
-import { v4 as uuid } from "uuid";
+import { uniqueId } from "lodash";
 
 const BookingReturnBaggageCard = ({
   passenger,
@@ -18,17 +18,15 @@ const BookingReturnBaggageCard = ({
   schedueIndex,
   ArrivalStation,
   DepartureStation,
-  activeTab,
   _limit,
 }) => {
   const [totalFare, setFare] = useState(0);
-  const [limit, setLimit] = useState(0);
   const [value, setValue] = useState(0);
+  const [limit, setLimit] = useState(0);
   const [newReturnSSRs, setNewReturnSSRs] = useState([]);
   const { bookingResponse } = useSelector(sessionSelector);
   const { bookingSessionReturnSSRs, newBookingReturnSSRs } =
     useSelector(bookingSelector);
-
   const KG = SSRItem?.SSRCode.substring(1);
   const dispatch = useDispatch();
 
@@ -50,7 +48,7 @@ const BookingReturnBaggageCard = ({
       }
     }
     mapsessionReturnSSRs();
-  }, [activeTab]);
+  }, []);
 
   useEffect(() => {
     async function setBaggageLimit() {
@@ -76,7 +74,9 @@ const BookingReturnBaggageCard = ({
 
   useEffect(() => {
     if (parseInt(schedueIndex) === 1) {
-      handleReturnSSR();
+      if (returnNewSelection) {
+        handleReturnSSR();
+      }
     }
   }, [value]);
 
@@ -94,7 +94,7 @@ const BookingReturnBaggageCard = ({
           ? !ruleBasis
           : _ssr.ssrCode !== SSRItem?.SSRCode;
       });
-      const unique_id = uuid();
+      const unique_id = uniqueId(`${ArrivalStation}${DepartureStation}`);
       const SSRItemObj = new Array(value).fill({
         id: `${Date.now()}${unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
@@ -106,18 +106,9 @@ const BookingReturnBaggageCard = ({
       setNewReturnSSRs((prevState) => [...cleanedSSRs, ...SSRItemObj]);
       dispatch(setNewBookingReturnSSRs([...cleanedSSRs, ...SSRItemObj]));
     } else {
-      const _existingSSRs =  returnNewSelection
+      const _existingSSRs = returnNewSelection
         ? [...newBookingReturnSSRs]
         : [...selectedReturnSSRs];
-
-      // const _existingSSRs = [...newBookingReturnSSRs];
-
-      // const _existingSSRs =
-      //   bookingSessionReturnSSRs?.length > 0
-      //     ? returnNewSelection
-      //       ? [...newBookingReturnSSRs]
-      //       : [...selectedReturnSSRs]
-      //     : [...newBookingReturnSSRs];
 
       const _cleanedSSRs = _existingSSRs.filter((_ssr) => {
         const _ruleBasis =
@@ -126,7 +117,7 @@ const BookingReturnBaggageCard = ({
             parseInt(passenger?.PassengerNumber);
         return !_ruleBasis;
       });
-      const _unique_id = uuid();
+      const _unique_id = uniqueId(`${ArrivalStation}${DepartureStation}`);
       const _SSRItemObj = new Array(value).fill({
         id: `${Date.now()}${_unique_id}`,
         passengerNumber: parseInt(passenger?.PassengerNumber),
@@ -185,12 +176,14 @@ const BookingReturnBaggageCard = ({
         <figure>
           <BaggageIcon />
         </figure>
-        <p className="font-body text-primary-main text-xs mb-1">Up to {KG}kg</p>
+        <p className="font-body text-primary-main text-xs mb-1">
+          {" "}
+          Return Extra Bag Up to {KG}kg
+        </p>
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}
         </p>
-        {/* <p>Limit : {limit}</p> */}
 
         <Counter
           value={value}
@@ -211,7 +204,6 @@ BookingReturnBaggageCard.defaultProps = {
   schedueIndex: 0,
   ArrivalStation: "",
   DepartureStation: "",
-  activeTab: "",
   _limit: 0,
 };
 

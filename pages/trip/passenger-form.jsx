@@ -7,9 +7,12 @@ import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
-  updatePassengersDetails,
-  updateContactsDetails,
   FetchStateFromServer,
+  setSessionPassengers,
+  setSessionContact,
+  setSessionInfants,
+  setUpdatePassengersResponse,
+  setUpdateContactsResponse,
 } from "redux/reducers/session";
 import { useRouter } from "next/router";
 import { Checkbox, notification } from "antd";
@@ -17,6 +20,12 @@ import SelectIcon from "assets/svgs/select.svg";
 import PassengerFormItem from "containers/PassengerForm/PassengerFormItem";
 import LogoIcon from "assets/svgs/logo.svg";
 import { useGetSalutationsQuery } from "services/widgetApi.js";
+import {
+  useUpdatePassengerInfoMutation,
+  useUpdateContactInfoMutation,
+} from "services/bookingApi";
+import IntlTelInput from "react-intl-tel-input";
+import "react-intl-tel-input/dist/main.css";
 
 const PassengerForm = () => {
   const dispatch = useDispatch();
@@ -24,12 +33,12 @@ const PassengerForm = () => {
   const [totalPassengerCount, setCount] = useState(0);
   const [errorIds, setErrorIds] = useState([]);
   const [passengers, setPassengers] = useState([]);
-  const {
-    passengersResponse,
-    contactsResponse,
-    updatePassengersLoading,
-    flightParams,
-  } = useSelector(sessionSelector);
+  const [touched, setTouched] = useState(false);
+  const { flightParams } = useSelector(sessionSelector);
+  const [updatePassengerInfo, { isLoading: updatingPassengerInfo }] =
+    useUpdatePassengerInfoMutation();
+  const [updateContactInfo, { isLoading: updatingContactInfo }] =
+    useUpdateContactInfoMutation();
   const router = useRouter();
 
   const ScrollToTop = () => {
@@ -70,7 +79,7 @@ const PassengerForm = () => {
             );
             _Passengers.push({
               id: newID,
-              firstName: "",
+              firstName: "" ,
               lastName: "",
               title: "",
               dob: "",
@@ -97,15 +106,6 @@ const PassengerForm = () => {
     }
     sumPassengerCount();
   }, []);
-  // TODO watch for this
-  useEffect(() => {
-    async function redirectToSSR() {
-      if (passengersResponse && contactsResponse) {
-        router.push("/trip/passenger-details");
-      }
-    }
-    redirectToSSR();
-  }, [passengersResponse, contactsResponse]);
 
   useEffect(() => {
     async function fetchStateInfo() {
@@ -113,6 +113,227 @@ const PassengerForm = () => {
     }
     fetchStateInfo();
   }, []);
+
+  const updatePassengers = async (passenger, contact) => {
+    let requestPayload = {};
+    if (parseInt(flightParams.INF) > 0) {
+      const _Main = [];
+      const _Infants = [];
+      passenger.map((item) => {
+        if (item?.type === "INF") {
+          _Infants.push(item);
+        } else {
+          _Main.push(item);
+        }
+      });
+      dispatch(setSessionPassengers(_Main));
+      dispatch(setSessionInfants(_Main));
+      let _passengers = [];
+      let updatedPassengers = [];
+      _Main.map((_passenger, _i) => {
+        let passengerObj = {
+          state: 0,
+          customerNumber: "",
+          passengerNumber: parseInt(_i),
+          passengerNumberSpecified: true,
+          familyNumber: 0,
+          paxDiscountCode: "",
+          names: [
+            {
+              firstName: _passenger.firstName,
+              middleName: "",
+              lastName: _passenger.lastName,
+              suffix: "",
+              title: _passenger.title,
+              state: 0,
+            },
+          ],
+          passengerID: 0,
+          pseudoPassenger: false,
+          passengerTypeInfos: [
+            {
+              state: 0,
+              stateSpecified: true,
+              dob: _passenger?.dob || "9999-12-31T00:00:00Z",
+              dobSpecified: true,
+              paxType: _passenger.type,
+            },
+          ],
+        };
+        _passengers.push(passengerObj);
+      });
+      _passengers.map((item) => {
+        if (_Infants.length > 0) {
+          const INFANT_TO_BE_ATTACHED = _Infants.shift();
+          const infantObj = {
+            dob: INFANT_TO_BE_ATTACHED?.dob,
+            dobSpecified: true,
+            gender: 0,
+            nationality: "",
+            residentCountry: "",
+            names: [
+              {
+                firstName: INFANT_TO_BE_ATTACHED.firstName,
+                middleName: "",
+                lastName: INFANT_TO_BE_ATTACHED.lastName,
+                suffix: "",
+                title: INFANT_TO_BE_ATTACHED.title,
+                state: 0,
+              },
+            ],
+            paxType: "INFT",
+            state: 0,
+          };
+          const newPassengerObj = {
+            ...item,
+            infant: {
+              ...infantObj,
+            },
+          };
+          updatedPassengers.push(newPassengerObj);
+        } else {
+          updatedPassengers.push(item);
+        }
+      });
+      requestPayload = {
+        updatePassengerRequest: {
+          updatePassengersRequestData: {
+            passengers: [...updatedPassengers],
+            waiveNameChangeFee: false,
+          },
+        },
+      };
+    } else {
+      dispatch(setSessionPassengers(passenger));
+      let _passengers = [];
+      passenger.map((_passenger, _i) => {
+        let passengerObj = {
+          state: 0,
+          customerNumber: "",
+          passengerNumber: parseInt(_i),
+          passengerNumberSpecified: true,
+          familyNumber: 0,
+          paxDiscountCode: "",
+          names: [
+            {
+              firstName: _passenger.firstName,
+              middleName: "",
+              lastName: _passenger.lastName,
+              suffix: "",
+              title: _passenger.title,
+              state: 0,
+            },
+          ],
+          passengerID: 0,
+          pseudoPassenger: false,
+          passengerTypeInfos: [
+            {
+              state: 0,
+              stateSpecified: true,
+              dob: _passenger.dob || "9999-12-31T00:00:00Z",
+              dobSpecified: true,
+              paxType: _passenger.type,
+            },
+          ],
+        };
+        _passengers.push(passengerObj);
+      });
+      requestPayload = {
+        updatePassengerRequest: {
+          updatePassengersRequestData: {
+            passengers: [..._passengers],
+            waiveNameChangeFee: false,
+          },
+        },
+      };
+    }
+
+    try {
+      updatePassengerInfo(requestPayload)
+        .unwrap()
+        .then((response) => {
+          dispatch(setUpdatePassengersResponse(response));
+          handleContact(contact);
+        })
+        .catch(() => {
+          notification.error({
+            message: "Error",
+            description: "Update passenger(s) details failed",
+          });
+        });
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Error occured",
+      });
+    }
+  };
+
+  const handleContact = (payload) => {
+    dispatch(setSessionContact(payload));
+
+    const _requestPayload = {
+      updateContactsRequestDto: {
+        updateContactsRequest: {
+          updateContactsRequestData: {
+            bookingContactList: [
+              {
+                state: 0,
+                stateSpecified: true,
+                typeCode: "P",
+                names: [
+                  {
+                    firstName: payload.firstName,
+                    middleName: "",
+                    lastName: payload.lastName,
+                    suffix: "",
+                    title: payload.title,
+                    state: 0,
+                    stateSpecified: true,
+                  },
+                ],
+                emailAddress: payload.email,
+                homePhone: payload.phone,
+                workPhone: payload.phone,
+                otherPhone: payload.phone,
+                fax: "",
+                companyName: "GreenAfrica",
+                addressLine1: "Lagos",
+                addressLine2: "",
+                addressLine3: "",
+                city: "Lagos",
+                provinceState: "LA",
+                postalCode: "",
+                countryCode: "NG",
+                cultureCode: "",
+                distributionOption: 2,
+                distributionOptionSpecified: true,
+                customerNumber: "",
+                notificationPreference: 0,
+                notificationPreferenceSpecified: true,
+                sourceOrganization: "",
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    updateContactInfo(_requestPayload)
+      .unwrap()
+      .then((response) => {
+        dispatch(setUpdateContactsResponse(response));
+        dispatch(FetchStateFromServer());
+        // console.log("response payload", response );
+        router.push("/trip/passenger-details");
+      })
+      .catch(() => {
+        notification.error({
+          message: "Error",
+          description: "Update contact details failed",
+        });
+      });
+  };
 
   const handleSubmit = async (values) => {
     const contactInfo = {
@@ -126,11 +347,18 @@ const PassengerForm = () => {
     let _formIsInValid = false;
     passengers.map((_pax) => {
       for (const key in _pax) {
-        if (_pax[key].length < 1) {
+        if (
+          _pax[key].length < 1 ||
+          _pax.firstName.length < 1 ||
+          _pax.lastName.length < 1 ||
+          _pax.title.length < 1
+        ) {
           _formIsInValid = true;
         }
       }
     });
+
+    console.log(" _formIsInValid ", _formIsInValid);
 
     passengers.map((_pax) => {
       if (_pax?.type === "CHD" || _pax?.type === "INF") {
@@ -140,11 +368,19 @@ const PassengerForm = () => {
         }
       } else {
         if (_pax?.dob?.length < 1) {
-          console.log("rreached here,", _pax?.type);
-          _formIsInValid = false;
+          if (
+            _pax.firstName.length > 0 &&
+            _pax.lastName.length > 0 &&
+            _pax.title.length > 0
+          ) {
+            _formIsInValid = false;
+          }
         }
       }
     });
+
+    console.log(" passengers", passengers);
+    console.log(" _formIsInValid ", _formIsInValid);
 
     if (_formIsInValid) {
       notification.error({
@@ -153,10 +389,32 @@ const PassengerForm = () => {
           "Incomplete details, Please check through your form and fill-in appropriate details",
       });
     } else {
-      console.log("disaptching");
+      const names = [];
 
-      dispatch(updatePassengersDetails(passengers));
-      dispatch(updateContactsDetails(contactInfo));
+      passengers.map((_pax) => {
+        names.push(
+          `${_pax.title.trim().toLowerCase()} ${_pax.firstName
+            .trim()
+            .toLowerCase()} ${_pax.lastName.trim().toLowerCase()}`
+        );
+      });
+
+      function checkIfDuplicateExists(arr) {
+        return new Set(arr).size !== arr.length;
+      }
+
+      const duplicateExist = checkIfDuplicateExists(names);
+
+      if (duplicateExist) {
+        notification.error({
+          message: "Error",
+          description:
+            "You are not allowed to have the same passenger name for different passengers on the same booking",
+        });
+      } else {
+        updatePassengers(passengers, contactInfo);
+        console.log("passengers, contactInfo");
+      }
     }
   };
 
@@ -246,12 +504,13 @@ const PassengerForm = () => {
                         />
                       );
                     })}
-
                   {/* Contact Details */}
                   <div className="passenger__form__box">
-                    <h3 className="text-[#8F8CA4] font-header text-xxs mb-6">
+                    <h3 className="text-[#8F8CA4] font-header mb-6">
                       CONTACT INFORMATION
                     </h3>
+
+                    {/* <p>{JSON.stringify(formik.values)}</p> */}
 
                     <div
                       className={`flex items-center checkbox-copy mb-6  ${
@@ -266,22 +525,24 @@ const PassengerForm = () => {
                     </div>
 
                     <div className="mb-6 flex flex-wrap">
-                      <div className="form-group select-group  mr-0 md:mr-4">
-                        <label>TITLE</label>
-                        <select
-                          name="c_title"
-                          {...formik.getFieldProps("c_title")}
-                        >
-                          <option value="">Select</option>
-                          {!isLoading &&
-                            data?.data.items.map((salutation, index) => (
-                              <option value={salutation.title} key={index}>
-                                {salutation.title}
-                              </option>
-                            ))}
-                        </select>
-                        <div className="select-icon">
-                          <SelectIcon />
+                      <div className="mr-0 md:mr-4">
+                        <div className="form-group select-group">
+                          <label>TITLE</label>
+                          <select
+                            name="c_title"
+                            {...formik.getFieldProps("c_title")}
+                          >
+                            <option value="">Select</option>
+                            {!isLoading &&
+                              data?.data.items.map((salutation, index) => (
+                                <option value={salutation.title} key={index}>
+                                  {salutation.title}
+                                </option>
+                              ))}
+                          </select>
+                          <div className="select-icon">
+                            <SelectIcon />
+                          </div>
                         </div>
                         {formik.touched.c_title && formik.errors.c_title ? (
                           <p className="errorText mt-2">
@@ -290,15 +551,18 @@ const PassengerForm = () => {
                         ) : null}
                       </div>
 
-                      <div className="form-group flex-grow md:mr-4">
-                        <label>FIRST NAME</label>
-                        <input
-                          type="text"
-                          placeholder="Enter first name"
-                          id="c_firstName"
-                          name="c_firstName"
-                          {...formik.getFieldProps("c_firstName")}
-                        />
+                      <div className="flex-grow md:mr-4">
+                        <div className="form-group">
+                          <label>FIRST NAME</label>
+                          <input
+                            type="text"
+                            placeholder="Enter first name"
+                            id="c_firstName"
+                            name="c_firstName"
+                            {...formik.getFieldProps("c_firstName")}
+                          />
+                        </div>
+
                         {formik.touched.c_firstName &&
                         formik.errors.c_firstName ? (
                           <p className="errorText mt-2">
@@ -306,15 +570,17 @@ const PassengerForm = () => {
                           </p>
                         ) : null}
                       </div>
-                      <div className="form-group flex-grow md:mr-4">
-                        <label>LAST NAME</label>
-                        <input
-                          type="text"
-                          placeholder="Enter last name"
-                          id="c_lastName"
-                          name="c_lastName"
-                          {...formik.getFieldProps("c_lastName")}
-                        />
+                      <div className="flex-grow md:mr-4">
+                        <div className="form-group">
+                          <label>LAST NAME</label>
+                          <input
+                            type="text"
+                            placeholder="Enter last name"
+                            id="c_lastName"
+                            name="c_lastName"
+                            {...formik.getFieldProps("c_lastName")}
+                          />
+                        </div>
                         {formik.touched.c_lastName &&
                         formik.errors.c_lastName ? (
                           <p className="errorText mt-2">
@@ -325,74 +591,98 @@ const PassengerForm = () => {
                     </div>
 
                     <div className="mb-6 flex flex-wrap">
-                      <div className="phone-group flex-grow mr-0 md:mr-4">
-                        <label>PHONE NUMBER</label>
-                        <div className="flex">
-                          <div className="phone-select">
-                            <select
-                              name="c_code"
-                              {...formik.getFieldProps("c_code")}
-                            >
-                              <option value="+234">+234</option>
-                            </select>
-                            <div className="select-icon">
-                              <SelectIcon />
-                            </div>
-                          </div>
-                          <div className="phone-input">
-                            <input
-                              type="tel"
-                              pattern="[0-9]*"
-                              id="c_phone"
-                              name="c_phone"
-                              placeholder="9056789087"
-                              {...formik.getFieldProps("c_phone")}
-                              onChange={(e) => {
-                                e.preventDefault();
-                                const { value } = e.target;
-                                if (value.length > 0) {
+                      <div className="flex-grow mr-0 md:mr-4">
+                        <div className="phone-group">
+                          <label>PHONE NUMBER</label>
+                          <div className="flex">
+                            <IntlTelInput
+                              onPhoneNumberBlur={() => {
+                                setTouched(true);
+                                if (formik.values.c_phone.length < 1) {
+                                  formik.setFieldError(
+                                    "c_phone",
+                                    "Phone number is required"
+                                  );
+                                }
+                              }}
+                              onSelectFlag={(e, country) => {
+                                formik.setFieldValue(
+                                  "c_code",
+                                  `+${country?.dialCode}`
+                                );
+                              }}
+                              onPhoneNumberChange={(e, fullnumber, numObj) => {
+                                let num = fullnumber;
+                                let code = numObj?.dialCode;
+                                // setTouched(true);
+
+                                formik.setFieldValue("c_code", `+${code}`);
+
+                                if (num.length > 0) {
                                   const regex =
                                     /^(0*[1-9][0-9]*(\.[0-9]*)?|0*\.[0-9]*[1-9][0-9]*)$/;
-                                  if (regex.test(value.toString())) {
-                                    formik.setFieldValue("c_phone", value);
+
+                                  const _test = regex.test(num.toString());
+                                  if (_test) {
+                                    formik.setFieldValue("c_phone", `${num}`);
+                                  } else {
+                                    formik.setFieldValue(
+                                      "c_phone",
+                                      formik.values.c_phone
+                                    );
+                                    formik.setFieldError(
+                                      "c_phone",
+                                      "Invalid Phone Number"
+                                    );
+                                    return false;
                                   }
                                 } else {
                                   formik.setFieldValue("c_phone", "");
                                 }
                               }}
+                              preferredCountries={["ng", "bn"]}
+                              inputClassName="w-full"
+                              value={formik.values.c_phone}
                             />
                           </div>
                         </div>
-                        {formik.touched.c_phone && formik.errors.c_phone ? (
+
+                        {touched &&
+                        formik.errors.c_phone &&
+                        formik.errors.c_phone?.length > 0 ? (
                           <p className="errorText mt-2">
                             {formik.errors.c_phone}
                           </p>
                         ) : null}
                       </div>
-                      <div className="form-group flex-grow md:mr-4">
-                        <label>EMAIL</label>
-                        <input
-                          type="email"
-                          placeholder="Enter your email"
-                          id="c_email"
-                          name="c_email"
-                          {...formik.getFieldProps("c_email")}
-                        />
+                      <div className="flex-grow md:mr-4">
+                        <div className="form-group">
+                          <label>EMAIL</label>
+                          <input
+                            type="email"
+                            placeholder="Enter your email"
+                            id="c_email"
+                            name="c_email"
+                            {...formik.getFieldProps("c_email")}
+                          />
+                        </div>
                         {formik.touched.c_email && formik.errors.c_email ? (
                           <p className="errorText mt-2">
                             {formik.errors.c_email}
                           </p>
                         ) : null}
                       </div>
-                      <div className="form-group flex-grow md:mr-4">
-                        <label>CONFIRM EMAIL ADDRESS</label>
-                        <input
-                          type="email"
-                          placeholder="Enter your email"
-                          id="cc_email"
-                          name="cc_email"
-                          {...formik.getFieldProps("cc_email")}
-                        />
+                      <div className="flex-grow md:mr-4">
+                        <div className="form-group">
+                          <label>CONFIRM EMAIL ADDRESS</label>
+                          <input
+                            type="email"
+                            placeholder="Enter your email"
+                            id="cc_email"
+                            name="cc_email"
+                            {...formik.getFieldProps("cc_email")}
+                          />
+                        </div>
                         {formik.touched.cc_email && formik.errors.cc_email ? (
                           <p className="errorText mt-2">
                             {formik.errors.cc_email}
@@ -404,18 +694,20 @@ const PassengerForm = () => {
                   {/* Contact Details */}
                   {/* CTA */}
                   <div className="flex flex-wrap md:flex-nowrap items-center">
-                    <button
+                    {/* <button
                       type="button"
                       className="btn btn-outline mr-0 md:mr-2 mb-2 md:mb-0 cta basis-full md:basis-auto mobile-order"
                       onClick={() => router.back()}
                     >
                       Go Back
-                    </button>
+                    </button> */}
                     <button
                       type="submit"
                       className="btn btn-primary cta basis-full md:basis-auto"
                     >
-                      {updatePassengersLoading ? "Saving....." : "Continue"}
+                      {updatingPassengerInfo || updatingContactInfo
+                        ? "Saving....."
+                        : "Continue"}
                     </button>
                   </div>
                   {/* CTA */}
@@ -449,7 +741,7 @@ const PassengerDetailsSchema = Yup.object().shape({
   c_phone: Yup.number()
     .typeError("Please Input a valid phone number")
     .required("Phone is Required")
-    .test("len", "Must be a minimum 11 characters", (val) => {
+    .test("len", "Must be a minimum 10 characters", (val) => {
       if (val) return val.toString().length >= 10;
     }),
 });
