@@ -7,9 +7,12 @@ import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
-  updatePassengersDetails,
-  updateContactsDetails,
   FetchStateFromServer,
+  setSessionPassengers,
+  setSessionContact,
+  setSessionInfants,
+  setUpdatePassengersResponse,
+  setUpdateContactsResponse,
 } from "redux/reducers/session";
 import { useRouter } from "next/router";
 import { Checkbox, notification } from "antd";
@@ -17,7 +20,10 @@ import SelectIcon from "assets/svgs/select.svg";
 import PassengerFormItem from "containers/PassengerForm/PassengerFormItem";
 import LogoIcon from "assets/svgs/logo.svg";
 import { useGetSalutationsQuery } from "services/widgetApi.js";
-
+import {
+  useUpdatePassengerInfoMutation,
+  useUpdateContactInfoMutation,
+} from "services/bookingApi";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 
@@ -28,12 +34,11 @@ const PassengerForm = () => {
   const [errorIds, setErrorIds] = useState([]);
   const [passengers, setPassengers] = useState([]);
   const [touched, setTouched] = useState(false);
-  const {
-    passengersResponse,
-    contactsResponse,
-    updatePassengersLoading,
-    flightParams,
-  } = useSelector(sessionSelector);
+  const { flightParams } = useSelector(sessionSelector);
+  const [updatePassengerInfo, { isLoading: updatingPassengerInfo }] =
+    useUpdatePassengerInfoMutation();
+  const [updateContactInfo, { isLoading: updatingContactInfo }] =
+    useUpdateContactInfoMutation();
   const router = useRouter();
 
   const ScrollToTop = () => {
@@ -74,7 +79,7 @@ const PassengerForm = () => {
             );
             _Passengers.push({
               id: newID,
-              firstName: "",
+              firstName: "" ,
               lastName: "",
               title: "",
               dob: "",
@@ -101,15 +106,6 @@ const PassengerForm = () => {
     }
     sumPassengerCount();
   }, []);
-  // TODO watch for this
-  useEffect(() => {
-    async function redirectToSSR() {
-      if (passengersResponse && contactsResponse) {
-        router.push("/trip/passenger-details");
-      }
-    }
-    redirectToSSR();
-  }, [passengersResponse, contactsResponse]);
 
   useEffect(() => {
     async function fetchStateInfo() {
@@ -117,6 +113,227 @@ const PassengerForm = () => {
     }
     fetchStateInfo();
   }, []);
+
+  const updatePassengers = async (passenger, contact) => {
+    let requestPayload = {};
+    if (parseInt(flightParams.INF) > 0) {
+      const _Main = [];
+      const _Infants = [];
+      passenger.map((item) => {
+        if (item?.type === "INF") {
+          _Infants.push(item);
+        } else {
+          _Main.push(item);
+        }
+      });
+      dispatch(setSessionPassengers(_Main));
+      dispatch(setSessionInfants(_Main));
+      let _passengers = [];
+      let updatedPassengers = [];
+      _Main.map((_passenger, _i) => {
+        let passengerObj = {
+          state: 0,
+          customerNumber: "",
+          passengerNumber: parseInt(_i),
+          passengerNumberSpecified: true,
+          familyNumber: 0,
+          paxDiscountCode: "",
+          names: [
+            {
+              firstName: _passenger.firstName,
+              middleName: "",
+              lastName: _passenger.lastName,
+              suffix: "",
+              title: _passenger.title,
+              state: 0,
+            },
+          ],
+          passengerID: 0,
+          pseudoPassenger: false,
+          passengerTypeInfos: [
+            {
+              state: 0,
+              stateSpecified: true,
+              dob: _passenger?.dob || "9999-12-31T00:00:00Z",
+              dobSpecified: true,
+              paxType: _passenger.type,
+            },
+          ],
+        };
+        _passengers.push(passengerObj);
+      });
+      _passengers.map((item) => {
+        if (_Infants.length > 0) {
+          const INFANT_TO_BE_ATTACHED = _Infants.shift();
+          const infantObj = {
+            dob: INFANT_TO_BE_ATTACHED?.dob,
+            dobSpecified: true,
+            gender: 0,
+            nationality: "",
+            residentCountry: "",
+            names: [
+              {
+                firstName: INFANT_TO_BE_ATTACHED.firstName,
+                middleName: "",
+                lastName: INFANT_TO_BE_ATTACHED.lastName,
+                suffix: "",
+                title: INFANT_TO_BE_ATTACHED.title,
+                state: 0,
+              },
+            ],
+            paxType: "INFT",
+            state: 0,
+          };
+          const newPassengerObj = {
+            ...item,
+            infant: {
+              ...infantObj,
+            },
+          };
+          updatedPassengers.push(newPassengerObj);
+        } else {
+          updatedPassengers.push(item);
+        }
+      });
+      requestPayload = {
+        updatePassengerRequest: {
+          updatePassengersRequestData: {
+            passengers: [...updatedPassengers],
+            waiveNameChangeFee: false,
+          },
+        },
+      };
+    } else {
+      dispatch(setSessionPassengers(passenger));
+      let _passengers = [];
+      passenger.map((_passenger, _i) => {
+        let passengerObj = {
+          state: 0,
+          customerNumber: "",
+          passengerNumber: parseInt(_i),
+          passengerNumberSpecified: true,
+          familyNumber: 0,
+          paxDiscountCode: "",
+          names: [
+            {
+              firstName: _passenger.firstName,
+              middleName: "",
+              lastName: _passenger.lastName,
+              suffix: "",
+              title: _passenger.title,
+              state: 0,
+            },
+          ],
+          passengerID: 0,
+          pseudoPassenger: false,
+          passengerTypeInfos: [
+            {
+              state: 0,
+              stateSpecified: true,
+              dob: _passenger.dob || "9999-12-31T00:00:00Z",
+              dobSpecified: true,
+              paxType: _passenger.type,
+            },
+          ],
+        };
+        _passengers.push(passengerObj);
+      });
+      requestPayload = {
+        updatePassengerRequest: {
+          updatePassengersRequestData: {
+            passengers: [..._passengers],
+            waiveNameChangeFee: false,
+          },
+        },
+      };
+    }
+
+    try {
+      updatePassengerInfo(requestPayload)
+        .unwrap()
+        .then((response) => {
+          dispatch(setUpdatePassengersResponse(response));
+          handleContact(contact);
+        })
+        .catch(() => {
+          notification.error({
+            message: "Error",
+            description: "Update passenger(s) details failed",
+          });
+        });
+    } catch (err) {
+      notification.error({
+        message: "Error",
+        description: "Error occured",
+      });
+    }
+  };
+
+  const handleContact = (payload) => {
+    dispatch(setSessionContact(payload));
+
+    const _requestPayload = {
+      updateContactsRequestDto: {
+        updateContactsRequest: {
+          updateContactsRequestData: {
+            bookingContactList: [
+              {
+                state: 0,
+                stateSpecified: true,
+                typeCode: "P",
+                names: [
+                  {
+                    firstName: payload.firstName,
+                    middleName: "",
+                    lastName: payload.lastName,
+                    suffix: "",
+                    title: payload.title,
+                    state: 0,
+                    stateSpecified: true,
+                  },
+                ],
+                emailAddress: payload.email,
+                homePhone: payload.phone,
+                workPhone: payload.phone,
+                otherPhone: payload.phone,
+                fax: "",
+                companyName: "GreenAfrica",
+                addressLine1: "Lagos",
+                addressLine2: "",
+                addressLine3: "",
+                city: "Lagos",
+                provinceState: "LA",
+                postalCode: "",
+                countryCode: "NG",
+                cultureCode: "",
+                distributionOption: 2,
+                distributionOptionSpecified: true,
+                customerNumber: "",
+                notificationPreference: 0,
+                notificationPreferenceSpecified: true,
+                sourceOrganization: "",
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    updateContactInfo(_requestPayload)
+      .unwrap()
+      .then((response) => {
+        dispatch(setUpdateContactsResponse(response));
+        dispatch(FetchStateFromServer());
+        // console.log("response payload", response );
+        router.push("/trip/passenger-details");
+      })
+      .catch(() => {
+        notification.error({
+          message: "Error",
+          description: "Update contact details failed",
+        });
+      });
+  };
 
   const handleSubmit = async (values) => {
     const contactInfo = {
@@ -130,11 +347,18 @@ const PassengerForm = () => {
     let _formIsInValid = false;
     passengers.map((_pax) => {
       for (const key in _pax) {
-        if (_pax[key].length < 1) {
+        if (
+          _pax[key].length < 1 ||
+          _pax.firstName.length < 1 ||
+          _pax.lastName.length < 1 ||
+          _pax.title.length < 1
+        ) {
           _formIsInValid = true;
         }
       }
     });
+
+    console.log(" _formIsInValid ", _formIsInValid);
 
     passengers.map((_pax) => {
       if (_pax?.type === "CHD" || _pax?.type === "INF") {
@@ -144,10 +368,19 @@ const PassengerForm = () => {
         }
       } else {
         if (_pax?.dob?.length < 1) {
-          _formIsInValid = false;
+          if (
+            _pax.firstName.length > 0 &&
+            _pax.lastName.length > 0 &&
+            _pax.title.length > 0
+          ) {
+            _formIsInValid = false;
+          }
         }
       }
     });
+
+    console.log(" passengers", passengers);
+    console.log(" _formIsInValid ", _formIsInValid);
 
     if (_formIsInValid) {
       notification.error({
@@ -156,8 +389,32 @@ const PassengerForm = () => {
           "Incomplete details, Please check through your form and fill-in appropriate details",
       });
     } else {
-      dispatch(updatePassengersDetails(passengers));
-      dispatch(updateContactsDetails(contactInfo));
+      const names = [];
+
+      passengers.map((_pax) => {
+        names.push(
+          `${_pax.title.trim().toLowerCase()} ${_pax.firstName
+            .trim()
+            .toLowerCase()} ${_pax.lastName.trim().toLowerCase()}`
+        );
+      });
+
+      function checkIfDuplicateExists(arr) {
+        return new Set(arr).size !== arr.length;
+      }
+
+      const duplicateExist = checkIfDuplicateExists(names);
+
+      if (duplicateExist) {
+        notification.error({
+          message: "Error",
+          description:
+            "You are not allowed to have the same passenger name for different passengers on the same booking",
+        });
+      } else {
+        updatePassengers(passengers, contactInfo);
+        console.log("passengers, contactInfo");
+      }
     }
   };
 
@@ -448,7 +705,9 @@ const PassengerForm = () => {
                       type="submit"
                       className="btn btn-primary cta basis-full md:basis-auto"
                     >
-                      {updatePassengersLoading ? "Saving....." : "Continue"}
+                      {updatingPassengerInfo || updatingContactInfo
+                        ? "Saving....."
+                        : "Continue"}
                     </button>
                   </div>
                   {/* CTA */}

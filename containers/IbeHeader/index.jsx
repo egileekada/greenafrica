@@ -110,7 +110,7 @@ const IbeHeader = () => {
 
       setLoaded(false);
     } else {
-      console.log("mot avvvv");
+      // console.log("mot avvvv");
     }
   }, [lowFareAvailabilityResponse]);
 

@@ -1,7 +1,7 @@
 // // // var counter = (function () {
 // // //   var i = 0;
 
-const { number } = require("yup");
+// const { number } = require("yup");
 
 // // //   return {
 // // //     get: function () {
@@ -107,10 +107,21 @@ const { number } = require("yup");
 
 // foo()
 
+// var num = 24;
+// setTimeout(() => {
+//   console.log(num)
+// }, 0)
 
-var num = 24;
-setTimeout(() => {
-  console.log(num)
-}, 0)
+// num = 5
 
-num = 5
+// console.log(!!(true && true));
+// console.log(!!(true && false));
+// console.log(!!(true || false));
+
+function checkIfDuplicateExists(arr) {
+  return new Set(arr).size !== arr.length;
+}
+
+var arr = ["mrs ola kehinde", "mrs ola kehinde"];
+let duplicateExist = checkIfDuplicateExists(arr);
+console.log("dupliacte",duplicateExist);
