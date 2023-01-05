@@ -79,8 +79,16 @@ const getPageBySlug = async (slug) => {
   const { data } = await axios.get(`/pages/${slug}`);
   return data;
 };
+
 const getFareRules = async () => {
   const { data } = await axios.get(`/products/farerules`);
+  return data;
+};
+
+const getLowFare = async (from, to) => {
+  const { data } = await axios.get(
+    `/flight/availability?from=${from}&to=${to}`
+  );
   return data;
 };
 
@@ -102,4 +110,5 @@ export {
   getPageBySlug,
   getNotifications,
   getFareRules,
+  getLowFare,
 };

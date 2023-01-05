@@ -5,8 +5,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select, { components } from "react-select";
 import { format } from "date-fns";
+import millify from "millify";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
-import { getWidgetData } from "../../../services";
+import { getWidgetData, getLowFare } from "../../../services";
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
 import { lowfare } from "../../../utils/calendar";
@@ -110,18 +111,6 @@ const Book = ({
     }),
   };
 
-  function hasContent({ date }) {
-    for (const key in lowfare) {
-      if (key === format(date, "yyyy-MM-dd")) {
-        return (
-          <p className="text-[10px] font-light leading-tight my-1 text-[#545175]">
-            ₦{Math.round(lowfare[key])}K
-          </p>
-        );
-      }
-    }
-    return <p></p>;
-  }
   const updateInfant = (value) => {
     if (infant >= 0) {
       setInfant(infant + value);
@@ -290,6 +279,26 @@ const Book = ({
     formik.setFieldValue("destination", value);
     setFromTo({ ...fromTo, to: value });
   };
+
+  const { data: lowfaredata } = useQuery(
+    ["lowfare", [fromTo.from.value, fromTo.to.value]],
+    () => getLowFare(fromTo.from.value, fromTo.to.value)
+  );
+
+  function hasContent({ date }) {
+    const lowfare = lowfaredata?.data?.values;
+    for (const key in lowfare) {
+      if (lowfare[key].DepartureDate === format(date, "yyyy-MM-dd")) {
+        return (
+          <p className="text-[10px] font-light leading-tight my-1 text-[#545175]">
+            {lowfare[key].currency}
+            {millify(Math.round(lowfare[key].amount))}
+          </p>
+        );
+      }
+    }
+    return <p></p>;
+  }
 
   return (
     <>
