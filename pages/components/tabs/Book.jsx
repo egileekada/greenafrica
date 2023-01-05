@@ -10,7 +10,6 @@ import DatePicker from "react-date-picker/dist/entry.nostyle";
 import { getWidgetData, getLowFare } from "../../../services";
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
-import { lowfare } from "../../../utils/calendar";
 import useDeviceSize from "hooks/useWindowSize";
 import MobileSearch from "components/MobileSearch";
 // import { hasBasePath } from "next/dist/server/router";
@@ -281,8 +280,8 @@ const Book = ({
   };
 
   const { data: lowfaredata } = useQuery(
-    ["lowfare", [fromTo.from.value, fromTo.to.value]],
-    () => getLowFare(fromTo.from.value, fromTo.to.value)
+    ["lowfare", [fromTo.from?.value, fromTo.to?.value]],
+    () => getLowFare(fromTo.from?.value, fromTo.to?.value)
   );
 
   function hasContent({ date }) {
