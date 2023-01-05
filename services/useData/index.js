@@ -85,7 +85,7 @@ const getFareRules = async () => {
   return data;
 };
 
-const getLowFare = async (from, to) => {
+const getLowFare = async (from = null, to = null) => {
   const { data } = await axios.get(
     `/flight/availability?from=${from}&to=${to}`
   );
