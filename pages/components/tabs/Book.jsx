@@ -182,7 +182,7 @@ const Book = ({
     validationSchema,
     onSubmit: async (values) => {
       formik.setSubmitting(true);
-
+      console.log(promocode, code);
       const appendPromo = (promocode) => {
         if (promocode !== null) {
           return `&promocode=${promocode}`;
@@ -298,6 +298,10 @@ const Book = ({
     }
     return <p></p>;
   }
+
+  useEffect(() => {
+    setPromocode(code);
+  }, [code]);
 
   return (
     <>
