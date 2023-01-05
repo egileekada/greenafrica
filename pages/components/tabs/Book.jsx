@@ -280,8 +280,8 @@ const Book = ({
   };
 
   const { data: lowfaredata } = useQuery(
-    ["lowfare", [fromTo.from?.value, fromTo.to?.value]],
-    () => getLowFare(fromTo.from?.value, fromTo.to?.value)
+    ["lowfare", [fromTo?.from?.value, fromTo?.to?.value]],
+    () => getLowFare(fromTo?.from?.value, fromTo?.to?.value)
   );
 
   function hasContent({ date }) {
