@@ -32,6 +32,7 @@ const MobileSearch = ({
   child,
   setChild,
   values,
+  hasContent
 }) => {
   const [screen, setScreen] = React.useState(1);
 
@@ -85,6 +86,7 @@ const MobileSearch = ({
             setDepartureDate={setDepartureDate}
             type={type}
             setScreen={setScreen}
+            hasContent={hasContent}
           />
         ) : screen === 3 ? (
           <Flight
@@ -95,6 +97,7 @@ const MobileSearch = ({
             type={type}
             setType={setType}
             setScreen={setScreen}
+            hasContent={hasContent}
           />
         ) : screen === 4 ? (
           <Passengers

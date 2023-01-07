@@ -751,6 +751,7 @@ const Book = ({
           setAdult={setAdult}
           child={child}
           setChild={setChild}
+          hasContent={hasContent}
         />
       )}
     </>

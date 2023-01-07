@@ -1,22 +1,8 @@
 import Calendar from "react-calendar";
-import { format, setSeconds } from "date-fns";
-import { lowfare } from "../../../utils/calendar";
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
 
-const Departure = ({ setDepartureDate, departureDate, setScreen }) => {
-  function hasContent({ date }) {
-    for (const key in lowfare) {
-      if (key === format(date, "yyyy-MM-dd")) {
-        return (
-          <p className="text-[10px] font-light leading-tight my-1 text-[#9E9BBF]">
-            ₦{Math.round(lowfare[key])}K
-          </p>
-        );
-      }
-    }
-    return <p></p>;
-  }
+const Departure = ({ setDepartureDate, departureDate, setScreen, hasContent }) => {
 
   return (
     <div className="flex flex-col w-full justify-start items-center h-full gap-1">
