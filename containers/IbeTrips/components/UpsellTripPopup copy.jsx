@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Popup from "components/Popup";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import CheckIcon from "assets/svgs/check.svg";
 import NullIcon from "assets/svgs/null.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,14 +45,6 @@ const IbeTripPopup = ({
     selectedSessionFare,
   } = useSelector(sessionSelector);
   const router = useRouter();
-
-  const [flex, setFlex] = useState(null);
-  const [svr, setSvr] = useState(null);
-  const [clsc, setClsc] = useState(null);
-
-  const [svrCharge, setSvrCharge] = useState(0);
-  const [clscCharge, setClscCharge] = useState(0);
-  const [flexCharge, setFlexCharge] = useState(0);
 
   const gSaver = [`7kg hand luggage: 55 x40 x 24cm`];
 
@@ -190,148 +182,6 @@ const IbeTripPopup = ({
     }
   };
 
-  useEffect(() => {
-    if (segment) {
-      const _svr = segment.Fares.find(
-        (item) => item?.RuleNumber.toLowerCase() === "savr"
-      );
-      const _flex = segment.Fares.find(
-        (item) => item?.RuleNumber.toLowerCase() === "flex"
-      );
-      const _clsc = segment.Fares.find(
-        (item) => item?.RuleNumber.toLowerCase() === "clsc"
-      );
-
-      if (_svr) {
-        setSvr(_svr);
-        console.log("svr", _svr);
-        // const totalSVRCharge =
-        //   _svr?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-        //     return accumulator + object.Amount;
-        //   }, 0) || 0;
-        // setSvrCharge(totalSVRCharge);
-      }
-
-      if (_clsc) {
-        setClsc(_clsc);
-        console.log("clsc", _clsc);
-
-        // const totalClscCharge =
-        //   _clsc?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-        //     return accumulator + object.Amount;
-        //   }, 0) || 0;
-        // setClscCharge(totalClscCharge);
-      }
-
-      if (_flex) {
-        setFlex(_flex);
-        console.log("flex", _flex);
-
-        // const totalFlexCharge =
-        //   flex?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-        //     return accumulator + object.Amount;
-        //   }, 0) || 0;
-        // setFlexCharge(totalFlexCharge);
-      }
-    }
-  }, [segment]);
-
-  const gSvrBtn = (
-    <div className="benefits__popup__row__item cta-row">
-      <button
-        onClick={handleSell.bind(this, "savr")}
-        className={`btn ${
-          selected?.RuleNumber.toLowerCase() === "savr"
-            ? "btn-primary"
-            : "btn-outline disabled"
-        } w-full !font-bold `}
-      >
-        {/* {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "savr"
-          ? svr
-            ? `Continue With gSaver ₦${svr?.AmountDifference?.toLocaleString()}`
-            : "Continue With gSaver"
-          : "Continue With gSaver"} */}
-
-        {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "savr" && svr
-          ? `Continue With gSaver ₦${svr?.AmountDifference?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "clsc" && svr
-          ? `Continue With gClassic ₦${svr?.AdditionalAmount?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "flex" && svr
-          ? `Continue With gFlex ₦${svr?.ExtraAmount?.toLocaleString()}`
-          : null}
-      </button>
-    </div>
-  );
-
-  const gClscBtn = (
-    <div className="benefits__popup__row__item cta-row">
-      <button
-        onClick={handleSell.bind(this, "clsc")}
-        className={`btn ${
-          selected?.RuleNumber.toLowerCase() === "clsc"
-            ? "btn-primary"
-            : `btn-outline ${
-                selected?.RuleNumber.toLowerCase() === "flex" ? "disabled" : ""
-              } `
-        } w-full !font-bold`}
-      >
-        {/* {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "flex" ||
-            selected?.RuleNumber.toLowerCase() === "savr"
-          ? clsc
-            ? `+₦${clsc?.AdditionalAmount?.toLocaleString()}/Per Person`
-            : "Continue With gClassic"
-          : `Continue With gClassic #${clscCharge}`} */}
-        {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "savr" && clsc
-          ? `Continue With gSaver ₦${clsc?.AmountDifference?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "clsc" && clsc
-          ? `Continue With gClassic ₦${clsc?.AdditionalAmount?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "flex" && clsc
-          ? `Continue With gFlex ₦${clsc?.ExtraAmount?.toLocaleString()}`
-          : null}
-      </button>
-    </div>
-  );
-
-  const gFlexBtn = (
-    <div className="benefits__popup__row__item cta-row">
-      <button
-        onClick={handleSell.bind(this, "flex")}
-        className={`btn ${
-          selected?.RuleNumber.toLowerCase() === "flex"
-            ? "btn-primary"
-            : `btn-outline`
-        } w-full !font-bold `}
-      >
-        {/* {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "clsc" ||
-            selected?.RuleNumber.toLowerCase() === "savr"
-          ? flex
-            ? `+₦${flex?.AdditionalAmount?.toLocaleString()}/Per Person`
-            : "Continue With gFlex"
-          : `Continue With gFlex #${flexCharge}`} */}
-
-        {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "savr" && flex
-          ? `Continue With gSaver ₦${flex?.AmountDifference?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "clsc" && flex
-          ? `Continue With gClassic ₦${flex?.AdditionalAmount?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "flex" && flex
-          ? `Continue With gFlex ₦${flex?.ExtraAmount?.toLocaleString()}`
-          : null}
-      </button>
-    </div>
-  );
-
   return (
     <Fragment>
       <Popup display={showPopUp} closeModal={closePopUp} top={true}>
@@ -342,7 +192,7 @@ const IbeTripPopup = ({
             <section className="w-full bg-white rounded-xl hidden lg:flex flex-col">
               <div className="bg-primary-main text-center flex items-center justify-center p-8 rounded-t-xl">
                 <h3 className="text-white text-base">
-                  Upgrade your fare and enjoy more benefits{" "}
+                  Upgrade your fare and enjoy more benefits { selected?.RuleNumber }
                 </h3>
               </div>
               <section>
@@ -505,9 +355,52 @@ const IbeTripPopup = ({
                     <div className="benefits__popup__row__item cta-row">
                       <h5>&nbsp;</h5>
                     </div>
-                    {gSvrBtn}
-                    {gClscBtn}
-                    {gFlexBtn}
+                    <div className="benefits__popup__row__item cta-row">
+                      <button
+                        onClick={handleSell.bind(this, "savr")}
+                        className={`btn ${
+                          selected?.RuleNumber.toLowerCase() === "savr"
+                            ? "btn-primary"
+                            : "btn-outline"
+                        } w-full `}
+                      >
+                        {sellFlightLoading
+                          ? "Loading....."
+                          : "Continue with gSaver"}{" "}
+                        {/* {selected?.AmountDifference} */}
+                      </button>
+                    </div>
+                    <div className="benefits__popup__row__item cta-row">
+                      <button
+                        onClick={handleSell.bind(this, "clsc")}
+                        className={`btn ${
+                          selected?.RuleNumber.toLowerCase() === "clsc" ||
+                          selected?.RuleNumber.toLowerCase() === "savr"
+                            ? "btn-primary"
+                            : "btn-outline disabled"
+                        } w-full `}
+                      >
+                        {sellFlightLoading
+                          ? "Loading....."
+                          : "Continue gClassic"}
+                      </button>
+                    </div>
+                    <div className="benefits__popup__row__item cta-row">
+                      <button
+                        onClick={handleSell.bind(this, "flex")}
+                        className={`btn ${
+                          selected?.RuleNumber.toLowerCase() === "flex" ||
+                          selected?.RuleNumber.toLowerCase() === "clsc" ||
+                          selected?.RuleNumber.toLowerCase() === "savr"
+                            ? "btn-primary"
+                            : "btn-outline disabled"
+                        } w-full `}
+                      >
+                        {sellFlightLoading
+                          ? "Loading....."
+                          : "Continue with gFlex"}
+                      </button>
+                    </div>
                   </div>
                 </section>
               </section>
