@@ -204,29 +204,34 @@ const IbeTripPopup = ({
 
       if (_svr) {
         setSvr(_svr);
-        const totalSVRCharge =
-          _svr?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-            return accumulator + object.Amount;
-          }, 0) || 0;
-        setSvrCharge(totalSVRCharge);
+        console.log("svr", _svr);
+        // const totalSVRCharge =
+        //   _svr?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
+        //     return accumulator + object.Amount;
+        //   }, 0) || 0;
+        // setSvrCharge(totalSVRCharge);
       }
 
       if (_clsc) {
         setClsc(_clsc);
-        const totalClscCharge =
-          _clsc?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-            return accumulator + object.Amount;
-          }, 0) || 0;
-        setClscCharge(totalClscCharge);
+        console.log("clsc", _clsc);
+
+        // const totalClscCharge =
+        //   _clsc?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
+        //     return accumulator + object.Amount;
+        //   }, 0) || 0;
+        // setClscCharge(totalClscCharge);
       }
 
       if (_flex) {
         setFlex(_flex);
-        const totalFlexCharge =
-          flex?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-            return accumulator + object.Amount;
-          }, 0) || 0;
-        setFlexCharge(totalFlexCharge);
+        console.log("flex", _flex);
+
+        // const totalFlexCharge =
+        //   flex?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
+        //     return accumulator + object.Amount;
+        //   }, 0) || 0;
+        // setFlexCharge(totalFlexCharge);
       }
     }
   }, [segment]);
@@ -241,13 +246,23 @@ const IbeTripPopup = ({
             : "btn-outline disabled"
         } w-full !font-bold `}
       >
-        {sellFlightLoading
+        {/* {sellFlightLoading
           ? "Loading....."
           : selected?.RuleNumber.toLowerCase() === "savr"
           ? svr
-            ? `Continue With gSaver #${svrCharge}`
+            ? `Continue With gSaver ₦${svr?.AmountDifference?.toLocaleString()}`
             : "Continue With gSaver"
-          : "Continue With gSaver"}
+          : "Continue With gSaver"} */}
+
+        {sellFlightLoading
+          ? "Loading....."
+          : selected?.RuleNumber.toLowerCase() === "savr" && svr
+          ? `Continue With gSaver ₦${svr?.AmountDifference?.toLocaleString()}`
+          : selected?.RuleNumber.toLowerCase() === "clsc" && svr
+          ? `Continue With gClassic ₦${svr?.AdditionalAmount?.toLocaleString()}`
+          : selected?.RuleNumber.toLowerCase() === "flex" && svr
+          ? `Continue With gFlex ₦${svr?.ExtraAmount?.toLocaleString()}`
+          : null}
       </button>
     </div>
   );
@@ -264,14 +279,23 @@ const IbeTripPopup = ({
               } `
         } w-full !font-bold`}
       >
-        {sellFlightLoading
+        {/* {sellFlightLoading
           ? "Loading....."
           : selected?.RuleNumber.toLowerCase() === "flex" ||
             selected?.RuleNumber.toLowerCase() === "savr"
           ? clsc
-            ? `+#${clsc?.AdditionalAmount}/Per Person`
+            ? `+₦${clsc?.AdditionalAmount?.toLocaleString()}/Per Person`
             : "Continue With gClassic"
-          : `Continue With gClassic #${clscCharge}`}
+          : `Continue With gClassic #${clscCharge}`} */}
+        {sellFlightLoading
+          ? "Loading....."
+          : selected?.RuleNumber.toLowerCase() === "savr" && clsc
+          ? `Continue With gSaver ₦${clsc?.AmountDifference?.toLocaleString()}`
+          : selected?.RuleNumber.toLowerCase() === "clsc" && clsc
+          ? `Continue With gClassic ₦${clsc?.AdditionalAmount?.toLocaleString()}`
+          : selected?.RuleNumber.toLowerCase() === "flex" && clsc
+          ? `Continue With gFlex ₦${clsc?.ExtraAmount?.toLocaleString()}`
+          : null}
       </button>
     </div>
   );
@@ -286,14 +310,24 @@ const IbeTripPopup = ({
             : `btn-outline`
         } w-full !font-bold `}
       >
-        {sellFlightLoading
+        {/* {sellFlightLoading
           ? "Loading....."
           : selected?.RuleNumber.toLowerCase() === "clsc" ||
             selected?.RuleNumber.toLowerCase() === "savr"
           ? flex
-            ? `+#${flex?.AdditionalAmount}/Per Person`
+            ? `+₦${flex?.AdditionalAmount?.toLocaleString()}/Per Person`
             : "Continue With gFlex"
-          : `Continue With gFlex #${flexCharge}`}
+          : `Continue With gFlex #${flexCharge}`} */}
+
+        {sellFlightLoading
+          ? "Loading....."
+          : selected?.RuleNumber.toLowerCase() === "savr" && flex
+          ? `Continue With gSaver ₦${flex?.AmountDifference?.toLocaleString()}`
+          : selected?.RuleNumber.toLowerCase() === "clsc" && flex
+          ? `Continue With gClassic ₦${flex?.AdditionalAmount?.toLocaleString()}`
+          : selected?.RuleNumber.toLowerCase() === "flex" && flex
+          ? `Continue With gFlex ₦${flex?.ExtraAmount?.toLocaleString()}`
+          : null}
       </button>
     </div>
   );

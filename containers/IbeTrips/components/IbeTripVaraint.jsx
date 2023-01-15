@@ -4,7 +4,6 @@ import BriefcaseIcon from "assets/svgs/briefcase.svg";
 import PackageIcon from "assets/svgs/package.svg";
 import SeatIcon from "assets/svgs/seat.svg";
 import { Fragment, useState } from "react";
-// import IbeTripPopup from "./IbeTripPopup";
 import IbeTripPopup from "./UpsellTripPopup";
 import { useDispatch, useSelector } from "react-redux";
 
