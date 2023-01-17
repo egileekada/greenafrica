@@ -50,10 +50,6 @@ const IbeTripPopup = ({
   const [svr, setSvr] = useState(null);
   const [clsc, setClsc] = useState(null);
 
-  const [svrCharge, setSvrCharge] = useState(0);
-  const [clscCharge, setClscCharge] = useState(0);
-  const [flexCharge, setFlexCharge] = useState(0);
-
   const gSaver = [`7kg hand luggage: 55 x40 x 24cm`];
 
   const gClassic = [
@@ -204,34 +200,14 @@ const IbeTripPopup = ({
 
       if (_svr) {
         setSvr(_svr);
-        console.log("svr", _svr);
-        // const totalSVRCharge =
-        //   _svr?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-        //     return accumulator + object.Amount;
-        //   }, 0) || 0;
-        // setSvrCharge(totalSVRCharge);
       }
 
       if (_clsc) {
         setClsc(_clsc);
-        console.log("clsc", _clsc);
-
-        // const totalClscCharge =
-        //   _clsc?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-        //     return accumulator + object.Amount;
-        //   }, 0) || 0;
-        // setClscCharge(totalClscCharge);
       }
 
       if (_flex) {
         setFlex(_flex);
-        console.log("flex", _flex);
-
-        // const totalFlexCharge =
-        //   flex?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-        //     return accumulator + object.Amount;
-        //   }, 0) || 0;
-        // setFlexCharge(totalFlexCharge);
       }
     }
   }, [segment]);
@@ -244,31 +220,31 @@ const IbeTripPopup = ({
           selected?.RuleNumber.toLowerCase() === "savr"
             ? "btn-primary"
             : "btn-outline disabled"
-        } w-full !font-bold `}
+        } w-full !font-bold !max-width-[170px] `}
       >
-        {/* {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "savr"
-          ? svr
-            ? `Continue With gSaver ₦${svr?.AmountDifference?.toLocaleString()}`
-            : "Continue With gSaver"
-          : "Continue With gSaver"} */}
-
-        {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "savr" && svr
-          ? `Continue With gSaver ₦${svr?.AmountDifference?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "clsc" && svr
-          ? `Continue With gClassic ₦${svr?.AdditionalAmount?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "flex" && svr
-          ? `Continue With gFlex ₦${svr?.ExtraAmount?.toLocaleString()}`
-          : null}
+        {sellFlightLoading ? (
+          "Loading....."
+        ) : selected?.RuleNumber.toLowerCase() === "savr" && svr ? (
+          `₦${svr?.AmountDifference?.toLocaleString()}`
+        ) : selected?.RuleNumber.toLowerCase() === "clsc" && svr ? (
+          <div className="flex flex-col">
+            <span className="text-red">
+              {`₦${svr?.AdditionalAmount?.toLocaleString()}`}
+            </span>
+          </div>
+        ) : selected?.RuleNumber.toLowerCase() === "flex" && svr ? (
+          <div className="flex flex-col">
+            <span className="text-red">
+              {`₦${svr?.ExtraAmount?.toLocaleString()}`}
+            </span>
+          </div>
+        ) : null}
       </button>
     </div>
   );
 
   const gClscBtn = (
-    <div className="benefits__popup__row__item cta-row">
+    <div className="benefits__popup__row__item cta-row ">
       <button
         onClick={handleSell.bind(this, "clsc")}
         className={`btn ${
@@ -277,25 +253,26 @@ const IbeTripPopup = ({
             : `btn-outline ${
                 selected?.RuleNumber.toLowerCase() === "flex" ? "disabled" : ""
               } `
-        } w-full !font-bold`}
+        } w-full !font-bold !max-width-[170px]`}
       >
-        {/* {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "flex" ||
-            selected?.RuleNumber.toLowerCase() === "savr"
-          ? clsc
-            ? `+₦${clsc?.AdditionalAmount?.toLocaleString()}/Per Person`
-            : "Continue With gClassic"
-          : `Continue With gClassic #${clscCharge}`} */}
-        {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "savr" && clsc
-          ? `Continue With gSaver ₦${clsc?.AmountDifference?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "clsc" && clsc
-          ? `Continue With gClassic ₦${clsc?.AdditionalAmount?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "flex" && clsc
-          ? `Continue With gFlex ₦${clsc?.ExtraAmount?.toLocaleString()}`
-          : null}
+        {sellFlightLoading ? (
+          "Loading....."
+        ) : selected?.RuleNumber.toLowerCase() === "savr" && clsc ? (
+          <div className="flex flex-col">
+            <span className="text-red">
+              {`+₦${clsc?.AmountDifference?.toLocaleString()}`}
+            </span>
+            <span className="!font-normal">more per person</span>
+          </div>
+        ) : selected?.RuleNumber.toLowerCase() === "clsc" && clsc ? (
+          `₦${clsc?.AdditionalAmount?.toLocaleString()}`
+        ) : selected?.RuleNumber.toLowerCase() === "flex" && clsc ? (
+          <div className="flex flex-col">
+            <span className="text-red">
+              {`₦${clsc?.ExtraAmount?.toLocaleString()}`}
+            </span>
+          </div>
+        ) : null}
       </button>
     </div>
   );
@@ -308,26 +285,27 @@ const IbeTripPopup = ({
           selected?.RuleNumber.toLowerCase() === "flex"
             ? "btn-primary"
             : `btn-outline`
-        } w-full !font-bold `}
+        } w-full !font-bold !max-width-[170px] `}
       >
-        {/* {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "clsc" ||
-            selected?.RuleNumber.toLowerCase() === "savr"
-          ? flex
-            ? `+₦${flex?.AdditionalAmount?.toLocaleString()}/Per Person`
-            : "Continue With gFlex"
-          : `Continue With gFlex #${flexCharge}`} */}
-
-        {sellFlightLoading
-          ? "Loading....."
-          : selected?.RuleNumber.toLowerCase() === "savr" && flex
-          ? `Continue With gSaver ₦${flex?.AmountDifference?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "clsc" && flex
-          ? `Continue With gClassic ₦${flex?.AdditionalAmount?.toLocaleString()}`
-          : selected?.RuleNumber.toLowerCase() === "flex" && flex
-          ? `Continue With gFlex ₦${flex?.ExtraAmount?.toLocaleString()}`
-          : null}
+        {sellFlightLoading ? (
+          "Loading....."
+        ) : selected?.RuleNumber.toLowerCase() === "savr" && flex ? (
+          <div className="flex flex-col">
+            <span className="text-red">
+              {`+₦${flex?.AmountDifference?.toLocaleString()}`}
+            </span>
+            <span className="!font-normal">more per person</span>
+          </div>
+        ) : selected?.RuleNumber.toLowerCase() === "clsc" && flex ? (
+          <div className="flex flex-col">
+            <span className="text-red">
+              {`+₦${flex?.AdditionalAmount?.toLocaleString()}`}
+            </span>
+            <span className="!font-normal">more per person</span>
+          </div>
+        ) : selected?.RuleNumber.toLowerCase() === "flex" && flex ? (
+          `₦${flex?.ExtraAmount?.toLocaleString()}`
+        ) : null}
       </button>
     </div>
   );
