@@ -248,16 +248,14 @@ const IbeTripPopup = ({
         ) : selected?.RuleNumber.toLowerCase() === "clsc" && svr ? (
           <div className="flex flex-col">
             <span className="text-red">
-              {`+₦${svr?.AdditionalAmount?.toLocaleString()}`}
+              {`₦${svr?.AdditionalAmount?.toLocaleString()}`}
             </span>
-            <span className="!font-normal">more per person</span>
           </div>
         ) : selected?.RuleNumber.toLowerCase() === "flex" && svr ? (
           <div className="flex flex-col">
             <span className="text-red">
-              {`+₦${svr?.ExtraAmount?.toLocaleString()}`}
+              {`₦${svr?.ExtraAmount?.toLocaleString()}`}
             </span>
-            <span className="!font-normal">more per person</span>
           </div>
         ) : null}
       </button>
@@ -290,9 +288,8 @@ const IbeTripPopup = ({
         ) : selected?.RuleNumber.toLowerCase() === "flex" && clsc ? (
           <div className="flex flex-col">
             <span className="text-red">
-              {`+₦${clsc?.ExtraAmount?.toLocaleString()}`}
+              {`₦${clsc?.ExtraAmount?.toLocaleString()}`}
             </span>
-            <span className="!font-normal">more per person</span>
           </div>
         ) : null}
       </button>
