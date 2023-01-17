@@ -50,10 +50,6 @@ const IbeTripPopup = ({
   const [svr, setSvr] = useState(null);
   const [clsc, setClsc] = useState(null);
 
-  const [svrCharge, setSvrCharge] = useState(0);
-  const [clscCharge, setClscCharge] = useState(0);
-  const [flexCharge, setFlexCharge] = useState(0);
-
   const gSaver = [`7kg hand luggage: 55 x40 x 24cm`];
 
   const gClassic = [
@@ -204,29 +200,14 @@ const IbeTripPopup = ({
 
       if (_svr) {
         setSvr(_svr);
-        // const totalSVRCharge =
-        //   _svr?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-        //     return accumulator + object.Amount;
-        //   }, 0) || 0;
-        // setSvrCharge(totalSVRCharge);
       }
 
       if (_clsc) {
         setClsc(_clsc);
-        // const totalClscCharge =
-        //   _clsc?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-        //     return accumulator + object.Amount;
-        //   }, 0) || 0;
-        // setClscCharge(totalClscCharge);
       }
 
       if (_flex) {
         setFlex(_flex);
-        // const totalFlexCharge =
-        //   flex?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
-        //     return accumulator + object.Amount;
-        //   }, 0) || 0;
-        // setFlexCharge(totalFlexCharge);
       }
     }
   }, [segment]);
