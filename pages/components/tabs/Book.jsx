@@ -491,7 +491,7 @@ const Book = ({
                     setShowModal(true);
                   }
                 }}
-                className="booking__wrapper  flex items-end"
+                className="booking__wrapper hover:border-primary-main flex items-end"
               >
                 <span className="mr-2 ml-1 pb-1 hidden md:block">
                   <svg
