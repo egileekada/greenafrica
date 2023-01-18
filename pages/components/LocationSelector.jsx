@@ -7,7 +7,7 @@ export default function LocationSelector(props) {
   const [isShown, setIsShown] = useState(false);
 
   console.log(props.data);
-  const clickHandler =(item)=> {
+  const clickHandler =(item)=> { 
     props.value(item?.code)
     setLocationValue(item?.name)
     // setIsShown(false)

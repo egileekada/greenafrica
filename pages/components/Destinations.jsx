@@ -7,16 +7,15 @@ import Slider from "react-slick";
 import Arrow from "components/TestimonialArrow";
 import LocationSelector from "./LocationSelector";
 import CustomSlider from "components/CustomSlider";
+import { ContainerFilled } from "@ant-design/icons";
 const Destinations = (props) => {
   const [value, setValue] = useState("LOS"); 
-  const [dataInfo, setDataInfo] = useState(null); 
+  const [isShown, setIsShown] = useState(false); 
 
-  const { data: destinations, refetch } = useQuery(["destination_matrices", value], () =>
+  const { data: destinations } = useQuery(["destination_matrices", value], () =>
     getDestinations(value)
   );
-  const { data: locations } = useQuery(["locations"], getLocations);
-
-  console.log(destinations);
+  const { data: locations } = useQuery(["locations"], getLocations); 
 
   const settings = {
     dots: false,
@@ -71,11 +70,10 @@ const Destinations = (props) => {
     prevArrow: <Arrow image="/images/slick_left.svg" alt="Previous Arrow" />,
   };
  
-  useEffect(()=> { 
-    setDataInfo(null)  
-    const t1 = setTimeout(() => {
-        refetch()
-        setDataInfo(destinations)
+  useEffect(async()=> {   
+    setIsShown(true)
+    const t1 = setTimeout(() => { 
+        setIsShown(false)
         clearTimeout(t1);
       }, 1000); 
   }, [value])
@@ -103,21 +101,7 @@ const Destinations = (props) => {
           Explore Our Destinations{" "}
           <span className="hidden md:flex ml-1 items-center">
             from{" "} 
-            <LocationSelector data={locations} value={setValue} />
-            {/* <select
-              name=""
-              id=""
-              className="border-none font-semibold h-[200px] text-2xl customselect"
-              style={{ borderBottom: "1px solid #26205E" }}
-              onChange={(e) => setValue(e.target.value)}
-              value={value}
-            >
-              {locations?.data?.items?.map((location, index) => (
-                <option value={location.code} key={index}>
-                  {location.name}
-                </option>
-              ))}
-            </select> */}
+            <LocationSelector data={locations} value={setValue} /> 
           </span>
         </h1>
         <p className="text-center lg:text-left text-lg text-primary-main font-light">
@@ -126,20 +110,7 @@ const Destinations = (props) => {
 
         <div className="select__wrapper px-5 mx-5  pb-6 block md:hidden">
           <p className="text-xs text-uppercase my-2">FROM</p>
-          <LocationSelector data={locations} value={setValue} />
-          {/* <select
-            name=""
-            id=""
-            className="border-none pl-0 py-0 h-[200px] block w-full mb-2 customselect"
-            onChange={(e) => setValue(e.target.value)}
-            value={value}
-          >
-            {locations?.data?.items?.map((location, index) => (
-              <option value={location.code} key={index}>
-                {location.name}
-              </option>
-            ))}
-          </select> */}
+          <LocationSelector data={locations} value={setValue} /> 
         </div> 
         <div className="mt-10">
           {/* <Slider {...settings}>
@@ -171,16 +142,15 @@ const Destinations = (props) => {
               </a>
             ))}
           </Slider> */}
-          {dataInfo && (
-            <CustomSlider data={dataInfo?.data?.item} />
+          {!isShown && (
+            <CustomSlider data={destinations?.data?.item} />
           )}
-          {!dataInfo && (
+          {isShown && (
             <div className=" w-screen flex overflow-x-auto hidescroll" >
               <div className=" w-auto flex " > 
                 <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/>
                 <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/>
-                <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/>
-                 
+                <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/> 
               </div>
             </div>
           )}
