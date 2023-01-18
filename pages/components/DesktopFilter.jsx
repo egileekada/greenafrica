@@ -47,40 +47,40 @@ const DesktopFilter = () => {
         <div className="flex items-center">
           <button
             onClick={() => setActiveTab(1)}
-            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold ${
-              activeTab === 1 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm ${
+              activeTab === 1 ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px]`}
           >
             One Way
           </button>
           <button
             onClick={() => setActiveTab(2)}
-            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold  ${
-              activeTab === 2 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm  ${
+              activeTab === 2 ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px]`}
           >
             Round Trip
           </button>
           <a
             href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}checkin`}
-            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold ${
-              activeTab === 3 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm ${
+              activeTab === 3 ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px] hidden lg:inline`}
           >
             Check In
           </a>
           <a
             href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}bookings`}
-            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold ${
-              activeTab === 4 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm ${
+              activeTab === 4 ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px] hidden lg:inline`}
           >
             My Booking
           </a>
 
           <a
-            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold ${
-              activeTab === 5 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm ${
+              activeTab === 5 ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px] hidden lg:inline`}
             href="/flight-schedule"
           >
@@ -136,7 +136,7 @@ const DesktopFilter = () => {
               <figure className="mr-2">
                 <PromoIcon />
               </figure>
-              <span className="text-primary text-sm">Use promo code</span>
+              <span className="text-primary text-sm mr-1">Use promo code</span>
             </button>
           )}
         </div>

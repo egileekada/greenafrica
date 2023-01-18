@@ -67,7 +67,7 @@ const Book = ({
   const colourStyles = {
     control: (styles, { isFocused, isSelected }) => ({
       ...styles,
-      borderWidth: "0px",
+      // borderWidth: "px",
       minHeight: "auto",
       boxShadow: "0px",
       border: "0px",
@@ -314,7 +314,7 @@ const Book = ({
                   ? "border !border-[#de0150]"
                   : ""
               } ${width < 769 ? "cursor-pointer" : ""}
-               flex items-end booking__wrapper `}
+               flex items-end hover:border-primary-main booking__wrapper `}
               onClick={() => {
                 if (width < 769) {
                   setShowModal(true);
@@ -336,13 +336,14 @@ const Book = ({
                 }}
                 className="w-full mx-2 px-2 md:px-0"
               >
-                <p className="mb-0 text-xs text-[#979797]">FROM</p>
+                <p className="mb-0 font-medium text-xs text-[#979797]">FROM</p>
                 {width > 769 ? (
                   <Select
                     ref={originSelect}
-                    openMenuOnFocus={true}
+                    openMenuOnFocus={true} 
                     id="from"
                     instanceId="from"
+                    
                     placeholder="Origin"
                     formatOptionLabel={formatOptionLabel}
                     components={{ Option }}
@@ -384,7 +385,7 @@ const Book = ({
                   ? "border !border-[#de0150]"
                   : ""
               } ${width < 769 ? "cursor-pointer" : ""}
-              flex items-end booking__wrapper`}
+              flex items-end hover:border-primary-main booking__wrapper`}
               onClick={() => {
                 if (width < 769) {
                   setShowModal(true);
@@ -399,7 +400,7 @@ const Book = ({
                 onClick={() => forcusOrigin(destinationSelect)}
               />
               <div className="w-full mx-2 px-2 md:px-0">
-                <p className="mb-0 text-xs text-[#979797]">TO</p>
+                <p className="mb-0 font-medium text-xs text-[#979797]">TO</p>
                 {width > 769 ? (
                   <Select
                     ref={destinationSelect}
@@ -446,7 +447,7 @@ const Book = ({
                   setShowModal(true);
                 }
               }}
-              className="booking__wrapper flex items-end"
+              className="booking__wrapper hover:border-primary-main flex items-end"
             >
               <span className="mr-2 ml-1 pb-1 hidden md:block">
                 <svg
@@ -490,7 +491,7 @@ const Book = ({
                     setShowModal(true);
                   }
                 }}
-                className="booking__wrapper flex items-end"
+                className="booking__wrapper  flex items-end"
               >
                 <span className="mr-2 ml-1 pb-1 hidden md:block">
                   <svg
@@ -533,7 +534,7 @@ const Book = ({
 
           <div className="flex gap-3 xl:max-w-[250px] xl:flex-1">
             <div
-              className="booking__wrapper hidden md:flex flex-auto relative"
+              className="booking__wrapper hover:border-primary-main hidden md:flex flex-auto relative"
               data-modal-toggle="defaultModal"
             >
               <div
@@ -615,28 +616,28 @@ const Book = ({
                             </p>
                           </div>
                           <div className="flex items-center">
-                            <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                            <button
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={passengers === 1}
                               onClick={() => decreaseAdult(-1)}
                             >
                               <img src="/images/subtract.svg" alt="" />
-                            </div>
+                            </button>
                             <input
                               type="tel"
                               className="w-10 mx-2 rounded-lg text-center"
                               value={adult}
                               readOnly
                             />
-                            <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                            <button
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={passengers === 9}
                               onClick={() => updateAdult(1)}
                             >
                               <img src="/images/_add.svg" alt="" className="" />
-                            </div>
+                            </button>
                           </div>
                         </div>
                         <div className="grid grid-cols-2 mb-3">
@@ -646,29 +647,29 @@ const Book = ({
                               2 - 12 years
                             </p>
                           </div>
-                          <div className="flex items-center">
-                            <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                          <div className="flex items-center"> 
+                            <button
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={child === 0}
                               onClick={() => updateChild(-1)}
                             >
                               <img src="/images/subtract.svg" alt="subtract" />
-                            </div>
+                            </button>
                             <input
                               type="tel"
                               className="w-10 mx-2 rounded-lg text-center"
                               value={child}
                               readOnly
-                            />
-                            <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                            /> 
+                            <button
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={passengers === 9}
                               onClick={() => updateChild(1)}
                             >
                               <img src="/images/_add.svg" alt="" />
-                            </div>
+                            </button>
                           </div>
                         </div>
                         <div className="grid grid-cols-2 mb-3">
@@ -678,29 +679,29 @@ const Book = ({
                               0 - 2 years
                             </p>
                           </div>
-                          <div className="flex items-center">
-                            <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                          <div className="flex items-center"> 
+                            <button
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={infant === 0}
                               onClick={() => updateInfant(-1)}
                             >
                               <img src="/images/subtract.svg" alt="" />
-                            </div>
+                            </button>
                             <input
                               type="tel"
                               className="w-10 mx-2 rounded-lg text-center"
                               value={infant}
                               readOnly
                             />
-                            <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                            <button
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={adult == infant}
                               onClick={() => updateInfant(1)}
                             >
                               <img src="/images/_add.svg" alt="" />
-                            </div>
+                            </button>
                           </div>
                         </div>
                       </div>

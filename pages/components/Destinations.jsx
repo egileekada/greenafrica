@@ -119,7 +119,7 @@ const Destinations = (props) => {
             </select> */}
           </span>
         </h1>
-        <p className="text-center lg:text-left text-primary-main font-light">
+        <p className="text-center lg:text-left text-lg text-primary-main font-light">
           You are one flight closer to your dreams and destinations.
         </p>
 
