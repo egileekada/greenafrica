@@ -72,11 +72,12 @@ const Destinations = (props) => {
   };
  
   useEffect(()=> { 
-    setDataInfo(null) 
+    setDataInfo(null)  
     const t1 = setTimeout(() => {
+        refetch()
         setDataInfo(destinations)
         clearTimeout(t1);
-      }, 1000);
+      }, 1000); 
   }, [value])
 
   useEffect(() => {
