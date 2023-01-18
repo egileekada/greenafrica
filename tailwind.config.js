@@ -10,11 +10,11 @@ module.exports = {
     // borderWidth: {
     //   DEFAULT: "1px",
     // },
-    fontFamily: {
-      body: ["Plus Jakarta Sans"],
+    fontFamily: { 
+      body: ["Satoshi"],
       title: ["Plus Jakarta Sans"],
       header: ["Plus Jakarta Sans"],
-      display: ["Plus Jakarta Sans"],
+      display: ["Satoshi"],
     },
     extend: {
       fontSize: {
