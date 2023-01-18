@@ -180,8 +180,7 @@ const Destinations = (props) => {
                 <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/>
                 <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/>
                 <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/>
-                <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/>
-                <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/>
+                 
               </div>
             </div>
           )}
