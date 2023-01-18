@@ -6,10 +6,12 @@ import FlightIcon from "assets/svgs/flight_icon.svg";
 import Slider from "react-slick";
 import Arrow from "components/TestimonialArrow";
 import LocationSelector from "./LocationSelector";
+import CustomSlider from "components/CustomSlider";
 const Destinations = (props) => {
   const [value, setValue] = useState("LOS"); 
+  const [dataInfo, setDataInfo] = useState(null); 
 
-  const { data: destinations } = useQuery(["destination_matrices", value], () =>
+  const { data: destinations, refetch } = useQuery(["destination_matrices", value], () =>
     getDestinations(value)
   );
   const { data: locations } = useQuery(["locations"], getLocations);
@@ -68,10 +70,19 @@ const Destinations = (props) => {
     ),
     prevArrow: <Arrow image="/images/slick_left.svg" alt="Previous Arrow" />,
   };
+ 
+  useEffect(()=> { 
+    setDataInfo(null) 
+    const t1 = setTimeout(() => {
+        setDataInfo(destinations)
+        clearTimeout(t1);
+      }, 1000);
+  }, [value])
 
   useEffect(() => {
     setValue(props.query);
   }, [props.query]);
+
   return (
     <>
       {" "}
@@ -130,7 +141,7 @@ const Destinations = (props) => {
           </select> */}
         </div> 
         <div className="mt-10">
-          <Slider {...settings}>
+          {/* <Slider {...settings}>
 
             {destinations?.data?.item?.map((destination, index) => (
               <a
@@ -158,8 +169,11 @@ const Destinations = (props) => {
                 )}
               </a>
             ))}
-          </Slider>
-          {!destinations && (
+          </Slider> */}
+          {dataInfo && (
+            <CustomSlider data={dataInfo?.data?.item} />
+          )}
+          {!dataInfo && (
             <div className=" w-screen flex overflow-x-auto hidescroll" >
               <div className=" w-auto flex " > 
                 <div role="status" class="flex items-center justify-center h-[206px] w-[309px] bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700 mr-4 "/>
