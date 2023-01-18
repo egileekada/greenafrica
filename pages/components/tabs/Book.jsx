@@ -351,7 +351,7 @@ const Book = ({
                     value={fromTo.from}
                     onChange={(value) => setFromDate(value)}
                     options={data?.data?.values}
-                    className="border-0"
+                    className="border-0 customselect"
                     styles={colourStyles}
                   />
                 ) : (

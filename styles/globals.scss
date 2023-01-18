@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap");
 @import url("../assets/fonts/Cosmical/fonts.css");
 @import url("../assets/fonts/plus-jakarta-sans-v3-latin/font.css");
+@import url("../assets/fonts/Satoshi/font.css");
 @import "antd/dist/antd.css";
 @import "./loader.scss";
 @import "./carousel.scss";
@@ -19,11 +20,11 @@
 // Tailwind Styles
 @layer base {
   html {
-    font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
+    font-family: Satoshi, system-ui, sans-serif !important;
   }
 
   body {
-    font-family: Plus Jakarta Sans, system-ui, sans-serif !important;
+    font-family: Satoshi, system-ui, sans-serif !important;
   }
 }
 .react-tel-input .selected-flag {
@@ -527,6 +528,7 @@ textarea {
 
 .select__wrapper {
   border: 1px solid #d8d7e2;
+  padding-bottom: 40px;
   @apply rounded-lg py-1;
   p {
     color: #979797;
@@ -814,4 +816,42 @@ select:focus {
   .react-date-picker {
     width: 100%;
   }
+}
+
+/* width */
+.customselect::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+html{  
+  scroll-behavior: smooth; 
+}
+
+/* Track */
+.customselect::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+.customselect::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 25%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  
+}
+
+.customselect::-webkit-scrollbar-thumb {
+  background-color: #261F5E;
+}
+ 
+.hidescroll {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.hidescroll::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+  width: 0px;
 }

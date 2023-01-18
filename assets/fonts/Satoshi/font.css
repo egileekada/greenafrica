@@ -1,0 +1,53 @@
+ 
+/* Satoshi-400 - latin */
+@font-face {
+  font-family: 'Satoshi';
+  font-style: normal;
+  font-weight: 400;
+  src: url('Satoshi-Regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('Satoshi-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('Satoshi-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('Satoshi-Regular.woff') format('woff'), /* Modern Browsers */
+       url('Satoshi-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       /* url('Satoshi-Regular.svg#PlusJakartaSans') format('svg'); Legacy iOS */
+}
+/* Satoshi-500 - latin */
+@font-face {
+  font-family: 'Satoshi';
+  font-style: normal;
+  font-weight: 500;
+  src: url('Satoshi-Medium.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('Satoshi-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('Satoshi-Medium.woff2') format('woff2'), /* Super Modern Browsers */
+       url('Satoshi-Medium.woff') format('woff'), /* Modern Browsers */
+       url('Satoshi-Medium.ttf') format('truetype'), /* Safari, Android, iOS */
+       /* url('Satoshi-Medium.svg#PlusJakartaSans') format('svg'); Legacy iOS */
+} 
+/* Satoshi-700 - latin */
+@font-face {
+  font-family: 'Satoshi';
+  font-style: normal;
+  font-weight: 700;
+  src: url('Satoshi-Bold.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('Satoshi-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('Satoshi-Bold.woff2') format('woff2'), /* Super Modern Browsers */
+       url('Satoshi-Bold.woff') format('woff'), /* Modern Browsers */
+       url('Satoshi-Bold.ttf') format('truetype'), /* Safari, Android, iOS */
+       /* url('Satoshi-Bold.svg#PlusJakartaSans') format('svg'); Legacy iOS */
+}
+/* Satoshi-800 - latin */
+@font-face {
+  font-family: 'Satoshi';
+  font-style: normal;
+  font-weight: 800;
+  src: url('Satoshi-Black.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('Satoshi-Black.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('Satoshi-Black.woff2') format('woff2'), /* Super Modern Browsers */
+       url('Satoshi-Black.woff') format('woff'), /* Modern Browsers */
+       url('Satoshi-Black.ttf') format('truetype'), /* Safari, Android, iOS */
+       /* url('Satoshi-Black.svg#PlusJakartaSans') format('svg'); Legacy iOS */
+}

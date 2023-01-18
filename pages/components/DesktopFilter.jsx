@@ -47,41 +47,41 @@ const DesktopFilter = () => {
         <div className="flex items-center">
           <button
             onClick={() => setActiveTab(1)}
-            className={`btn ${
-              activeTab === 1 ? "btn-primary white font-title" : "btn-text"
-            } mr-[22px]`}
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold ${
+              activeTab === 1 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            } mr-[10px]`}
           >
             One Way
           </button>
           <button
             onClick={() => setActiveTab(2)}
-            className={`btn ${
-              activeTab === 2 ? "btn-primary white font-title" : "btn-text"
-            } mr-[22px]`}
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold  ${
+              activeTab === 2 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            } mr-[10px]`}
           >
             Round Trip
           </button>
           <a
             href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}checkin`}
-            className={`btn ${
-              activeTab === 3 ? "btn-primary white font-title" : "btn-text"
-            } mr-[22px] hidden lg:inline`}
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold ${
+              activeTab === 3 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            } mr-[10px] hidden lg:inline`}
           >
             Check In
           </a>
           <a
             href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}bookings`}
-            className={`btn ${
-              activeTab === 4 ? "btn-primary white font-title" : "btn-text"
-            } mr-[22px] hidden lg:inline`}
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold ${
+              activeTab === 4 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            } mr-[10px] hidden lg:inline`}
           >
             My Booking
           </a>
 
           <a
-            className={`btn ${
-              activeTab === 5 ? "btn-primary white font-title" : "btn-text"
-            } mr-[22px] hidden lg:inline`}
+            className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm font-bold ${
+              activeTab === 5 ? "btn-primary bg-primary-main white font-title" : "hover:bg-primary-main btn-text font-title"
+            } mr-[10px] hidden lg:inline`}
             href="/flight-schedule"
           >
             Flight Schedule
