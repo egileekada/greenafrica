@@ -6,7 +6,7 @@ import BookingTab from "./tabs/BookingTab";
 import Book from "./tabs/Book";
 import { add } from "date-fns";
 
-const DesktopFilter = () => {
+const DesktopFilter = (props) => {
   const [activeTab, setActiveTab] = useState(1);
   const [promocode, setPromocode] = useState(null);
   const [showPromo, setShowPromo] = useState(false);
@@ -48,7 +48,7 @@ const DesktopFilter = () => {
           <button
             onClick={() => setActiveTab(1)}
             className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm ${
-              activeTab === 1 ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
+              activeTab === 1 && !props.flight ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px]`}
           >
             One Way
@@ -80,7 +80,7 @@ const DesktopFilter = () => {
 
           <a
             className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm ${
-              activeTab === 5 ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
+              activeTab === 5 || props.flight ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px] hidden lg:inline`}
             href="/flight-schedule"
           >

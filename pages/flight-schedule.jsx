@@ -1,10 +1,11 @@
 import React from "react";
 import BaseLayout from "layouts/Base";
+import HomeHero from "./components/Hero";
 
 const flightSchedule = () => {
   return (
     <BaseLayout>
-      {/* <HomeHero /> */}
+      <HomeHero  flight={true}  />
       <section className="w-full px-3.5 py-10 lg:fit-x-bleed">
         <div className="container mx-auto mb-10">
           <h1 className="text-primary-main lg:font-semibold text-2xl mb-4">
@@ -34,13 +35,13 @@ const flightSchedule = () => {
         </div>
 
         <div className="container mx-auto mb-10">
-          <div className="grid grid-cols-1 lg:grid-flex-col xl:grid-cols-4 sm:grid-flex-col items-center gap-10">
-            <div className="schedule gap-4">
+          <div className="grid grid-cols-1 lg:grid-flex-col lg:grid-cols-3 sm:grid-flex-col items-center gap-10">
+            <div className=" w-full border-[0.2px] rounded-[12px] bg-[#FAFAFF] border-[#9E9BBF] gap-4">
               <div className="schedule__strip p-2 pl-4">
                 <img src="/images/flight_vector.svg" alt="" />
               </div>
 
-              <div className="schedule__grid">
+              <div className="">
                 <div className="grid grid-cols-2 items-end px-6 py-6">
                   <div>
                     <p className="text-uppercase mb-1 text-xs">DESTINATION</p>

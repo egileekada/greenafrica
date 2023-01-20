@@ -4,7 +4,7 @@ import HeroSlider from "../../containers/ref/home/Slider";
 import DesktopFilter from "./DesktopFilter";
 // import MobileFilter from "./MobileFilter";
 
-const HomeHero = () => {
+const HomeHero = (props) => {
   // const [width] = useDeviceSize();
 
   return (
@@ -14,7 +14,7 @@ const HomeHero = () => {
       </div>
       <div className="basis-ful w-full  relative -top-[4rem]">
         <div className="w-[90%] mx-auto">
-          <DesktopFilter />
+          <DesktopFilter flight={props.flight} />
           {/* {width > 899 ? <DesktopFilter /> : <MobileFilter />} */}
         </div>
       </div>
