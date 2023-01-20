@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import PromoIcon from "assets/svgs/promo.svg";
 import CheckInTab from "./tabs/CheckInTab";
 import BookingTab from "./tabs/BookingTab";
@@ -8,7 +8,7 @@ import { add } from "date-fns";
 import Router  from "next/router";
 
 const DesktopFilter = (props) => {
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(0);
   const [promocode, setPromocode] = useState(null);
   const [showPromo, setShowPromo] = useState(false);
   const [passengers, setPassengers] = useState(0);
@@ -36,6 +36,14 @@ const DesktopFilter = (props) => {
     }
   };
 
+  useEffect(()=> {
+    if(localStorage.getItem("tab")){ 
+      setActiveTab(Number(localStorage.getItem("tab")))
+    } else {
+      setActiveTab(1)
+    }
+  },[activeTab])
+
   const clear = () => {
     setSaveStatus(false);
     promo.current.value = null;
@@ -43,14 +51,18 @@ const DesktopFilter = (props) => {
   };
 
   const clickHandler =(item)=> {
-    Router.push("/")
     setActiveTab(item)
+    localStorage.setItem("tab", item)
+    if(Router.pathname !== "/") {
+      Router.push("/")
+      // Router.reload()
+    }
   }
 
   return (
     <section className="ga__desktop__filter w-full bg-green min-h-[168px] flex flex-col">
       <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3">
-        <div className="flex items-center">
+        <div className="flex items-center"> 
           <button
             onClick={() => clickHandler(1)}
             className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm ${
@@ -58,15 +70,15 @@ const DesktopFilter = (props) => {
             } mr-[10px]`}
           >
             One Way
-          </button>
+          </button> 
           <button
             onClick={() => clickHandler(2)}
             className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm  ${
-              activeTab === 2 ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
+              activeTab === 2 && !props.flight  ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px]`}
           >
             Round Trip
-          </button>
+          </button> 
           <a
             href={`${process.env.NEXT_PUBLIC_CORPORATE_URL}checkin`}
             className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm ${
