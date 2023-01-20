@@ -5,6 +5,7 @@ import CheckInTab from "./tabs/CheckInTab";
 import BookingTab from "./tabs/BookingTab";
 import Book from "./tabs/Book";
 import { add } from "date-fns";
+import Router  from "next/router";
 
 const DesktopFilter = (props) => {
   const [activeTab, setActiveTab] = useState(1);
@@ -41,12 +42,17 @@ const DesktopFilter = (props) => {
     setPromocode(null);
   };
 
+  const clickHandler =(item)=> {
+    Router.push("/")
+    setActiveTab(item)
+  }
+
   return (
     <section className="ga__desktop__filter w-full bg-green min-h-[168px] flex flex-col">
       <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3">
         <div className="flex items-center">
           <button
-            onClick={() => setActiveTab(1)}
+            onClick={() => clickHandler(1)}
             className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm ${
               activeTab === 1 && !props.flight ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px]`}
@@ -54,7 +60,7 @@ const DesktopFilter = (props) => {
             One Way
           </button>
           <button
-            onClick={() => setActiveTab(2)}
+            onClick={() => clickHandler(2)}
             className={` px-4 py-3 text-white transition-all text-center rounded-xl text-sm  ${
               activeTab === 2 ? "btn-primary bg-primary-main white font-bold font-title" : "font-medium hover:bg-primary-main btn-text font-title"
             } mr-[10px]`}
