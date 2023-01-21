@@ -125,6 +125,8 @@ const Book = ({
     }
   };
 
+  console.log(show);
+
   const decreaseAdult = (value) => {
     if (adult >= 0) {
       setAdult(Math.min(adult + value, 9));
@@ -306,15 +308,15 @@ const Book = ({
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-flex-col xl:flex sm:grid-flex-col items-center gap-2">
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:flex-1 gap-3 md:col-span-2">
+        <div className="grid grid-cols-1 lg:flex xl:flex w-full sm:grid-flex-col items-center gap-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 w-full xl:flex-1 gap-3 md:col-span-2">
             <div
               className={`${
                 formik.touched.origin && formik.errors.origin
                   ? "border !border-[#de0150]"
                   : ""
               } ${width < 769 ? "cursor-pointer" : ""}
-               flex items-end hover:border-primary-main booking__wrapper `}
+               flex items-center justify-center h-[55px] hover:border-primary-main booking__wrapper `}
               onClick={() => {
                 if (width < 769) {
                   setShowModal(true);
@@ -324,7 +326,7 @@ const Book = ({
               <img
                 src="/images/widget_from.svg"
                 alt=""
-                className="mx-2 pb-2 hidden md:block"
+                className="mx-2 my-auto hidden md:block"
                 onClick={() => forcusOrigin(originSelect)}
                 role="button"
               />
@@ -342,8 +344,7 @@ const Book = ({
                     ref={originSelect}
                     openMenuOnFocus={true} 
                     id="from"
-                    instanceId="from"
-                    
+                    instanceId="from" 
                     placeholder="Origin"
                     formatOptionLabel={formatOptionLabel}
                     components={{ Option }}
@@ -352,7 +353,7 @@ const Book = ({
                     value={fromTo.from}
                     onChange={(value) => setFromDate(value)}
                     options={data?.data?.values}
-                    className="border-0 customselect"
+                    className="border-0 "
                     styles={colourStyles}
                   />
                 ) : (
@@ -385,7 +386,7 @@ const Book = ({
                   ? "border !border-[#de0150]"
                   : ""
               } ${width < 769 ? "cursor-pointer" : ""}
-              flex items-end hover:border-primary-main booking__wrapper`}
+              flex items-center justify-center h-[55px] hover:border-primary-main booking__wrapper`}
               onClick={() => {
                 if (width < 769) {
                   setShowModal(true);
@@ -395,7 +396,7 @@ const Book = ({
               <img
                 src="/images/widget_to.svg"
                 alt=""
-                className="hidden md:block mx-2 pb-2 cursor-pointer"
+                className="hidden md:block mx-2 my-auto cursor-pointer"
                 role="button"
                 onClick={() => forcusOrigin(destinationSelect)}
               />
@@ -434,12 +435,11 @@ const Book = ({
                 )}
               </div>
             </div>
-          </div>
-
+          </div> 
           <div
             className={`${
-              type === "round_trip" && "lg:grid-cols-2 md:col-span-2 xl:flex-1"
-            } hidden md:grid grid-cols-1 xl:flex-1 gap-2 md:col-auto`}
+              type === "round_trip w-fit md:grid-cols-2 " && "lg:grid-cols-2 md:col-span-2 "
+            } hidden md:flex grid-cols-1 lg:w-fit gap-2 `}
           >
             <div
               onClick={() => {
@@ -447,9 +447,9 @@ const Book = ({
                   setShowModal(true);
                 }
               }}
-              className="booking__wrapper hover:border-primary-main flex items-end"
+              className="booking__wrapper items-center w-full lg:w-[220px] justify-center h-[55px] hover:border-primary-main flex"
             >
-              <span className="mr-2 ml-1 pb-1 hidden md:block">
+              <span className="mr-2 ml-1 my-auto hidden md:block">
                 <svg
                   width="26"
                   height="22"
@@ -491,9 +491,9 @@ const Book = ({
                     setShowModal(true);
                   }
                 }}
-                className="booking__wrapper hover:border-primary-main flex items-end"
+                className="booking__wrapper items-center w-full lg:w-[220px] justify-center h-[55px] hover:border-primary-main flex"
               >
-                <span className="mr-2 ml-1 pb-1 hidden md:block">
+                <span className="mr-2 ml-1 my-auto hidden md:block">
                   <svg
                     width="26"
                     height="22"
@@ -532,10 +532,10 @@ const Book = ({
             )}
           </div>
 
-          <div className="flex gap-3 xl:max-w-[250px] xl:flex-1">
+          <div className="flex gap-2 xl:max-w-[280px] w-fit h-[55px] xl:flex-1">
             <div
-              className="booking__wrapper hover:border-primary-main hidden md:flex flex-auto relative"
-              data-modal-toggle="defaultModal"
+              className="booking__wrapper w-full lg:w-auto hover:border-primary-main hidden md:flex flex-auto"
+              // data-modal-toggle="defaultModal"
             >
               <div
                 onClick={() => {
@@ -547,7 +547,7 @@ const Book = ({
               >
                 <p className="mb-1 text-xs text-[#979797]">PASSENGERS</p>
                 <div
-                  className="flex items-center relative"
+                  className="flex items-center w-[100px] relative"
                   onClick={() =>
                     width > 769 ? setShow(!show) : setShowModal(true)
                   }
@@ -594,19 +594,19 @@ const Book = ({
                   className={`${
                     !show && "hidden"
                   } bg-gray-900 bg-opacity-0 dark:bg-opacity-80 fixed inset-0 z-40`}
-                  onClick={() => setShow(false)}
+                  // onClick={() => setShow(false)}
                 ></div>
 
                 <div
                   id="defaultModal"
-                  className="absolute top-20 left-0 right-0 z-50 h-auto w-[250px]"
+                  className="absolute top-[63px] left-0 right-0 z-50 h-auto w-[250px]"
                 >
                   <div
                     className={`${
                       !show && "hidden"
-                    } relative w-full h-full max-w-lg md:h-auto widget-border rounded-lg shadow dark:bg-gray-700 bg-white`}
+                    } w-full h-full max-w-lg md:h-auto widget-border rounded-lg shadow dark:bg-gray-700 bg-white`}
                   >
-                    <div className="relative">
+                    <div className="">
                       <div className="p-4 space-y-6">
                         <div className="grid grid-cols-2 mb-3">
                           <div className="">
@@ -626,7 +626,7 @@ const Book = ({
                             </button>
                             <input
                               type="tel"
-                              className="w-10 mx-2 rounded-lg text-center"
+                              className="w-10 h-[37px] mx-2 rounded-lg text-center"
                               value={adult}
                               readOnly
                             />
@@ -658,7 +658,7 @@ const Book = ({
                             </button>
                             <input
                               type="tel"
-                              className="w-10 mx-2 rounded-lg text-center"
+                              className="w-10 mx-2 h-[37px] rounded-lg text-center"
                               value={child}
                               readOnly
                             /> 
@@ -690,7 +690,7 @@ const Book = ({
                             </button>
                             <input
                               type="tel"
-                              className="w-10 mx-2 rounded-lg text-center"
+                              className="w-10 mx-2 h-[37px] rounded-lg text-center"
                               value={infant}
                               readOnly
                             />
@@ -703,6 +703,12 @@ const Book = ({
                               <img src="/images/_add.svg" alt="" />
                             </button>
                           </div>
+                        </div> 
+                        <div
+                          onClick={()=> setShow(false)} 
+                          className="btn btn-primary flex cursor-pointer z-[70] justify-center items-center font-bold mt-4 w-full font-title h-[50px]"  
+                        >
+                          Done
                         </div>
                       </div>
                     </div>
@@ -711,9 +717,9 @@ const Book = ({
               </div>
             </div>
 
-            <div className="w-full md:w-auto">
+            <div className="w-full md:w-[159px]">
               <button
-                className="btn btn-primary w-full md:w-auto font-title block h-full"
+                className="btn btn-primary font-bold w-full md:w-auto font-title block h-[55px]"
                 type="submit"
                 disabled={formik.isSubmitting}
               >

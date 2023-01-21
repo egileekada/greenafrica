@@ -12,8 +12,8 @@ module.exports = {
     // },
     fontFamily: { 
       body: ["Satoshi"],
-      title: ["Plus Jakarta Sans"],
-      header: ["Plus Jakarta Sans"],
+      title: ["Satoshi"],
+      header: ["Satoshi"],
       display: ["Satoshi"],
     },
     extend: {
