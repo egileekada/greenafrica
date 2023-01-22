@@ -13,6 +13,8 @@ import "react-phone-input-2/lib/bootstrap.css";
 import "../styles/globals.scss";
 import "../styles/loader.scss";
 import "nprogress/nprogress.css";
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../theme';
 
 import Preloader from "components/Preloader";
 
@@ -101,18 +103,20 @@ const MyApp = ({ Component, pageProps }) => {
           content="https://dev-website.gadevenv.com/images/seo_image.jpg"
         />
       </Head>
-      <Fragment>
-        <main className="main">
-          <Preloader />
-          <Toaster />
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-              <Component {...pageProps} />
-            </Hydrate>
-            <ReactQueryDevtools />
-          </QueryClientProvider>
-        </main>
-      </Fragment>
+      {/* <ThemeProvider theme={theme}> */}
+        <Fragment>
+          <main className="main">
+            <Preloader />
+            <Toaster />
+            <QueryClientProvider client={queryClient}>
+              <Hydrate state={pageProps.dehydratedState}>
+                <Component {...pageProps} />
+              </Hydrate>
+              <ReactQueryDevtools />
+            </QueryClientProvider>
+          </main>
+        </Fragment>
+      {/* </ThemeProvider> */}
     </>
   );
 };
