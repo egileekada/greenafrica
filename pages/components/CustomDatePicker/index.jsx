@@ -52,6 +52,7 @@ export default function CustomDatePicker(props) {
                 onClick={() => 
                     setOpen(true)
                 }
+                role="button"
                 className="booking__wrapper items-center w-full lg:w-[180px] justify-center h-[55px] hover:border-primary-main flex"
                 >
                 <span className="mr-2 ml-1 my-auto hidden md:block">
@@ -81,12 +82,25 @@ export default function CustomDatePicker(props) {
     }
 
     const CustomDay =(day, _value, DayComponentProps) => {  
-        return(
-            <button onClick={()=> handleDateChange(day.$d)} className={!DayComponentProps.selected ? ' w-[40px] h-[45px] flex flex-col items-center bg-[#1F195512] mx-[1px] pt-1 ':' w-[40px] h-[45px] flex flex-col items-center bg-[#1F1955] text-[#47FF5A] mx-[1px] pt-1 '} >
-                <p className=' text-sm font-bold ' >{day.$D}</p>
-                <p className={!DayComponentProps.selected ? ' text-[10px] -mt-4 text-[#9E9BBF] ': ' text-[10px] -mt-4 '} >{hasContent(DayComponentProps.key)}</p>
-            </button>
-        )
+
+        console.log();
+
+        if(!DayComponentProps.disabled){
+            return(
+                <button onClick={()=> handleDateChange(day.$d)} style={ DayComponentProps.today ? {border: " 1px dashed #9E9BBF "} :!DayComponentProps.selected? { backgroundColor: "#1F195512" }: { backgroundColor: "#1F1955", color: "#47FF5A" }} className={' w-[40px] h-[45px] flex flex-col items-center mx-[1px] pt-1 '} >
+                    <p className=' text-sm font-bold ' >{day.$D}</p>
+                    <p className={!DayComponentProps.selected ? ' text-[10px] -mt-4 text-[#9E9BBF] ': ' text-[10px] -mt-4 '} >{hasContent(DayComponentProps.key)}</p>
+                </button>
+            )
+        } else{ 
+            return(
+                <button style={ DayComponentProps.today ? {border: " 1px dashed #9E9BBF "} :!DayComponentProps.selected? { backgroundColor: "#1F195512" }: { backgroundColor: "#1F1955", color: "#47FF5A" }} className={' w-[40px] h-[45px] cursor-not-allowed flex flex-col items-center mx-[1px] pt-1 '} >
+                    <p className=' text-sm font-bold ' >{day.$D}</p>
+                    <p className={!DayComponentProps.selected ? ' text-[10px] -mt-4 text-[#9E9BBF] ': ' text-[10px] -mt-4 '} >{hasContent(DayComponentProps.key)}</p>
+                </button>
+            )
+        }
+
     }
 
     return ( 

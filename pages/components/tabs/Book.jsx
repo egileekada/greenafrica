@@ -224,10 +224,7 @@ const Book = ({
   const setReturnDateFormik = (value) => {
     formik.setFieldValue("return", value);
     setReturningDate(value);
-  };
-
-  console.log("destination", departureDate);
-  console.log("sReturning", returningDate);
+  }; 
 
   const onClick = () => {
     const aTemp = formik.values.origin;
