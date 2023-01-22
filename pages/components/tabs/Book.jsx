@@ -170,8 +170,7 @@ const Book = ({
     },
     validationSchema,
     onSubmit: async (values) => {
-      formik.setSubmitting(true);
-      // console.log(promocode, code);
+      formik.setSubmitting(true); 
       const appendPromo = (promocode) => {
         if (promocode !== null) {
           return `&promocode=${promocode}`;
@@ -216,8 +215,7 @@ const Book = ({
   };
 
   const setDepartureDateFormik = (value) => { 
-    formik.setFieldValue("departure", value);
-    console.log(value);
+    formik.setFieldValue("departure", value); 
     setDepartureDate(value);
   }; 
 
