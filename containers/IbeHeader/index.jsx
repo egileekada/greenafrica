@@ -207,7 +207,7 @@ const IbeHeader = () => {
           <section className="flex items-center w-full">
             <div className=" w-fit " > 
               <button
-                className={`pl-4 sm:pl-0 flex border rounded-full border-[#261F5E]  h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                className={`pl-4 sm:pl-0 flex lg:border rounded-full border-[#261F5E]  h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
                 onClick={onPrev}
               >
                 <CaretLeft />
@@ -263,7 +263,7 @@ const IbeHeader = () => {
             {/* pointer-events-none cursor-none */}
             <div className=" w-fit " > 
               <button
-                className={`pr-4 sm:pr-0 hover:bg-gray-400 flex border rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                className={`pr-4 sm:pr-0 hover:bg-gray-400 flex lg:border rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
                 onClick={onNext}
               >
                 <CaretRight />

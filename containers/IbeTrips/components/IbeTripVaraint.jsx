@@ -3,6 +3,7 @@ import React from "react";
 import BriefcaseIcon from "assets/svgs/briefcase.svg";
 import PackageIcon from "assets/svgs/package.svg";
 import SeatIcon from "assets/svgs/seat.svg";
+import Seat from "assets/svgs/seatsmall.svg";
 import { Fragment, useState } from "react";
 import IbeTripPopup from "./UpsellTripPopup";
 import { useDispatch, useSelector } from "react-redux";
@@ -82,7 +83,7 @@ const IbeTripVariant = ({
 
   return (
     <Fragment>
-      <section className={`ibe__trip__variant rounded-t-md  ${fare_variant} `}>
+      <section className={`ibe__trip__variant rounded-t-md relative ${fare_variant} `}>
         {!isLoading && (
           <div className="flex flex-col rounded-t-md ">
             <div className="px-8 border-b border-b-[#0000001A] type-header rounded-t-md ">
@@ -136,7 +137,7 @@ const IbeTripVariant = ({
             </ul>
           </div>
         )}
-        <div className="px-3 lg:px-[14px] mt-auto text-center">
+        <div className="px-3 lg:px-[14px] mb-14 mt-auto text-center">
           {fare_variant === "savr" && (
             <button
               onClick={() => handleBtnClick(fare)}
@@ -173,7 +174,11 @@ const IbeTripVariant = ({
                 : `₦ ${totalServiceCharge.toLocaleString("NGN")}`}
             </button>
           )}
-        </div>
+          </div>
+          <div className=" w-full py-2 absolute bottom-0 rounded-b-[6px] flex justify-center bg-[#ED0E0E21] " >
+            <Seat />
+            <p className=" font-medium text-sm ml-4 " ><span className=" font-bold " >{fare?.AvailableCount}</span> seats remaining</p>
+          </div>
       </section>
       <IbeTripPopup
         selected={selected}
