@@ -30,12 +30,16 @@ export default function CustomDatePicker(props) {
 
 
 
-  function hasContent({ date }) {
+  function hasContent(date) {
     const lowfare = props?.data;
+     
+    console.log(date)
     for (const key in lowfare) {
-      if (lowfare[key].DepartureDate === format(date, "yyyy-MM-dd")) {
+        // console.log(lowfare[key].DepartureDate);
+        // console.log(date);
+      if (lowfare[key].DepartureDate === date) {
         return (
-          <p className="text-[10px] font-light leading-tight my-1 text-[#545175]">
+          <p className="">
             {lowfare[key].currency}
             {millify(Math.round(lowfare[key].amount))}
           </p>
@@ -81,22 +85,22 @@ export default function CustomDatePicker(props) {
         )
     }
 
-    const CustomDay =(day, _value, DayComponentProps) => {  
+    const CustomDay =(day, _value, DayComponentProps) => {   
 
-        console.log();
+        let date = format(new Date(DayComponentProps.key), "yyyy-MM-dd")  
 
         if(!DayComponentProps.disabled){
             return(
                 <button onClick={()=> handleDateChange(day.$d)} style={ DayComponentProps.today ? {border: " 1px dashed #9E9BBF "} :!DayComponentProps.selected? { backgroundColor: "#1F195512" }: { backgroundColor: "#1F1955", color: "#47FF5A" }} className={' w-[40px] h-[45px] flex flex-col items-center mx-[1px] pt-1 '} >
                     <p className=' text-sm font-bold ' >{day.$D}</p>
-                    <p className={!DayComponentProps.selected ? ' text-[10px] -mt-4 text-[#9E9BBF] ': ' text-[10px] -mt-4 '} >{hasContent(DayComponentProps.key)}</p>
+                    <p className={!DayComponentProps.selected ? ' text-[10px] -mt-3 font-semibold text-[#9E9BBF] ': ' text-[10px] -mt-3 font-semibold '} >{hasContent(date)}</p>
                 </button>
             )
         } else{ 
             return(
                 <button style={ DayComponentProps.today ? {border: " 1px dashed #9E9BBF "} :!DayComponentProps.selected? { backgroundColor: "#1F195512" }: { backgroundColor: "#1F1955", color: "#47FF5A" }} className={' w-[40px] h-[45px] cursor-not-allowed flex flex-col items-center mx-[1px] pt-1 '} >
                     <p className=' text-sm font-bold ' >{day.$D}</p>
-                    <p className={!DayComponentProps.selected ? ' text-[10px] -mt-4 text-[#9E9BBF] ': ' text-[10px] -mt-4 '} >{hasContent(DayComponentProps.key)}</p>
+                    <p className={!DayComponentProps.selected ? ' text-[10px] -mt-3 font-semibold text-[#9E9BBF] ': ' text-[10px] -mt-3 font-semibold '} >{hasContent(date)}</p>
                 </button>
             )
         }
