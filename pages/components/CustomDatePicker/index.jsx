@@ -32,11 +32,8 @@ export default function CustomDatePicker(props) {
 
   function hasContent(date) {
     const lowfare = props?.data;
-     
-    console.log(date)
-    for (const key in lowfare) {
-        // console.log(lowfare[key].DepartureDate);
-        // console.log(date);
+      
+    for (const key in lowfare) { 
       if (lowfare[key].DepartureDate === date) {
         return (
           <p className="">
