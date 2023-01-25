@@ -147,7 +147,7 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
         }`}
       >
         <div className="border-t border-t-black border-opacity-20 mx-6 lg:mx-0 mb-7"></div>
-        <div className=" grid grid-cols-3 gap-2 lg:px-0 px-6 items-stretch">
+        <div className=" grid lg:grid-cols-3  gap-2 lg:px-0 px-6 items-stretch">
           {journey.Segments.map((_segment) => {
             return _segment.Fares.map((_fare) => {
               return (

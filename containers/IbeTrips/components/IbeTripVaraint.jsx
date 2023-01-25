@@ -41,6 +41,7 @@ const IbeTripVariant = ({
   const [showPopUp, setShow] = useState(false);
   const [selected, setSelected] = useState(null);
 
+  
   const fare_variant =
     fare?.RuleNumber.toLowerCase() === "flex"
       ? "flexi"
@@ -52,12 +53,15 @@ const IbeTripVariant = ({
     );
     return `${name}`;
   };
+  
 
   const totalServiceCharge = fare?.PaxFares
     ? fare?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
         return accumulator + object.Amount;
       }, 0)
     : 0;
+
+    console.log(productsFeatures?.data.product_services);
 
   const handleBtnClick = (_fare) => {
     setSelected({
@@ -81,7 +85,7 @@ const IbeTripVariant = ({
       <section className={`ibe__trip__variant rounded-t-md  ${fare_variant} `}>
         {!isLoading && (
           <div className="flex flex-col rounded-t-md ">
-            <div className="md:px-8 border-b border-b-[#0000001A] type-header rounded-t-md ">
+            <div className="px-8 border-b border-b-[#0000001A] type-header rounded-t-md ">
               <h2 className=" font-display font-extrabold text-2xl text-[#261F5E] my-2">
                 {fare_name()}
               </h2>
@@ -99,13 +103,33 @@ const IbeTripVariant = ({
               {!featureLoading &&
                 productsFeatures?.data.product_services.map(
                   (feature, index) => (
-                    <li className="flex items-center mb-6" key={index}>
-                      <figure className="w-[44px] h-[44px] bg-transparent rounded-full flex items-center justify-center">
-                        <img src={feature.icon} alt="" />
+                    <li className="flex items-center mb-6 px-8" key={index}>
+                      <figure className="w-[44px] h-[44px] bg-transparent  rounded-full flex items-center justify-center">
+                        {/* <img src={feature.icon} alt="" /> */}
+                        {feature.icon.includes("bag") && (
+                          <BriefcaseIcon />
+                        )}
+                        {feature.icon.includes("luggage") && (
+                          <PackageIcon />
+                        )}
+                        {feature.icon.includes("seat") && (
+                          <SeatIcon />
+                        )}
                       </figure>
-                      <p className="text-black font-normal md:ml-4">
-                        {feature.feature}
-                      </p>
+                      <div  className=" ml-4" > 
+                        {feature.icon.includes("bag") && (
+                          <p className=" font-bold " >Checked Baggage</p>
+                        )}
+                        {feature.icon.includes("luggage") && (
+                          <p className=" font-bold " >7kg hand luggage</p>
+                        )}
+                        {feature.icon.includes("seat") && (
+                          <p className=" font-bold " >Seat Selection</p>
+                        )}
+                        <p className="text-black text-sm font-normal">
+                          {feature.feature}
+                        </p>
+                      </div>
                     </li>
                   )
                 )}

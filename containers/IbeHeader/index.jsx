@@ -5,7 +5,7 @@ import CaretLeft from "assets/svgs/caretleft.svg";
 import CaretRight from "assets/svgs/caretright.svg";
 import Spinner from "components/Spinner";
 import useDeviceSize from "hooks/useWindowSize";
-import FlightIcon from "assets/svgs/FlightTwo.svg";
+import FlightIcon from "assets/svgs/FlightThree.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
