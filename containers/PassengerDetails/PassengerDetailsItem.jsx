@@ -20,6 +20,8 @@ const PassengerDetailsItem = ({
   const [wcChecked, setWCChecked] = useState(false);
   const [vpChecked, setVPChecked] = useState(false);
   const [hpChecked, setHPChecked] = useState(false);
+  const [insChecked, setInsChecked] = useState(false);
+  const [INSCHARGE, setIINSCHARGE] = useState(0);
 
   useEffect(() => {
     async function mapSessionSSRs() {
@@ -53,10 +55,50 @@ const PassengerDetailsItem = ({
         if (HPRDs.length > 0) {
           setHPChecked(true);
         }
+
+        const INSs = sessionSSRs.filter((_ssr) => {
+          return (
+            _ssr?.passengerNumber === parseInt(passenger?.id) &&
+            _ssr?.ssrCode === "INS"
+          );
+        });
+        if (INSs.length > 0) {
+          setInsChecked(true);
+        }
       }
     }
     mapSessionSSRs();
   }, []);
+
+  useEffect(() => {
+    if (
+      SSRAvailabilityResponse &&
+      SSRAvailabilityResponse?.SSRAvailabilityForBookingResponse?.SSRSegmentList
+        .length > 0
+    ) {
+      const _SSRList =
+        SSRAvailabilityResponse?.SSRAvailabilityForBookingResponse
+          ?.SSRSegmentList;
+      if (_SSRList && _SSRList.length > 0) {
+        const Available = _SSRList[0].AvailablePaxSSRList;
+        let INSIndex = Available.findIndex((object) => {
+          return object.SSRCode.toLowerCase() === "ins";
+        });
+
+        if (INSIndex > -1) {
+          const INSPAX = Available[INSIndex];
+          const INSServiceCharge =
+            INSPAX.PaxSSRPriceList[0].PaxFee.ServiceCharges.reduce(
+              (accumulator, object) => {
+                return accumulator + object.Amount;
+              },
+              0
+            );
+          setIINSCHARGE(INSServiceCharge);
+        }
+      }
+    }
+  }, [SSRAvailabilityResponse]);
 
   const onWCChange = (e) => {
     if (e.target.checked) {
@@ -112,29 +154,51 @@ const PassengerDetailsItem = ({
     }
   };
 
-  const onInsuranceChange = (e) => {};
+  const onInsuranceChange = (e) => {
+    if (e.target.checked) {
+      const _ssrObj = {
+        passengerNumber: passenger?.id,
+        ssrCode: "INS",
+        schedueIndex: 0,
+      };
+      setSSRs((prevState) => [...prevState, _ssrObj]);
+      setInsChecked(true);
+    } else {
+      let codeToBeRemoved = "INS";
+      setSSRs((prevState) =>
+        prevState.filter((_ssr) => _ssr.ssrCode !== codeToBeRemoved)
+      );
+      setInsChecked(false);
+    }
+  };
 
   return (
     <section className="flex flex-col bg-white rounded-xl mb-6">
       {SSRAvailabilityResponse ? (
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
-            {/* <p>GoSSRs:: {JSON.stringify(selectedSSRs)}</p>
-            <p>RetrunSSRs:: {JSON.stringify(selectedReturnSSRs)}</p> */}
+            <p>GoSSRs:: {JSON.stringify(selectedSSRs)}</p>
+            <p>RetrunSSRs:: {JSON.stringify(selectedReturnSSRs)}</p>
             <h2 className="text-left text-[#8F8CA4] font-header font-bold mb-2 hidden">
               INSURANCE
             </h2>
-            <div className="flex items-center primary-checkbox mb-4 hidden">
-              <Checkbox onChange={onInsuranceChange}>
+            <div className="flex items-center primary-checkbox mb-4 ">
+              <Checkbox checked={insChecked} onChange={onInsuranceChange}>
                 <label className="check-label">
-                  <p className="ml-2">Travel Insurance (N2,000)</p>
+                  <p className="ml-2">
+                    Travel Insurance ( ₦{INSCHARGE.toLocaleString()})
+                  </p>
                 </label>
               </Checkbox>
             </div>
             <section className="flex flex-col special__needs mb-4">
               <div className="flex flex-col mt-">
                 <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-4">
-                  SPECIAL ASSISTANCE <span className="italic">(Please let us know if you will require any special assistance at the airport)</span>
+                  SPECIAL ASSISTANCE{" "}
+                  <span className="italic">
+                    (Please let us know if you will require any special
+                    assistance at the airport)
+                  </span>
                 </h6>
 
                 {/* //TODO I don't understand the logic here yet */}

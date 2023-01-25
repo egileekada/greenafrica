@@ -1,4 +1,7 @@
 import Swal from "sweetalert2";
+import axios from "axios";
+
+
 const accessToken = window.localStorage.getItem("accessToken");
 
 const appInstance = process.env.REACT_APP_ENVIRONMENT;

@@ -91,6 +91,7 @@ const PageFares = () => {
                                 HPRD: 0,
 
                                 CHG: 0,
+                                INSU: 0,
                               };
 
                               _segment.PaxSSRs?.map((_segSSR) => {
@@ -269,6 +270,29 @@ const PageFares = () => {
                                               <h6>
                                                 ₦
                                                 {Discount[0].Amount.toLocaleString()}
+                                              </h6>
+                                            </div>
+                                          </div>
+                                        )}
+
+                                        {parseInt(_SSRsCount?.INSU) > 0 && (
+                                          <div className="trip__summary__row subrow">
+                                            <div className="flex items-center">
+                                              <h6>
+                                                {_SSRsCount?.INSU} X&nbsp;
+                                                {fareConfig?.data
+                                                  ? resolveAbbreviation("INSU")
+                                                  : null}
+                                                {_SSRsCount?.INSU > 1
+                                                  ? "s"
+                                                  : ""}
+                                              </h6>
+                                            </div>
+                                            <div>
+                                              <h6>
+                                                {" "}
+                                                ₦
+                                                {_SSRSum?.INSU.toLocaleString()}
                                               </h6>
                                             </div>
                                           </div>

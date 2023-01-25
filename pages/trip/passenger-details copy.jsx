@@ -85,10 +85,28 @@ const PassengerDetails = () => {
   }, []);
 
   const proceedToSeatSelectionWithSSR = async () => {
-    // New
-    const trips = parseInt(sessionStateResponse?.BookingData?.Journeys.length);
-    if (trips === 1) {
-      // console.log("Single trip", selectedSSRs, selectedReturnSSRs);
+    let Extras = selectedSSRs.filter(function (ssr) {
+      if (
+        ssr?.ssrCode === "WCHR" ||
+        ssr?.ssrCode === "VPRD" ||
+        ssr?.ssrCode === "HPRD" ||
+        ssr?.ssrCode === "INS"
+      )
+        return true;
+    });
+    if (Extras?.length > 0) {
+      const existingReturnSSRs = [...selectedReturnSSRs];
+      Extras.map((_item) => {
+        const newObj = {
+          ..._item,
+          schedueIndex: 1,
+        };
+        existingReturnSSRs.push(newObj);
+      });
+      setReturnSSRs([...existingReturnSSRs]);
+      dispatch(SellSSROption(selectedSSRs, [...existingReturnSSRs]));
+      router.push("/trip/seat-selection");
+    } else {
       dispatch(SellSSROption(selectedSSRs, selectedReturnSSRs));
       router.push("/trip/seat-selection");
     }
@@ -99,38 +117,15 @@ const PassengerDetails = () => {
   };
 
   const checkSSRContent = () => {
-    // New
-    let Extras = selectedSSRs.filter(function (ssr) {
-      if (
-        ssr?.ssrCode === "WCHR" ||
-        ssr?.ssrCode === "VPRD" ||
-        ssr?.ssrCode === "HPRD" ||
-        ssr?.ssrCode === "INS"
-      )
-        return true;
-    });
-    const existingReturnSSRs = [...selectedReturnSSRs];
-    if (Extras?.length > 0) {
-      Extras.map((_item) => {
-        const newObj = {
-          ..._item,
-          schedueIndex: 1,
-        };
-        existingReturnSSRs.push(newObj);
-      });
-      setReturnSSRs([...existingReturnSSRs]);
-    }
-
+    
     const trips = parseInt(sessionStateResponse?.BookingData?.Journeys.length);
 
     if (trips > 1) {
-      if (selectedSSRs.length > 0 && existingReturnSSRs.length > 0) {
-        // console.log("round trip", selectedSSRs, existingReturnSSRs);
-        dispatch(SellSSROption(selectedSSRs, existingReturnSSRs));
-        router.push("/trip/seat-selection");
+      if (selectedSSRs.length > 0 && selectedReturnSSRs.length > 0) {
+        proceedToSeatSelectionWithSSR();
       } else {
         selectedSSRs.length < 1 && setShow(true);
-        existingReturnSSRs.length < 1 && setShowReturn(true);
+        selectedReturnSSRs.length < 1 && setShowReturn(true);
       }
     } else {
       selectedSSRs.length > 0 ? proceedToSeatSelectionWithSSR() : setShow(true);

@@ -74,11 +74,11 @@ const IbeHeader = () => {
           format(new Date(selectedDate), "yyyy-MM-dd")
         );
       });
-      console.log("dateIndex", dateIndex);
+      // console.log("dateIndex", dateIndex);
 
       if (dateIndex > -1) {
         const defaultPage = Math.ceil((dateIndex + 1) / length);
-        console.log("defaultPage", defaultPage);
+        // console.log("defaultPage", defaultPage);
 
         paginate(defaultPage);
       } else {

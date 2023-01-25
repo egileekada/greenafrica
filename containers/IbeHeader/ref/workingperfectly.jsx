@@ -97,7 +97,7 @@ const IbeHeader = () => {
             );
           });
 
-          console.log("dateIndex", dateIndex);
+          // console.log("dateIndex", dateIndex);
 
           if (dateIndex > -1) {
             const defaultPage = Math.ceil((dateIndex + 1) / _length);

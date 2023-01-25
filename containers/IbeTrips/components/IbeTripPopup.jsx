@@ -60,8 +60,8 @@ const IbeTripPopup = ({
   ];
 
   const handleFare = async () => {
-    console.log("selected is", selected?.RuleNumber);
-    console.log("fare is", fare?.RuleNumber);
+    // console.log("selected is", selected?.RuleNumber);
+    // console.log("fare is", fare?.RuleNumber);
     if (flightParams?.isRoundTrip === 1) {
       const existingFares = selectedSessionFare ? [...selectedSessionFare] : [];
       const _cleanedFares = existingFares.filter((_item) => {

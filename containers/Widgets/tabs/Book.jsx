@@ -241,8 +241,8 @@ const BookingTab = ({ type, promocode }) => {
     }
   }, [isLoading]);
 
-  console.log(format(new Date(flightRequest.departure), "yyyy-MM-dd"));
-  console.log(formik.values.departure);
+  // console.log(format(new Date(flightRequest.departure), "yyyy-MM-dd"));
+  // console.log(formik.values.departure);
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
