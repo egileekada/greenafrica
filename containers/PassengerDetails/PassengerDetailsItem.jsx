@@ -177,13 +177,13 @@ const PassengerDetailsItem = ({
       {SSRAvailabilityResponse ? (
         <PassengerAccordion passenger={passenger}>
           <div className="flex flex-col">
-            {/* <p>GoSSRs:: {JSON.stringify(selectedSSRs)}</p>
-            <p>RetrunSSRs:: {JSON.stringify(selectedReturnSSRs)}</p> */}
+            <p>GoSSRs:: {JSON.stringify(selectedSSRs)}</p>
+            <p>RetrunSSRs:: {JSON.stringify(selectedReturnSSRs)}</p>
             <h2 className="text-left text-[#8F8CA4] font-header font-bold mb-2 hidden">
               INSURANCE
             </h2>
             <div className="flex items-center primary-checkbox mb-4 ">
-              <Checkbox onChange={onInsuranceChange}>
+              <Checkbox checked={insChecked} onChange={onInsuranceChange}>
                 <label className="check-label">
                   <p className="ml-2">
                     Travel Insurance ( ₦{INSCHARGE.toLocaleString()})
