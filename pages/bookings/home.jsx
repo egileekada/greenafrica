@@ -23,6 +23,8 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import { setManageBookingPnr } from "redux/reducers/booking";
+import { atcb_action } from "add-to-calendar-button";
+import "add-to-calendar-button/assets/css/atcb.css";
 import {
   useGetLocationsQuery,
   useGetPaymentConfigsQuery,
@@ -50,6 +52,14 @@ const ManageBookings = (props) => {
       top: 0,
       behavior: "smooth",
     });
+  };
+
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+
+    return `${name}`;
   };
 
   useEffect(() => {
@@ -139,6 +149,39 @@ const ManageBookings = (props) => {
       </section>
     );
   };
+  // Generate add booking to calendar data
+  const myData = [];
+  bookingResponse?.Booking?.Journeys.forEach((journey) => {
+    const data = {
+      name: `Flight to ${
+        !locationLoading &&
+        resolveAbbreviation(journey.Segments[0].ArrivalStation)
+      } (${journey.Segments[0].FlightDesignator?.CarrierCode} ${
+        journey.Segments[0].FlightDesignator?.FlightNumber
+      })`,
+      description: `Green Africa flight ${
+        journey.Segments[0].FlightDesignator?.CarrierCode
+      } ${journey.Segments[0].FlightDesignator?.FlightNumber} | ${
+        !locationLoading &&
+        resolveAbbreviation(journey.Segments[0].DepartureStation)
+      } (${journey.Segments[0].DepartureStation}) ${format(
+        new Date(journey.Segments[0]?.STD),
+        "hh:mm bbb"
+      )} (local time) - ${
+        !locationLoading &&
+        resolveAbbreviation(journey.Segments[0].ArrivalStation)
+      } (${journey.Segments[0].ArrivalStation}) ${format(
+        new Date(journey.Segments[0]?.STA),
+        "hh:mm bbb"
+      )} (local time)
+        
+      Booking number: ${bookingResponse?.Booking?.RecordLocator}`,
+      startDate: format(new Date(journey.Segments[0]?.STD), "yyyy-MM-dd"),
+      startTime: format(new Date(journey.Segments[0]?.STD), "HH:mm"),
+      endTime: format(new Date(journey.Segments[0]?.STA), "HH:mm"),
+    };
+    myData.push(data);
+  });
 
   const PageCTA = () => {
     return (
@@ -148,6 +191,26 @@ const ManageBookings = (props) => {
         }`}
         // className={`flex flex-wrap md:flex-nowrap mx-6`}
       >
+        <button
+          className="btn btn-primary font-title block h-full mb-3 md:mb-0 md:mr-3"
+          onClick={() =>
+            atcb_action({
+              name: "name",
+              dates: myData,
+              options: [
+                "Apple",
+                "Google",
+                "iCal",
+                "Microsoft365",
+                "Outlook.com",
+                "Yahoo",
+              ],
+              iCalFileName: "Reminder-Event",
+            })
+          }
+        >
+          Add to Calendar
+        </button>
         <button
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
             checkedIn ||
@@ -430,14 +493,6 @@ const ManageBookings = (props) => {
     }
   };
 
-  const resolveAbbreviation = (abrreviation) => {
-    const [{ name, code }] = data?.data?.items.filter(
-      (location) => location.code === abrreviation
-    );
-
-    return `${name}`;
-  };
-
   const resolvePaymnet = (abrreviation) => {
     const chosen = paymentConfigs?.data?.items.filter(
       (location) => location.code === abrreviation
@@ -577,9 +632,10 @@ const ManageBookings = (props) => {
             <section className="ga__section relative">
               {(verifyManageBookingResponse &&
                 verifyManageBookingResponse?.pnr.toLowerCase() ===
-                  statePNR.toLowerCase()) || managedPnrWithoutPayment &&
-              managedPnrWithoutPayment?.toLowerCase() ===
-                statePNR.toLowerCase() ? (
+                  statePNR.toLowerCase()) ||
+              (managedPnrWithoutPayment &&
+                managedPnrWithoutPayment?.toLowerCase() ===
+                  statePNR.toLowerCase()) ? (
                 <div className="flex text-center items-center justify-center bg-green absolute w-full p-3">
                   <p>Your booking has been confirmed</p>
                 </div>

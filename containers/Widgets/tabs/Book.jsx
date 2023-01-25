@@ -183,10 +183,10 @@ const BookingTab = ({ type, promocode }) => {
         ? data?.data?.values.filter(({ value }) => value === flightDestination)
         : "",
       departure: flightRequest.departure
-        ? format(new Date(flightRequest.departure), "yyyy-MM-dd")
+        ? new Date(flightRequest.departure)
         : add(new Date(), { weeks: 1 }),
       return: flightRequest.returnDate
-        ? format(new Date(flightRequest.returnDate), "yyyy-MM-dd")
+        ? new Date(flightRequest.returnDate)
         : add(new Date(), { days: 10 }),
       promocode: flightRequest.promoCode ? flightRequest.promoCode : promocode,
     },
@@ -253,6 +253,8 @@ const BookingTab = ({ type, promocode }) => {
     }
   }, [isLoading]);
 
+  console.log(format(new Date(flightRequest.departure), "yyyy-MM-dd"));
+  console.log(formik.values.departure);
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -380,6 +382,7 @@ const BookingTab = ({ type, promocode }) => {
                   tileContent={hasContent}
                   format={"d/M/y"}
                   name="departure"
+                  // onChange={(value) => console.log(value)}
                   onChange={(value) => formik.setFieldValue("departure", value)}
                   value={formik.values.departure}
                   onKeyDown={(e) => e.preventDefault()}

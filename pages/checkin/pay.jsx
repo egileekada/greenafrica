@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   sessionSelector,
   retrieveBookingFromState,
+  FetchStateFromServer,
 } from "redux/reducers/session";
 import { paymentSelector, FetchPaymentGateways } from "redux/reducers/payment";
 import Spinner from "components/Spinner";
@@ -15,6 +16,8 @@ import { useRouter } from "next/router";
 import { usePaystackPayment } from "react-paystack";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { useInitiatePaymentMutation } from "services/widgetApi";
+
+import BookingBar from "containers/IbeSidebar/BookingBar";
 
 const CheckinPayment = () => {
   const router = useRouter();
@@ -53,6 +56,7 @@ const CheckinPayment = () => {
       setTotalFare(parseInt(bookingState?.BookingSum?.BalanceDue));
       dispatch(FetchPaymentGateways());
       dispatch(retrieveBookingFromState());
+      dispatch(FetchStateFromServer());
     }
     fetchGateways();
   }, []);
@@ -143,74 +147,79 @@ const CheckinPayment = () => {
             <Spinner />
           </section>
         ) : (
-          <section className="ga__section bg-[rgb(158,155,191)]/[0.17]">
-            <div className="ga__section__main payment-section mx-auto bg-[#0000]">
-              {gatewaysResponse ? (
-                <>
-                  <div className="mb-8">
-                    <h2 className="text-black font-bold text-2xl mb-4">
-                      Payment
-                    </h2>
-                    <p>Please choose your preferred payment method</p>
-                  </div>
-
-                  <section className="flex flex-col">
-                    {gatewaysResponse?.data?.items?.length > 0 ? (
-                      gatewaysResponse?.data?.items.map((_gateway, _i) => {
-                        return (
-                          <div
-                            className={`payment-card ${
-                              selected === _gateway?.id ? "active" : ""
-                            } `}
-                            key={_i}
-                            onClick={() => setSelected(_gateway.id)}
-                          >
-                            {selected === _gateway?.id ? (
-                              <figure className="check-payment">
-                                <PaymentMark />
-                              </figure>
-                            ) : (
-                              <figure className="check-payment">
-                                <PaymentOutline />
-                              </figure>
-                            )}
-                            <div className="flex flex-col pointer-events-none">
-                              <figure className="mb-2">
-                                <img src={_gateway?.logo_url} alt="" />
-                              </figure>
-                              <h2 className="mb-3">{_gateway?.name}</h2>
-                              <p>
-                                You will be redirected to our secure payment
-                                checkout.
-                              </p>
-                            </div>
-                            <div className="flex flex-col items-end pointer-events-none">
-                              <h6 className="mb-[10px]">AMOUNT DUE</h6>
-                              <h5> ₦ {totalFare?.toLocaleString()}</h5>
-                            </div>
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <p>No Gateways</p>
-                    )}
-
-                    <div className="flex justify-end">
-                      <button
-                        type="button"
-                        onClick={handlePayment}
-                        className="btn btn-primary"
-                      >
-                        {paymentLoading ? "Paying" : "Pay"}
-                      </button>
+          <>
+            <section className="ga__section bg-[rgb(158,155,191)]/[0.17]">
+              <div className="ga__section__main payment-section mx-auto bg-[#0000]">
+                {gatewaysResponse ? (
+                  <>
+                    <div className="mb-8">
+                      <h2 className="text-black font-bold text-2xl mb-4">
+                        Payment
+                      </h2>
+                      <p>Please choose your preferred payment method</p>
                     </div>
-                  </section>
-                </>
-              ) : (
-                <p>No response from gateway</p>
-              )}
-            </div>
-          </section>
+
+                    <section className="flex flex-col">
+                      {gatewaysResponse?.data?.items?.length > 0 ? (
+                        gatewaysResponse?.data?.items.map((_gateway, _i) => {
+                          return (
+                            <div
+                              className={`payment-card ${
+                                selected === _gateway?.id ? "active" : ""
+                              } `}
+                              key={_i}
+                              onClick={() => setSelected(_gateway.id)}
+                            >
+                              {selected === _gateway?.id ? (
+                                <figure className="check-payment">
+                                  <PaymentMark />
+                                </figure>
+                              ) : (
+                                <figure className="check-payment">
+                                  <PaymentOutline />
+                                </figure>
+                              )}
+                              <div className="flex flex-col pointer-events-none">
+                                <figure className="mb-2">
+                                  <img src={_gateway?.logo_url} alt="" />
+                                </figure>
+                                <h2 className="mb-3">{_gateway?.name}</h2>
+                                <p>
+                                  You will be redirected to our secure payment
+                                  checkout.
+                                </p>
+                              </div>
+                              <div className="flex flex-col items-end pointer-events-none">
+                                <h6 className="mb-[10px]">AMOUNT DUE</h6>
+                                <h5> ₦ {totalFare?.toLocaleString()}</h5>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p>No Gateways</p>
+                      )}
+
+                      <div className="flex justify-end">
+                        <button
+                          type="button"
+                          onClick={handlePayment}
+                          className="btn btn-primary"
+                        >
+                          {paymentLoading ? "Paying" : "Pay"}
+                        </button>
+                      </div>
+                    </section>
+                  </>
+                ) : (
+                  <p>No response from gateway</p>
+                )}
+              </div>
+              <div className="ga__section__side">
+                <BookingBar />
+              </div>
+            </section>
+          </>
         )}
       </section>
     </BaseLayout>
