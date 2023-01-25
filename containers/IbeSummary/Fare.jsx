@@ -77,7 +77,7 @@ const Fare = ({ isRoundTrip }) => {
                   WCHR: 0,
                   VPRD: 0,
                   HPRD: 0,
-                  INS: 0,
+                  INSU: 0,
                 };
 
                 _segment.PaxSSRs?.map((_segSSR) => {
@@ -88,7 +88,7 @@ const Fare = ({ isRoundTrip }) => {
                   ).length;
                 });
 
-                console.log("_SSRsCount", _SSRsCount);
+                {/* console.log("_SSRsCount", _SSRsCount); */}
 
                 return (
                   <>
@@ -133,11 +133,6 @@ const Fare = ({ isRoundTrip }) => {
                           return _charge.ChargeCode === "YQ";
                         }
                       );
-
-                      const InsuranceTax =
-                        _fare.PaxFares[0].ServiceCharges.filter((_charge) => {
-                          return _charge.ChargeCode === "INS";
-                        });
 
                       const Discount = _fare.PaxFares[0].ServiceCharges.filter(
                         (_charge) => {
@@ -346,19 +341,19 @@ const Fare = ({ isRoundTrip }) => {
                                 </div>
                               )}
 
-                              {parseInt(_SSRsCount?.INS) > 0 && (
+                              {parseInt(_SSRsCount?.INSU) > 0 && (
                                 <div className="trip__summary__row subrow">
                                   <div className="flex items-center">
                                     <h6>
-                                      {_SSRsCount?.INS} X&nbsp;
+                                      {_SSRsCount?.INSU} X&nbsp;
                                       {fareConfig?.data
-                                        ? resolveAbbreviation("INS")
+                                        ? resolveAbbreviation("INSU")
                                         : null}
-                                      {_SSRsCount?.INS > 1 ? "s" : ""}
+                                      {_SSRsCount?.INSU > 1 ? "s" : ""}
                                     </h6>
                                   </div>
                                   <div>
-                                    <h6> ₦{_SSRSum?.INS.toLocaleString()}</h6>
+                                    <h6> ₦{_SSRSum?.INSU.toLocaleString()}</h6>
                                   </div>
                                 </div>
                               )}
