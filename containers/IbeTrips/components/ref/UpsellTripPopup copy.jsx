@@ -103,7 +103,7 @@ const IbeTripPopup = ({
     const newSelected = segment.Fares.filter((_item) => {
       return _item.RuleNumber.toLowerCase() === fareId.toLowerCase();
     });
-    console.log("newSelected", newSelected);
+    // console.log("newSelected", newSelected);
     if (newSelected && newSelected.length > 0) {
       setSelected({ ...newSelected[0], sellKey });
     }

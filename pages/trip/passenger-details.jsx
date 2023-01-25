@@ -89,7 +89,8 @@ const PassengerDetails = () => {
       if (
         ssr?.ssrCode === "WCHR" ||
         ssr?.ssrCode === "VPRD" ||
-        ssr?.ssrCode === "HPRD"
+        ssr?.ssrCode === "HPRD" ||
+        ssr?.ssrCode === "INS"
       )
         return true;
     });

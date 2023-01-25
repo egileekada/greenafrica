@@ -11,6 +11,7 @@ import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 import { GetSSRAvailabilityForBooking } from "services/bookingService";
 
+
 const initialState = {
   manageBookingPnr: null,
   managedPnrWithoutPayment: null,
