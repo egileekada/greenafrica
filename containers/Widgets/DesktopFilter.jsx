@@ -37,11 +37,11 @@ const DesktopFilter = () => {
   return (
     <section className="ga__desktop__filter w-full min-h-[168px] flex flex-col ">
       <div className="ga__desktop__filter__header flex items-center justify-between px-5 py-3">
-        <div className="flex items-center">
+        <div className="flex items-center font-bold ">
           <button
             onClick={() => setActiveTab(1)}
             className={`btn ${
-              activeTab === 1 ? "btn-primary white font-title" : "btn-text"
+              activeTab === 1 ? "btn-primary white font-title font-bold " : " font-bold btn-text"
             } mr-[22px]`}
           >
             One Way
@@ -51,7 +51,7 @@ const DesktopFilter = () => {
               setActiveTab(2), setType("round_trip");
             }}
             className={`btn ${
-              activeTab === 2 ? "btn-primary white font-title" : "btn-text"
+              activeTab === 2 ? "btn-primary white font-title font-bold " : "btn-text font-bold "
             } mr-[22px]`}
           >
             Round Trip

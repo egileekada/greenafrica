@@ -178,7 +178,12 @@ const IbeHeader = () => {
   return (
     <section className="ibe__flight__info">
       {!isLoading && (
-        <section className="ibe__flight__info__destination">
+        <section className=" rounded-none ibe__flight__info__destination">
+          <div className=" w-[55px] h-[55px] rounded-full bg-[#47FF5A1A] p-2 " >
+            <div className=" bg-[#47FF5A] w-full h-full flex justify-center items-center rounded-full " >
+              <FlightIcon />
+            </div>
+          </div>
           <p className="mx-4">
             {resolveAbbreviation(flightParams?.departureStation)}
           </p>
@@ -187,15 +192,11 @@ const IbeHeader = () => {
           </figure>
           <p className="mx-4">
             {resolveAbbreviation(flightParams?.arrivalStation)}
-          </p>
-
-          <figure className="flightCircle">
-            <FlightIcon />
-          </figure>
+          </p> 
         </section>
       )}
 
-      <section className="ibe__flight__info__dates">
+      <section className="ibe__flight__info__dates ">
         {lowFareAvailabilityLoading ? (
           <section className="flex items-center w-full">
             <div className="mx-auto">
@@ -204,12 +205,14 @@ const IbeHeader = () => {
           </section>
         ) : (
           <section className="flex items-center w-full">
-            <button
-              className={`pl-4 sm:pl-0 hover:bg-gray-400 flex h-16 lg:h-4 w-8 lg:w-4 items-center justify-center`}
-              onClick={onPrev}
-            >
-              <CaretLeft />
-            </button>
+            <div className=" w-fit " > 
+              <button
+                className={`pl-4 sm:pl-0 flex border rounded-full border-[#261F5E]  h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                onClick={onPrev}
+              >
+                <CaretLeft />
+              </button>
+            </div>
             <section className="flex items-center w-full mx-0 md:mx-4 ">
               {currentFDateList?.length > 0 ? (
                 currentFDateList.map((_dateItem, i) => {
@@ -217,7 +220,7 @@ const IbeHeader = () => {
                     <div
                       key={i}
                       className={`ibe__date__item ${
-                        i === currentFDateList.length - 1 ? "b-r-none" : ""
+                        i === currentFDateList.length - 1 ? "b-r-none" : "  "
                       }`}
                     >
                       {flightParams && (
@@ -228,18 +231,18 @@ const IbeHeader = () => {
                               new Date(flightParams?.beginDate),
                               "yyyy-MM-dd"
                             )
-                              ? "active"
+                              ? "active w-full h-full border-b-[6px] border-[#47FF5A]  "
                               : ""
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
-                          <h6 className="text-center md:!text-[10px]">
+                          <h6 className="text-center font-medium md:text-[12px]">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (
-                            <p> ₦{_dateItem?.cost.toLocaleString()}</p>
+                            <p className=" font-bold text-2xl " > ₦{_dateItem?.cost.toLocaleString()}</p>
                           ) : (
-                            <p>No Flight</p>
+                            <p className=" font-bold text-2xl ">No Flight</p>
                           )}
                         </button>
                       )}
@@ -258,12 +261,14 @@ const IbeHeader = () => {
             </section>
 
             {/* pointer-events-none cursor-none */}
-            <button
-              className={`pr-4 sm:pr-0 hover:bg-gray-400 flex  h-16 lg:h-4 w-8 lg:w-4 items-center justify-center`}
-              onClick={onNext}
-            >
-              <CaretRight />
-            </button>
+            <div className=" w-fit " > 
+              <button
+                className={`pr-4 sm:pr-0 hover:bg-gray-400 flex border rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                onClick={onNext}
+              >
+                <CaretRight />
+              </button>
+            </div>
           </section>
         )}
       </section>

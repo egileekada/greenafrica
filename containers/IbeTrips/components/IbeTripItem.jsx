@@ -146,8 +146,8 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
           isVisible ? "flex flex-col" : "hidden"
         }`}
       >
-        <div className="border-t border-t-black border-opacity-20 mx-6 mb-7"></div>
-        <div className="flex flex-wrap lg:flex-nowrap justify-between px-6 lg:px-12 items-stretch">
+        <div className="border-t border-t-black border-opacity-20 mx-6 lg:mx-0 mb-7"></div>
+        <div className=" grid grid-cols-3 gap-2 lg:px-0 px-6 items-stretch">
           {journey.Segments.map((_segment) => {
             return _segment.Fares.map((_fare) => {
               return (

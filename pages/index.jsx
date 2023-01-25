@@ -211,11 +211,13 @@ const Home = () => {
           </section>
         ) : (
           <Fragment>
-            <section className="ga__section fit-y">
+            <section className="ga__section relative fit-y">
               <div className="ga__section__main">
-                <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
+                <div className=" absolute inset-x-0 top-0 w-full  h-[130px] border-t border-[#FFFFFF1A] bg-[#26205E]  " ></div>
+                {/* </div> */}
+                {/* <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
                   SELECT FLIGHT
-                </h2>
+                </h2> */}
 
                 {/* <h2>
                   {sessionStorage?.selectedSessionJourney
@@ -228,7 +230,7 @@ const Home = () => {
                     : "selectedSessionFare not exits"}
                 </h2> */}
 
-                <section className="flex flex-col scrollable">
+                <section className="flex flex-col relative -mt-4 z-20 scrollable">
                   <div className="flex flex-col mb-10">
                     {flightAvailabilityLoading ? (
                       <SkeletonLoader />
@@ -283,9 +285,9 @@ const Home = () => {
                   </div>
                 </section>
               </div>
-              <div className="ga__section__side">
+              {/* <div className="ga__section__side">
                 <IbeSidebar enableEdit={true} />
-              </div>
+              </div> */}
             </section>
           </Fragment>
         )}

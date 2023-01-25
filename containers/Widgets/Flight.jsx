@@ -22,7 +22,7 @@ const FlightWidget = () => {
     >
       <div className="bg-white rounded-lg w-full">
         <div className="bg-[#26205E] w-full p-5">
-          <p className="text-white text-xl">Change Flight</p>
+          <p className="text-white font-bold  text-xl">Change Flight</p>
         </div>
         <div className="w-full relative">
           <div className="mx-auto">

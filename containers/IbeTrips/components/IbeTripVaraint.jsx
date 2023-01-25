@@ -79,14 +79,14 @@ const IbeTripVariant = ({
 
   return (
     <Fragment>
-      <section className={`ibe__trip__variant ${fare_variant} `}>
+      <section className={`ibe__trip__variant rounded-t-md  ${fare_variant} `}>
         {!isLoading && (
-          <div className="flex flex-col">
-            <div className="type-header">
-              <h2 className="text-center font-display font-extrabold text-3xl text-white my-2">
+          <div className="flex flex-col rounded-t-md ">
+            <div className="md:px-8 border-b border-b-[#0000001A] type-header rounded-t-md ">
+              <h2 className=" font-display font-extrabold text-2xl text-[#261F5E] my-2">
                 {fare_name()}
               </h2>
-              <p className="text-white font-normal text-center mb-1">
+              <p className="text-[#261F5E] font-normal mb-1">
                 {fare?.RuleNumber.toLowerCase() === "savr" ? (
                   <span>&nbsp;</span>
                 ) : fare?.RuleNumber.toLowerCase() === "flex" ? (
@@ -117,7 +117,7 @@ const IbeTripVariant = ({
           {fare_variant === "savr" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn btn-primary w-full text-center ${
+              className={`btn border-primary-main text-primary-main border w-full text-center ${
                 parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
               }`}
             >
@@ -129,7 +129,7 @@ const IbeTripVariant = ({
           {fare_variant === "clsc" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn btn-primary w-full text-center ${
+              className={`btn border-primary-main text-primary-main border w-full text-center ${
                 parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
               }`}
             >
@@ -141,7 +141,7 @@ const IbeTripVariant = ({
           {fare_variant === "flexi" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn btn-primary w-full  text-center white ${
+              className={`btn  border-primary-main text-primary-main border w-full  text-center ${
                 parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
               }`}
             >

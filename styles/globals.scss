@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
 @import url('../assets/fonts/Cosmical/fonts.css');
 @import url('../assets/fonts/plus-jakarta-sans-v3-latin/font.css');
+@import url("../assets/fonts/Satoshi/font.css");
 @import 'antd/dist/antd.css';
 @import './loader.scss';
 
@@ -16,14 +17,15 @@
   html,
   body {
     font-size: 14px;
-    font-family: Plus Jakarta Sans, system-ui, sans-serif;
+    font-family: Satoshi, system-ui, sans-serif;
+    scroll-behavior: smooth;
   }
 }
 
 // Tailwind Styles
 @layer base {
   html {
-    font-family: Plus Jakarta Sans, system-ui, sans-serif;
+    font-family: Satoshi, system-ui, sans-serif;
   }
 }
 
@@ -79,7 +81,7 @@
     }
 
     &__main {
-      @apply basis-full xlg:basis-[75%] flex flex-col  py-10 
+      @apply basis-full xlg:basis-[100%] flex flex-col  py-10 
             px-4 md:px-8 tab:px-16 xxl:px-24 font-body;
       background-color: rgba(158, 155, 191, 0.17);
 
@@ -408,7 +410,7 @@
     @apply bg-[#ffffff] rounded-md mb-14;
 
     &__destination {
-      @apply bg-[#26205e]  h-14 flex items-center relative px-12;
+      @apply bg-[#26205e]  h-[78px] flex items-center relative px-12;
       border-radius: 6px 6px 0px 0px;
 
       p {
@@ -694,35 +696,37 @@
 
     &.savr {
       .type-header {
-        @apply flex flex-col items-center py-5;
-        background: #26205e;
-        border-radius: 6px 6px 0px 0px;
+        @apply flex flex-col items-start py-5;
+        border-top-color: #26205e;
+        border-top-width: 6px;
+        // border-radius: 2px 2px 0px 0px;
       }
 
-      button {
-        // @apply text-primary-main;
-        @apply text-white;
-      }
+      // button {
+      //   // @apply text-primary-main;
+      //   @apply text-white;
+      // }
     }
 
     &.clsc {
       @apply border-t-black;
 
       .type-header {
-        @apply flex flex-col items-center py-5;
-        background: rgba(0, 0, 0, 0.8);
-        border-radius: 6px 6px 0px 0px;
+        @apply flex flex-col items-start py-5;
+        border-top-width: 6px;
+        border-top-color: #C5C9E0;
+        // border-radius: 2px 2px 0px 0px;
       }
 
-      button {
-        @apply text-white;
-      }
+      // button {
+      //   @apply text-white;
+      // }
     }
 
     &.flexi {
       .type-header {
-        @apply flex flex-col items-center py-5 bg-green;
-        border-radius: 6px 6px 0px 0px;
+        @apply flex flex-col items-start py-5 border-t-[6px] border-t-[#47FF5A];
+        // border-radius: 2px 2px 0px 0px;
 
         h2,
         p {

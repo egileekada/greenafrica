@@ -5,6 +5,7 @@ import Select, { components } from "react-select";
 import { format, add } from "date-fns";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import { useDispatch } from "react-redux";
+import CustomDatePicker from "../../../components/CustomDatePicker"
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
 import { lowfare } from "../../../utils/calendar";
@@ -93,13 +94,14 @@ const BookingTab = ({ type, promocode }) => {
 
   function hasContent({ date }) {
     for (const key in lowfare) {
-      if (key === format(date, "yyyy-MM-dd")) {
-        return (
-          <p className="text-[10px] font-light leading-tight my-1 text-[#9E9BBF]">
-            ₦{Math.round(lowfare[key])}K
-          </p>
-        );
-      }
+      console.log(key);
+      // if (key === format(date, "yyyy-MM-dd")) {
+      //   return (
+      //     <p className="text-[10px] font-light leading-tight my-1 text-[#9E9BBF]">
+      //       ₦{Math.round(lowfare[key])}K
+      //     </p>
+      //   );
+      // }
     }
     return <p></p>;
   }
@@ -226,7 +228,17 @@ const BookingTab = ({ type, promocode }) => {
 
   const forcusOrigin = (value) => {
     value.current.focus();
-  };
+  }; 
+
+  const setDepartureDateFormik = (value) => { 
+    formik.setFieldValue("departure", value); 
+    // setDepartureDate(value);
+  }; 
+
+  const setReturnDateFormik = (value) => {
+    formik.setFieldValue("return", value);
+    // setReturningDate(value);
+  }; 
 
   useEffect(() => {
     if (flightOrigin || flightDestination) {
@@ -244,24 +256,24 @@ const BookingTab = ({ type, promocode }) => {
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-flex-col xl:grid-cols-4 sm:grid-flex-col items-center gap-2">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:col-span-2">
+        <div className="grid grid-cols-1 lg:flex xl:flex w-full sm:grid-flex-col items-center gap-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 w-full xl:flex-1 gap-3 md:col-span-2">
             <div
               className={`${
                 formik.touched.origin && formik.errors.origin
                   ? "border border-[#de0150]"
                   : ""
-              } flex items-end booking__wrapper `}
+              } flex items-center justify-center h-[55px] hover:border-primary-main booking__wrapper `}
             >
               <img
                 src="/images/widget_from.svg"
                 alt=""
-                className="mx-2 pb-2 hidden md:block"
+                className="mx-2 my-auto hidden md:block"
                 onClick={() => forcusOrigin(originSelect)}
                 role="button"
               />
               <div className="w-full mx-2 px-2 md:px-0">
-                <p className="mb-1 text-xs mb-0 text-[#979797]">FROM</p>
+                <p className="mb-0 text-xs  text-[#979797]">FROM</p>
                 <Select
                   ref={originSelect}
                   openMenuOnFocus={true}
@@ -299,17 +311,17 @@ const BookingTab = ({ type, promocode }) => {
                 formik.touched.destination && formik.errors.destination
                   ? "border border-[#de0150]"
                   : ""
-              } flex items-end booking__wrapper`}
+              } flex items-center justify-center h-[55px] hover:border-primary-main booking__wrapper`}
             >
               <img
                 src="/images/widget_to.svg"
                 alt=""
-                className="hidden md:block mx-2 pb-2 cursor-pointer"
+                className="hidden md:block mx-2 my-auto cursor-pointer"
                 role="button"
                 onClick={() => forcusOrigin(destinationSelect)}
               />
               <div className="w-full mx-2 px-2 md:px-0">
-                <p className="mb-1 text-xs mb-0 text-[#979797]">TO</p>
+                <p className="mb-0 font-medium text-xs text-[#979797]]">TO</p>
                 <Select
                   ref={destinationSelect}
                   openMenuOnFocus={true}
@@ -335,10 +347,12 @@ const BookingTab = ({ type, promocode }) => {
 
           <div
             className={`${
-              type && "lg:grid-cols-2 md:col-span-2"
-            } grid grid-cols-1 gap-2 md:col-auto`}
+              type === "round_trip w-fit md:grid-cols-2 " && "lg:grid-cols-2 md:col-span-2 "
+            } hidden md:flex grid-cols-1 lg:w-fit gap-2 `}
           >
-            <div className="booking__wrapper flex items-end">
+
+            <CustomDatePicker value={setDepartureDateFormik} title="DEPARTING" />
+            {/* <div className="booking__wrapper flex items-end">
               <span className="mr-2 ml-1 pb-1 hidden md:block">
                 <svg
                   width="26"
@@ -372,52 +386,54 @@ const BookingTab = ({ type, promocode }) => {
                   minDate={new Date()}
                 />
               </div>
-            </div>
+            </div> */}
 
             {type && (
-              <div className="booking__wrapper flex items-end">
-                <span className="mr-2 ml-1 pb-1 hidden md:block">
-                  <svg
-                    width="26"
-                    height="22"
-                    viewBox="0 0 26 22"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M25.9158 4.7268V19.9868C25.9158 21.0986 25.0132 21.9991 23.9025 21.9991L12.9579 21.9989H2.01339C0.90152 21.9989 8.39233e-05 21.0984 8.39233e-05 19.9865V4.72656L25.9158 4.7268ZM19.2175 17.2344H22.1969V14.2538H19.2163V17.2344H19.2175ZM19.2175 11.6596H22.1969V8.67902H19.2163V11.6596H19.2175ZM14.0504 17.2344H17.031V14.2538H14.0504V17.2344ZM14.0504 11.6596H17.031V8.67902H14.0504V11.6596ZM8.88441 17.2344H11.865V14.2538H8.88441V17.2344ZM8.88441 11.6596H11.865V8.67902H8.88441V11.6596ZM3.71845 17.2344H6.69903V14.2538H3.71845V17.2344ZM3.71845 11.6596H6.69903V8.67902H3.71845V11.6596Z"
-                      fill="#261F5E"
-                    />
-                    <path
-                      d="M8.39233e-05 3.66582V2.01233C8.39233e-05 0.900466 0.902674 0 2.01339 0L23.9025 0.000237024C25.0143 0.000237024 25.9158 0.900703 25.9158 2.01257V3.66581L8.39233e-05 3.66582Z"
-                      fill="#261F5E"
-                    />
-                  </svg>
-                </span>
+              <CustomDatePicker value={setReturnDateFormik} title="RETURNING" />
+              // <div className="booking__wrapper flex items-end">
+              //   <span className="mr-2 ml-1 pb-1 hidden md:block">
+              //     <svg
+              //       width="26"
+              //       height="22"
+              //       viewBox="0 0 26 22"
+              //       fill="none"
+              //       xmlns="http://www.w3.org/2000/svg"
+              //     >
+              //       <path
+              //         d="M25.9158 4.7268V19.9868C25.9158 21.0986 25.0132 21.9991 23.9025 21.9991L12.9579 21.9989H2.01339C0.90152 21.9989 8.39233e-05 21.0984 8.39233e-05 19.9865V4.72656L25.9158 4.7268ZM19.2175 17.2344H22.1969V14.2538H19.2163V17.2344H19.2175ZM19.2175 11.6596H22.1969V8.67902H19.2163V11.6596H19.2175ZM14.0504 17.2344H17.031V14.2538H14.0504V17.2344ZM14.0504 11.6596H17.031V8.67902H14.0504V11.6596ZM8.88441 17.2344H11.865V14.2538H8.88441V17.2344ZM8.88441 11.6596H11.865V8.67902H8.88441V11.6596ZM3.71845 17.2344H6.69903V14.2538H3.71845V17.2344ZM3.71845 11.6596H6.69903V8.67902H3.71845V11.6596Z"
+              //         fill="#261F5E"
+              //       />
+              //       <path
+              //         d="M8.39233e-05 3.66582V2.01233C8.39233e-05 0.900466 0.902674 0 2.01339 0L23.9025 0.000237024C25.0143 0.000237024 25.9158 0.900703 25.9158 2.01257V3.66581L8.39233e-05 3.66582Z"
+              //         fill="#261F5E"
+              //       />
+              //     </svg>
+              //   </span>
 
-                <div className="flex-auto px-4 md:px-0">
-                  <p className="mb-1 text-xs text-[#979797]">RETURNING</p>
-                  <DatePicker
-                    id="return"
-                    clearIcon={null}
-                    calendarIcon={null}
-                    tileContent={hasContent}
-                    className="datepicker border-0 w-full font-body"
-                    minDate={new Date()}
-                    name="return"
-                    format={"d/M/y"}
-                    onChange={(value) => formik.setFieldValue("return", value)}
-                    value={formik.values.return}
-                    onKeyDown={(e) => e.preventDefault()}
-                  />
-                </div>
-              </div>
+              //   <div className="flex-auto px-4 md:px-0">
+              //     <p className="mb-1 text-xs text-[#979797]">RETURNING</p>
+              //     <DatePicker
+              //       id="return"
+              //       clearIcon={null}
+              //       calendarIcon={null}
+              //       tileContent={hasContent}
+              //       className="datepicker border-0 w-full font-body"
+              //       minDate={new Date()}
+              //       name="return"
+              //       format={"d/M/y"}
+              //       onChange={(value) => formik.setFieldValue("return", value)}
+              //       value={formik.values.return}
+              //       onKeyDown={(e) => e.preventDefault()}
+              //     />
+
+              //   </div>
+              // </div>
             )}
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-2 xl:max-w-[280px] w-fit h-[55px] xl:flex-1">
             <div
-              className="booking__wrapper flex-auto relative"
+              className="booking__wrapper w-full lg:w-auto font-semibold hover:border-primary-main hidden md:flex flex-auto"
               data-modal-toggle="defaultModal"
             >
               <div className="px-4 md:px-0">
@@ -425,7 +441,7 @@ const BookingTab = ({ type, promocode }) => {
                   PASSENGERS
                 </p>
                 <div
-                  className="flex items-center relative"
+                  className="flex items-center w-[100px] relative"
                   onClick={() => setShow(!show)}
                   role="button"
                 >
@@ -470,17 +486,17 @@ const BookingTab = ({ type, promocode }) => {
                   className={`${
                     !show && "hidden"
                   } bg-gray-900 bg-opacity-0 fixed inset-0 z-40`}
-                  onClick={() => setShow(false)}
+                  // onClick={() => setShow(false)}
                 ></div>
 
                 <div
                   id="defaultModal"
-                  className="absolute top-20 left-0 right-0 z-50 w-full h-modal h-auto w-[250px]"
+                  className="absolute top-[63px] left-0 right-0 z-50 h-auto w-[250px]"
                 >
                   <div
                     className={`${
                       !show && "hidden"
-                    } fixed w-auto h-auto w-full h-full max-w-lg md:h-auto widget-border rounded-lg shadow bg-white`}
+                    } w-full h-full max-w-lg md:h-auto widget-border rounded-lg shadow dark:bg-gray-700 bg-white`}
                   >
                     <div className="relative">
                       <div className="p-4 space-y-6">
@@ -493,7 +509,7 @@ const BookingTab = ({ type, promocode }) => {
                           </div>
                           <div className="flex items-center">
                             <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={passengers === 1}
                               onClick={() => decreaseAdult(-1)}
@@ -502,12 +518,12 @@ const BookingTab = ({ type, promocode }) => {
                             </div>
                             <input
                               type="tel"
-                              className="w-10 mx-2 rounded-lg text-center"
+                              className="w-10 h-[37px] mx-2 rounded-lg text-center"
                               value={adult}
                               readOnly
                             />
                             <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={passengers === 9}
                               onClick={() => updateAdult(1)}
@@ -525,7 +541,7 @@ const BookingTab = ({ type, promocode }) => {
                           </div>
                           <div className="flex items-center">
                             <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={child === 0}
                               onClick={() => updateChild(-1)}
@@ -534,12 +550,12 @@ const BookingTab = ({ type, promocode }) => {
                             </div>
                             <input
                               type="tel"
-                              className="w-10 mx-2 rounded-lg text-center"
+                              className="w-10 mx-2 h-[37px] rounded-lg text-center"
                               value={child}
                               readOnly
                             />
                             <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={passengers === 9}
                               onClick={() => updateChild(1)}
@@ -557,7 +573,7 @@ const BookingTab = ({ type, promocode }) => {
                           </div>
                           <div className="flex items-center">
                             <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-2 cursor-pointer"
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={infant === 0}
                               onClick={() => updateInfant(-1)}
@@ -566,12 +582,12 @@ const BookingTab = ({ type, promocode }) => {
                             </div>
                             <input
                               type="tel"
-                              className="w-10 mx-2 rounded-lg text-center"
+                              className="w-10 mx-2 h-[37px] rounded-lg text-center"
                               value={infant}
                               readOnly
                             />
                             <div
-                              className="rounded-full bg-gray-200 w-[27px] h-[27px] flex px-1 cursor-pointer"
+                              className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={adult == infant}
                               onClick={() => updateInfant(1)}
@@ -580,6 +596,13 @@ const BookingTab = ({ type, promocode }) => {
                             </div>
                           </div>
                         </div>
+                        <div
+                          onClick={()=> setShow(false)} 
+                          role="button"
+                          className="btn btn-primary flex cursor-pointer z-[70] justify-center items-center font-bold mt-4 w-full font-title h-[50px]"  
+                        >
+                          Done
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -587,9 +610,9 @@ const BookingTab = ({ type, promocode }) => {
               </div>
             </div>
 
-            <div className="">
+            <div className="w-full md:w-[159px]">
               <button
-                className="btn btn-primary font-title block h-full"
+                className="btn btn-primary font-bold w-full md:w-auto font-title block h-[55px]"
                 type="submit"
                 disabled={formik.isSubmitting}
               >
