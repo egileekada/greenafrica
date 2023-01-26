@@ -2,6 +2,7 @@
 import Popup from "components/Popup";
 import { Fragment, useEffect, useState } from "react";
 import CheckIcon from "assets/svgs/check.svg";
+import CloseIcon from "assets/svgs/white-close.svg";
 import NullIcon from "assets/svgs/null.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,6 +13,7 @@ import {
 import { useRouter } from "next/router";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { cashFormat } from "./cashFormat";
 
 const antIcon = (
   <LoadingOutlined
@@ -35,7 +37,7 @@ const IbeTripPopup = ({
   journey,
   schedueIndex,
   setIsVisible,
-  segment,
+  segment, 
 }) => {
   const dispatch = useDispatch();
   const {
@@ -100,7 +102,7 @@ const IbeTripPopup = ({
         );
       }
     }
-  };
+  }; 
 
   const handleSell = async (fareId) => {
     //FareKey is Fare SellKey
@@ -212,6 +214,8 @@ const IbeTripPopup = ({
     }
   }, [segment]);
 
+  console.log(selected);
+
   const gSvrBtn = (
     <div className="benefits__popup__row__item cta-row">
       <button
@@ -310,187 +314,136 @@ const IbeTripPopup = ({
     </div>
   );
 
+  // console.log(selected?.AmountDifference)
+
   return (
     <Fragment>
-      <Popup display={showPopUp} closeModal={closePopUp} top={true}>
+      <Popup show={true} display={showPopUp} closeModal={closePopUp} top={true}>
         {sellFlightLoading ? (
           <Spin indicator={antIcon} />
         ) : (
           <>
-            <section className="w-full bg-white rounded-xl hidden lg:flex flex-col">
-              <div className="bg-primary-main text-center flex items-center justify-center p-8 rounded-t-xl">
-                <h3 className="text-white text-base">
+            <section className="w-full bg-white rounded-xl z-[200] flex flex-col">
+              <div className="bg-primary-main text-center mx-4 mt-3 flex items-center justify-between px-[27px] py-[21px] rounded-xl">
+                <h3 className="text-white text-xl !font-bold">
                   Upgrade your fare and enjoy more benefits{" "}
                 </h3>
+
+              <span
+                role="button"
+                className=" md:ml-5 "
+                onClick={closePopUp}
+              >
+                <span className="modal--close--icon">
+                  <CloseIcon />
+                </span>
+               </span>
               </div>
-              <section>
-                <section className="benefits__popup">
-                  <div className="benefits__popup__row item-center">
-                    <div className="benefits__popup__row__item"></div>
-                    <div
-                      className={`benefits__popup__row__item ${
-                        selected?.RuleNumber.toLowerCase() === "savr"
-                          ? "bg-green"
-                          : "hover:bg-green hover:bg-opacity-5"
-                      } cursor-pointer`}
-                    >
-                      <h4>&nbsp;</h4>
-                      <h3>gSaver</h3>
-                    </div>
-                    <div
-                      className={`benefits__popup__row__item ${
-                        selected?.RuleNumber.toLowerCase() === "clsc"
-                          ? "bg-green"
-                          : "hover:bg-green hover:bg-opacity-5"
-                      } cursor-pointer  `}
-                    >
-                      <h4>We Recommend</h4>
-                      <h3>gClassic</h3>
-                    </div>
-                    <div
-                      className={`benefits__popup__row__item ${
-                        selected?.RuleNumber.toLowerCase() === "flex"
-                          ? "bg-green"
-                          : "hover:bg-green hover:bg-opacity-5"
-                      } border-b cursor-pointer `}
-                    >
-                      <h4>For max comfort</h4>
-                      <h3>gFlex</h3>
-                    </div>
+              <div className=" w-full mt-5 pb-10 grid grid-cols-1 lg:grid-cols-3 gap-4 px-6 " >
+                <div className={` ${selected?.ProductClass === "GS" ? "border-[#26205E]": "border-[#9E9BBF] "} w-full h-full flex flex-col rounded-md border text-sm font-normal text-black pt-8 pb-4 px-5 `} >
+                  <p className=" font-bold text-[#26205E] text-xl " >gSaver</p>
+                  <div className=" flex mt-9 " >
+                      <figure className=" mr-2 " >
+                        <CheckIcon />
+                      </figure>
+                      <p>Online Check-In</p>
                   </div>
-                  <div className="benefits__popup__row item-center">
-                    <div className="benefits__popup__row__item">
-                      <h5>Online Check-In</h5>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <figure>
+                  <div className=" flex mt-3 " >
+                      <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>&nbsp;</p>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <figure>
-                        <CheckIcon />
-                      </figure>
-                      <p>&nbsp;</p>
-                    </div>
-                    <div className="benefits__popup__row__item border-b">
-                      <figure>
-                        <CheckIcon />
-                      </figure>
-                      <p>&nbsp;</p>
-                    </div>
+                      <p>Free Hand Luggage (7KG)</p>
                   </div>
-                  {/* Free Airport Check-In */}
-                  <div className="benefits__popup__row item-center">
-                    <div className="benefits__popup__row__item">
-                      <h5>Free Airport Check-In</h5>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <figure>
-                        <NullIcon />
-                      </figure>
-                      <p>₦2000 fee</p>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <figure>
-                        <NullIcon />
-                      </figure>
-                      <p>₦2000 fee</p>
-                    </div>
-                    <div className="benefits__popup__row__item border-b">
-                      <figure>
+                  <div className=" flex mt-3 mb-14  " >
+                      <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>&nbsp;</p>
-                    </div>
+                      <p>Automatically Allocated Seat (Pay For Preferred Seat)</p>
                   </div>
-                  {/* Hand Luggage (Free 7kg) */}
-                  <div className="benefits__popup__row item-center">
-                    <div className="benefits__popup__row__item">
-                      <h5>Hand Luggage (Free 7kg)</h5>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <figure>
-                        <CheckIcon />
-                      </figure>
-                      <p>&nbsp;</p>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <figure>
-                        <CheckIcon />
-                      </figure>
-                      <p>&nbsp;</p>
-                    </div>
-                    <div className="benefits__popup__row__item border-b">
-                      <figure>
-                        <CheckIcon />
-                      </figure>
-                      <p>&nbsp;</p>
-                    </div>
+                    <button disabled={svr?.AvailableCount === 0 ? true: false}
+                      onClick={handleSell.bind(this, "savr")} className={` ${svr?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GS" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[45px] mt-auto rounded-xl w-full `} >{svr?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GS" ? "Continue With gSaver" : "Switch To gSaver"}</button>
+                </div>
+                <div className={` ${selected?.ProductClass === "GC" ? "border-[#26205E]": "border-[#9E9BBF] "} w-full h-full flex flex-col rounded-md border text-sm font-normal text-black pt-8 pb-4 px-5 `} >
+                  <div className=" w-full flex items-center justify-between " >
+                    <p className=" font-bold text-[#26205E] text-xl " >gClassic</p>
+                    <button className=" text-sm bg-[#261F5E] text-[#47FF5A] font-bold py-[10px] rounded-lg px-[18px] " >Recommended</button>
                   </div>
-                  {/* Checked Baggage */}
-                  <div className="benefits__popup__row item-center">
-                    <div className="benefits__popup__row__item">
-                      <h5>Checked Baggage</h5>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <fdddddigure>
-                        <NullIcon />
-                      </fdddddigure>
-                      <p>₦500/kg</p>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <figure>
+                  <div className=" flex mt-9 " >
+                      <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>15kg Included </p>
-                      <p>(Extra at ₦500/kg)</p>
-                    </div>
-                    <div className="benefits__popup__row__item border-b">
-                      <figure>
-                        <CheckIcon />
-                      </figure>
-                      <p>20kg Included</p>
-                      <p>(Extra at ₦500/kg)</p>
-                    </div>
+                      <p>Online Check-In</p>
                   </div>
-                  {/* Seat Selection */}
-                  <div className="benefits__popup__row item-center">
-                    <div className="benefits__popup__row__item">
-                      <h5>Seat Selection</h5>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <figure>
-                        <NullIcon />
-                      </figure>
-                      <p>Automatically allocated Pay for preferred seat</p>
-                    </div>
-                    <div className="benefits__popup__row__item">
-                      <figure>
+                  <div className=" flex mt-3 " >
+                      <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Free standard seat Pay for non-standard</p>
-                    </div>
-                    <div className="benefits__popup__row__item rr">
-                      <figure>
+                      <p>Checked Baggage :15kg. Extra N500/KG</p>
+                  </div>
+                  <div className=" flex mt-3 " >
+                      <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Free</p>
-                    </div>
+                      <p>Free Standard Seat (Pay for Non Standard)</p>
                   </div>
-                  <div className="benefits__popup__row item-center">
-                    <div className="benefits__popup__row__item cta-row">
-                      <h5>&nbsp;</h5>
-                    </div>
-                    {gSvrBtn}
-                    {gClscBtn}
-                    {gFlexBtn}
+                  <div className=" flex mt-3 mb-14  " >
+                      <figure className=" mr-2 " >
+                        <CheckIcon />
+                      </figure>
+                      <p>Free Hand Luggage (7KG)</p>
                   </div>
-                </section>
-              </section>
+                  <div className=" w-full mt-auto " >
+                    <p className=" -mb-1 font-black text-xl " >+{cashFormat(clsc?.AmountDifference)}</p>
+                    <p className=" font-normal text-sm mb-4 " >more per person/per way</p>
+                    <button disabled={clsc?.AvailableCount === 0 ? true: false}
+                      onClick={handleSell.bind(this, "clsc")} className={` ${clsc?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GC" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[45px] rounded-xl w-full `} >{clsc?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GC" ? "Continue With gSaver" : "Switch To gClassic"}</button>
+                  </div>
+                </div>
+                <div className={` ${selected?.ProductClass === "GF" ? "border-[#26205E]": "border-[#9E9BBF] "} w-full h-full flex flex-col rounded-md border text-sm font-normal text-black pt-8 pb-4 px-5 `} >
+                  <div className=" w-full flex items-center justify-between " >
+                    <p className=" font-bold text-[#26205E] text-xl " >gFlex</p>
+                    <button className=" text-sm bg-[#261F5E] text-[#47FF5A] font-bold py-[10px] rounded-lg px-[18px] " >Max Comfort</button>
+                  </div>
+                  <div className=" flex mt-9 " >
+                      <figure className=" mr-2 " >
+                        <CheckIcon />
+                      </figure>
+                      <p>Online Check-In</p>
+                  </div>
+                  <div className=" flex mt-3 " >
+                      <figure className=" mr-2 " >
+                        <CheckIcon />
+                      </figure>
+                      <p>Free Airport Check-In</p>
+                  </div>
+                  <div className=" flex mt-3 " >
+                      <figure className=" mr-2 " >
+                        <CheckIcon />
+                      </figure>
+                      <p>Free Checked Baggage</p>
+                  </div>
+                  <div className=" flex mt-3 " >
+                      <figure className=" mr-2 " >
+                        <CheckIcon />
+                      </figure>
+                      <p>Free Seat Selection</p>
+                  </div>
+                  <div className=" flex mt-3 mb-14  " >
+                      <figure className=" mr-2 " >
+                        <CheckIcon />
+                      </figure>
+                      <p>Free Hand Luggage (7KG)</p>
+                  </div>
+                  <div className=" w-full mt-auto " >
+                    <p className=" -mb-1 font-black text-xl " >+{cashFormat(flex?.AmountDifference)}</p>
+                    <p className=" font-normal text-sm mb-4 " >more per person/per way</p>
+                    <button disabled={flex?.AvailableCount === 0 ? true: false}
+                      onClick={handleSell.bind(this, "flex")} className={` ${flex?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GF" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[45px] rounded-xl w-full `} >{flex?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GF" ? "Continue With gSaver" : "Switch To gFlex"}</button>
+                  </div>
+                </div>
+              </div>
             </section>
-            <section className="w-full bg-white rounded-xl flex flex-col  lg:hidden p-8">
+            {/* <section className="w-full bg-white rounded-xl flex flex-col  lg:hidden p-8">
               <h4 className="text-black font-bold text-xl mb-6">
                 Upgrade your fare and enjoy more benefits
               </h4>
@@ -578,7 +531,7 @@ const IbeTripPopup = ({
                   Continue with gFlex
                 </button>
               </div>
-            </section>
+            </section> */}
           </>
         )}
       </Popup>
@@ -599,3 +552,171 @@ IbeTripPopup.defaultProps = {
 };
 
 export default IbeTripPopup;
+
+
+// {/* <section>
+// <section className="benefits__popup">
+//   <div className="benefits__popup__row item-center">
+//     <div className="benefits__popup__row__item"></div>
+//     <div
+//       className={`benefits__popup__row__item ${
+//         selected?.RuleNumber.toLowerCase() === "savr"
+//           ? "bg-green"
+//           : "hover:bg-green hover:bg-opacity-5"
+//       } cursor-pointer`}
+//     >
+//       <h4>&nbsp;</h4>
+//       <h3>gSaver</h3>
+//     </div>
+//     <div
+//       className={`benefits__popup__row__item ${
+//         selected?.RuleNumber.toLowerCase() === "clsc"
+//           ? "bg-green"
+//           : "hover:bg-green hover:bg-opacity-5"
+//       } cursor-pointer  `}
+//     >
+//       <h4>We Recommend</h4>
+//       <h3>gClassic</h3>
+//     </div>
+//     <div
+//       className={`benefits__popup__row__item ${
+//         selected?.RuleNumber.toLowerCase() === "flex"
+//           ? "bg-green"
+//           : "hover:bg-green hover:bg-opacity-5"
+//       } border-b cursor-pointer `}
+//     >
+//       <h4>For max comfort</h4>
+//       <h3>gFlex</h3>
+//     </div>
+//   </div>
+//   <div className="benefits__popup__row item-center">
+//     <div className="benefits__popup__row__item">
+//       <h5>Online Check-In</h5>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>&nbsp;</p>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>&nbsp;</p>
+//     </div>
+//     <div className="benefits__popup__row__item border-b">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>&nbsp;</p>
+//     </div>
+//   </div>
+//   {/* Free Airport Check-In */}
+//   <div className="benefits__popup__row item-center">
+//     <div className="benefits__popup__row__item">
+//       <h5>Free Airport Check-In</h5>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <figure>
+//         <NullIcon />
+//       </figure>
+//       <p>₦2000 fee</p>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <figure>
+//         <NullIcon />
+//       </figure>
+//       <p>₦2000 fee</p>
+//     </div>
+//     <div className="benefits__popup__row__item border-b">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>&nbsp;</p>
+//     </div>
+//   </div>
+//   {/* Hand Luggage (Free 7kg) */}
+//   <div className="benefits__popup__row item-center">
+//     <div className="benefits__popup__row__item">
+//       <h5>Hand Luggage (Free 7kg)</h5>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>&nbsp;</p>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>&nbsp;</p>
+//     </div>
+//     <div className="benefits__popup__row__item border-b">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>&nbsp;</p>
+//     </div>
+//   </div>
+//   {/* Checked Baggage */}
+//   <div className="benefits__popup__row item-center">
+//     <div className="benefits__popup__row__item">
+//       <h5>Checked Baggage</h5>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <fdddddigure>
+//         <NullIcon />
+//       </fdddddigure>
+//       <p>₦500/kg</p>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>15kg Included </p>
+//       <p>(Extra at ₦500/kg)</p>
+//     </div>
+//     <div className="benefits__popup__row__item border-b">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>20kg Included</p>
+//       <p>(Extra at ₦500/kg)</p>
+//     </div>
+//   </div>
+//   {/* Seat Selection */}
+//   <div className="benefits__popup__row item-center">
+//     <div className="benefits__popup__row__item">
+//       <h5>Seat Selection</h5>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <figure>
+//         <NullIcon />
+//       </figure>
+//       <p>Automatically allocated Pay for preferred seat</p>
+//     </div>
+//     <div className="benefits__popup__row__item">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>Free standard seat Pay for non-standard</p>
+//     </div>
+//     <div className="benefits__popup__row__item rr">
+//       <figure>
+//         <CheckIcon />
+//       </figure>
+//       <p>Free</p>
+//     </div>
+//   </div>
+//   <div className="benefits__popup__row item-center">
+//     <div className="benefits__popup__row__item cta-row">
+//       <h5>&nbsp;</h5>
+//     </div>
+//     {gSvrBtn}
+//     {gClscBtn}
+//     {gFlexBtn}
+//   </div>
+// </section>
+// </section> */}

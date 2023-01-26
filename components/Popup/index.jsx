@@ -8,6 +8,7 @@ const Popup = ({
   closeModal,
   canClose = true,
   top = false,
+  show,
   width,
 }) => {
   const activeClass = display ? "active" : "inactive";
@@ -15,24 +16,25 @@ const Popup = ({
   return display ? (
     <div className={`ga__popup ${activeClass} ${top ? "top" : ""}   `}>
       <div
-        className={`ga__popup__container ${width ? width : "w-[825px]"} `}
+        className={`ga__popup__container ${width ? "w-full" : " max-w-7xl lg:mx-24 "} `}
         onClick={(e) => {
           e.stopPropagation();
           e.nativeEvent.stopImmediatePropagation();
         }}
       >
-        <span
-          role="button"
-          className="ga__popup__close close"
-          onClick={closeModal}
-        >
-          <span className="modal--close--icon">
-            <CloseIcon />
+        {!show && ( 
+          <span
+            role="button"
+            className="ga__popup__close close"
+            onClick={closeModal}
+          >
+            <span className="modal--close--icon">
+              <CloseIcon />
+            </span>
           </span>
-        </span>
-
+        )}
         <section
-          className={`ga__popup__main overflow-x-hidden overflow-y-scroll min-h-[600px] scrollable ${activeClass}`}
+          className={`ga__popup__main overflow-x-hidden pt-12 overflow-y-scroll min-h-[600px] scrollable ${activeClass}`}
         >
           {children}
         </section>

@@ -194,9 +194,11 @@ const IbeHeader = (props) => {
     <section className="ibe__flight__info ">
       {!isLoading && (
         <section className=" rounded-none ibe__flight__info__destination">
-          <div className=" w-[55px] h-[55px] rounded-full bg-[#47FF5A1A] p-2 " >
-            <div className=" bg-[#47FF5A] w-full h-full flex justify-center items-center rounded-full " >
-              <FlightIcon />
+          <div className=" w-fit " > 
+            <div className=" w-[55px] h-[55px] rounded-full bg-[#47FF5A1A] p-2 " >
+              <div className=" bg-[#47FF5A] w-full h-full flex justify-center items-center rounded-full " >
+                <FlightIcon />
+              </div>
             </div>
           </div>
           <p className="mx-4">
@@ -208,12 +210,12 @@ const IbeHeader = (props) => {
           <p className="mx-4">
             {resolveAbbreviation(flightParams?.arrivalStation)}
           </p> 
-          <button onClick={()=> handleUser()} className=" text-sm h-[24px] w-[75px] rounded-[30px] border border-white ml-3 text-white " >Change</button>
+          <button onClick={()=> handleUser()} className=" text-sm h-[24px] w-[75px] rounded-[30px] hidden md:block border border-white ml-3 text-white " >Change</button>
           <div className=" ml-auto flex items-center " >
-            <div className=" w-[36px] h-[36px] rounded-full bg-[#C9C9C930] flex justify-center items-center " >
+            <div className=" w-[36px] h-[36px] rounded-full bg-[#C9C9C930] hidden md:flex justify-center items-center " >
               <Calendar />
             </div>
-            <div className=" mx-[4px] " >
+            <div className=" mx-[4px] hidden md:block " >
               <p className=" !text-sm !font-black " >{(currentDate+"").toUpperCase()}</p>
               <p className=" !text-sm !font-medium !text-[#A49FDC] " >1 PASSENGER</p>
             </div>
@@ -233,13 +235,13 @@ const IbeHeader = (props) => {
           <section className="flex items-center w-full">
             <div className=" w-fit " > 
               <button
-                className={`pl-4 sm:pl-0 flex lg:border rounded-full border-[#261F5E]  h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                className={`pl-4 sm:pl-0 hidden lg:flex lg:border rounded-full border-[#261F5E]  h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
                 onClick={onPrev}
               >
                 <CaretLeft />
               </button>
             </div>
-            <section className="flex items-center w-full mx-0 md:mx-4 ">
+            <section className="flex items-center w-full overflow-x-auto mx-0 md:mx-4 ">
               {currentFDateList?.length > 0 ? (
                 currentFDateList.map((_dateItem, i) => {
                   // if(format(new Date(_dateItem?.date), "yyyy-MM-dd") === format(new Date(flightParams?.beginDate))){
@@ -263,7 +265,7 @@ const IbeHeader = (props) => {
                               "yyyy-MM-dd"
                             )
                               ? "active w-full h-full border-b-[6px] border-[#47FF5A]  "
-                              : ""
+                              : " lg:w-auto w-[150px] "
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
@@ -273,7 +275,7 @@ const IbeHeader = (props) => {
                           {_dateItem?.cost > 0 ? (
                             <p className=" !font-bold !text-[24px] " > ₦{_dateItem?.cost.toLocaleString()}</p>
                           ) : (
-                            <p className=" font-bold text-2xl ">No Flight</p>
+                            <p className=" !font-bold !text-2xl ">No Flight</p>
                           )}
                         </button>
                       )}
@@ -294,7 +296,7 @@ const IbeHeader = (props) => {
             {/* pointer-events-none cursor-none */}
             <div className=" w-fit " > 
               <button
-                className={`pr-4 sm:pr-0 hover:bg-gray-400 flex lg:border rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                className={`pr-4 sm:pr-0 hover:bg-gray-400 hidden lg:flex lg:border rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
                 onClick={onNext}
               >
                 <CaretRight />

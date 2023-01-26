@@ -40,7 +40,7 @@ const IbeTripVariant = ({
   const dispatch = useDispatch();
   const { flightParams, selectedSessionFare } = useSelector(sessionSelector);
   const [showPopUp, setShow] = useState(false);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(null); 
 
   
   const fare_variant =
@@ -53,25 +53,22 @@ const IbeTripVariant = ({
       (product) => product.code === fare?.ProductClass
     );
     return `${name}`;
-  };
-  
+  }; 
 
   const totalServiceCharge = fare?.PaxFares
     ? fare?.PaxFares[0].ServiceCharges.reduce((accumulator, object) => {
         return accumulator + object.Amount;
       }, 0)
-    : 0;
-
-    console.log(productsFeatures?.data.product_services);
+    : 0; 
 
   const handleBtnClick = (_fare) => {
     setSelected({
       ..._fare,
       sellKey,
-    });
+    }); 
     setShow(true);
   };
-
+ 
   const closePopUp = () => {
     setShow(false);
     setSelected(null);
@@ -86,7 +83,7 @@ const IbeTripVariant = ({
       <section className={`ibe__trip__variant rounded-t-md relative ${fare_variant} `}>
         {!isLoading && (
           <div className="flex flex-col rounded-t-md ">
-            <div className="px-14 border-b border-b-[#0000001A] type-header rounded-t-md ">
+            <div className=" px-6 md:px-14 border-b border-b-[#0000001A] type-header rounded-t-md ">
               <h2 className=" font-display font-extrabold text-2xl text-[#261F5E] my-2">
                 {fare_name()}
               </h2>
@@ -100,7 +97,7 @@ const IbeTripVariant = ({
                 )}
               </p>
             </div>
-            <ul className="mt-7 mb-10 md:px-12">
+            <ul className="mt-7 mb-10 px-4 md:px-12">
               {!featureLoading &&
                 productsFeatures?.data.product_services.map(
                   (feature, index) => (
@@ -180,7 +177,7 @@ const IbeTripVariant = ({
             <p className=" font-medium text-sm ml-4 " ><span className=" font-bold " >{fare?.AvailableCount}</span> seats remaining</p>
           </div>
       </section>
-      <IbeTripPopup
+      <IbeTripPopup 
         selected={selected}
         setSelected={setSelected}
         showPopUp={showPopUp}
