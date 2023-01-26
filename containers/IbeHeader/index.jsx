@@ -6,6 +6,8 @@ import CaretRight from "assets/svgs/caretright.svg";
 import Spinner from "components/Spinner";
 import useDeviceSize from "hooks/useWindowSize";
 import FlightIcon from "assets/svgs/FlightThree.svg";
+import Setting from "assets/svgs/setting.svg";
+import Calendar from "assets/svgs/Calendar.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
@@ -27,8 +29,9 @@ const IbeHeader = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFDateList, setCurrFDates] = useState([]);
   const [recurrent, setRecurrent] = useState(false);
+  const [currentDate, setCurrentDate] = useState();
   const [loaded, setLoaded] = useState(true);
-
+  console.log(new Date(flightParams?.beginDate).toDateString().slice(3));
   const {
     lowFareAvailabilityLoading,
     lowFareAvailabilityResponse,
@@ -173,10 +176,16 @@ const IbeHeader = () => {
     );
 
     return `${name} (${code})`;
-  };
+  }; 
+
+  useEffect(()=>{
+
+    let date = new Date(flightParams?.beginDate).toDateString().slice(3)
+    setCurrentDate(date) 
+  },[])
 
   return (
-    <section className="ibe__flight__info">
+    <section className="ibe__flight__info ">
       {!isLoading && (
         <section className=" rounded-none ibe__flight__info__destination">
           <div className=" w-[55px] h-[55px] rounded-full bg-[#47FF5A1A] p-2 " >
@@ -193,6 +202,17 @@ const IbeHeader = () => {
           <p className="mx-4">
             {resolveAbbreviation(flightParams?.arrivalStation)}
           </p> 
+          <button className=" text-sm h-[24px] w-[75px] rounded-[30px] border border-white ml-3 text-white " >Change</button>
+          <div className=" ml-auto flex items-center " >
+            <div className=" w-[36px] h-[36px] rounded-full bg-[#C9C9C930] flex justify-center items-center " >
+              <Calendar />
+            </div>
+            <div className=" mx-[4px] " >
+              <p className=" !text-sm !font-black " >{(currentDate+"").toUpperCase()}</p>
+              <p className=" !text-sm !font-medium !text-[#A49FDC] " >1 PASSENGER</p>
+            </div>
+            <Setting />
+          </div>
         </section>
       )}
 
@@ -216,6 +236,11 @@ const IbeHeader = () => {
             <section className="flex items-center w-full mx-0 md:mx-4 ">
               {currentFDateList?.length > 0 ? (
                 currentFDateList.map((_dateItem, i) => {
+                  // if(format(new Date(_dateItem?.date), "yyyy-MM-dd") === format(new Date(flightParams?.beginDate))){
+
+                  // }
+                  if(i === 0){
+                  }
                   return (
                     <div
                       key={i}
@@ -236,11 +261,11 @@ const IbeHeader = () => {
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
-                          <h6 className="text-center font-medium md:text-[12px]">
+                          <h6 className="text-center font-medium md:text-[14px]">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (
-                            <p className=" font-bold text-2xl " > ₦{_dateItem?.cost.toLocaleString()}</p>
+                            <p className=" !font-bold !text-[24px] " > ₦{_dateItem?.cost.toLocaleString()}</p>
                           ) : (
                             <p className=" font-bold text-2xl ">No Flight</p>
                           )}
