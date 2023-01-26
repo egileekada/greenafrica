@@ -16,7 +16,8 @@ const PassengerDetailsItem = ({
 }) => {
   const { data: specialAssistances, isLoading } =
     useGetSpecialAssistancesQuery();
-  const { SSRAvailabilityResponse, sessionSSRs } = useSelector(sessionSelector);
+  const { sessionStateResponse, SSRAvailabilityResponse, sessionSSRs } =
+    useSelector(sessionSelector);
   const [wcChecked, setWCChecked] = useState(false);
   const [vpChecked, setVPChecked] = useState(false);
   const [hpChecked, setHPChecked] = useState(false);
@@ -94,7 +95,12 @@ const PassengerDetailsItem = ({
               },
               0
             );
-          setIINSCHARGE(INSServiceCharge);
+          const trips = parseInt(
+            sessionStateResponse?.BookingData?.Journeys.length
+          );
+          setIINSCHARGE(
+            trips > 1 ? trips * INSServiceCharge : INSServiceCharge
+          );
         }
       }
     }
