@@ -9,6 +9,7 @@ import FlightIcon from "assets/svgs/FlightThree.svg";
 import Setting from "assets/svgs/setting.svg";
 import Calendar from "assets/svgs/Calendar.svg";
 import { useSelector, useDispatch } from "react-redux";
+import { generalSelector, showWidget } from "redux/reducers/general"; 
 import {
   sessionSelector,
   fetchLowFareAvailability,
@@ -18,11 +19,16 @@ import {
 import { useGetLocationsQuery } from "services/widgetApi.js";
 import { format } from "date-fns";
 
-const IbeHeader = () => {
+const IbeHeader = (props) => {
   const { data, isLoading } = useGetLocationsQuery();
   const dispatch = useDispatch();
   const [width] = useDeviceSize();
 
+  const { widgetVisible } = useSelector(generalSelector); 
+  const handleUser = () => {
+    dispatch(showWidget());
+    // window.location.assign("https://dev-website.gadevenv.com/");
+  };
   const [dateList, setDateList] = useState([]); //original Response
   const [fareDateList, setFareDateList] = useState([]); //formatted Response
   //Pagination
@@ -202,7 +208,7 @@ const IbeHeader = () => {
           <p className="mx-4">
             {resolveAbbreviation(flightParams?.arrivalStation)}
           </p> 
-          <button className=" text-sm h-[24px] w-[75px] rounded-[30px] border border-white ml-3 text-white " >Change</button>
+          <button onClick={()=> handleUser()} className=" text-sm h-[24px] w-[75px] rounded-[30px] border border-white ml-3 text-white " >Change</button>
           <div className=" ml-auto flex items-center " >
             <div className=" w-[36px] h-[36px] rounded-full bg-[#C9C9C930] flex justify-center items-center " >
               <Calendar />

@@ -86,7 +86,7 @@ const IbeTripVariant = ({
       <section className={`ibe__trip__variant rounded-t-md relative ${fare_variant} `}>
         {!isLoading && (
           <div className="flex flex-col rounded-t-md ">
-            <div className="px-8 border-b border-b-[#0000001A] type-header rounded-t-md ">
+            <div className="px-14 border-b border-b-[#0000001A] type-header rounded-t-md ">
               <h2 className=" font-display font-extrabold text-2xl text-[#261F5E] my-2">
                 {fare_name()}
               </h2>
@@ -100,11 +100,11 @@ const IbeTripVariant = ({
                 )}
               </p>
             </div>
-            <ul className="mt-7 mb-10 md:px-8">
+            <ul className="mt-7 mb-10 md:px-12">
               {!featureLoading &&
                 productsFeatures?.data.product_services.map(
                   (feature, index) => (
-                    <li className="flex items-center mb-6 px-8" key={index}>
+                    <li className="flex items-center mb-6" key={index}>
                       <figure className="w-[44px] h-[44px] bg-transparent  rounded-full flex items-center justify-center">
                         {/* <img src={feature.icon} alt="" /> */}
                         {feature.icon.includes("bag") && (

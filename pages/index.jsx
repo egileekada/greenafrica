@@ -244,7 +244,7 @@ const Home = () => {
                                 return (
                                   <>
                                     {_schedueIndex === 0 ? (
-                                      <IbeHeader />
+                                      <IbeHeader open={setShow} />
                                     ) : (
                                       <ReturnIbeHeader />
                                     )}
