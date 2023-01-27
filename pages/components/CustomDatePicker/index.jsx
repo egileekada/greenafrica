@@ -16,6 +16,7 @@ export default function CustomDatePicker(props) {
     const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
 
     const [open, setOpen] = React.useState(false);
+    const title = props.title
     const customInputRef = React.useRef();
     const [selectedDate, setSelectedDate] = React.useState(new Date()); 
     
@@ -75,7 +76,7 @@ export default function CustomDatePicker(props) {
                     </svg>
                 </span>
                 <div className="flex-auto pl-5 px-4  my-auto  md:px-0">
-                    <p className="text-xs -mb-0 text-[#979797]">DEPARTING</p>
+                    <p className="text-xs -mb-0 text-[#979797]">{title}</p>
                     <p className=' font-normal ' >{props.inputProps.value}</p>
                 </div>
             </div> 

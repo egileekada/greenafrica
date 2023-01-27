@@ -469,13 +469,13 @@ const Book = ({
                   onKeyDown={(e) => e.preventDefault()}
                   minDate={new Date()}
                 /> */}
-                <CustomDatePicker value={setDepartureDateFormik} data={lowfaredata?.data?.values} />
+                <CustomDatePicker value={setDepartureDateFormik} title="DEPARTING" data={lowfaredata?.data?.values} />
               {/* </div>
             </div> */}
 
             {type === "round_trip" && (
 
-                <CustomDatePicker value={setReturnDateFormik} data={lowfaredata?.data?.values} />
+                <CustomDatePicker value={setReturnDateFormik} title="RETURNING" data={lowfaredata?.data?.values} />
               // <div
               //   onClick={() => {
               //     if (width < 769) {
