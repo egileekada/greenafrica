@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
+import { decryptPnr } from "lib/utils";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import { setManageBookingPnr } from "redux/reducers/booking";
 import { atcb_action } from "add-to-calendar-button";
@@ -46,6 +47,7 @@ const ManageBookings = (props) => {
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: paymentConfigs, isLoading: paymentConfigLoading } =
     useGetPaymentConfigsQuery();
+  const { bookingId } = router.query;
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -66,17 +68,27 @@ const ManageBookings = (props) => {
     ScrollToTop();
   }, []);
 
-  useEffect(() => {
-    async function fetchBookingDetails() {
-      if (signature) {
-        if (router?.query?.pnr) {
-          setStatePnr(props.pnr);
-          dispatch(setManageBookingPnr(props.pnr));
-          dispatch(GetBookingDetailsWithPNR({ pnr: props.pnr }));
-        }
+  async function fetchBookingDetails(pnr) {
+    if (signature) {
+      if (pnr) {
+        setStatePnr(pnr);
+        dispatch(setManageBookingPnr(pnr));
+        dispatch(GetBookingDetailsWithPNR({ pnr: pnr }));
       }
     }
-    fetchBookingDetails();
+  }
+
+  useEffect(() => {
+    if (router.isReady) {
+      //check if pnr is encrypted
+      if (bookingId !== undefined) {
+        fetchBookingDetails(decryptPnr(bookingId));
+      } else if (!props.pnr) {
+        router.push("/bookings");
+      } else {
+        fetchBookingDetails(props.pnr);
+      }
+    }
   }, [router]);
 
   useEffect(() => {
@@ -586,10 +598,6 @@ const ManageBookings = (props) => {
   const handlePayment = () => {
     router.push("/bookings/payment");
   };
-
-  if (!props.pnr) {
-    router.push("/bookings");
-  }
 
   return (
     <Fragment>

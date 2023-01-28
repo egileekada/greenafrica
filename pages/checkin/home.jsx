@@ -28,8 +28,11 @@ import {
 
 import { setCheckinPNR } from "redux/reducers/checkin";
 
+import { decryptPnr } from "lib/utils";
+
 const CheckInDetails = (props) => {
   const router = useRouter();
+  const { bookingId } = router.query;
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   const [passengers, setPassengers] = useState([]);
@@ -39,16 +42,24 @@ const CheckInDetails = (props) => {
   const { signature, sessionLoading, bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
 
+  async function initSession(pnr) {
+    if (pnr) {
+      dispatch(setCheckinPNR(pnr));
+      dispatch(GetBookingDetailsWithPNR({ pnr: pnr }));
+      dispatch(resetSelectedPassengers());
+    }
+  }
+
   useEffect(() => {
     if (router.isReady) {
-      async function initSession() {
-        if (props.pnr) {
-          dispatch(setCheckinPNR(props.pnr));
-          dispatch(GetBookingDetailsWithPNR({ pnr: props.pnr }));
-          dispatch(resetSelectedPassengers());
-        }
+      //check if pnr is encrypted
+      if (bookingId !== undefined) {
+        initSession(decryptPnr(bookingId));
+      } else if (!props.pnr) {
+        router.push("/checkin");
+      } else {
+        initSession(props.pnr);
       }
-      initSession();
     }
   }, [router.isReady]);
 
@@ -296,10 +307,6 @@ const CheckInDetails = (props) => {
         });
       });
   };
-
-  if (!props.pnr) {
-    router.push("/checkin");
-  }
 
   return (
     <BaseLayout>
