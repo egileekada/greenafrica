@@ -61,7 +61,7 @@ const CheckInDetails = (props) => {
         initSession(props.pnr);
       }
     }
-  }, [router.isReady]);
+  }, [router]);
 
   const PassengerBags = (_passenger, PassengerNumber) => {
     const _Baggages = _passenger.filter((pax) => {
