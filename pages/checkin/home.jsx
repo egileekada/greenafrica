@@ -42,8 +42,10 @@ const CheckInDetails = (props) => {
   const { signature, sessionLoading, bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
 
-  async function initSession(pnr) {
+  function initSession(pnr) {
+    console.log("pnr in initSession =>", pnr);
     if (pnr) {
+      console.log("pnr in check block =>", pnr);
       dispatch(setCheckinPNR(pnr));
       dispatch(GetBookingDetailsWithPNR({ pnr: pnr }));
       dispatch(resetSelectedPassengers());
@@ -53,7 +55,9 @@ const CheckInDetails = (props) => {
   useEffect(() => {
     if (router.isReady) {
       //check if pnr is encrypted
+      console.log("bookingId =>", bookingId);
       if (bookingId !== undefined) {
+        console.log("decryption in useEffect =>", decryptPnr(bookingId));
         initSession(decryptPnr(bookingId));
       } else if (!props.pnr) {
         router.push("/checkin");
