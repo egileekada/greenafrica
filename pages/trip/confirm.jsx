@@ -17,6 +17,7 @@ import {
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
+import { encryptPnr } from "lib/utils";
 import ReactToPrint from "react-to-print";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
@@ -304,18 +305,21 @@ const TripConfirm = () => {
 
                     {/* CTA */}
                     <section className="flex  flex-wrap md:flex-nowrap items-center px-6 lg:px-12">
-                      <button
-                        className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-0 md:mr-2 mb-4 md:mb-0"
-                        onClick={() =>
-                          router.push(
-                            `/bookings?pnr=${bookingResponse?.Booking?.RecordLocator}`
-                          )
-                        }
+                      <Link
+                        href={`/bookings/home?bookingId=${encryptPnr(
+                          bookingResponse?.Booking?.RecordLocator
+                        )}`}
                       >
-                        Manage Booking
-                      </button>
-                      <Link href="/checkin">
-                        <a className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2 text-center">
+                        <a className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-primary mr-0 md:mr-2 mb-4 md:mb-0 text-center">
+                          Manage Booking
+                        </a>
+                      </Link>
+                      <Link
+                        href={`/checkin/home?bookingId=${encryptPnr(
+                          bookingResponse?.Booking?.RecordLocator
+                        )}`}
+                      >
+                        <a className="basis-full md:basis-[30%] tab:basis-[20%] btn btn-outline mr-2 md:mr-2 text-center flex justify-center">
                           Check In
                         </a>
                       </Link>

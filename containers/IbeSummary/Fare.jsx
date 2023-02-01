@@ -77,6 +77,7 @@ const Fare = ({ isRoundTrip }) => {
                   WCHR: 0,
                   VPRD: 0,
                   HPRD: 0,
+                  INSU: 0,
                 };
 
                 _segment.PaxSSRs?.map((_segSSR) => {
@@ -86,6 +87,8 @@ const Fare = ({ isRoundTrip }) => {
                     }
                   ).length;
                 });
+
+                {/* console.log("_SSRsCount", _SSRsCount); */}
 
                 return (
                   <>
@@ -251,6 +254,7 @@ const Fare = ({ isRoundTrip }) => {
                                   </h6>
                                 </div>
                               </div>
+
                               <div className="trip__summary__row subrow">
                                 <div className="flex items-center">
                                   {fareConfig?.data ? (
@@ -320,7 +324,7 @@ const Fare = ({ isRoundTrip }) => {
                                 </div>
                               )}
 
-                             {parseInt(_SSRsCount?.INFT) > 0 && (
+                              {parseInt(_SSRsCount?.INFT) > 0 && (
                                 <div className="trip__summary__row subrow">
                                   <div className="flex items-center">
                                     <h6>
@@ -336,6 +340,24 @@ const Fare = ({ isRoundTrip }) => {
                                   </div>
                                 </div>
                               )}
+
+                              {parseInt(_SSRsCount?.INSU) > 0 && (
+                                <div className="trip__summary__row subrow">
+                                  <div className="flex items-center">
+                                    <h6>
+                                      {_SSRsCount?.INSU} X&nbsp;
+                                      {fareConfig?.data
+                                        ? resolveAbbreviation("INSU")
+                                        : null}
+                                      {_SSRsCount?.INSU > 1 ? "s" : ""}
+                                    </h6>
+                                  </div>
+                                  <div>
+                                    <h6> ₦{_SSRSum?.INSU.toLocaleString()}</h6>
+                                  </div>
+                                </div>
+                              )}
+
                               {parseInt(_SSRsCount?.WCHR) > 0 && (
                                 <div className="trip__summary__row">
                                   <div v className="flex items-center">
