@@ -21,7 +21,7 @@ const IbeSidebar = ({ enableEdit = false }) => {
   }, [sessionStateResponse]);
 
   return (
-    <section className="ibe__sidebar">
+    <section className="ibe__sidebar  ">
       {sessionStateLoading ? (
         <Spinner />
       ) : (

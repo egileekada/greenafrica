@@ -17,7 +17,7 @@ const TripInfo = () => {
   const EmptyTrip = () => {
     return (
       <div className="ibe__sidebar__box">
-        <div className="ibe__sidebar__empty h-[187px]">
+        <div className="ibe__sidebar__empty h-[187px] !text-sm">
           <figure>
             <FlightIcon />
           </figure>
@@ -33,7 +33,7 @@ const TripInfo = () => {
         <div className="flex mb-6">
           <div className="flex flex-col w-[53px] mr-4">
             <div className="bg-primary-main h-6 rounded-t-[3px] flex justify-center items-center">
-              <h6 className=" text-center text-[10px] leading-[13px] font-semibold text-white">
+              <h6 className=" text-center !text-sm leading-[13px] font-semibold text-white">
                 {format(new Date(segment?.STD), "MMM")}
               </h6>
             </div>
@@ -47,7 +47,7 @@ const TripInfo = () => {
             <h5 className="text-sm font-extrabold text-primary-main font-display mb-2">
               {segment?.DepartureStation} - {segment?.ArrivalStation}
             </h5>
-            <h6 className="text-[12px] font-normal text-[#9692B8] font-title">
+            <h6 className="!text-sm font-normal text-[#9692B8] font-title">
               {format(new Date(segment?.STD), "HH:mm")} -{" "}
               {format(new Date(segment?.STA), "HH:mm")}
             </h6>
