@@ -14,9 +14,9 @@ const Popup = ({
   const activeClass = display ? "active" : "inactive";
 
   return display ? (
-    <div className={`ga__popup ${activeClass} ${top ? "top" : ""}   `}>
+    <div className={`ga__popup rounded-lg ${activeClass} ${top ? "top" : ""}   `}>
       <div
-        className={`ga__popup__container ${width ? "w-full" : " max-w-7xl lg:mx-24 "} `}
+        className={`ga__popup__container rounded-lg ${width ? "w-full" : " max-w-7xl lg:mx-24 "} `}
         onClick={(e) => {
           e.stopPropagation();
           e.nativeEvent.stopImmediatePropagation();

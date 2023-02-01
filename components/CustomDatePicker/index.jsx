@@ -11,6 +11,7 @@ import { format } from "date-fns";
 export default function CustomDatePicker(props) {
 
     const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
+    const title = props.title
 
     const [open, setOpen] = React.useState(false);
     const customInputRef = React.useRef();
@@ -49,7 +50,7 @@ function hasContent( date ) {
     for (const key in lowfare) {
       if (key === date) {
         return (
-          <p className="text-[10px] font-light leading-tight my-1 text-[#9E9BBF]">
+          <p className="leading-tight my-1 text-[#9E9BBF]">
             ₦{Math.round(lowfare[key])}K
           </p>
         );
@@ -87,7 +88,7 @@ function hasContent( date ) {
                     </svg>
                 </span>
                 <div className="flex-auto pl-5 px-4  my-auto  md:px-0">
-                    <p className="text-xs -mb-0 text-[#979797]">DEPARTING</p>
+                    <p className="text-xs font-bold -mb-0 text-[#979797]">{title}</p>
                     <p className=' font-normal ' >{props.inputProps.value}</p>
                 </div>
             </div> 
@@ -96,44 +97,42 @@ function hasContent( date ) {
 
     const CustomDay =(day, _value, DayComponentProps) => {   
         let date = format(new Date(DayComponentProps.key), "yyyy-MM-dd") 
-
-        // console.log(day);
-        // console.log(day.$y+"-"+((day.$M+1).length === 1 ? "0"+(day.$M+1): (day.$M+1))+"-"+day.$D)
-
+        
         if(!DayComponentProps.disabled){
             return(
-                <button onClick={()=> handleDateChange(day.$d)} style={ DayComponentProps.today ? {border: " 1px dashed #9E9BBF "} :!DayComponentProps.selected? { backgroundColor: "#1F195512" }: { backgroundColor: "#1F1955", color: "#47FF5A" }} className={' w-[40px]  font-bold  h-[45px] flex flex-col items-center mx-[1px] pt-1 '} >
-                    <p className=' text-sm font-bold ' >{day.$D}</p>
+                <button onClick={()=> handleDateChange(day.$d)} style={ DayComponentProps.today ? {border: " 1px dashed #9E9BBF "} :!DayComponentProps.selected? { backgroundColor: "#1F195512" }: { backgroundColor: "#1F1955", color: "#47FF5A" }} className={' w-[50px]  font-bold  h-[43px] flex flex-col mt-[2px] items-center justify-center  mx-[2px] pt-1 '} >
+                    <p className=' text-[14px] font-bold ' >{day.$D}</p>
                     <p className={!DayComponentProps.selected ? ' text-[10px] -mt-0 text-[#9E9BBF] ': ' text-[10px] -mt-0 '} >{hasContent(date)}</p>
                 </button>
             )
         } else{ 
             return(
-                <button style={ DayComponentProps.today ? {border: " 1px dashed #9E9BBF "} :!DayComponentProps.selected? { backgroundColor: "#1F195512" }: { backgroundColor: "#1F1955", color: "#47FF5A" }} className={' w-[40px] h-[45px] cursor-not-allowed font-bold flex flex-col items-center mx-[1px] pt-1 '} >
-                    <p className=' text-sm font-bold ' >{day.$D}</p>
+                <button style={ DayComponentProps.today ? {border: " 1px dashed #9E9BBF "} :!DayComponentProps.selected? { backgroundColor: "#fff" }: { backgroundColor: "#1F1955", color: "#47FF5A" }} className={' w-[50px] h-[43px] cursor-not-allowed font-bold flex flex-col mt-[2px] items-center justify-center mx-[2px] pt-1 '} >
+                    <p className=' text-[14px] font-bold ' >{day.$D}</p>
                     <p className={!DayComponentProps.selected ? ' text-[10px] -mt-0 text-[#9E9BBF] ': ' text-[10px] -mt-0 '} >{hasContent(date)}</p>
                 </button>
             )
         }
 
     }
-
+    
     return ( 
-        <LocalizationProvider dateAdapter={AdapterDayjs}> 
-            <DatePicker
-                label="Custom input"
-                value={selectedDate} 
-                onChange={handleDateChange}
-                disablePast
-                open={open} 
-                inputFormat="DD-MM-YYYY"
-                onOpen={() => setOpen(true)}
-                onClose={() => setOpen(false)} 
-                PopperProps={{ anchorEl: customInputRef.current }}
-                renderInput={CustomInput} 
-                renderDay={(day, _value, DayComponentProps)=>CustomDay(day, _value, DayComponentProps)} 
-                
-            />  
-        </LocalizationProvider> 
+        <div className="w-full"> 
+            <LocalizationProvider dateAdapter={AdapterDayjs}> 
+                <DatePicker   
+                    label="Custom input"
+                    value={selectedDate} 
+                    onChange={handleDateChange}
+                    disablePast
+                    open={open}  
+                    inputFormat="DD-MM-YYYY"
+                    onOpen={() => setOpen(true)}
+                    onClose={() => setOpen(false)} 
+                    PopperProps={{ anchorEl: customInputRef.current }}
+                    renderInput={CustomInput}  
+                    renderDay={(day, _value, DayComponentProps)=>CustomDay(day, _value, DayComponentProps)}  
+                />  
+            </LocalizationProvider> 
+        </div>
     )
 } 

@@ -11,9 +11,10 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
     useSelector(sessionSelector);
 
   return (
-    <section className="ibe__flight__trips">
+    <section className="ibe__flight__trips ">
       <h2 className="text-primary-main font-extrabold text-base mb-8 capitalize">
-        {parseInt(schedueIndex) === 0
+        Departure
+        {/* {parseInt(schedueIndex) === 0
           ? `Departure On ${format(
               new Date(flightParams?.beginDate),
               "EEEE, LLL dd yyyy"
@@ -21,7 +22,7 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
           : `Return On ${format(
               new Date(flightParams?.returnDate),
               "EEEE, LLL dd yyyy"
-            )}`}
+            )}`} */}
       </h2>
 
       <Fragment>

@@ -7,7 +7,7 @@ import Spinner from "components/Spinner";
 import useDeviceSize from "hooks/useWindowSize";
 import FlightIcon from "assets/svgs/FlightThree.svg";
 import Setting from "assets/svgs/setting.svg";
-import Calendar from "assets/svgs/Calendar.svg";
+import Calendar from "assets/svgs/Calendar-Date.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { generalSelector, showWidget } from "redux/reducers/general"; 
 import {
@@ -233,15 +233,15 @@ const IbeHeader = (props) => {
           </section>
         ) : (
           <section className="flex items-center w-full">
-            <div className=" w-fit " > 
+            <div className=" lg:w-fit " > 
               <button
-                className={`pl-4 sm:pl-0 hidden lg:flex lg:border rounded-full border-[#261F5E]  h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                className={`pl-4 sm:pl-0 lg:border rounded-full flex outline-none border-[#261F5E]  h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
                 onClick={onPrev}
               >
                 <CaretLeft />
               </button>
             </div>
-            <section className="flex items-center w-full overflow-x-auto mx-0 md:mx-4 ">
+            <section className="flex items-center w-full mx-0 md:mx-4 ">
               {currentFDateList?.length > 0 ? (
                 currentFDateList.map((_dateItem, i) => {
                   // if(format(new Date(_dateItem?.date), "yyyy-MM-dd") === format(new Date(flightParams?.beginDate))){
@@ -265,7 +265,7 @@ const IbeHeader = (props) => {
                               "yyyy-MM-dd"
                             )
                               ? "active w-full h-full border-b-[6px] border-[#47FF5A]  "
-                              : " lg:w-auto w-[150px] "
+                              : ""
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
@@ -273,9 +273,9 @@ const IbeHeader = (props) => {
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (
-                            <p className=" !font-bold !text-[24px] " > ₦{_dateItem?.cost.toLocaleString()}</p>
+                            <p className=" !font-bold !text-base !lg:text-[24px] " > ₦{_dateItem?.cost.toLocaleString()}</p>
                           ) : (
-                            <p className=" !font-bold !text-2xl ">No Flight</p>
+                            <p className=" !font-bold !text-sm !lg:text-2xl ">No Flight</p>
                           )}
                         </button>
                       )}
@@ -296,7 +296,7 @@ const IbeHeader = (props) => {
             {/* pointer-events-none cursor-none */}
             <div className=" w-fit " > 
               <button
-                className={`pr-4 sm:pr-0 hover:bg-gray-400 hidden lg:flex lg:border rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                className={`pr-4 sm:pr-0 hover:bg-gray-400 lg:border flex outline-none rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
                 onClick={onNext}
               >
                 <CaretRight />

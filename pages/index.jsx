@@ -248,10 +248,12 @@ const Home = () => {
                                     ) : (
                                       <ReturnIbeHeader />
                                     )}
-                                    <IbeTrips
-                                      flightSchedule={_schedule}
-                                      schedueIndex={_schedueIndex}
-                                    />
+                                    <div className=" lg:px-0 w-full px-4 " >
+                                      <IbeTrips
+                                        flightSchedule={_schedule}
+                                        schedueIndex={_schedueIndex}
+                                      />
+                                    </div>
                                   </>
                                 );
                               }

@@ -5,7 +5,7 @@ import CaretLeft from "assets/svgs/caretleft.svg";
 import CaretRight from "assets/svgs/caretright.svg";
 import Spinner from "components/Spinner";
 import useDeviceSize from "hooks/useWindowSize";
-import FlightIcon from "assets/svgs/FlightTwo.svg";
+import FlightIcon from "assets/svgs/FlightThree.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   sessionSelector,
@@ -173,6 +173,13 @@ const ReturnIbeHeader = () => {
   return (
     <section className="ibe__flight__info mt-20" id="returnContainer">
       <section className="ibe__flight__info__destination">
+        <div className=" w-fit " > 
+          <div className=" w-[55px] h-[55px] rounded-full bg-[#47FF5A1A] p-2 " >
+            <div className=" bg-[#47FF5A] rotate-180 w-full h-full flex justify-center items-center rounded-full " >
+              <FlightIcon />
+            </div>
+          </div>
+        </div>
         <p className="mx-4">
           {!isLoading && resolveAbbreviation(flightParams?.arrivalStation)}
         </p>
@@ -185,9 +192,9 @@ const ReturnIbeHeader = () => {
 
         {/* {currentPage && <p> currentPage:: {currentPage}</p>} */}
 
-        <figure className="flightCircle">
+        {/* <figure className="flightCircle">
           <FlightIcon />
-        </figure>
+        </figure> */}
       </section>
       <section className="ibe__flight__info__dates">
         {returnFareAvailabilityLoading ? (
@@ -196,12 +203,14 @@ const ReturnIbeHeader = () => {
           </section>
         ) : (
           <section className="flex items-center w-full">
-            <button
-              className={`pl-4 sm:pl-0 hover:bg-gray-400 flex h-16 lg:h-4 w-8 lg:w-4 items-center justify-center`}
-              onClick={onPrev}
-            >
-              <CaretLeft />
-            </button>
+            <div className=" lg:w-fit " > 
+              <button
+                className={`pl-4 sm:pl-0 lg:border flex rounded-full outline-none border-[#261F5E]  h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                onClick={onPrev}
+              >
+                <CaretLeft />
+              </button>
+            </div>
             <section className="flex items-center w-full mx-0 md:mx-4">
               {currentFDateList?.length > 0 ? (
                 currentFDateList.map((_dateItem, i) => {
@@ -220,18 +229,18 @@ const ReturnIbeHeader = () => {
                               new Date(flightParams?.returnDate),
                               "yyyy-MM-dd"
                             )
-                              ? "active"
+                              ? "active w-full h-full border-b-[6px] border-[#47FF5A] "
                               : ""
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
-                          <h6 className="text-center">
+                          <h6 className="text-center font-medium md:text-[14px]">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (
-                            <p> ₦{_dateItem?.cost.toLocaleString()}</p>
+                            <p className=" !font-bold !text-base !lg:text-[24px] " > ₦{_dateItem?.cost.toLocaleString()}</p>
                           ) : (
-                            <p>No Flight</p>
+                            <p className=" !font-bold !text-sm !lg:text-2xl ">No Flight</p>
                           )}
                         </button>
                       )}
@@ -243,12 +252,14 @@ const ReturnIbeHeader = () => {
               )}
             </section>
 
-            <button
-              className={`pr-4 sm:pr-0 hover:bg-gray-400 flex  h-16 lg:h-4 w-8 lg:w-4 items-center justify-center`}
-              onClick={onNext}
-            >
-              <CaretRight />
-            </button>
+            <div className=" lg:w-fit " > 
+              <button
+                className={`pr-4 lg:pl-0 pl-1 sm:pr-0 hover:bg-gray-400 outline-none lg:border rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                onClick={onNext}
+              >
+                <CaretRight />
+              </button>
+            </div>
           </section>
         )}
       </section>
