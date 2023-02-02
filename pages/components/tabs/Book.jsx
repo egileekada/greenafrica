@@ -215,8 +215,14 @@ const Book = ({
   };
 
   const setDepartureDateFormik = (value) => { 
+
+    var date = new Date(value);
+    date.setDate(date.getDate() + 7);
+
     formik.setFieldValue("departure", value); 
     setDepartureDate(value);
+    formik.setFieldValue("return", date);
+    setReturningDate(date);
   }; 
 
   const setReturnDateFormik = (value) => {
@@ -428,13 +434,13 @@ const Book = ({
               type === "round_trip w-fit md:grid-cols-2 " && "lg:grid-cols-2 md:col-span-2 "
             } hidden md:flex grid-cols-1 lg:w-fit gap-2 `}
           >
-            {/* <div
+            <div
               onClick={() => {
                 if (width < 769) {
                   setShowModal(true);
                 }
               }}
-              className="booking__wrapper items-center w-full lg:w-[220px] justify-center h-[55px] hover:border-primary-main flex"
+              className="booking__wrapper items-center w-full lg:w-[180px] justify-center h-[55px] hover:border-primary-main flex"
             >
               <span className="mr-2 ml-1 my-auto hidden md:block">
                 <svg
@@ -455,8 +461,8 @@ const Book = ({
                 </svg>
               </span>
               <div className="flex-auto px-4 md:px-0">
-                <p className="mb-1 text-xs text-[#979797]">DEPARTING</p> */}
-                {/* <DatePicker
+                <p className="mb-1 text-xs font-medium text-[#979797]">DEPARTING</p>
+                <DatePicker
                   id="departure"
                   clearIcon={null}
                   calendarIcon={null}
@@ -468,58 +474,58 @@ const Book = ({
                   value={formik.values.departure}
                   onKeyDown={(e) => e.preventDefault()}
                   minDate={new Date()}
-                /> */}
-                <CustomDatePicker value={setDepartureDateFormik} title="DEPARTING" data={lowfaredata?.data?.values} />
-              {/* </div>
-            </div> */}
+                />
+                {/* <CustomDatePicker value={setDepartureDateFormik} title="DEPARTING" data={lowfaredata?.data?.values} /> */}
+              </div>
+            </div>
 
             {type === "round_trip" && (
 
-                <CustomDatePicker value={setReturnDateFormik} title="RETURNING" data={lowfaredata?.data?.values} />
-              // <div
-              //   onClick={() => {
-              //     if (width < 769) {
-              //       setShowModal(true);
-              //     }
-              //   }}
-              //   className="booking__wrapper items-center w-full lg:w-[220px] justify-center h-[55px] hover:border-primary-main flex"
-              // >
-              //   <span className="mr-2 ml-1 my-auto hidden md:block">
-              //     <svg
-              //       width="26"
-              //       height="22"
-              //       viewBox="0 0 26 22"
-              //       fill="none"
-              //       xmlns="http://www.w3.org/2000/svg"
-              //     >
-              //       <path
-              //         d="M25.9158 4.7268V19.9868C25.9158 21.0986 25.0132 21.9991 23.9025 21.9991L12.9579 21.9989H2.01339C0.90152 21.9989 8.39233e-05 21.0984 8.39233e-05 19.9865V4.72656L25.9158 4.7268ZM19.2175 17.2344H22.1969V14.2538H19.2163V17.2344H19.2175ZM19.2175 11.6596H22.1969V8.67902H19.2163V11.6596H19.2175ZM14.0504 17.2344H17.031V14.2538H14.0504V17.2344ZM14.0504 11.6596H17.031V8.67902H14.0504V11.6596ZM8.88441 17.2344H11.865V14.2538H8.88441V17.2344ZM8.88441 11.6596H11.865V8.67902H8.88441V11.6596ZM3.71845 17.2344H6.69903V14.2538H3.71845V17.2344ZM3.71845 11.6596H6.69903V8.67902H3.71845V11.6596Z"
-              //         fill="#261F5E"
-              //       />
-              //       <path
-              //         d="M8.39233e-05 3.66582V2.01233C8.39233e-05 0.900466 0.902674 0 2.01339 0L23.9025 0.000237024C25.0143 0.000237024 25.9158 0.900703 25.9158 2.01257V3.66581L8.39233e-05 3.66582Z"
-              //         fill="#261F5E"
-              //       />
-              //     </svg>
-              //   </span>
+                // <CustomDatePicker value={setReturnDateFormik} title="RETURNING" data={lowfaredata?.data?.values} />
+              <div
+                onClick={() => {
+                  if (width < 769) {
+                    setShowModal(true);
+                  }
+                }}
+                className="booking__wrapper items-center w-full lg:w-[180px] justify-center h-[55px] hover:border-primary-main flex"
+              >
+                <span className="mr-2 ml-1 my-auto hidden md:block">
+                  <svg
+                    width="26"
+                    height="22"
+                    viewBox="0 0 26 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M25.9158 4.7268V19.9868C25.9158 21.0986 25.0132 21.9991 23.9025 21.9991L12.9579 21.9989H2.01339C0.90152 21.9989 8.39233e-05 21.0984 8.39233e-05 19.9865V4.72656L25.9158 4.7268ZM19.2175 17.2344H22.1969V14.2538H19.2163V17.2344H19.2175ZM19.2175 11.6596H22.1969V8.67902H19.2163V11.6596H19.2175ZM14.0504 17.2344H17.031V14.2538H14.0504V17.2344ZM14.0504 11.6596H17.031V8.67902H14.0504V11.6596ZM8.88441 17.2344H11.865V14.2538H8.88441V17.2344ZM8.88441 11.6596H11.865V8.67902H8.88441V11.6596ZM3.71845 17.2344H6.69903V14.2538H3.71845V17.2344ZM3.71845 11.6596H6.69903V8.67902H3.71845V11.6596Z"
+                      fill="#261F5E"
+                    />
+                    <path
+                      d="M8.39233e-05 3.66582V2.01233C8.39233e-05 0.900466 0.902674 0 2.01339 0L23.9025 0.000237024C25.0143 0.000237024 25.9158 0.900703 25.9158 2.01257V3.66581L8.39233e-05 3.66582Z"
+                      fill="#261F5E"
+                    />
+                  </svg>
+                </span>
 
-              //   <div className="flex-auto px-4 md:px-0">
-              //     <p className="mb-1 text-xs text-[#979797]">RETURNING</p>
-              //     <DatePicker
-              //       id="return"
-              //       clearIcon={null}
-              //       calendarIcon={null}
-              //       tileContent={hasContent}
-              //       className="datepicker border-0 w-full font-body"
-              //       minDate={new Date()}
-              //       name="return"
-              //       format={"d/M/y"}
-              //       onChange={(value) => setReturnDateFormik(value)}
-              //       value={formik.values.return}
-              //       onKeyDown={(e) => e.preventDefault()}
-              //     />
-              //   </div>
-              // </div>
+                <div className="flex-auto px-4 md:px-0">
+                  <p className="mb-1 text-xs font-medium text-[#979797]">RETURNING</p>
+                  <DatePicker
+                    id="return"
+                    clearIcon={null}
+                    calendarIcon={null}
+                    tileContent={hasContent}
+                    className="datepicker border-0 w-full font-body"
+                    minDate={new Date()}
+                    name="return"
+                    format={"d/M/y"}
+                    onChange={(value) => setReturnDateFormik(value)}
+                    value={formik.values.return}
+                    onKeyDown={(e) => e.preventDefault()}
+                  />
+                </div>
+              </div>
             )}
           </div>
 
@@ -536,7 +542,7 @@ const Book = ({
                 }}
                 className="px-4 md:px-0"
               >
-                <p className="mb-1 text-xs text-[#979797]">PASSENGERS</p>
+                <p className="mb-1 text-xs font-medium text-[#979797]">PASSENGERS</p>
                 <div
                   className="flex items-center w-[100px] relative"
                   onClick={() =>
@@ -607,28 +613,28 @@ const Book = ({
                             </p>
                           </div>
                           <div className="flex items-center">
-                            <button
+                            <div
                               className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={passengers === 1}
                               onClick={() => decreaseAdult(-1)}
                             >
                               <img src="/images/subtract.svg" alt="" />
-                            </button>
+                            </div>
                             <input
                               type="tel"
                               className="w-10 h-[37px] mx-2 rounded-lg text-center"
                               value={adult}
                               readOnly
                             />
-                            <button
+                            <div
                               className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={passengers === 9}
                               onClick={() => updateAdult(1)}
                             >
                               <img src="/images/_add.svg" alt="" className="" />
-                            </button>
+                            </div>
                           </div>
                         </div>
                         <div className="grid grid-cols-2 mb-3">
@@ -639,28 +645,28 @@ const Book = ({
                             </p>
                           </div>
                           <div className="flex items-center"> 
-                            <button
+                            <div
                               className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={child === 0}
                               onClick={() => updateChild(-1)}
                             >
                               <img src="/images/subtract.svg" alt="subtract" />
-                            </button>
+                            </div>
                             <input
                               type="tel"
                               className="w-10 mx-2 h-[37px] rounded-lg text-center"
                               value={child}
                               readOnly
                             /> 
-                            <button
+                            <div
                               className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={passengers === 9}
                               onClick={() => updateChild(1)}
                             >
                               <img src="/images/_add.svg" alt="" />
-                            </button>
+                            </div>
                           </div>
                         </div>
                         <div className="grid grid-cols-2 mb-3">
@@ -671,28 +677,28 @@ const Book = ({
                             </p>
                           </div>
                           <div className="flex items-center"> 
-                            <button
+                            <div
                               className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={infant === 0}
                               onClick={() => updateInfant(-1)}
                             >
                               <img src="/images/subtract.svg" alt="" />
-                            </button>
+                            </div>
                             <input
                               type="tel"
                               className="w-10 mx-2 h-[37px] rounded-lg text-center"
                               value={infant}
                               readOnly
                             />
-                            <button
+                            <div
                               className="rounded-full bg-gray-200 justify-center items-center w-[27px] h-[27px] flex px-2 cursor-pointer"
                               role="button"
                               disabled={adult == infant}
                               onClick={() => updateInfant(1)}
                             >
                               <img src="/images/_add.svg" alt="" />
-                            </button>
+                            </div>
                           </div>
                         </div> 
                         <div
