@@ -246,7 +246,12 @@ const Home = () => {
                                     {_schedueIndex === 0 ? (
                                       <IbeHeader open={setShow} />
                                     ) : (
+                                      <> 
+                                        <h2 className="text-primary-main font-extrabold -mb-14 text-base mt-8 capitalize">
+                                          RETURNING
+                                        </h2>
                                       <ReturnIbeHeader />
+                                      </>
                                     )}
                                     <div className=" lg:px-0 w-full px-4 " >
                                       <IbeTrips
@@ -262,7 +267,7 @@ const Home = () => {
                               .Schedules.length > 1 && (
                               <div className="flex items-center justify-end">
                                 <button
-                                  className={`btn btn-primary ${
+                                  className={`btn btn-primary  font-bold ${
                                     roundTripEnabled ? "" : "disabled"
                                   }`}
                                   onClick={checkRoundTripPayload}

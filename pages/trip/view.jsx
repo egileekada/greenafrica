@@ -410,7 +410,7 @@ const TripView = (props) => {
                     </p>
                   </div>
                   <button
-                    className={`btn btn-primary w-full lg:w-[195px] ${
+                    className={`btn !font-bold btn-primary w-full lg:w-[195px] ${
                       checked ? "" : "opacity-50 pointer-events-none"
                     }`}
                     onClick={handleMultipleSell}

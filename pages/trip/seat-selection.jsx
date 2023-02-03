@@ -181,7 +181,7 @@ const SeatSelection = () => {
             {seats.length < 1 && (
               <button
                 onClick={() => setShowNoSeat(true)}
-                className="btn btn-outline text-center mr-4 w-1/2 md:w-1/6 md:ml-auto"
+                className="btn btn-outline font-bold text-center mr-4 w-1/2 md:w-1/6 md:ml-auto"
               >
                 Skip
               </button>
@@ -189,7 +189,7 @@ const SeatSelection = () => {
 
             {seats.length > 0 && (
               <button
-                className="btn btn-primary w-1/2 md:w-1/6 md:ml-auto"
+                className="btn btn-primary w-1/2  font-bold  md:w-1/6 md:ml-auto"
                 onClick={initAssignSeats}
                 disabled={isLoading}
               >

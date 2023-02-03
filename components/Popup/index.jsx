@@ -6,6 +6,7 @@ const Popup = ({
   children,
   display,
   closeModal,
+  flight,
   canClose = true,
   top = false,
   show,
@@ -23,18 +24,22 @@ const Popup = ({
         }}
       >
         {!show && ( 
-          <span
-            role="button"
-            className="ga__popup__close close"
-            onClick={closeModal}
-          >
-            <span className="modal--close--icon">
-              <CloseIcon />
-            </span>
-          </span>
+          <>
+            {!flight  && ( 
+              <span
+                role="button"
+                className="ga__popup__close close"
+                onClick={closeModal}
+              >
+                <span className=" ">
+                  <CloseIcon />
+                </span>
+              </span>
+            )}
+          </>
         )}
         <section
-          className={`ga__popup__main overflow-x-hidden pt-12 overflow-y-scroll min-h-[600px] scrollable ${activeClass}`}
+          className={`ga__popup__main overflow-x-hidden bg-opacity-[0.3] lg:px-20 overflow-y-scroll min-h-[600px] scrollable ${activeClass}`}
         >
           {children}
         </section>

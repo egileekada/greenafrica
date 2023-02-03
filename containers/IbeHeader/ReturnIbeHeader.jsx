@@ -254,7 +254,7 @@ const ReturnIbeHeader = () => {
 
             <div className=" lg:w-fit " > 
               <button
-                className={`pr-4 lg:pl-0 pl-1 sm:pr-0 hover:bg-gray-400 outline-none lg:border rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                className={`pr-4 lg:pl-0 pl-1 sm:pr-0 hover:bg-gray-400 outline-none lg:border rounded-full border-[#261F5E] flex h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
                 onClick={onNext}
               >
                 <CaretRight />

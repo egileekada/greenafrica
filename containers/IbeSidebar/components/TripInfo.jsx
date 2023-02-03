@@ -4,7 +4,7 @@ import { useState } from "react";
 import CheckIcon from "assets/svgs/done.svg";
 import OneIcon from "assets/svgs/one.svg";
 import CostIcon from "assets/svgs/cost.svg";
-import FlightIcon from "assets/svgs/plane-oultine.svg";
+import FlightIcon from "assets/svgs/aero-2.svg"; 
 import CaretLeft from "assets/svgs/sidebar/caretleft.svg";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
@@ -21,7 +21,7 @@ const TripInfo = () => {
           <figure>
             <FlightIcon />
           </figure>
-          <p>No flight yet</p>
+          <p className="text-[#26205E] text-[14px] font-medium mt-[2px] " >No flight yet</p>
         </div>
       </div>
     );
@@ -59,7 +59,7 @@ const TripInfo = () => {
               <figure className="mr-2">
                 <FlightIcon />
               </figure>
-              <h6>Flight :</h6>
+              <p className="text-[#26205E] text-[13px] font-medium  " >Flight :</p>
             </div>
             <div>
               <h6>
@@ -75,7 +75,7 @@ const TripInfo = () => {
               <figure className="mr-2">
                 <CostIcon />
               </figure>
-              <h6>Flight Cost :</h6>
+              <p className="text-[#26205E] text-[13px] font-medium " >Flight Cost :</p>
             </div>
             <div>
               <h6>
@@ -91,7 +91,7 @@ const TripInfo = () => {
 
   return (
     <section className="ibe__sidebar__item mb-10">
-      <h1 className="mb-4">PLAN YOUR TRIP</h1>
+      <p className="mb-4 font-semibold text-sm text-[#26205E] ">PLAN YOUR TRIP</p>
 
       <button
         className="ibe-accordion-header"
@@ -106,7 +106,7 @@ const TripInfo = () => {
             )}
           </figure>
           <div className="flex flex-col">
-            <h4>Flight Details</h4>
+            <p className=" text-[15px] font-bold text-white " >Flight Details</p>
           </div>
           <figure
             className={`ml-auto transform ${showContent ? "rotate-90" : ""}`}

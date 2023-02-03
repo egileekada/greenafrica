@@ -213,11 +213,9 @@ const IbeTripPopup = ({
       }
     }
   }, [segment]);
-
-  console.log(selected);
-
+ 
   const gSvrBtn = (
-    <div className="benefits__popup__row__item cta-row">
+    <div className="benefits__popup__row__item  cta-row">
       <button
         onClick={handleSell.bind(this, "savr")}
         className={`btn ${

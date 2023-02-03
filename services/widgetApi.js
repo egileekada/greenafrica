@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import axios from "axios";
 
 // Define a service using a base URL and expected endpoints
 export const widgetApi = createApi({
@@ -53,7 +54,14 @@ export const widgetApi = createApi({
       }),
     }),
   }),
-});
+}); 
+ 
+export const getLowFare = async (from = null, to = null) => {
+  const { data } = await axios.get(
+    `https://gacms.klluster.com/api/flight/availability?from=${from}&to=${to}`
+  );
+  return data;
+};
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
@@ -71,5 +79,5 @@ export const {
   useInitiatePaymentMutation,
   useSendBoardingPassMutation,
   useVerifyPaymentQuery,
-  useGetPaymentConfigsQuery
+  useGetPaymentConfigsQuery, 
 } = widgetApi;

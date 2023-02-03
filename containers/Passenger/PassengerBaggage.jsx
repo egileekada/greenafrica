@@ -87,14 +87,16 @@ const PassengerBaggage = ({
     return `${name} (${code})`;
   };
 
+  console.log(selectedSessionJourney.length);
+
   return (
     <Fragment>
       <section className="flex flex-col">
-        <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-4">
+        {/* <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs mb-4">
            EXTRA BAGGAGE <span className="italic">(Do you require any extra checked in baggage allowance. Its cheaper online than at the airport)</span>
-        </h2>
+        </h2> */}
 
-        <div className="flex h-16 border-b mb-6">
+        {/* <div className="flex h-16 border-b mb-6">
           {selectedSessionJourney?.length > 0 &&
             selectedSessionJourney.map((_journey) => {
               const tabID = `${_journey?.departureStation
@@ -131,7 +133,7 @@ const PassengerBaggage = ({
                 </button>
               );
             })}
-        </div>
+        </div> */}
 
         {/* Checkin Info*/}
         {/* <section className="checkin__info my-3">
@@ -142,44 +144,71 @@ const PassengerBaggage = ({
         </section> */}
         {/* Checkin Info*/}
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
+        <section className=" w-full grid grid-cols-1 ">
           {schedueIndex === 0
             ? activeSSRS.length > 0 &&
               activeSSRS.map((_list) => {
                 return _list?.AvailablePaxSSRList.filter((_SSR) => {
                   return ALLOWED__SSRS.includes(_SSR?.SSRCode);
-                }).map((_SSRITEM) => {
+                }).map((_SSRITEM, index) => {
+
                   return (
-                    <BaggageCard
-                      passenger={passenger}
-                      selectedSSRs={selectedSSRs}
-                      setSSRs={setSSRs}
-                      SSRItem={_SSRITEM}
-                      selectedReturnSSRs={selectedReturnSSRs}
-                      setReturnSSRs={setReturnSSRs}
-                      schedueIndex={schedueIndex}
-                    />
+                    <div className=" w-full flex flex-col " >
+                      {index === 0 && ( 
+                        <div className=" w-full px-5 flex justify-between items-center pb-[17px] border-b border-[#261F5E1A] pt-[25px] " >
+                          <p className=" font-bold text-[#261F5E] " >Departure </p>
+                          <div className=" font-bold text-xs text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md " >
+                            {selectedSessionJourney[0].departureStation+" - "+selectedSessionJourney[0].arrivalStation}
+                          </div>
+                        </div>
+                      )}
+                      <BaggageCard
+                        passenger={passenger}
+                        selectedSSRs={selectedSSRs}
+                        setSSRs={setSSRs}
+                        SSRItem={_SSRITEM}
+                        selectedReturnSSRs={selectedReturnSSRs}
+                        setReturnSSRs={setReturnSSRs}
+                        schedueIndex={schedueIndex}
+                      />
+                    </div>
                   );
                 });
               })
-            : activeSSRS.length > 0 &&
-              activeSSRS.map((_list) => {
-                return _list?.AvailablePaxSSRList.filter((_SSR) => {
-                  return ALLOWED__SSRS.includes(_SSR?.SSRCode);
-                }).map((_SSRITEM) => {
-                  return (
-                    <ReturnBaggageCard
-                      passenger={passenger}
-                      selectedSSRs={selectedSSRs}
-                      setSSRs={setSSRs}
-                      SSRItem={_SSRITEM}
-                      selectedReturnSSRs={selectedReturnSSRs}
-                      setReturnSSRs={setReturnSSRs}
-                      schedueIndex={schedueIndex}
-                    />
-                  );
-                });
-              })}
+            : activeSSRS.length > 0 && (
+              <></>
+            )}
+            {selectedSessionJourney.length > 1 &&
+              <>
+                {activeSSRS.map((_list) => {
+                  return _list?.AvailablePaxSSRList.filter((_SSR) => {
+                    return ALLOWED__SSRS.includes(_SSR?.SSRCode);
+                  }).map((_SSRITEM, index) => {
+                    return (
+                      <div className=" w-full flex flex-col " >
+                        {index === 0 && ( 
+                          <div className=" w-full px-5 flex justify-between items-center pb-[17px] border-b border-[#261F5E1A] pt-[25px] " >
+                            <p className=" font-bold text-[#261F5E] " >Return </p>
+                            <div className=" font-bold text-xs text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md " >
+                              {selectedSessionJourney[1].departureStation+" - "+selectedSessionJourney[1].arrivalStation}
+                            </div>
+                          </div>
+                        )}
+                        <ReturnBaggageCard
+                          passenger={passenger}
+                          selectedSSRs={selectedSSRs}
+                          setSSRs={setSSRs}
+                          SSRItem={_SSRITEM}
+                          selectedReturnSSRs={selectedReturnSSRs}
+                          setReturnSSRs={setReturnSSRs}
+                          schedueIndex={schedueIndex}
+                        />
+                      </div>
+                    );
+                  });
+                })}
+              </>
+            }
         </section>
         {/* <div className="flex items-center primary-checkbox mb-4">
           <Checkbox onChange={onChange}>

@@ -13,16 +13,10 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
   return (
     <section className="ibe__flight__trips ">
       <h2 className="text-primary-main font-extrabold text-base mb-8 capitalize">
-        Departure
-        {/* {parseInt(schedueIndex) === 0
-          ? `Departure On ${format(
-              new Date(flightParams?.beginDate),
-              "EEEE, LLL dd yyyy"
-            )}`
-          : `Return On ${format(
-              new Date(flightParams?.returnDate),
-              "EEEE, LLL dd yyyy"
-            )}`} */}
+        
+        {parseInt(schedueIndex) === 0
+          ? `DEPARTURE  `
+          : ""}
       </h2>
 
       <Fragment>

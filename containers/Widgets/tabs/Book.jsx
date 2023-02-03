@@ -3,13 +3,16 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select, { components } from "react-select";
 import { format, add } from "date-fns";
+import millify from "millify";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
+import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import CustomDatePicker from "../../../components/CustomDatePicker"
 import "react-calendar/dist/Calendar.css";
 import "react-date-picker/dist/DatePicker.css";
 import { lowfare } from "../../../utils/calendar";
-import { useGetDestinationQuery } from "../../../services/widgetApi";
+import { useGetDestinationQuery, getLowFare } from "../../../services/widgetApi";
+// import { getLowFare } from "../../../services/getLowFare";
 import { hideWidget } from "redux/reducers/general";
 const validationSchema = Yup.object().shape({
   destination: Yup.object().required("Required"),
@@ -20,7 +23,7 @@ const BookingTab = ({ type, promocode }) => {
   const ibeQuery = new URLSearchParams(window.location.search);
   const flightOrigin = ibeQuery.get("origin");
   const flightDestination = ibeQuery.get("destination");
-  const isRoundTrip = parseInt(ibeQuery.get("round")) === 1 ? true : false;
+  const isRoundTrip = parseInt(ibeQuery.get("round")) === 1 ? true : false; 
 
   const flightRequest = {
     departureStation: ibeQuery.get("origin"),
@@ -38,6 +41,7 @@ const BookingTab = ({ type, promocode }) => {
   const { data, error, isLoading } = useGetDestinationQuery();
   const [arrivals, setArrivals] = useState([]);
   const [passengers, setPassengers] = useState(0);
+  const [flightData, setFlightData] = useState([]);
   const [infant, setInfant] = useState(flightRequest.INF);
   const [adult, setAdult] = useState(flightRequest.ADT);
   const [child, setChild] = useState(flightRequest.CHD);
@@ -90,20 +94,22 @@ const BookingTab = ({ type, promocode }) => {
       backgroundColor: isSelected && "#EAEBF3",
       color: isSelected && "#000",
     }),
-  };
+  }; 
 
   function hasContent({ date }) {
+    console.log(flightData);
+    const lowfare = flightData?.data?.values;
     for (const key in lowfare) {
-      console.log(key);
-      if (key === format(date, "yyyy-MM-dd")) {
+      if (lowfare[key].DepartureDate === format(date, "yyyy-MM-dd")) {
         return (
-          <p className="text-[10px] font-light leading-tight my-1 text-[#9E9BBF]">
-            ₦{Math.round(lowfare[key])}K
+          <p className="text-[10px] font-meduim leading-tight my-1 text-[#545175]">
+            {lowfare[key]?.currency}
+            {millify(Math.round(lowfare[key].amount))}
           </p>
         );
       }
     }
-    return <p></p>;
+    return <p className=" h-[10px] " ></p>;
   }
 
   const onClick = () => {
@@ -230,16 +236,6 @@ const BookingTab = ({ type, promocode }) => {
     value.current.focus();
   }; 
 
-  const setDepartureDateFormik = (value) => { 
-    formik.setFieldValue("departure", value); 
-    // setDepartureDate(value);
-  }; 
-
-  const setReturnDateFormik = (value) => {
-    formik.setFieldValue("return", value);
-    // setReturningDate(value);
-  }; 
-
   useEffect(() => {
     if (flightOrigin || flightDestination) {
       formik.setFieldValue(
@@ -253,8 +249,41 @@ const BookingTab = ({ type, promocode }) => {
     }
   }, [isLoading]);
 
-  // console.log(format(new Date(flightRequest.departure), "yyyy-MM-dd"));
-  // console.log(formik.values.departure);
+
+
+  const setDepartureDateFormik = (value) => { 
+
+    var date = new Date(value);
+    date.setDate(date.getDate() + 7);
+
+    formik.setFieldValue("departure", value); 
+    formik.setFieldValue("return", date);
+    // setDepartureDate(value);
+  }; 
+
+  const setReturnDateFormik = (value) => {
+    formik.setFieldValue("return", value);
+    // setReturningDate(value);
+  }; 
+
+
+  // const { data: lowfaredata } = useQuery(
+  //   ["lowfare", [formik.values.origin, formik.values.destination]],
+  //   () => getLowFare(formik.values.origin, formik.values.destination)
+  // );
+
+  React.useEffect(() => {  
+    (async () => {
+        try { 
+        const response = await getLowFare(formik.values.origin.value, formik.values.destination.value); 
+        // console.log(response); 
+        setFlightData(response)
+        } catch (err) {
+          console.error("Error occured");
+        } 
+    })(); 
+  }, [formik.values.origin, formik.values.destination]);
+  
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
@@ -354,7 +383,7 @@ const BookingTab = ({ type, promocode }) => {
           >
 
             {/* <CustomDatePicker value={setDepartureDateFormik} title="DEPARTING" /> */}
-            <div className="booking__wrapper flex items-end">
+            <div className="booking__wrapper items-center w-full lg:w-[180px] justify-center h-[55px] hover:border-primary-main flex">
               <span className="mr-2 ml-1 pb-1 hidden md:block">
                 <svg
                   width="26"
@@ -383,7 +412,7 @@ const BookingTab = ({ type, promocode }) => {
                   format={"d/M/y"}
                   name="departure"
                   // onChange={(value) => console.log(value)}
-                  onChange={(value) => formik.setFieldValue("departure", value)}
+                  onChange={(value) => setDepartureDateFormik(value)}
                   value={formik.values.departure}
                   onKeyDown={(e) => e.preventDefault()}
                   minDate={new Date()}

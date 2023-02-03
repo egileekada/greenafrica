@@ -119,7 +119,7 @@ const SeatInfo = () => {
           )}
 
           <div className="flex flex-col">
-            <h4>Seat Selection</h4>
+            <p className="text-[15px] font-bold text-white" >Seat Selection</p>
           </div>
           <figure
             className={`ml-auto transform ${showContent ? "rotate-90" : ""}`}
@@ -150,7 +150,7 @@ const SeatInfo = () => {
                 <figure>
                   <FlightIcon />
                 </figure>
-                <p>No Seat Information yet</p>
+                <p className=" text-[#26205E] text-[14px] font-medium mt-[2px] " >No Seat Information yet</p>
               </div>
             </div>
           )}

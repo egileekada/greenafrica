@@ -382,6 +382,7 @@ const PassengerForm = () => {
     console.log(" passengers", passengers);
     console.log(" _formIsInValid ", _formIsInValid);
 
+
     if (_formIsInValid) {
       notification.error({
         message: "Error",
@@ -434,12 +435,15 @@ const PassengerForm = () => {
   });
 
   const onCopyChange = (e) => {
+    console.log(formik.values);
     if (e.target.checked) {
       formik.setFieldValue("c_title", passengers[0].title);
       formik.setFieldValue("c_firstName", passengers[0].firstName);
       formik.setFieldValue("c_lastName", passengers[0].lastName);
     }
   };
+
+  console.log(formik.values);
 
   const checkPassInfo = (obj) => {
     return (
@@ -506,7 +510,7 @@ const PassengerForm = () => {
                     })}
                   {/* Contact Details */}
                   <div className="passenger__form__box">
-                    <h3 className="text-[#8F8CA4] font-header mb-6">
+                    <h3 className="text-[#8F8CA4] !font-medium font-header mb-6">
                       CONTACT INFORMATION
                     </h3>
 
@@ -518,7 +522,7 @@ const PassengerForm = () => {
                       }`}
                     >
                       <Checkbox onChange={onCopyChange}>
-                        <label className="check-label">
+                        <label className="check-label !font-medium">
                           Copy Passenger Information
                         </label>
                       </Checkbox>
@@ -594,8 +598,9 @@ const PassengerForm = () => {
                       <div className="flex-grow mr-0 md:mr-4">
                         <div className="phone-group">
                           <label>PHONE NUMBER</label>
-                          <div className="flex">
+                          <div className="flex !font-medium">
                             <IntlTelInput
+                              className="!font-medium"
                               onPhoneNumberBlur={() => {
                                 setTouched(true);
                                 if (formik.values.c_phone.length < 1) {
@@ -641,7 +646,7 @@ const PassengerForm = () => {
                                 }
                               }}
                               preferredCountries={["ng", "bn"]}
-                              inputClassName="w-full"
+                              inputClassName="w-full !font-medium"
                               value={formik.values.c_phone}
                             />
                           </div>
@@ -673,8 +678,8 @@ const PassengerForm = () => {
                         ) : null}
                       </div>
                       <div className="flex-grow md:mr-4">
-                        <div className="form-group">
-                          <label>CONFIRM EMAIL ADDRESS</label>
+                        <div className="form-group ">
+                          <label >CONFIRM EMAIL ADDRESS</label>
                           <input
                             type="email"
                             placeholder="Enter your email"
@@ -703,7 +708,7 @@ const PassengerForm = () => {
                     </button> */}
                     <button
                       type="submit"
-                      className="btn btn-primary cta basis-full md:basis-auto"
+                      className="btn btn-primary font-bold cta basis-full md:basis-auto"
                     >
                       {updatingPassengerInfo || updatingContactInfo
                         ? "Saving....."
@@ -745,3 +750,24 @@ const PassengerDetailsSchema = Yup.object().shape({
       if (val) return val.toString().length >= 10;
     }),
 });
+
+// c_code
+// : 
+// "+234"
+// c_email
+// : 
+// "egileoniso.ekada@gmail.com"
+// c_firstName
+// : 
+// "Egile"
+// c_lastName
+// : 
+// "Ekada"
+// c_phone
+// : 
+// "7030837745"
+// c_title
+// : 
+// "Mr"
+// cc_email
+// : 

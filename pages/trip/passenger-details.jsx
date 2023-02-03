@@ -162,7 +162,7 @@ const PassengerDetails = () => {
       <section className="w-full">
         <section className="ga__section">
           <div className="ga__section__main">
-            <h2 className="text-primary-main font-extrabold text-2xl mb-8">
+            <h2 className="text-black font-extrabold text-2xl mb-8">
               Additional Services{" "}
             </h2>
 
@@ -197,16 +197,16 @@ const PassengerDetails = () => {
                 </section>
 
                 {sessionPassengers && sessionPassengers.length > 0 && (
-                  <section className="flex items-center flex-wrap md:flex-nowrap">
+                  <section className="flex items-center lg:px-0 px-6 flex-wrap md:flex-nowrap">
                     <button
-                      className="btn btn-outline mr-0 md:mr-4 mb-3 md:mb-0 basis-full md:basis-auto mobile-order"
+                      className="btn btn-outline font-bold mr-0 md:mr-4 mb-3 md:mb-0 basis-full md:basis-auto mobile-order"
                       onClick={() => router.back()}
                     >
                       Go Back
                     </button>
                     <button
                       onClick={checkSSRContent}
-                      className="btn btn-primary basis-full md:basis-auto"
+                      className="btn btn-primary font-bold basis-full md:basis-auto"
                     >
                       {sellSSRLoading ? "Saving..." : "Continue"}
                     </button>
@@ -243,13 +243,13 @@ const PassengerDetails = () => {
             <div className="flex flex-wrap lg:flex-nowrap items-center justify-between w-full">
               <button
                 onClick={() => setShow(false)}
-                className="btn btn-primary basis-full lg:basis-[48%] lg:mr-2 mb-3 lg:mb-0"
+                className="btn btn-primary font-bold basis-full lg:basis-[48%] lg:mr-2 mb-3 lg:mb-0"
               >
                 Select Service
               </button>
               <button
                 onClick={proceedToSeatSelectionWithoutSSR}
-                className="btn btn-outline basis-full lg:basis-[48%]"
+                className="btn btn-outline font-bold basis-full lg:basis-[48%]"
               >
                 I don’t need it
               </button>

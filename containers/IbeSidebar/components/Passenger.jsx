@@ -164,7 +164,7 @@ const PassengerInfo = () => {
           )}
 
           <div className="flex flex-col">
-            <h4>Passenger Details</h4>
+            <p className="text-[15px] font-bold text-white  " >Passenger Details</p>
           </div>
           <figure
             className={`ml-auto transform ${showContent ? "rotate-90" : ""}`}
@@ -227,9 +227,9 @@ const PassengerInfo = () => {
               }
             )}
 
-          <h2 className="text-primary-main font-bold text-sm -mb-3">
+          <p className="text-primary-main font-bold mt-3 text-[15px] -mb-3">
             PASSENGERS
-          </h2>
+          </p>
           {sessionStateResponse &&
           sessionStateResponse?.BookingData.Passengers.length > 0 &&
           sessionStateResponse?.BookingData.Passengers[0].Names.length > 0 ? (
@@ -249,7 +249,7 @@ const PassengerInfo = () => {
                 <figure>
                   <FlightIcon />
                 </figure>
-                <p>No passengers details yet</p>
+                <p className=" text-[#26205E] text-[14px] font-medium mt-[2px]  " >No passengers details yet</p>
               </div>
             </div>
           )}

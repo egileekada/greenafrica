@@ -42,7 +42,7 @@ const PaymentInfo = ({ isRoundTrip }) => {
             <FourIcon />
           </figure>
           <div className="flex flex-col">
-            <h4>Payment</h4>
+            <p className="text-[15px] font-bold text-white" >Payment</p>
           </div>
           <figure
             className={`ml-auto transform ${showContent ? "rotate-90" : ""}`}
@@ -655,7 +655,7 @@ const PaymentInfo = ({ isRoundTrip }) => {
             ) : (
               <div className="ibe__sidebar__box">
                 <div className="ibe__sidebar__empty h-[187px]">
-                  <p>Select a flight to see pricing</p>
+                  <p className="text-[#26205E] text-[14px] font-medium mt-[2px] ]" >Select a flight to see pricing</p>
                 </div>
               </div>
             )}
