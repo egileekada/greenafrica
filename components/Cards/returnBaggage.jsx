@@ -120,21 +120,21 @@ const ReturnBaggageCard = ({
 
   return (
     <Fragment>
-      <section className=" flex items-center justify-center border-b border-[#261F5E1A] py-5 ">
+      <section className=" flex items-center justify-center border-b border-[#261F5E1A] py-2 ">
         {/* <figure>
           <BaggageIcon />
         </figure> */}
-        <p className="font-body text-primary-main text-sm font-medium mr-3 ">{KG}kg Checked</p>
+        <p className="font-body text-primary-main flex justify-end w-28 text-sm font-medium mr-3 ">{KG}kg Checked</p>
         <Counter
           value={value}
           onValueChange={onValueChange}
           onValueDecrement={onValueDecrement}
           onValueIncrement={onValueIncrement}
-        />
-        <p className="text-primary-main md:block hidden font-bold ml-3">
+        /> 
+        <p className="text-primary-main  hidden md:flex justify-start w-28 font-bold ml-3">
           {" "}
           ₦{totalFare.toLocaleString()}
-        </p>
+        </p> 
       </section>
     </Fragment>
   );

@@ -34,6 +34,7 @@ import PageFares from "./components/PageFares";
 import LogoIcon from "assets/svgs/logo.svg";
 import Spinner from "components/Spinner";
 
+
 const ManageBookings = (props) => {
   const router = useRouter();
   const [statePNR, setStatePnr] = useState("");
@@ -90,6 +91,16 @@ const ManageBookings = (props) => {
       }
     }
   }, [router]);
+  const [isCopied, setCopied] = useState("")
+
+  const copyHandler =(item)=> {
+    navigator.clipboard.writeText(item) 
+    setCopied("Copied!")
+    const timer = setTimeout(() => { 
+      setCopied("")
+    }, 1000);
+    // clearTimeout(timer); 
+  }
 
   useEffect(() => {
     if (
@@ -135,11 +146,41 @@ const ManageBookings = (props) => {
 
   const TripHeader = () => {
     return (
-      <section className="ibe__flight__info__destination">
-        <p>Booking Code: {bookingResponse?.Booking?.RecordLocator}</p>
-        <figure className="flightCircle">
-          <FlightIcon />
-        </figure>
+      <section className="bg-[#26205e] pt-10 lg:pt-5 pb-10 text-white justify-between flex lg:items-center relative px-4 ">
+        <div className=" flex items-center " >
+          <figure className="flightCircle">
+            <FlightIcon />
+          </figure>
+          <div className=" ml-3 " >
+            <p className=" font-bold text-2xl  " >Booking Confirmed</p>
+            <p className=" font-medium lg:block hidden text-[14px] " >Kindly confirm  that the information below is correct before checking in</p> 
+
+            <div className=" lg:hidden  " >
+              <p className=" font-bold " >Booking Code: {bookingResponse?.Booking?.RecordLocator}</p> 
+              <button onClick={()=> copyHandler(bookingResponse?.Booking?.RecordLocator)} className=" flex items-center mt-1 " >
+                <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.9922 8.29285H21.0208V22.1786H10.9922V8.29285Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.9958 19.0929H6.36719V5.20715H16.3958V7.90715" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p className=" text-[14px] ml-2 " >{isCopied? isCopied: "Copy Code"}</p>
+              </button>
+            </div>
+          </div>
+        </div>
+        <svg className=" lg:hidden mt-5 " width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path opacity="0.4" d="M5.29688 4.446C5.29688 1.995 7.35667 0 9.88831 0H14.9206C17.4461 0 19.5007 1.99 19.5007 4.436V15.552C19.5007 18.004 17.4419 20 14.9103 20H9.87798C7.35254 20 5.29688 18.009 5.29688 15.562V14.622V4.446Z" fill="white"/>
+          <path d="M14.0374 9.45382L11.0695 6.54482C10.7627 6.24482 10.2691 6.24482 9.96338 6.54682C9.65867 6.84882 9.65968 7.33582 9.96541 7.63582L11.5905 9.22882H1.2821C0.85042 9.22882 0.5 9.57382 0.5 9.99982C0.5 10.4248 0.85042 10.7688 1.2821 10.7688H11.5905L9.96541 12.3628C9.65968 12.6628 9.65867 13.1498 9.96338 13.4518C10.1168 13.6028 10.3168 13.6788 10.518 13.6788C10.717 13.6788 10.9171 13.6028 11.0695 13.4538L14.0374 10.5448C14.1847 10.3998 14.268 10.2038 14.268 9.99982C14.268 9.79482 14.1847 9.59882 14.0374 9.45382Z" fill="white"/>
+        </svg>
+        <div className=" hidden lg:flex flex-col items-end " >
+          <p className=" font-bold " >Booking Code: {bookingResponse?.Booking?.RecordLocator}</p> 
+          <button onClick={()=> copyHandler(bookingResponse?.Booking?.RecordLocator)} className=" flex items-center mt-1 " >
+            <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.9922 8.29285H21.0208V22.1786H10.9922V8.29285Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10.9958 19.0929H6.36719V5.20715H16.3958V7.90715" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p className=" text-[14px] ml-2 " >{isCopied? isCopied: "Copy Code"}</p>
+          </button>
+        </div>
       </section>
     );
   };
@@ -204,7 +245,7 @@ const ManageBookings = (props) => {
         // className={`flex flex-wrap md:flex-nowrap mx-6`}
       >
         <button
-          className="btn btn-primary font-title block h-full mb-3 md:mb-0 md:mr-3"
+          className="btn btn-primary font-title font-semibold flex justify-center items-center !text-white h-full mb-3 md:mb-0 md:mr-3"
           onClick={() =>
             atcb_action({
               name: "name",
@@ -221,10 +262,13 @@ const ManageBookings = (props) => {
             })
           }
         >
+          <svg className=" mr-2 " width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 4H18V3C18 2.4 17.6 2 17 2C16.4 2 16 2.4 16 3V4H8V3C8 2.4 7.6 2 7 2C6.4 2 6 2.4 6 3V4H5C3.3 4 2 5.3 2 7V8H22V7C22 5.3 20.7 4 19 4ZM2 19C2 20.7 3.3 22 5 22H19C20.7 22 22 20.7 22 19V10H2V19ZM17 12C17.6 12 18 12.4 18 13C18 13.6 17.6 14 17 14C16.4 14 16 13.6 16 13C16 12.4 16.4 12 17 12ZM17 16C17.6 16 18 16.4 18 17C18 17.6 17.6 18 17 18C16.4 18 16 17.6 16 17C16 16.4 16.4 16 17 16ZM12 12C12.6 12 13 12.4 13 13C13 13.6 12.6 14 12 14C11.4 14 11 13.6 11 13C11 12.4 11.4 12 12 12ZM12 16C12.6 16 13 16.4 13 17C13 17.6 12.6 18 12 18C11.4 18 11 17.6 11 17C11 16.4 11.4 16 12 16ZM7 12C7.6 12 8 12.4 8 13C8 13.6 7.6 14 7 14C6.4 14 6 13.6 6 13C6 12.4 6.4 12 7 12ZM7 16C7.6 16 8 16.4 8 17C8 17.6 7.6 18 7 18C6.4 18 6 17.6 6 17C6 16.4 6.4 16 7 16Z" fill="white"/>
+          </svg>
           Add to Calendar
         </button>
         <button
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+          className={`basis-full md:basis-auto btn btn-outline font-semibold flex justify-center items-center mb-3 md:mb-0 md:mr-3 ${
             checkedIn ||
             parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0
               ? "pointer-events-none opacity-50 cursor-not-allowed"
@@ -232,25 +276,38 @@ const ManageBookings = (props) => {
           } `}
           onClick={handleItenary}
         >
+          <svg className=" mr-2 fill-current "  width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.0859 0C4.58594 0 0.0859375 4.5 0.0859375 10C0.0859375 15.5 4.58594 20 10.0859 20C15.5859 20 20.0859 15.5 20.0859 10C20.0859 4.5 15.5859 0 10.0859 0ZM12.0859 13.7C11.5859 14 10.9859 13.8 10.6859 13.3L9.18594 10.5C9.08594 10.3 9.08594 10.2 9.08594 10V5C9.08594 4.4 9.48594 4 10.0859 4C10.6859 4 11.0859 4.4 11.0859 5V9.7L12.4859 12.3C12.6859 12.8 12.5859 13.4 12.0859 13.7Z"/>
+          </svg>
           Change Flight
         </button>
         <button
           onClick={handleServices}
           // className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
-          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+          className={`basis-full md:basis-auto btn btn-outline font-semibold flex justify-center items-center mb-3 md:mb-0 md:mr-3 ${
             checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
           }`}
         >
+          <svg className=" mr-2 fill-current "  width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.5187 10.98C17.5587 10.66 17.5887 10.34 17.5887 10C17.5887 9.66 17.5587 9.34 17.5187 9.02L19.6287 7.37C19.8187 7.22 19.8687 6.95 19.7487 6.73L17.7487 3.27C17.6287 3.05 17.3587 2.97 17.1387 3.05L14.6487 4.05C14.1287 3.65 13.5687 3.32 12.9587 3.07L12.5787 0.42C12.5487 0.18 12.3387 0 12.0887 0H8.08871C7.83871 0 7.62871 0.18 7.59871 0.42L7.21871 3.07C6.60871 3.32 6.04871 3.66 5.52871 4.05L3.03871 3.05C2.80871 2.96 2.54871 3.05 2.42871 3.27L0.428707 6.73C0.298707 6.95 0.358707 7.22 0.548707 7.37L2.65871 9.02C2.61871 9.34 2.58871 9.67 2.58871 10C2.58871 10.33 2.61871 10.66 2.65871 10.98L0.548707 12.63C0.358707 12.78 0.308707 13.05 0.428707 13.27L2.42871 16.73C2.54871 16.95 2.81871 17.03 3.03871 16.95L5.52871 15.95C6.04871 16.35 6.60871 16.68 7.21871 16.93L7.59871 19.58C7.62871 19.82 7.83871 20 8.08871 20H12.0887C12.3387 20 12.5487 19.82 12.5787 19.58L12.9587 16.93C13.5687 16.68 14.1287 16.34 14.6487 15.95L17.1387 16.95C17.3687 17.04 17.6287 16.95 17.7487 16.73L19.7487 13.27C19.8687 13.05 19.8187 12.78 19.6287 12.63L17.5187 10.98ZM10.0887 13.5C8.15871 13.5 6.58871 11.93 6.58871 10C6.58871 8.07 8.15871 6.5 10.0887 6.5C12.0187 6.5 13.5887 8.07 13.5887 10C13.5887 11.93 12.0187 13.5 10.0887 13.5Z"/>
+          </svg>
           Manage Services
         </button>
         <Link href="/bookings/seat-selection">
           <a
-            className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 text-center ${
+            className={`basis-full md:basis-auto btn btn-outline font-semibold flex justify-center items-center mb-3 md:mb-0 md:mr-3 text-center ${
               checkedIn
                 ? "pointer-events-none opacity-50 cursor-not-allowed"
                 : ""
             }`}
           >
+            <svg className=" mr-2 fill-current " width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.1807 18.96C13.1807 19.632 12.6527 20.16 11.9807 20.16H9.43669V22.032H9.91669C10.7327 22.032 11.3567 22.656 11.3567 23.472H5.59669C5.59669 22.656 6.22069 22.032 7.03669 22.032H7.51669V20.16H5.64469C5.11669 20.16 4.68469 19.824 4.49269 19.344C1.80469 11.52 1.80469 11.808 1.80469 11.52C1.80469 10.992 2.09269 10.56 2.62069 10.368C3.24469 10.128 3.91669 10.512 4.15669 11.088C6.70069 18.432 6.46069 17.712 6.46069 17.76H11.9807C12.6047 17.76 13.1807 18.336 13.1807 18.96Z" />
+              <path d="M7.80226 7.63201C7.41826 6.62401 6.31426 6.14401 5.30626 6.52801C4.29826 6.91201 3.81826 8.01601 4.20226 9.02401L6.93826 15.84C7.56226 17.376 9.19426 17.04 9.33826 17.04L13.9463 17.088L17.6903 22.848C18.1223 23.52 19.0823 23.712 19.7543 23.232C20.3783 22.752 20.5223 21.888 20.0903 21.216L15.9143 14.88C15.6743 14.496 15.1943 14.208 14.7143 14.208L10.3463 14.16L7.80226 7.63201Z" />
+              <path d="M4.34869 6.096C5.7537 6.096 6.89269 4.95701 6.89269 3.552C6.89269 2.14698 5.7537 1.008 4.34869 1.008C2.94367 1.008 1.80469 2.14698 1.80469 3.552C1.80469 4.95701 2.94367 6.096 4.34869 6.096Z" />
+              <path d="M17.9283 0.47998C15.3843 0.47998 13.3203 2.54398 13.3203 5.08798V8.73598C13.3203 11.28 15.3843 13.344 17.9283 13.344C20.4723 13.344 22.5363 11.28 22.5363 8.73598V5.08798C22.5843 2.59198 20.4723 0.47998 17.9283 0.47998ZM21.6243 8.78398C21.6243 10.8 19.9923 12.432 17.9763 12.432C15.9603 12.432 14.3283 10.8 14.3283 8.78398V5.13598C14.2803 3.11998 15.9123 1.43998 17.9283 1.43998C19.9443 1.43998 21.5763 3.07198 21.5763 5.08798V8.78398H21.6243Z" />
+              <path d="M20.6662 8.78402V5.13602C20.6662 3.64802 19.4182 2.40002 17.9302 2.40002C16.4422 2.40002 15.2422 3.60002 15.2422 5.08802V8.73602C15.2422 10.224 16.4422 11.424 17.9302 11.424C19.4182 11.424 20.6662 10.272 20.6662 8.78402Z" />
+            </svg>
             Seat Management
           </a>
         </Link>
@@ -260,18 +317,47 @@ const ManageBookings = (props) => {
 
   const PaymentContact = () => {
     return (
-      <section className=" mx-6 mt-6 flex justify-between">
-        <div className="basis-[48%]">
-          <div className="trip__summary__item">
-            <h2 className="trip-title mb-2 font-semibold text-primary-main">
+      <section className=" mx-6 mt-6 flex flex-col-reverse justify-between">
+        <div className="w-full mt-8 ">
+          <div className="trip__summary__item relative ">
+            <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
               PAYMENT DETAILS
-            </h2>
-            <div className="flex flex-col">
+            </div>
+            {/* <h2 className="trip-title mb-2 font-semibold text-primary-main">
+              PAYMENT DETAILS
+            </h2> */}
+            <div className="flex flex-col mt-[45px]">
               <section className="flex flex-col">
                 {bookingResponse?.Booking?.Payments?.map((_payment) => {
                   return (
                     <>
-                      <div className="trip__summary__details">
+                    <div className=" grid lg:grid-cols-4 grid-cols-2 gap-4 " >
+                      <div>
+                        <p className=" text-[#5F5996] text-sm font-medium " >Type:</p>
+                        <p className=" text-[#261F5E] mt-1 font-bold ">
+                            {paymentConfigs &&
+                              resolvePaymnet(_payment?.PaymentMethodCode)}</p>
+                      </div>
+                      <div>
+                        <p className=" text-[#5F5996] text-sm font-medium " >Date:</p>
+                        <p className=" text-[#261F5E] mt-1 font-bold "> 
+                          {format(
+                                new Date(_payment?.ApprovalDate),
+                                "d MMMM yyyy"
+                              )}</p>
+                      </div>
+                      <div>
+                        <p className=" text-[#5F5996] text-sm font-medium " >Status:</p>
+                        <p className=" text-[#261F5E] mt-1 font-bold ">
+                          {formatPaymentStatus(_payment?.Status)}</p>
+                      </div>
+                      <div>
+                        <p className=" text-[#5F5996] text-sm font-medium " >Total Fare:</p>
+                        <p className=" text-[#261F5E] mt-1 font-bold ">
+                          ₦{_payment?.PaymentAmount?.toLocaleString("NGN")}</p>
+                      </div>
+                    </div>
+                      {/* <div className="trip__summary__details">
                         <div className="f-1">
                           <h5>Type:</h5>
                         </div>
@@ -281,8 +367,8 @@ const ManageBookings = (props) => {
                               resolvePaymnet(_payment?.PaymentMethodCode)}
                           </h6>
                         </div>
-                      </div>
-                      <div className="trip__summary__details">
+                      </div> */}
+                      {/* <div className="trip__summary__details">
                         <div className="f-1">
                           <h5>Date:</h5>
                         </div>
@@ -294,17 +380,17 @@ const ManageBookings = (props) => {
                             )}
                           </h6>
                         </div>
-                      </div>
+                      </div> */}
                       {/* 28 October 2022 */}
-                      <div className="trip__summary__details">
+                      {/* <div className="trip__summary__details">
                         <div className="f-1">
                           <h5>Status:</h5>
                         </div>
                         <div className="f-1">
                           <h6>{formatPaymentStatus(_payment?.Status)}</h6>
                         </div>
-                      </div>
-                      <div className="trip__summary__details">
+                      </div> */}
+                      {/* <div className="trip__summary__details">
                         <div className="f-1">
                           <h5>Total Fare:</h5>
                         </div>
@@ -313,7 +399,7 @@ const ManageBookings = (props) => {
                             ₦{_payment?.PaymentAmount?.toLocaleString("NGN")}
                           </h6>
                         </div>
-                      </div>
+                      </div> */}
                     </>
                   );
                 })}
@@ -322,40 +408,79 @@ const ManageBookings = (props) => {
           </div>
         </div>
 
-        <div className=" basis-[48%]">
-          <div className="trip__summary__item">
-            <h2 className="trip-title mb-2 font-semibold text-primary-main">
+        <div className=" w-full mt-8 ">
+          <div className="trip__summary__item relative "> 
+            <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
+              Contact Details
+            </div>
+            {/* <h2 className="trip-title mb-2 font-semibold text-primary-main">
               CONTACT DETAILS
-            </h2>
-            <div className="flex flex-col">
+            </h2> */}
+            <div className="flex flex-col mt-[45px]">
               <section className="flex flex-col ">
                 {bookingResponse?.Booking?.BookingContacts?.map((_contact) => {
                   return (
                     <>
-                      <div className="trip__summary__details">
+                      <div className=" grid lg:grid-cols-3 grid-cols-1 gap-4 " >
+                        <div className=" flex items-center " >
+                          <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
+                            <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M8.96232 14.3113C4.29723 14.3113 0.3125 15.0469 0.3125 17.9889C0.3125 20.932 4.27236 21.6935 8.96232 21.6935C13.6274 21.6935 17.6121 20.9591 17.6121 18.0159C17.6121 15.0728 13.6534 14.3113 8.96232 14.3113" fill="#26205E"/>
+                              <path opacity="0.4" d="M8.96619 11.5089C12.144 11.5089 14.6902 8.96167 14.6902 5.78491C14.6902 2.60816 12.144 0.0609131 8.96619 0.0609131C5.78943 0.0609131 3.24219 2.60816 3.24219 5.78491C3.24219 8.96167 5.78943 11.5089 8.96619 11.5089" fill="#26205E"/>
+                            </svg>
+                          </div>
+                          <div className=" ml-2 " >
+                            <p className=" text-[#5F5B82] text-sm font-medium " >Full Name</p>
+                            <p className=" text-[#26205E] font-bold mt-1 " >{`${_contact?.Names[0]?.FirstName} ${_contact?.Names[0]?.LastName}`}</p>
+                          </div>
+                        </div>
+                        <div className=" flex items-center " >
+                          <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
+                            <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M18.9531 0H2.95312C1.84812 0 0.963125 0.895 0.963125 2L0.953125 14C0.953125 15.105 1.84812 16 2.95312 16H18.9531C20.0581 16 20.9531 15.105 20.9531 14V2C20.9531 0.895 20.0581 0 18.9531 0ZM18.9531 4L10.9531 9L2.95312 4V2L10.9531 7L18.9531 2V4Z" fill="#26205E"/>
+                            </svg>
+                          </div>
+                          <div className=" ml-2 " >
+                            <p className=" text-[#5F5B82] text-sm font-medium " >Email Address</p>
+                            <p className=" text-[#26205E] font-bold mt-1 " >{_contact?.EmailAddress}</p>
+                          </div>
+                        </div>
+                        <div className=" flex items-center " >
+                          <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M11.3788 11.4748C9.47919 13.3732 7.27839 15.19 6.40839 14.32C5.16399 13.0756 4.39599 11.9908 1.65039 14.1976C-1.09401 16.4032 1.01439 17.8744 2.22039 19.0792C3.61239 20.4712 8.80119 19.1536 13.93 14.026C19.0576 8.89719 20.3716 3.70839 18.9784 2.31639C17.7724 1.10919 16.3084 -0.99801 14.1028 1.74639C11.896 4.49079 12.9796 5.25879 14.2264 6.50439C15.0928 7.37439 13.2772 9.57519 11.3788 11.4748Z" fill="#26205E"/>
+                            </svg>
+                          </div>
+                          <div className=" ml-2 " >
+                            <p className=" text-[#5F5B82] text-sm font-medium " >Phone Number</p>
+                            <p className=" text-[#26205E] font-bold mt-1 " >{_contact?.HomePhone}</p>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div className="trip__summary__details">
                         <div className="f-1">
                           <h5>Name:</h5>
                         </div>
                         <div className="f-1">
                           <h6>{`${_contact?.Names[0]?.FirstName} ${_contact?.Names[0]?.LastName}`}</h6>
                         </div>
-                      </div>
-                      <div className="trip__summary__details">
+                      </div> */}
+                      {/* <div className="trip__summary__details">
                         <div className="f-1">
                           <h5>Email:</h5>
                         </div>
                         <div className="f-1">
                           <h6>{_contact?.EmailAddress}</h6>
                         </div>
-                      </div>
-                      <div className="trip__summary__details">
+                      </div> */}
+                      {/* <div className="trip__summary__details">
                         <div className="f-1">
                           <h5>Phone Number:</h5>
                         </div>
                         <div className="f-1">
                           <h6>{_contact?.HomePhone}</h6>
                         </div>
-                      </div>
+                      </div> */}
                     </>
                   );
                 })}
@@ -375,8 +500,8 @@ const ManageBookings = (props) => {
             {bookingResponse?.Booking?.Journeys.map((_journey, _index) => (
               <SingleJourneyItem journey={_journey} journeyIndex={_index} />
             ))}
-            <PageCTA />
-            <PassengersSection />
+            {/* <PageCTA /> */}
+            {/* <PassengersSection /> */}
             <PaymentContact />
             <PageFares />
           </>
@@ -514,7 +639,9 @@ const ManageBookings = (props) => {
   };
 
   const SingleJourneyItem = ({ journey, journeyIndex }) => {
-    return journey?.Segments.map((_segment) => {
+    return journey?.Segments.map((_segment, index) => { 
+      console.log(bookingResponse?.Booking?.Journeys.length);
+      console.log(journeyIndex);
       return (
         <>
           <div className="mx-6">
@@ -526,7 +653,7 @@ const ManageBookings = (props) => {
           <section className="ibe__trip__item checkinView bordered mx-6 my-3">
             {_segment?.Fares.map((_fare) => {
               return (
-                <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3">
+                <p className="bg-primary-main text-green py-1 px-2 !font-semibold rounded-[4px] absolute left-6 top-3">
                   {_fare?.RuleNumber.toLowerCase() === "savr" && "gSaver"}
                   {_fare?.RuleNumber.toLowerCase() === "flex" && "gFlex"}
                   {_fare?.RuleNumber.toLowerCase() === "clsc" && "gClassic"}
@@ -539,7 +666,7 @@ const ManageBookings = (props) => {
                 <Spinner />
               </div>
             ) : data?.data?.items ? (
-              <div className="basis-full lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
+              <div className="basis-full mt-6 lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
                 <p className="tripType self-center">
                   {" "}
                   {_segment?.FlightDesignator?.CarrierCode}{" "}
@@ -585,6 +712,11 @@ const ManageBookings = (props) => {
                 </p>
               </div>
             ) : null}
+            {bookingResponse?.Booking?.Journeys.length-1 === journeyIndex && (
+              <div className=" w-full bg-[#F3F3F7] py-2 " >
+                <PageCTA />
+              </div>
+            )}
           </section>
         </>
       );
@@ -629,7 +761,8 @@ const ManageBookings = (props) => {
             </nav>
           )}
 
-        <section className="w-full checkin">
+        <section className="w-full relative checkin bg-[#f4f4f4]">
+          <div className=" w-full absolute inset-x-0 h-[200px] top-0 z-10 bg-[#26205E] "  />
           {bookingResponseLoading ? (
             <div className="px-12 py-12">
               <SkeletonLoader />
@@ -637,7 +770,7 @@ const ManageBookings = (props) => {
               <SkeletonLoader />
             </div>
           ) : (
-            <section className="ga__section relative">
+            <section className="ga__section relative z-20 ">
               {(verifyManageBookingResponse &&
                 verifyManageBookingResponse?.pnr.toLowerCase() ===
                   statePNR.toLowerCase()) ||
@@ -649,7 +782,7 @@ const ManageBookings = (props) => {
                 </div>
               ) : null}
               <div className="ga__section__main">
-                <div className="mb-8 mt-16 xlg:mt-3">
+                {/* <div className="mb-8 mt-16 xlg:mt-3">
                   {bookingResponse?.Booking ? (
                     <>
                       <h2 className="text-black font-bold text-2xl mb-2">
@@ -657,7 +790,7 @@ const ManageBookings = (props) => {
                       </h2>
                     </>
                   ) : null}
-                </div>
+                </div> */}
 
                 {bookingResponse?.Booking ? (
                   <section className="flex flex-col bg-white pb-24">

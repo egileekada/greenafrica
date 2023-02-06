@@ -236,7 +236,7 @@ const SeatSelection = () => {
         >
           <section className="w-full bg-white rounded-xl ">
             <div className="flex flex-col items-center justify-center p-[50px]">
-              <h6 className="flex text-md mb-5">
+              <h6 className="flex text-md font-bold mb-5">
                 No seat selected for this trip!
               </h6>
               <figure>
@@ -253,19 +253,19 @@ const SeatSelection = () => {
                   />
                 </svg>
               </figure>
-              <p className="text-center font-body text-sm my-6">
+              <p className="text-center font-body font-medium text-sm my-6">
                 Are you sure you want to leave without selectiing a seat for
                 this trip?
               </p>
               <div className="flex flex-wrap lg:flex-nowrap items-center justify-between w-full">
                 <button
                   onClick={() => setShowNoSeat(false)}
-                  className="btn btn-primary basis-full lg:basis-[48%] lg:mr-2 mb-3 lg:mb-0"
+                  className="btn btn-primary basis-full !font-bold lg:basis-[48%] lg:mr-2 mb-3 lg:mb-0"
                 >
                   Select Seat
                 </button>
                 <Link href="/trip/payment">
-                  <a className="btn btn-outline basis-full lg:basis-[48%] text-center">
+                  <a className="btn btn-outline basis-full !font-bold lg:basis-[48%] text-center">
                     I don’t need it
                   </a>
                 </Link>

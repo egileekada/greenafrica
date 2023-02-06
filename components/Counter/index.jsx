@@ -24,7 +24,7 @@ const Counter = ({
         min="1"
         disabled
         value={value}
-        className="text-center  max-w-[68px] min-w-[56px] text-primary-main mx-2 "
+        className="text-center !bg-white w-[45px] text-primary-main mx-2 "
         name="value"
         onChange={(e) => onValueChange(e)}
       />

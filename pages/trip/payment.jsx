@@ -282,7 +282,7 @@ const TripPayment = () => {
                         <button
                           type="button"
                           onClick={handlePayment}
-                          className="btn btn-primary"
+                          className="btn btn-primary !font-bold"
                         >
                           {paymentLoading ? "Paying" : "Pay"}
                         </button>

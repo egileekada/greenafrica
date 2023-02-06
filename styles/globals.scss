@@ -77,13 +77,13 @@
     @apply md:flex flex-wrap xlg:flex-nowrap w-full flex-grow-0 flex-shrink-0;
 
     &.bg-normal {
-      background-color: rgba(158, 155, 191, 0.17);
+      // background-color: #f4f4f4;
     }
 
     &__main {
       @apply basis-full xlg:basis-[100%] flex flex-col  py-10 
             px-0 md:px-8 tab:px-16 xxl:px-24 font-body;
-      background-color: rgba(158, 155, 191, 0.17);
+      // background-color: rgba(158, 155, 191, 0.17);
 
       &.payment-section {
         @apply pt-28 lg:py-10;
@@ -130,7 +130,7 @@
 
   // Button
   .btn {
-    @apply font-normal font-body rounded-xl min-w-[133px] py-[15px] px-[30px] transition-all;
+    @apply font-normal font-body rounded-xl min-w-[133px] py-[15px] px-[20px] transition-all;
 
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;
@@ -296,7 +296,7 @@
   }
 
   figure.flightCircle {
-    @apply absolute left-3 md:-left-6 w-[40px] h-[40px] md:w-[61px] md:h-[61px] bg-green rounded-full flex items-center justify-center z-10;
+    @apply  w-[40px] h-[40px] md:w-[61px] md:h-[61px] bg-green rounded-full flex items-center justify-center z-10;
   }
 
   .ga__counter {
@@ -419,7 +419,7 @@
     }
 
     &__dates {
-      @apply bg-white min-h-[100px]  sm:px-6 py-4 sm:py-6 flex;
+      @apply bg-white min-h-[100px] sm:px-6 py-4 sm:py-6 flex;
       border-radius: 0px 0px 6px 6px;
 
       .ibe__date__item {
@@ -540,7 +540,7 @@
             button.btn-outline {
               min-width: 48px;
               height: 22px;
-              @apply flex items-center justify-center text-xs rounded   px-3 py-3 ml-2 font-display w-max;
+              @apply flex items-center justify-center text-xs rounded px-3 py-3 ml-2 font-display w-max;
             }
           }
           h6 {

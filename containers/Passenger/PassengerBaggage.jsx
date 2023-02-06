@@ -155,7 +155,7 @@ const PassengerBaggage = ({
                   return (
                     <div className=" w-full flex flex-col " >
                       {index === 0 && ( 
-                        <div className=" w-full px-5 flex justify-between items-center pb-[17px] border-b border-[#261F5E1A] pt-[25px] " >
+                        <div className=" w-full px-5 flex justify-between items-center border-b border-[#261F5E1A] py-3 " >
                           <p className=" font-bold text-[#261F5E] " >Departure </p>
                           <div className=" font-bold text-xs text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md " >
                             {selectedSessionJourney[0].departureStation+" - "+selectedSessionJourney[0].arrivalStation}
@@ -187,7 +187,7 @@ const PassengerBaggage = ({
                     return (
                       <div className=" w-full flex flex-col " >
                         {index === 0 && ( 
-                          <div className=" w-full px-5 flex justify-between items-center pb-[17px] border-b border-[#261F5E1A] pt-[25px] " >
+                          <div className=" w-full px-5 flex justify-between items-center border-b border-[#261F5E1A] py-4 " >
                             <p className=" font-bold text-[#261F5E] " >Return </p>
                             <div className=" font-bold text-xs text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md " >
                               {selectedSessionJourney[1].departureStation+" - "+selectedSessionJourney[1].arrivalStation}

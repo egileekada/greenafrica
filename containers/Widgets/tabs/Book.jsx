@@ -304,7 +304,7 @@ const BookingTab = ({ type, promocode }) => {
                 role="button"
               />
               <div className="w-full mx-2 px-2 md:px-0">
-                <p className="mb-0 text-xs font-bold text-[#979797]">FROM</p>
+                <p className="mb-0 text-xs  font-semibold text-[#979797]">FROM</p>
                 <Select
                   ref={originSelect}
                   openMenuOnFocus={true}
@@ -352,7 +352,7 @@ const BookingTab = ({ type, promocode }) => {
                 onClick={() => forcusOrigin(destinationSelect)}
               />
               <div className="w-full mx-2 px-2 md:px-0">
-                <p className="mb-0 font-bold text-xs text-[#979797]">TO</p>
+                <p className="mb-0  font-semibold text-xs text-[#979797]">TO</p>
                 <Select
                   ref={destinationSelect}
                   openMenuOnFocus={true}
@@ -403,7 +403,7 @@ const BookingTab = ({ type, promocode }) => {
                 </svg>
               </span>
               <div className="flex-auto px-4 md:px-0">
-                <p className="mb-1 text-xs text-[#979797]">DEPARTING</p>
+                <p className="mb-1 text-xs text-[#979797] font-semibold">DEPARTING</p>
                 <DatePicker
                   id="departure"
                   clearIcon={null}
@@ -443,7 +443,7 @@ const BookingTab = ({ type, promocode }) => {
                 </span>
 
                 <div className="flex-auto px-4 md:px-0">
-                  <p className="mb-1 text-xs text-[#979797]">RETURNING</p>
+                  <p className="mb-1 text-xs text-[#979797] font-semibold">RETURNING</p>
                   <DatePicker
                     id="return"
                     clearIcon={null}

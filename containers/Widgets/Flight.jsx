@@ -20,7 +20,7 @@ const FlightWidget = () => {
       closeModal={handleUser}
       top={true}
       flight={true}
-      width="w-[90%]"
+      width="w-[95vw]"
     >
       <div className="bg-white rounded-lg w-full">
         <div className="bg-[#26205E] rounded-t-lg flex justify-between  w-full p-5">

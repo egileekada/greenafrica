@@ -37,9 +37,9 @@ const PageFares = () => {
               (_journey, _journeyIndex) => {
                 return _journey?.Segments.map((_segment) => {
                   return (
-                    <div className="ibe__sidebar__box payment mt-6">
+                    <div className="ibe__sidebar__box payment mt-6 relative">
                       {fareConfig?.data ? (
-                        <div className="flex flex-col">
+                        <div className="flex flex-col ">
                           {_journey?.Segments.length > 0 &&
                             _journey?.Segments.map((_segment) => {
                               const _SSRCount = {};
@@ -102,12 +102,21 @@ const PageFares = () => {
                                     );
                                   }).length;
                               });
+                              console.log(_segment);
 
                               return (
-                                <>
-                                  <div className="flex items-center justify-between mb-2">
+                                <> 
+                                  <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center justify-between px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
+                                    Fare Details
+                                    <div className=" !text-[#47FF5A] bg-[#26205E] px-3 py-1 rounded-md text-sm " > 
+                                    {_segment?.DepartureStation} -{" "}
+                                        {_segment?.ArrivalStation}
+                                    </div>
+                                  </div>
+
+                                  {/* <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center">
-                                      <h6 className="font-display font-bold text-sm text-primary-main">
+                                      <h6 className="font-display font-bold  text-primary-main">
                                         {_journeyIndex === 1
                                           ? "Return"
                                           : "Departure"}
@@ -117,11 +126,11 @@ const PageFares = () => {
                                       </h6>
                                     </div>
                                     <div className="font-header text-xs text-primary-main"></div>
-                                  </div>
+                                  </div> */}
 
-                                  <div className="ibe__sidebar__row">
+                                  <div className="ibe__sidebar__row mt-[25px] ">
                                     <div className="flex items-center">
-                                      <span className="text-sm text-primary-main font-bold">
+                                      <span className=" text-primary-main font-bold">
                                         {
                                           bookingResponse?.Booking?.Passengers
                                             .length
