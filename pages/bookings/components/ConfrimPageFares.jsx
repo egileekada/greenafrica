@@ -588,7 +588,7 @@ const ConfrimPageFares = () => {
         ) : (
           <div className="ibe__sidebar__box">
             <div className="ibe__sidebar__empty h-[187px]">
-              <p>Select a flight to see pricing</p>
+              <p>No Journey</p>
             </div>
           </div>
         )}
