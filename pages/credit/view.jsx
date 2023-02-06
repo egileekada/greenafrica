@@ -38,7 +38,7 @@ const TripView = () => {
     creditReturnParams,
   } = useSelector(creditSelector);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { data} = useGetLocationsQuery();
+  const { data } = useGetLocationsQuery();
 
   const [ResellSSR, { isLoading: resellingSSR }] = useResellSSRMutation();
   const [CancelSSR, { isLoading: cancellingSSR }] = useCancelSSRMutation();
@@ -186,12 +186,12 @@ const TripView = () => {
               </figure>
               <h4 className="mb-0">7kg hand luggage: 55 x40 x 24cm</h4>
             </div>
-            <button
+            {/* <button
               onClick={changeFlight}
               className="btn btn-outline basis-full lg:basis-auto flex-shrink-0"
             >
               Change Flight
-            </button>
+            </button> */}
           </div>
         </div>
         {/* Flight Number */}
@@ -200,15 +200,14 @@ const TripView = () => {
   };
 
   const goChangeFlight = () => {
-    router.push("/bookings/change-flight");
+    router.push("/credit/add-flight");
   };
 
   const returnChangeFlight = () => {
-    router.push("/bookings/change-flight");
+    router.push("/credit/add-flight");
   };
 
   const resellJourney = () => {
-    // dispatch(ResellNewJourney());
     //Refactor Begin
     const paxPriceTypes = [];
     const _serviceBundleList = [];
@@ -244,12 +243,7 @@ const TripView = () => {
     }
 
     const _journeySellKeys = [];
-    // SSR RELATED
-    let JourneyOneSegmentSSRRequest = null;
-    let JourneyTwoSegmentSSRRequest = null;
-    let JourneyOne = null;
-    let JourneyTwo = null;
-    // SSR RELATED
+
     if (creditGoTrip) {
       let newObj = {
         JourneySellKey: creditGoTrip?.journey?.JourneySellKey,
@@ -259,30 +253,6 @@ const TripView = () => {
       };
       _journeySellKeys.push(newObj);
       _serviceBundleList.push(creditGoTrip?.fare?.RuleNumber);
-
-      const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
-
-      const JourneyOneSSRsExSeat =
-        bookingResponse?.Booking?.Journeys[0].Segments[0].PaxSSRs.filter(
-          (ssrItem) => ALLOWED__SSRS.includes(ssrItem?.SSRCode)
-        );
-
-      JourneyOneSegmentSSRRequest = {
-        flightDesignator: {
-          carrierCode: creditGoTrip?.segment?.FlightDesignator?.CarrierCode,
-          flightNumber: creditGoTrip?.segment?.FlightDesignator?.FlightNumber,
-          opSuffix: "",
-        },
-        std: creditGoTrip?.segment?.STD,
-        stdSpecified: true,
-        departureStation: creditGoTrip?.segment?.DepartureStation,
-        arrivalStation: creditGoTrip?.segment?.ArrivalStation,
-        paxSSRs: [...JourneyOneSSRsExSeat],
-      };
-      JourneyOne = {
-        ...bookingResponse?.Booking?.Journeys[0],
-        State: 0,
-      };
     }
 
     if (creditReturnTrip) {
@@ -294,33 +264,6 @@ const TripView = () => {
       };
       _journeySellKeys.push(newObj);
       _serviceBundleList.push(creditReturnTrip?.fare?.RuleNumber);
-      const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
-
-      const JourneyTwoSSRsExSeat =
-        bookingResponse?.Booking?.Journeys[1].Segments[0].PaxSSRs;
-
-      JourneyTwoSegmentSSRRequest = {
-        flightDesignator: {
-          carrierCode: creditReturnTrip?.segment?.FlightDesignator?.CarrierCode,
-          flightNumber:
-            creditReturnTrip?.segment?.FlightDesignator?.FlightNumber,
-          opSuffix: "",
-        },
-        std: creditReturnTrip?.segment?.STD,
-        stdSpecified: true,
-        departureStation: creditReturnTrip?.segment?.DepartureStation,
-        arrivalStation: creditReturnTrip?.segment?.ArrivalStation,
-        paxSSRs: [
-          ...JourneyTwoSSRsExSeat.filter((ssrItem) =>
-            ALLOWED__SSRS.includes(ssrItem?.SSRCode)
-          ),
-        ],
-      };
-
-      JourneyTwo = {
-        ...bookingResponse?.Booking?.Journeys[1],
-        State: 0,
-      };
     }
 
     const requestPayload = {
@@ -357,98 +300,9 @@ const TripView = () => {
 
     ResellNewJourney(requestPayload)
       .unwrap()
-      .then(() => {
-        const segmentSSRRequests = [];
-        JourneyOneSegmentSSRRequest &&
-          segmentSSRRequests.push(JourneyOneSegmentSSRRequest);
-        JourneyTwoSegmentSSRRequest &&
-          segmentSSRRequests.push(JourneyTwoSegmentSSRRequest);
-        ResellSSR(segmentSSRRequests)
-          .unwrap()
-          .then((data) => {
-            const _journeys = [];
-            JourneyOne && _journeys.push(JourneyOne);
-            JourneyTwo && _journeys.push(JourneyTwo);
-            const cancelSSRRequest = {
-              cancelRequestData: {
-                cancelBy: 0,
-                cancelBySpecified: true,
-                cancelJourney: {
-                  cancelJourneyRequest: {
-                    journeys: [..._journeys],
-                    waivePenaltyFee: false,
-                    waivePenaltyFeeSpecified: true,
-                    waiveSpoilageFee: false,
-                    waiveSpoilageFeeSpecified: true,
-                    preventReprice: false,
-                    preventRepriceSpecified: true,
-                    forceRefareForItineraryIntegrity: false,
-                    forceRefareForItineraryIntegritySpecified: true,
-                    recordLocator: bookingResponse?.Booking?.RecordLocator,
-                  },
-                },
-              },
-            };
-            CancelSSR(cancelSSRRequest)
-              .unwrap()
-              .then((data) => {
-                // dispatch(setcreditGoTrip(null));
-                // dispatch(setcreditReturnTrip(null));
-
-                if (
-                  parseInt(
-                    data?.BookingUpdateResponseData?.Success?.PNRAmount
-                      ?.BalanceDue
-                  ) > 0
-                ) {
-                  console.log("making payment");
-                  router.push(`/bookings/payment`);
-                } else {
-                  console.log("making booking commmit");
-
-                  bookingCommitWithoutPayment()
-                    .unwrap()
-                    .then((data) => {
-                      dispatch(
-                        setManagedPnrWithoutPayment(
-                          data?.BookingUpdateResponseData?.Success
-                            ?.RecordLocator
-                        )
-                      );
-                      router.push(
-                        {
-                          pathname: "/bookings/home",
-                          query: {
-                            pnr: data?.BookingUpdateResponseData?.Success
-                              ?.RecordLocator,
-                          },
-                        },
-                        "/bookings/home"
-                      );
-                    })
-                    .catch((error) => {
-                      notification.error({
-                        message: "Error",
-                        description: "Booking Commit Failed",
-                      });
-                    });
-                }
-
-                // router.push(`/bookings/confirm`);
-              })
-              .catch(() => {
-                notification.error({
-                  message: "Error",
-                  description: "Cancel Services failed",
-                });
-              });
-          })
-          .catch(() => {
-            notification.error({
-              message: "Error",
-              description: "Sell Services failed",
-            });
-          });
+      .then((data) => {
+        console.log("credit shell journey sold", data);
+        router.push("/credit/services");
       })
       .catch((err) => {
         const errText =
