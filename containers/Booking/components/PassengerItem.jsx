@@ -104,8 +104,7 @@ const ManagePassengerItem = ({ passenger, paxIndex }) => {
 
                       {_Seats.length > 0
                         ? bookingResponse?.Booking?.Journeys.map((_journey) => {
-                            return _journey?.Segments.map((_segment) => {
-                              console.log("Hello "+JSON.stringify(_segment?.PaxSeats[paxIndex]));
+                            return _journey?.Segments.map((_segment) => { 
                               return _segment?.PaxSeats[paxIndex]?.DepartureStation ? ( 
                                 <div>
                                   <p className=" text-[#5F5996] text-sm font-medium " >Seat No:</p>

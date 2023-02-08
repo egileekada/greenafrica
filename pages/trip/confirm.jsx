@@ -170,14 +170,7 @@ const TripConfirm = () => {
       <div className="flex flex-wrap md:flex-nowrap justify-between px-6 lg:px-12 py-6 lg:py-8">
         <div className="basis-full md:basis-auto mb-4 md:mb-0 flex flex-col">
           <h2 className="trip-title mb-3">FLIGHT SUMMARY</h2>
-        </div>
-
-        {/* <button
-          className="basis-full md:basis-auto btn btn-outline"
-          onClick={() => print()}
-        >
-          Download Ticket
-        </button> */}
+        </div> 
       </div>
     );
   };
@@ -209,7 +202,7 @@ const TripConfirm = () => {
                 <Spinner />
               </div>
             ) : data?.data?.items ? (
-              <div className="basis-full mt-6 lg:basis-[60%] w-full flex flex-col min-h-[54px] mb-10">
+              <div className="basis-full mt-6 lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
                 <p className="tripType self-center">
                   {" "}
                   {_segment?.FlightDesignator?.CarrierCode}{" "}

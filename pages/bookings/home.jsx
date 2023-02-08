@@ -616,74 +616,75 @@ const ManageBookings = (props) => {
     return journey?.Segments.map((_segment, index) => {  
       return (
         <>
-          <div className="mx-6">
-            <h3 className="title-text">
-              {journeyIndex === 0 ? "Departing" : "Returning"} on &nbsp;
-              {format(new Date(_segment?.STD), "EEEE, LLLL dd yyyy")}
-            </h3>
-          </div>
-          <section className=" p-4 border !flex !flex-col rounded-md border-[#9E9BBF] bordered mx-6 my-3">
-            {_segment?.Fares.map((_fare) => {
-              return (
-                <p className="bg-primary-main text-green py-1 px-2 !font-semibold rounded-[4px] absolute left-6 top-3">
-                  {_fare?.RuleNumber.toLowerCase() === "savr" && "gSaver"}
-                  {_fare?.RuleNumber.toLowerCase() === "flex" && "gFlex"}
-                  {_fare?.RuleNumber.toLowerCase() === "clsc" && "gClassic"}
-                </p>
-              );
-            })}
+        <section className={journeyIndex === 0 ? " p-4 border mt-12 !flex !flex-col rounded-t-md border-[#261F5E1A] border-b-0 bordered mx-6  px-6":" p-4 border !flex !flex-col rounded-b-md border-[#261F5E1A] bordered mx-6  px-8"}>
 
-            {locationLoading ? (
-              <div className="p-4">
-                <Spinner />
-              </div>
-            ) : data?.data?.items ? (
-              <div className="basis-full mt-6 lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
-                <p className="tripType self-center">
-                  {" "}
-                  {_segment?.FlightDesignator?.CarrierCode}{" "}
-                  {_segment?.FlightDesignator?.FlightNumber}
-                </p>
-                <div className="flex justify-between">
-                  <div className="flex flex-col">
-                    <h5 className=" text-[#26205E] text-2xl font-bold ">
-                      {" "}
-                      {format(new Date(_segment?.STD), "HH:mm")}
-                    </h5>
-                    <p className="tripCity font-medium">
-                      {" "}
-                      {_segment?.DepartureStation &&
-                        resolveAbbreviation(_segment?.DepartureStation)}
-                    </p>
-                  </div>
-                  <div className="flex items-center">
-                    <DottedLine className="dotted-svg" />
-                    <AeroIcon className="aero-svg" />
-                    <DottedLine className="dotted-svg" />
-                  </div>
-                  <div className="flex flex-col  items-end">
-                    <p className="text-[#26205E] text-2xl font-bold  right-text">
-                      {" "}
-                      {format(new Date(_segment?.STA), "HH:mm")}
-                    </p>
-                    <p className="tripCity right-text font-medium">
-                      {" "}
-                      {_segment?.ArrivalStation &&
-                        resolveAbbreviation(_segment?.ArrivalStation)}
-                    </p>
-                  </div>
+          <div className="">
+            <p className=" text-base font-bold text-[#261F5E] ">
+              {journeyIndex === 0 ? "Departing" : "Returning"} on &nbsp;
+              <span className=" font-medium " >{format(new Date(_segment?.STD), "EEEE, LLLL dd yyyy")}</span>
+            </p>
+          </div>
+          {_segment?.Fares.map((_fare) => {
+            return (
+              <p className="bg-primary-main text-green py-1 px-2 !font-semibold rounded-[4px] w-fit mt-4 -mb-5 ">
+                {_fare?.RuleNumber.toLowerCase() === "savr" && "gSaver"}
+                {_fare?.RuleNumber.toLowerCase() === "flex" && "gFlex"}
+                {_fare?.RuleNumber.toLowerCase() === "clsc" && "gClassic"}
+              </p>
+            );
+          })}
+
+          {locationLoading ? (
+            <div className="p-4">
+              <Spinner />
+            </div>
+          ) : data?.data?.items ? (
+            <div className="basis-full mt-6 lg:basis-[60%] w-full flex flex-col min-h-[54px] px-6 mb-10">
+              <p className="tripType self-center">
+                {" "}
+                {_segment?.FlightDesignator?.CarrierCode}{" "}
+                {_segment?.FlightDesignator?.FlightNumber}
+              </p>
+              <div className="flex justify-between">
+                <div className="flex flex-col">
+                  <h5 className=" text-[#26205E] text-2xl font-bold ">
+                    {" "}
+                    {format(new Date(_segment?.STD), "HH:mm")}
+                  </h5>
+                  <p className="tripCity font-medium">
+                    {" "}
+                    {_segment?.DepartureStation &&
+                      resolveAbbreviation(_segment?.DepartureStation)}
+                  </p>
                 </div>
-                <p className="tripTime self-center">
-                  {" "}
-                  {timeConvert(
-                    differenceInMinutes(
-                      new Date(_segment?.STA),
-                      new Date(_segment?.STD)
-                    )
-                  )}
-                </p>
+                <div className="flex items-center">
+                  <DottedLine className="dotted-svg" />
+                  <AeroIcon className="aero-svg" />
+                  <DottedLine className="dotted-svg" />
+                </div>
+                <div className="flex flex-col  items-end">
+                  <p className="text-[#26205E] text-2xl font-bold  right-text">
+                    {" "}
+                    {format(new Date(_segment?.STA), "HH:mm")}
+                  </p>
+                  <p className="tripCity right-text font-medium">
+                    {" "}
+                    {_segment?.ArrivalStation &&
+                      resolveAbbreviation(_segment?.ArrivalStation)}
+                  </p>
+                </div>
               </div>
-            ) : null}
+              <p className="tripTime self-center">
+                {" "}
+                {timeConvert(
+                  differenceInMinutes(
+                    new Date(_segment?.STA),
+                    new Date(_segment?.STD)
+                  )
+                )}
+              </p>
+            </div>
+          ) : null}
             {bookingResponse?.Booking?.Journeys.length-1 === journeyIndex && (
               <div className=" w-full py-2 " >
                 <PageCTA />
