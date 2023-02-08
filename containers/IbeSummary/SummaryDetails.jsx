@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import ProfileIcon from "assets/svgs/profile.svg";
 import { capitalizeFirstLetter } from "lib/utils";
+import ManagePassengerItem from "containers/Booking/components/PassengerItem";
 import {
   useGetProductsQuery,
   useGetPaymentConfigsQuery,
@@ -166,91 +167,98 @@ const SummaryDetails = ({ isRoundTrip }) => {
           }); 
 
           return ( 
-            <div className=" w-full mt-6 ">
-              <div className="trip__summary__item relative "> 
-                <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
-                  Passenger: {_passenger?.Names[paxIndex]?.FirstName} {_passenger?.Names[paxIndex]?.LastName}
-                </div> 
-                <div className="flex flex-col mt-[45px]">
-                  <section className="flex lg:flex-row w-full flex-col gap-4 ">
-                    {bookingResponse?.Booking?.BookingContacts?.map((_contact) => { 
-                      return (
-                        <>
-                          <div className=" flex items-center " >
+            <> 
+              {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
+                return (
+                  <ManagePassengerItem passenger={_pax} paxIndex={_paxIndex} />
+                );
+              })}
+            </>
+            // <div className=" w-full mt-6 ">
+            //   <div className="trip__summary__item relative "> 
+            //     <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
+            //       Passenger: {_passenger?.Names[paxIndex]?.FirstName} {_passenger?.Names[paxIndex]?.LastName}
+            //     </div> 
+            //     <div className="flex flex-col mt-[45px]">
+            //       <section className="flex lg:flex-row w-full flex-col gap-4 ">
+            //         {bookingResponse?.Booking?.BookingContacts?.map((_contact) => { 
+            //           return (
+            //             <>
+            //               <div className=" flex items-center " >
 
-                            {_passenger?.PassengerInfants?.length
-                             ? _passenger?.PassengerInfants.map((_paxInfant) => {
-                                 return _paxInfant.Names.map((_infName) => {
-                                   return (
-                                    <div className=" flex items-center " >
-                                      <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
-                                        <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                          <path d="M8.96232 14.3113C4.29723 14.3113 0.3125 15.0469 0.3125 17.9889C0.3125 20.932 4.27236 21.6935 8.96232 21.6935C13.6274 21.6935 17.6121 20.9591 17.6121 18.0159C17.6121 15.0728 13.6534 14.3113 8.96232 14.3113" fill="#26205E"/>
-                                          <path opacity="0.4" d="M8.96619 11.5089C12.144 11.5089 14.6902 8.96167 14.6902 5.78491C14.6902 2.60816 12.144 0.0609131 8.96619 0.0609131C5.78943 0.0609131 3.24219 2.60816 3.24219 5.78491C3.24219 8.96167 5.78943 11.5089 8.96619 11.5089" fill="#26205E"/>
-                                        </svg>
-                                      </div>
-                                      <div className=" ml-2 " >
-                                        <p className=" text-[#5F5B82] text-sm font-medium " >Infant</p>
-                                        <p className=" text-[#26205E] font-bold mt-1 " >{`${_infName?.FirstName} ${_infName?.LastName}`}</p>
-                                      </div>
-                                    </div>
-                                   );
-                                 });
-                               })
-                             : null}
+            //                 {_passenger?.PassengerInfants?.length
+            //                  ? _passenger?.PassengerInfants.map((_paxInfant) => {
+            //                      return _paxInfant.Names.map((_infName) => {
+            //                        return (
+            //                         <div className=" flex items-center " >
+            //                           <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
+            //                             <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            //                               <path d="M8.96232 14.3113C4.29723 14.3113 0.3125 15.0469 0.3125 17.9889C0.3125 20.932 4.27236 21.6935 8.96232 21.6935C13.6274 21.6935 17.6121 20.9591 17.6121 18.0159C17.6121 15.0728 13.6534 14.3113 8.96232 14.3113" fill="#26205E"/>
+            //                               <path opacity="0.4" d="M8.96619 11.5089C12.144 11.5089 14.6902 8.96167 14.6902 5.78491C14.6902 2.60816 12.144 0.0609131 8.96619 0.0609131C5.78943 0.0609131 3.24219 2.60816 3.24219 5.78491C3.24219 8.96167 5.78943 11.5089 8.96619 11.5089" fill="#26205E"/>
+            //                             </svg>
+            //                           </div>
+            //                           <div className=" ml-2 " >
+            //                             <p className=" text-[#5F5B82] text-sm font-medium " >Infant</p>
+            //                             <p className=" text-[#26205E] font-bold mt-1 " >{`${_infName?.FirstName} ${_infName?.LastName}`}</p>
+            //                           </div>
+            //                         </div>
+            //                        );
+            //                      });
+            //                    })
+            //                  : null}
 
-                            <div className=" " > 
-                                <p className=" text-[#5F5B82] text-sm font-medium " >Type</p>
-                                <p className=" text-[#26205E] font-bold mt-1 " >{_passenger?.PassengerTypeInfo?.PaxType === "ADT"
-                                  ? "ADULT"
-                                  : _passenger?.PassengerTypeInfo?.PaxType === "CHD"
-                                  ? "CHILD"
-                                  : "INFANT"}</p> 
-                            </div>
+            //                 <div className=" " > 
+            //                     <p className=" text-[#5F5B82] text-sm font-medium " >Type</p>
+            //                     <p className=" text-[#26205E] font-bold mt-1 " >{_passenger?.PassengerTypeInfo?.PaxType === "ADT"
+            //                       ? "ADULT"
+            //                       : _passenger?.PassengerTypeInfo?.PaxType === "CHD"
+            //                       ? "CHILD"
+            //                       : "INFANT"}</p> 
+            //                 </div>
 
-                          {_Seats?.length > 0
-                            ? bookingResponse?.Booking?.Journeys?.map((_journey) => {
-                                return _journey?.Segments?.map((_segment) => {
-                                  return ( 
-                                    <div className=" " > 
-                                        <p className=" text-[#5F5B82] text-sm font-medium " >Seat No</p>
-                                        <p className=" text-[#26205E] font-bold mt-1 " > 
-                                          {_segment?.PaxSeats[paxIndex]?.DepartureStation ? (
-                                            <h6>
-                                              Seat{_Seats.length > 1 ? "s" : ""}
-                                              &nbsp;&nbsp;&nbsp; ({" "}
-                                              {`${_segment?.PaxSeats[paxIndex]?.DepartureStation} -  ${_segment?.PaxSeats[paxIndex]?.ArrivalStation}`}
-                                              ):
-                                            </h6>
-                                          ) : null}
-                                        </p> 
-                                        <p className=" text-[#26205E] font-bold mt-1 " >{_segment?.PaxSeats[paxIndex]?.UnitDesignator}</p> 
-                                    </div> 
-                                  );
-                                });
-                              })
-                            : null} 
-                          </div> 
-                        </>
-                      );
-                    })} 
-                    <div className=" " > 
-                      <p className=" text-[#5F5B82] text-sm font-medium " >
-                        Baggage{_Baggages?.length > 1 ? "s" : ""} 
-                      </p>
-                      <p className=" text-[#26205E] font-bold mt-1 " >
+            //               {_Seats?.length > 0
+            //                 ? bookingResponse?.Booking?.Journeys?.map((_journey) => {
+            //                     return _journey?.Segments?.map((_segment) => {
+            //                       return ( 
+            //                         <div className=" " > 
+            //                             <p className=" text-[#5F5B82] text-sm font-medium " >Seat No</p>
+            //                             <p className=" text-[#26205E] font-bold mt-1 " > 
+            //                               {_segment?.PaxSeats[paxIndex]?.DepartureStation ? (
+            //                                 <h6>
+            //                                   Seat{_Seats.length > 1 ? "s" : ""}
+            //                                   &nbsp;&nbsp;&nbsp; ({" "}
+            //                                   {`${_segment?.PaxSeats[paxIndex]?.DepartureStation} -  ${_segment?.PaxSeats[paxIndex]?.ArrivalStation}`}
+            //                                   ):
+            //                                 </h6>
+            //                               ) : null}
+            //                             </p> 
+            //                             <p className=" text-[#26205E] font-bold mt-1 " >{_segment?.PaxSeats[paxIndex]?.UnitDesignator}</p> 
+            //                         </div> 
+            //                       );
+            //                     });
+            //                   })
+            //                 : null} 
+            //               </div> 
+            //             </>
+            //           );
+            //         })} 
+            //         <div className=" " > 
+            //           <p className=" text-[#5F5B82] text-sm font-medium " >
+            //             Baggage{_Baggages?.length > 1 ? "s" : ""} 
+            //           </p>
+            //           <p className=" text-[#26205E] font-bold mt-1 " >
 
-                        {_Baggages?.length > 1
-                          ? `${_Baggages?.length} Bag${_Baggages?.length > 1 && "s"}`
-                          : _Baggages?.length === 1
-                          ? `${_Baggages?.length} Bag`
-                          : "No Baggage"}
-                      </p> 
-                    </div>
-                  </section>
-                </div>
-              </div>
-            </div> 
+            //             {_Baggages?.length > 1
+            //               ? `${_Baggages?.length} Bag${_Baggages?.length > 1 && "s"}`
+            //               : _Baggages?.length === 1
+            //               ? `${_Baggages?.length} Bag`
+            //               : "No Baggage"}
+            //           </p> 
+            //         </div>
+            //       </section>
+            //     </div>
+            //   </div>
+            // </div> 
           );
         })}
       </>

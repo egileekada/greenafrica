@@ -29,15 +29,15 @@ const PageFares = () => {
   };
 
   return (
-    <section className="mx-6 my-6 flex flex-col">
+    <section className="mx-6 my-6 grid lg:grid-cols-2 grid-cols-1 gap-6">
       <Fragment>
         {bookingResponse?.Booking?.Journeys.length > 0 ? (
           <>
             {bookingResponse?.Booking?.Journeys.map(
               (_journey, _journeyIndex) => {
-                return _journey?.Segments.map((_segment) => {
+                return _journey?.Segments.map((_segment, index) => {
                   return (
-                    <div className="ibe__sidebar__box payment mt-6 relative">
+                    <div className="ibe__sidebar__box payment  mt-6 relative">
                       {fareConfig?.data ? (
                         <div className="flex flex-col ">
                           {_journey?.Segments.length > 0 &&
@@ -108,9 +108,14 @@ const PageFares = () => {
                                 <> 
                                   <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center justify-between px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
                                     Fare Details
-                                    <div className=" !text-[#47FF5A] bg-[#26205E] px-3 py-1 rounded-md text-sm " > 
-                                    {_segment?.DepartureStation} -{" "}
-                                        {_segment?.ArrivalStation}
+                                    <div className=" flex items-center " >
+                                      <p className=" text-[#26205E] font-bold mr-2 " >
+                                        {index === 0 ? "Departure": "Return"}
+                                      </p>
+                                      <div className=" !text-[#47FF5A] bg-[#26205E] px-3 py-1 rounded-md text-sm " > 
+                                      {_segment?.DepartureStation} -{" "}
+                                          {_segment?.ArrivalStation}
+                                      </div>
                                     </div>
                                   </div>
 
@@ -618,6 +623,19 @@ const PageFares = () => {
                                             </h6>
                                           </div>
                                         </div>
+                                        <div className="trip__summary__row">
+                                          <div className="flex items-center">
+                                            <h6 className=" !font-medium  !text-lg " >Total</h6>
+                                          </div>
+                                          <div>
+                                            <h6 className=" !font-semibold !text-xl " >
+                                              ₦
+                                              {_journey?.TotalAmount?.toLocaleString(
+                                                "NGN"
+                                              )}
+                                            </h6>
+                                          </div>
+                                        </div>
                                       </>
                                     );
                                   })}
@@ -647,7 +665,7 @@ const PageFares = () => {
               }
             )}
             {/* TotalCost */}
-            <div className="trip__summary__row totalRow">
+            {/* <div className="trip__summary__row totalRow">
               <div className="flex items-center">
                 <h5>TOTAL</h5>
               </div>
@@ -658,7 +676,7 @@ const PageFares = () => {
                   {bookingResponse?.Booking?.BookingSum?.TotalCost?.toLocaleString()}
                 </h6>
               </div>
-            </div>
+            </div> */}
             {/* TotalCost */}
           </>
         ) : (

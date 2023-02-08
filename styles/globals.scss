@@ -544,7 +544,7 @@
             }
           }
           h6 {
-            @apply font-title font-medium text-sm text-primary-main mb-[10px];
+            @apply font-body font-medium text-sm text-primary-main mb-[10px];
           }
         }
       }
@@ -619,7 +619,7 @@
       .trip-details {
         background: rgba(158, 155, 191, 0.12);
         min-height: 80px;
-        @apply px-6 pt-4 pb-6 flex flex-wrap md:flex-nowrap w-full mt-3;
+        @apply px-6 pt-4 pb-6 flex font-body flex-wrap md:flex-nowrap w-full mt-3;
 
         &-item {
           @apply flex flex-col mr-12 h-10 basis-full md:basis-auto mb-6 md:mb-0;
@@ -636,7 +636,7 @@
             }
           }
           h6 {
-            @apply font-title font-medium text-xxs text-primary-main mb-[5px];
+            @apply font-body font-medium text-xxs text-primary-main mb-[5px];
           }
         }
       }
@@ -784,8 +784,8 @@
             @apply border-t;
 
             h5 {
-              // @apply font-title text-xs text-primary-main;
-              @apply font-title text-base text-primary-main;
+              // @apply font-body text-xs text-primary-main;
+              @apply font-body text-base text-primary-main;
             }
 
             h6 {
@@ -846,7 +846,7 @@
         @apply text-[#101010] text-[14px] font-body;
 
         span {
-          @apply font-title;
+          @apply font-body;
         }
       }
 
@@ -1031,7 +1031,7 @@
     }
 
     p.trip-body {
-      @apply text-primary-main text-xs font-title;
+      @apply text-primary-main text-xs font-body;
     }
 
     &__item {
@@ -1051,8 +1051,8 @@
         @apply border-none;
 
         h5 {
-          // @apply text-primary-main text-xs font-title font-bold;
-          @apply font-title text-base text-primary-main font-bold;
+          // @apply text-primary-main text-xs font-body font-bold;
+          @apply font-body text-base text-primary-main font-bold;
         }
 
         h6 {
@@ -1101,7 +1101,7 @@
       }
 
       h6 {
-        @apply font-title text-xs text-black;
+        @apply font-body text-xs text-black;
       }
 
       p {
@@ -1133,7 +1133,7 @@
         @apply border-none;
 
         h5 {
-          @apply font-title font-bold text-xs text-primary-main;
+          @apply font-body font-bold text-xs text-primary-main;
         }
 
         h6 {
@@ -1150,7 +1150,7 @@
       @apply flex items-center mb-4;
 
       p {
-        @apply text-primary-main font-title;
+        @apply text-primary-main font-body;
 
         &.confirmed-p {
           color: white;

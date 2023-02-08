@@ -193,11 +193,6 @@ const ManageBookings = (props) => {
           {bookingResponse?.Booking?.Passengers?.length > 0 ? "S" : ""}
         </h3>
         <section className="flex flex-col">
-          {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
-            return (
-              <ManagePassengerItem passenger={_pax} paxIndex={_paxIndex} />
-            );
-          })}
         </section>
       </section>
     );
@@ -239,13 +234,13 @@ const ManageBookings = (props) => {
   const PageCTA = () => {
     return (
       <section
-        className={`flex flex-wrap md:flex-nowrap mx-6 ${
+        className={` grid grid-cols-2 lg:grid-cols-4 gap-4 lg:mx-4 ${
           checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
         }`}
         // className={`flex flex-wrap md:flex-nowrap mx-6`}
       >
         <button
-          className="btn btn-primary font-title font-semibold flex justify-center items-center !text-white h-full mb-3 md:mb-0 md:mr-3"
+          className="btn btn-primary font-title font-semibold flex justify-center items-center !text-white h-full"
           onClick={() =>
             atcb_action({
               name: "name",
@@ -268,7 +263,7 @@ const ManageBookings = (props) => {
           Add to Calendar
         </button>
         <button
-          className={`basis-full md:basis-auto btn btn-outline font-semibold flex justify-center items-center mb-3 md:mb-0 md:mr-3 ${
+          className={`basis-full md:basis-auto btn btn-outline font-semibold flex justify-center items-center ${
             checkedIn ||
             parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0
               ? "pointer-events-none opacity-50 cursor-not-allowed"
@@ -283,8 +278,8 @@ const ManageBookings = (props) => {
         </button>
         <button
           onClick={handleServices}
-          // className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
-          className={`basis-full md:basis-auto btn btn-outline font-semibold flex justify-center items-center mb-3 md:mb-0 md:mr-3 ${
+          // className={`basis-full md:basis-auto btn btn-outline `}
+          className={`basis-full md:basis-auto btn btn-outline font-semibold flex justify-center items-center ${
             checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
           }`}
         >
@@ -295,7 +290,7 @@ const ManageBookings = (props) => {
         </button>
         <Link href="/bookings/seat-selection">
           <a
-            className={`basis-full md:basis-auto btn btn-outline font-semibold flex justify-center items-center mb-3 md:mb-0 md:mr-3 text-center ${
+            className={`basis-full md:basis-auto btn btn-outline font-semibold flex justify-center items-center text-center ${
               checkedIn
                 ? "pointer-events-none opacity-50 cursor-not-allowed"
                 : ""
@@ -317,7 +312,65 @@ const ManageBookings = (props) => {
 
   const PaymentContact = () => {
     return (
-      <section className=" mx-6 mt-6 flex flex-col-reverse justify-between">
+      <section className=" mx-6 mt-6 flex flex-col justify-between">
+        <div className=" w-full mt-8 ">
+          <div className="trip__summary__item relative "> 
+            <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
+              Contact Details
+            </div> 
+            <div className="flex flex-col mt-[45px]">
+              <section className="flex flex-col ">
+                {bookingResponse?.Booking?.BookingContacts?.map((_contact) => {
+                  return (
+                    <>
+                      <div className=" flex gap-6 " >
+                        <div className=" flex items-center " >
+                          <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
+                            <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M8.96232 14.3113C4.29723 14.3113 0.3125 15.0469 0.3125 17.9889C0.3125 20.932 4.27236 21.6935 8.96232 21.6935C13.6274 21.6935 17.6121 20.9591 17.6121 18.0159C17.6121 15.0728 13.6534 14.3113 8.96232 14.3113" fill="#26205E"/>
+                              <path opacity="0.4" d="M8.96619 11.5089C12.144 11.5089 14.6902 8.96167 14.6902 5.78491C14.6902 2.60816 12.144 0.0609131 8.96619 0.0609131C5.78943 0.0609131 3.24219 2.60816 3.24219 5.78491C3.24219 8.96167 5.78943 11.5089 8.96619 11.5089" fill="#26205E"/>
+                            </svg>
+                          </div>
+                          <div className=" ml-2 " >
+                            <p className=" text-[#5F5B82] text-sm font-medium " >Full Name</p>
+                            <p className=" text-[#26205E] font-bold mt-1 " >{`${_contact?.Names[0]?.FirstName} ${_contact?.Names[0]?.LastName}`}</p>
+                          </div>
+                        </div>
+                        <div className=" flex items-center " >
+                          <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
+                            <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M18.9531 0H2.95312C1.84812 0 0.963125 0.895 0.963125 2L0.953125 14C0.953125 15.105 1.84812 16 2.95312 16H18.9531C20.0581 16 20.9531 15.105 20.9531 14V2C20.9531 0.895 20.0581 0 18.9531 0ZM18.9531 4L10.9531 9L2.95312 4V2L10.9531 7L18.9531 2V4Z" fill="#26205E"/>
+                            </svg>
+                          </div>
+                          <div className=" ml-2 " >
+                            <p className=" text-[#5F5B82] text-sm font-medium " >Email Address</p>
+                            <p className=" text-[#26205E] font-bold mt-1 " >{_contact?.EmailAddress}</p>
+                          </div>
+                        </div>
+                        <div className=" flex items-center " >
+                          <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M11.3788 11.4748C9.47919 13.3732 7.27839 15.19 6.40839 14.32C5.16399 13.0756 4.39599 11.9908 1.65039 14.1976C-1.09401 16.4032 1.01439 17.8744 2.22039 19.0792C3.61239 20.4712 8.80119 19.1536 13.93 14.026C19.0576 8.89719 20.3716 3.70839 18.9784 2.31639C17.7724 1.10919 16.3084 -0.99801 14.1028 1.74639C11.896 4.49079 12.9796 5.25879 14.2264 6.50439C15.0928 7.37439 13.2772 9.57519 11.3788 11.4748Z" fill="#26205E"/>
+                            </svg>
+                          </div>
+                          <div className=" ml-2 " >
+                            <p className=" text-[#5F5B82] text-sm font-medium " >Phone Number</p>
+                            <p className=" text-[#26205E] font-bold mt-1 " >{_contact?.HomePhone}</p>
+                          </div>
+                        </div>
+                      </div> 
+                    </>
+                  );
+                })}
+              </section>
+            </div>
+          </div>
+        </div>
+        {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
+          return (
+            <ManagePassengerItem passenger={_pax} paxIndex={_paxIndex} />
+          );
+        })}
         <div className="w-full mt-8 ">
           <div className="trip__summary__item relative ">
             <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
@@ -408,86 +461,6 @@ const ManageBookings = (props) => {
           </div>
         </div>
 
-        <div className=" w-full mt-8 ">
-          <div className="trip__summary__item relative "> 
-            <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
-              Contact Details
-            </div>
-            {/* <h2 className="trip-title mb-2 font-semibold text-primary-main">
-              CONTACT DETAILS
-            </h2> */}
-            <div className="flex flex-col mt-[45px]">
-              <section className="flex flex-col ">
-                {bookingResponse?.Booking?.BookingContacts?.map((_contact) => {
-                  return (
-                    <>
-                      <div className=" grid lg:grid-cols-3 grid-cols-1 gap-4 " >
-                        <div className=" flex items-center " >
-                          <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
-                            <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M8.96232 14.3113C4.29723 14.3113 0.3125 15.0469 0.3125 17.9889C0.3125 20.932 4.27236 21.6935 8.96232 21.6935C13.6274 21.6935 17.6121 20.9591 17.6121 18.0159C17.6121 15.0728 13.6534 14.3113 8.96232 14.3113" fill="#26205E"/>
-                              <path opacity="0.4" d="M8.96619 11.5089C12.144 11.5089 14.6902 8.96167 14.6902 5.78491C14.6902 2.60816 12.144 0.0609131 8.96619 0.0609131C5.78943 0.0609131 3.24219 2.60816 3.24219 5.78491C3.24219 8.96167 5.78943 11.5089 8.96619 11.5089" fill="#26205E"/>
-                            </svg>
-                          </div>
-                          <div className=" ml-2 " >
-                            <p className=" text-[#5F5B82] text-sm font-medium " >Full Name</p>
-                            <p className=" text-[#26205E] font-bold mt-1 " >{`${_contact?.Names[0]?.FirstName} ${_contact?.Names[0]?.LastName}`}</p>
-                          </div>
-                        </div>
-                        <div className=" flex items-center " >
-                          <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
-                            <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M18.9531 0H2.95312C1.84812 0 0.963125 0.895 0.963125 2L0.953125 14C0.953125 15.105 1.84812 16 2.95312 16H18.9531C20.0581 16 20.9531 15.105 20.9531 14V2C20.9531 0.895 20.0581 0 18.9531 0ZM18.9531 4L10.9531 9L2.95312 4V2L10.9531 7L18.9531 2V4Z" fill="#26205E"/>
-                            </svg>
-                          </div>
-                          <div className=" ml-2 " >
-                            <p className=" text-[#5F5B82] text-sm font-medium " >Email Address</p>
-                            <p className=" text-[#26205E] font-bold mt-1 " >{_contact?.EmailAddress}</p>
-                          </div>
-                        </div>
-                        <div className=" flex items-center " >
-                          <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M11.3788 11.4748C9.47919 13.3732 7.27839 15.19 6.40839 14.32C5.16399 13.0756 4.39599 11.9908 1.65039 14.1976C-1.09401 16.4032 1.01439 17.8744 2.22039 19.0792C3.61239 20.4712 8.80119 19.1536 13.93 14.026C19.0576 8.89719 20.3716 3.70839 18.9784 2.31639C17.7724 1.10919 16.3084 -0.99801 14.1028 1.74639C11.896 4.49079 12.9796 5.25879 14.2264 6.50439C15.0928 7.37439 13.2772 9.57519 11.3788 11.4748Z" fill="#26205E"/>
-                            </svg>
-                          </div>
-                          <div className=" ml-2 " >
-                            <p className=" text-[#5F5B82] text-sm font-medium " >Phone Number</p>
-                            <p className=" text-[#26205E] font-bold mt-1 " >{_contact?.HomePhone}</p>
-                          </div>
-                        </div>
-                      </div>
-                      {/* <div className="trip__summary__details">
-                        <div className="f-1">
-                          <h5>Name:</h5>
-                        </div>
-                        <div className="f-1">
-                          <h6>{`${_contact?.Names[0]?.FirstName} ${_contact?.Names[0]?.LastName}`}</h6>
-                        </div>
-                      </div> */}
-                      {/* <div className="trip__summary__details">
-                        <div className="f-1">
-                          <h5>Email:</h5>
-                        </div>
-                        <div className="f-1">
-                          <h6>{_contact?.EmailAddress}</h6>
-                        </div>
-                      </div> */}
-                      {/* <div className="trip__summary__details">
-                        <div className="f-1">
-                          <h5>Phone Number:</h5>
-                        </div>
-                        <div className="f-1">
-                          <h6>{_contact?.HomePhone}</h6>
-                        </div>
-                      </div> */}
-                    </>
-                  );
-                })}
-              </section>
-            </div>
-          </div>
-        </div>
       </section>
     );
   };
@@ -502,6 +475,7 @@ const ManageBookings = (props) => {
             ))}
             {/* <PageCTA /> */}
             {/* <PassengersSection /> */}
+
             <PaymentContact />
             <PageFares />
           </>
@@ -639,9 +613,7 @@ const ManageBookings = (props) => {
   };
 
   const SingleJourneyItem = ({ journey, journeyIndex }) => {
-    return journey?.Segments.map((_segment, index) => { 
-      console.log(bookingResponse?.Booking?.Journeys.length);
-      console.log(journeyIndex);
+    
       return (
         <>
           <div className="mx-6">
@@ -650,7 +622,7 @@ const ManageBookings = (props) => {
               {format(new Date(_segment?.STD), "EEEE, LLLL dd yyyy")}
             </h3>
           </div>
-          <section className="ibe__trip__item checkinView bordered mx-6 my-3">
+          <section className=" p-4 border !flex !flex-col rounded-md border-[#9E9BBF] bordered mx-6 my-3">
             {_segment?.Fares.map((_fare) => {
               return (
                 <p className="bg-primary-main text-green py-1 px-2 !font-semibold rounded-[4px] absolute left-6 top-3">
@@ -674,27 +646,27 @@ const ManageBookings = (props) => {
                 </p>
                 <div className="flex justify-between">
                   <div className="flex flex-col">
-                    <h5 className="tripType">
+                    <h5 className=" text-[#26205E] text-2xl font-bold ">
                       {" "}
                       {format(new Date(_segment?.STD), "HH:mm")}
                     </h5>
-                    <p className="tripCity">
+                    <p className="tripCity font-medium">
                       {" "}
                       {_segment?.DepartureStation &&
                         resolveAbbreviation(_segment?.DepartureStation)}
                     </p>
                   </div>
-                  <div className="tripIconPath">
+                  <div className="flex items-center">
                     <DottedLine className="dotted-svg" />
                     <AeroIcon className="aero-svg" />
                     <DottedLine className="dotted-svg" />
                   </div>
                   <div className="flex flex-col  items-end">
-                    <h5 className="tripType right-text">
+                    <p className="text-[#26205E] text-2xl font-bold  right-text">
                       {" "}
                       {format(new Date(_segment?.STA), "HH:mm")}
-                    </h5>
-                    <p className="tripCity right-text">
+                    </p>
+                    <p className="tripCity right-text font-medium">
                       {" "}
                       {_segment?.ArrivalStation &&
                         resolveAbbreviation(_segment?.ArrivalStation)}
@@ -713,7 +685,7 @@ const ManageBookings = (props) => {
               </div>
             ) : null}
             {bookingResponse?.Booking?.Journeys.length-1 === journeyIndex && (
-              <div className=" w-full bg-[#F3F3F7] py-2 " >
+              <div className=" w-full py-2 " >
                 <PageCTA />
               </div>
             )}
