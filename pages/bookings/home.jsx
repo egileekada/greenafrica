@@ -775,7 +775,7 @@ const ManageBookings = (props) => {
                 )}
               </div>
 
-              <div className="ga__section__side">
+              <div className="ga__section__side mr-8 ">
                 <IbeAdbar />
               </div>
             </section>
