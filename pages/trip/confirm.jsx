@@ -183,9 +183,7 @@ const TripConfirm = () => {
   };
 
   const Journeys = ({ journey, journeyIndex }) => {
-    return journey?.Segments.map((_segment, index) => { 
-      console.log(bookingResponse?.Booking?.Journeys.length);
-      console.log(journeyIndex);
+    return journey?.Segments.map((_segment, index) => {  
       return (
         <>
           <section className={journeyIndex === 0 ? " p-4 border !flex !flex-col rounded-t-md border-[#261F5E1A] border-b-0 bordered mx-6  px-6":" p-4 border !flex !flex-col rounded-b-md border-[#261F5E1A] bordered mx-6  px-8"}>
@@ -260,7 +258,7 @@ const TripConfirm = () => {
 
             {bookingResponse?.Booking?.Journeys.length-1 === journeyIndex  &&
               <div className=" w-full py-2 rounded-b-md " > 
-                <section className=" grid-cols-3 grid gap-6 items-center ">
+                <section className="grid grid-cols-2 lg:grid-cols-4 gap-4  items-center ">
                     <Link
                       href={`/bookings/home?bookingId=${encryptPnr(
                         bookingResponse?.Booking?.RecordLocator

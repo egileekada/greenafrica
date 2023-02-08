@@ -613,7 +613,7 @@ const ManageBookings = (props) => {
   };
 
   const SingleJourneyItem = ({ journey, journeyIndex }) => {
-    
+    return journey?.Segments.map((_segment, index) => {  
       return (
         <>
           <div className="mx-6">
