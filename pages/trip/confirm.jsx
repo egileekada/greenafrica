@@ -18,7 +18,8 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
 import { encryptPnr } from "lib/utils";
-import ReactToPrint from "react-to-print";
+import { atcb_action } from "add-to-calendar-button";
+import "add-to-calendar-button/assets/css/atcb.css";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
 import {
