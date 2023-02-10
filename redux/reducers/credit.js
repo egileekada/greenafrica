@@ -180,6 +180,9 @@ export const fetchLowFareAvailability =
       const Response = await GetLowFareAvailability(requestPayload);
       await dispatch(setLowFareAvailabilityResponse(Response.data));
     } catch (err) {
+      await dispatch(setLowFareAvailabilityResponse([]));
+      dispatch(setLowFareAvailabilityLoading(false));
+
       notification.error({
         message: "Error",
         description: "Fetch Low Fares failed",
@@ -263,6 +266,8 @@ export const returnLowFareAvailability =
       const Response = await GetLowFareAvailability(requestPayload);
       await dispatch(setReturnFareAvailabilityResponse(Response.data));
     } catch (err) {
+      await dispatch(setReturnFareAvailabilityResponse([]));
+      dispatch(setReturnFareAvailabilityLoading(false));
       notification.error({
         message: "Error",
         description: "Fetch Return Low Fares failed",

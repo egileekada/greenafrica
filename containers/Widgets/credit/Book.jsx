@@ -17,6 +17,7 @@ import {
   fetchFlightAvailability,
   setCreditGoTrip,
   setCreditReturnTrip,
+  creditSelector,
 } from "redux/reducers/credit";
 
 import { sessionSelector } from "redux/reducers/session";
@@ -31,6 +32,7 @@ const CreditTab = ({ type, promocode }) => {
   const [isRoundTrip, setRoundTrip] = useState(false);
 
   const { bookingResponse } = useSelector(sessionSelector);
+  const { lowFareAvailabilityLoading } = useSelector(creditSelector);
 
   useEffect(() => {
     if (bookingResponse) {
@@ -174,13 +176,14 @@ const CreditTab = ({ type, promocode }) => {
             endDate: format(departureDate, "yyyy-MM-dd"),
             returnDate: format(returnDate, "yyyy-MM-dd"),
           };
-          // dispatch(setGoTrip(null));
-          // dispatch(setReturnTrip(null));
+
           dispatch(saveCreditTripParams(tripRequest));
           dispatch(saveCreditReturnParams(returnRequest));
-          dispatch(fetchFlightAvailability(tripRequest, returnRequest));
+
           dispatch(fetchLowFareAvailability(tripRequest));
           dispatch(returnLowFareAvailability(returnRequest));
+
+          dispatch(fetchFlightAvailability(tripRequest, returnRequest));
         } else {
           notification.error({
             message: "Error",
@@ -374,7 +377,7 @@ const CreditTab = ({ type, promocode }) => {
                 type="submit"
                 disabled={formik.isSubmitting}
               >
-                Search
+                {lowFareAvailabilityLoading ? "Searching...." : "Search"}
               </button>
             </div>
           </div>

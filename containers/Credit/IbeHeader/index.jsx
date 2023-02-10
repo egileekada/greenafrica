@@ -13,7 +13,6 @@ import {
   fetchFlightAvailability,
   saveCreditTripParams,
   setCreditGoTrip,
-  setCreditReturnTrip,
 } from "redux/reducers/credit";
 import { useGetLocationsQuery } from "services/widgetApi.js";
 import { format } from "date-fns";
@@ -22,7 +21,7 @@ import { notification } from "antd";
 
 const CreditIbeHeader = () => {
   const dispatch = useDispatch();
-  const { data, isLoading: locationLoading } = useGetLocationsQuery();
+  const { data } = useGetLocationsQuery();
 
   const [dateList, setDateList] = useState([]);
   const [fareDateList, setFareDateList] = useState([]);
@@ -180,7 +179,6 @@ const CreditIbeHeader = () => {
       dispatch(fetchFlightAvailability(flightRequest, creditReturnParams));
 
       dispatch(setCreditGoTrip(null));
-      dispatch(setCreditReturnTrip(null));
     }
   };
 

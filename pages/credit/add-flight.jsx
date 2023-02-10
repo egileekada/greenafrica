@@ -10,7 +10,7 @@ import {
 import SkeletonLoader from "components/SkeletonLoader";
 import IbeTrips from "containers/Credit/IbeTrips";
 import CreditIbeHeader from "containers/Credit/IbeHeader";
-import ReturnBookingIbeHeader from "containers/Booking/IbeHeader/ReturnIbeHeader";
+import ReturnBookingIbeHeader from "containers/Credit/IbeHeader/ReturnIbeHeader";
 import { notification } from "antd";
 import CreditFlightWidget from "containers/Widgets/CreditFlightWidget";
 import LogoIcon from "assets/svgs/logo.svg";
@@ -86,7 +86,9 @@ const ManageUpdateItenary = () => {
                                 {_schedueIndex === 0 ? (
                                   <CreditIbeHeader />
                                 ) : (
-                                  <ReturnBookingIbeHeader />
+                                  <>
+                                    <ReturnBookingIbeHeader />
+                                  </>
                                 )}
 
                                 <IbeTrips

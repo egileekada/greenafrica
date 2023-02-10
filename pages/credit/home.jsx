@@ -42,7 +42,6 @@ const CreditHome = (props) => {
   const [isCredit, setIsCredit] = useState(false);
   const [creditPayment, setCreditPayment] = useState(null);
 
-
   const dispatch = useDispatch();
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
@@ -52,7 +51,7 @@ const CreditHome = (props) => {
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: paymentConfigs, isLoading: paymentConfigLoading } =
     useGetPaymentConfigsQuery();
-  
+
   const { bookingId } = router.query;
 
   const ScrollToTop = () => {
@@ -73,14 +72,6 @@ const CreditHome = (props) => {
   useEffect(() => {
     ScrollToTop();
   }, []);
-
-  useEffect(() => {
-    if (bookingResponse) {
-      if (bookingResponse?.Booking?.Journeys.length > 0) {
-        setActiveTab(2);
-      }
-    }
-  }, [bookingResponse]);
 
   async function fetchBookingDetails(pnr) {
     if (signature) {
@@ -226,11 +217,7 @@ const CreditHome = (props) => {
     const _disabled = bookingResponse?.Booking?.Journeys?.length === 0;
 
     return (
-      <section
-        className={`flex flex-wrap md:flex-nowrap mx-6 ${
-          checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
-        }`}
-      >
+      <section className={`flex flex-wrap md:flex-nowrap mx-6`}>
         <button
           className={`btn btn-primary font-title block h-full mb-3 md:mb-0 md:mr-3 ${
             _disabled ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
@@ -261,6 +248,7 @@ const CreditHome = (props) => {
         >
           Add Flight
         </button>
+
         <button
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
             checkedIn ||
