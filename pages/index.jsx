@@ -211,7 +211,7 @@ const Home = () => {
           </section>
         ) : (
           <Fragment>
-            <section className="ga__section relative fit-y">
+            <section className="ga__section !bg-[#f4f4f4] relative fit-y">
               <div className="ga__section__main">
                 <div className=" absolute inset-x-0 top-0 w-full  h-[130px] border-t border-[#FFFFFF1A] bg-[#26205E]  " ></div>
                 {/* </div> */}

@@ -152,7 +152,7 @@ const ManageBookings = (props) => {
             <FlightIcon />
           </figure>
           <div className=" ml-3 " >
-            <p className=" font-bold text-2xl  " >Booking Confirmed</p>
+            <p className=" font-bold text-2xl  " >Manage Booking</p>
             <p className=" font-medium lg:block hidden text-[14px] " >Kindly confirm  that the information below is correct before checking in</p> 
 
             <div className=" lg:hidden  " >

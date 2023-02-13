@@ -60,7 +60,7 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
 
   return (
     <section className="flex flex-col mb-6">
-      <section className="ibe__trip__item relative">
+      <section className="ibe__trip__item relative !rounded-md ">
         {itemFare &&
           itemFare?.length > 0 &&
           journey?.JourneySellKey === itemFare[0]?.sellKey && (
@@ -122,21 +122,23 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
         <div className="basis-full lg:basis-[30%] mt-4 lg:mt-0 flex justify-end items-center relative">
           {!isVisible ? (
             <button
-              className="btn btn-primary w-full lg:w-[200px] flex items-center justify-center text-center group lg:ml-4"
+              className="btn btn-primary w-full lg:w-[200px] !font-semibold flex items-center justify-center text-center group lg:ml-4"
               onClick={() => setIsVisible(!isVisible)}
             >
               {/* <span className="text-white mr-3">From ₦16,501</span> */}
               <span className="text-white mr-3">
                 {leastFare ? `From ₦${leastFare.toLocaleString()}` : "Proceed"}
               </span>
-              <CaretDown />
             </button>
           ) : (
             <button
               className="btn btn-outline dotted w-full lg:w-[200px] flex items-center justify-center text-center  group lg:ml-4"
               onClick={() => setIsVisible(false)}
             >
-              <span className="text-primary-main mr-2">Select a product</span>
+              <span className="text-primary-main !font-semibold mr-2">Close</span>
+              <div className=" rotate-180 " >
+                <CaretDown />
+              </div>
             </button>
           )}
         </div>

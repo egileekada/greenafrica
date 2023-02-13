@@ -191,7 +191,7 @@ const IbeHeader = (props) => {
   },[])
 
   return (
-    <section className="ibe__flight__info ">
+    <section className="ibe__flight__info !rounded-md ">
       {!isLoading && (
         <section className=" rounded-none ibe__flight__info__destination">
           <div className=" w-fit " > 
