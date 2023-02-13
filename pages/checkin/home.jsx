@@ -43,7 +43,6 @@ const CheckInDetails = (props) => {
     useSelector(sessionSelector);
 
   const parsed = router.asPath.split(/\?/)[1];
-  let parsedBookingId = parsed.split("bookingId=").pop();
 
   function initSession(pnr) {
     if (pnr) {
@@ -57,6 +56,7 @@ const CheckInDetails = (props) => {
     if (router.isReady) {
       //check if pnr is encrypted
       if (bookingId !== undefined) {
+        let parsedBookingId = parsed.split("bookingId=").pop();
         initSession(decryptPnr(parsedBookingId));
       } else if (!props.pnr) {
         router.push("/checkin");
