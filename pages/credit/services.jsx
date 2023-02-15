@@ -7,7 +7,7 @@ import {
   sessionSelector,
   GetBookingDetailsWithPNR,
 } from "redux/reducers/session";
-import { bookingSelector } from "redux/reducers/booking";
+import { creditSelector } from "redux/reducers/credit";
 import {
   FetchSSRAvailability,
   setBookingSessionSSRs,
@@ -18,8 +18,7 @@ import {
   setReturnDifference,
   setNewSSRS,
   setNewReturnSSRS,
-} from "redux/reducers/booking";
-import BookingPassengerItem from "../bookings/components/BookingPassengerItem";
+} from "redux/reducers/credit";
 import { useRouter } from "next/router";
 import { uniqueId } from "lodash";
 import {
@@ -29,6 +28,8 @@ import {
 import { useResellSSRMutation } from "services/bookingApi";
 import { notification } from "antd";
 import LogoIcon from "assets/svgs/logo.svg";
+
+import CreditPassengerItem from "./components/CreditPassengerItem";
 
 const PassengerDetails = () => {
   const router = useRouter();
@@ -45,7 +46,7 @@ const PassengerDetails = () => {
 
   const {
     SSRAvailabilityLoading,
-    manageBookingPnr,
+    creditPnr,
 
     bookingSessionSSRs,
     bookingSessionReturnSSRs,
@@ -61,7 +62,7 @@ const PassengerDetails = () => {
 
     tripParams,
     returnParams,
-  } = useSelector(bookingSelector);
+  } = useSelector(creditSelector);
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -76,10 +77,10 @@ const PassengerDetails = () => {
 
   useEffect(() => {
     async function fetchBookingDetails() {
-      if (signature && manageBookingPnr) {
+      if (signature && creditPnr) {
         dispatch(FetchSSRAvailability());
         const payload = {
-          pnr: manageBookingPnr,
+          pnr: creditPnr,
         };
         dispatch(GetBookingDetailsWithPNR(payload));
       }
@@ -89,7 +90,7 @@ const PassengerDetails = () => {
 
   useEffect(() => {
     async function setExisitingSSRS() {
-      if (manageBookingPnr) {
+      if (creditPnr) {
         fiilExistingSSRs();
       }
 
@@ -397,7 +398,8 @@ const PassengerDetails = () => {
     ResellSSR(segmentSSRRequests)
       .unwrap()
       .then((data) => {
-        router.push(`/bookings/confirm`);
+        //Temporary Fix , should redirect to seat page
+        router.push(`/credit/payment`);
       })
       .catch(() => {
         notification.error({
@@ -439,13 +441,15 @@ const PassengerDetails = () => {
                   {bookingResponse?.Booking?.Passengers.length > 0 ? (
                     bookingResponse?.Booking?.Passengers.map((_sesPax) => {
                       return (
-                        <BookingPassengerItem
-                          passenger={_sesPax}
-                          selectedSSRs={selectedSSRs}
-                          setSSRs={setSSRs}
-                          setReturnSSRs={setReturnSSRs}
-                          selectedReturnSSRs={selectedReturnSSRs}
-                        />
+                        <>
+                          <CreditPassengerItem
+                            passenger={_sesPax}
+                            selectedSSRs={selectedSSRs}
+                            setSSRs={setSSRs}
+                            setReturnSSRs={setReturnSSRs}
+                            selectedReturnSSRs={selectedReturnSSRs}
+                          />
+                        </>
                       );
                     })
                   ) : (

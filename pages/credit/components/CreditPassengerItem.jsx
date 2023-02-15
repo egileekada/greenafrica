@@ -2,13 +2,13 @@
 import { useState, useEffect } from "react";
 import { Checkbox } from "antd";
 import PassengerAccordion from "./PassengerAccordion";
-import BookingPassengerBaggage from "./PassengerBaggage";
+import CreditPassengerBaggage from "./PassengerBaggage";
 import { useSelector, useDispatch } from "react-redux";
-import { bookingSelector, setNewBookingSSRs } from "redux/reducers/booking";
+import { creditSelector, setNewBookingSSRs } from "redux/reducers/credit";
 import { sessionSelector } from "redux/reducers/session";
 import { v4 as uuid } from "uuid";
 
-const BookingPassengerItem = ({
+const CreditPassengerItem = ({
   passenger,
   selectedSSRs,
   setSSRs,
@@ -23,7 +23,7 @@ const BookingPassengerItem = ({
   const [hpPreSelected, setHPPreSelected] = useState(false);
   const { bookingResponse } = useSelector(sessionSelector);
   const { newBookingSSRs, bookingSessionSSRs, goDifference } =
-    useSelector(bookingSelector);
+    useSelector(creditSelector);
   const dispatch = useDispatch();
 
   const _Arrival =
@@ -223,7 +223,7 @@ const BookingPassengerItem = ({
             </Checkbox>
           </div>
         </div>
-        <BookingPassengerBaggage
+        <CreditPassengerBaggage
           passenger={passenger}
           selectedSSRs={selectedSSRs}
           setSSRs={setSSRs}
@@ -235,10 +235,10 @@ const BookingPassengerItem = ({
   );
 };
 
-BookingPassengerItem.defaultProps = {
+CreditPassengerItem.defaultProps = {
   passenger: {},
   selectedSSRs: [],
   selectedReturnSSRs: [],
 };
 
-export default BookingPassengerItem;
+export default CreditPassengerItem;

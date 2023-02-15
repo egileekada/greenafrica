@@ -2,8 +2,8 @@
 import FlightIcon from "assets/svgs/aero.svg";
 import ArrowIcon from "assets/svgs/small-arrow.svg";
 
-import BoookingBaggageCard from "components/Cards/bookings/baggage";
-import BookingReturnBaggageCard from "components/Cards/bookings/returnBaggage";
+import BoookingBaggageCard from "components/Cards/credit/baggage";
+import BookingReturnBaggageCard from "components/Cards/credit/returnBaggage";
 
 import BaggageIcon from "assets/svgs/baggage.svg";
 import { Fragment, useState, useEffect } from "react";
@@ -12,9 +12,9 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import { useGetLocationsQuery } from "services/widgetApi.js";
-import { bookingSelector } from "redux/reducers/booking";
+import { creditSelector } from "redux/reducers/credit";
 
-const BookingPassengerBaggage = ({
+const CreditPassengerBaggage = ({
   passenger,
   selectedSSRs,
   setSSRs,
@@ -33,12 +33,12 @@ const BookingPassengerBaggage = ({
 
   const { bookingResponse } = useSelector(sessionSelector);
   const {
-    tripParams,
-    returnParams,
+    creditTripParams,
+    creditReturnParams,
     SSRAvailabilityResponse,
     bookingSessionSSRs,
     bookingSessionReturnSSRs,
-  } = useSelector(bookingSelector);
+  } = useSelector(creditSelector);
 
   useEffect(() => {
     async function setDefaultSSRS() {
@@ -102,15 +102,7 @@ const BookingPassengerBaggage = ({
         </h2>
 
         {bookingResponse?.Booking?.Journeys?.length > 0 && (
-          <section
-            className={`flex flex-col mt-4 ${
-              tripParams
-                ? parseInt(tripParams?.LiftStatus) !== 0
-                  ? "pointer-events-none opacity-50 cursor-not-allowed"
-                  : ""
-                : ""
-            }`}
-          >
+          <section className={`flex flex-col mt-4`}>
             <div className="flex h-16 border-b mb-6">
               {bookingResponse?.Booking?.Journeys?.length > 0 && (
                 <button className={`ssr__tab active-ssr`}>
@@ -192,8 +184,8 @@ const BookingPassengerBaggage = ({
         {bookingResponse?.Booking?.Journeys?.length > 1 && (
           <section
             className={`flex flex-col mt-4 ${
-              returnParams
-                ? parseInt(returnParams?.LiftStatus) !== 0
+              creditReturnParams
+                ? parseInt(creditReturnParams?.LiftStatus) !== 0
                   ? "pointer-events-none opacity-50 cursor-not-allowed"
                   : ""
                 : ""
@@ -314,10 +306,10 @@ const BookingPassengerBaggage = ({
   );
 };
 
-BookingPassengerBaggage.defaultProps = {
+CreditPassengerBaggage.defaultProps = {
   passenger: {},
   selectedSSRs: [],
   selectedReturnSSRs: [],
 };
 
-export default BookingPassengerBaggage;
+export default CreditPassengerBaggage;
