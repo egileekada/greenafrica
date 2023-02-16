@@ -331,7 +331,7 @@ const TripConfirm = () => {
             <SkeletonLoader />
           </section>
         ) : (
-          <section className="w-full relative ga__section bg-[#f4f4f4]">
+          <section className="w-full relative ga__section ">
             <div className=" w-full absolute inset-x-0 h-[200px] top-0 z-10 bg-[#26205E] "  />
             {bookingResponse ? (
               <>

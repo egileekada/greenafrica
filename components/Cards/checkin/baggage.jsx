@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
-import BaggageIcon from "assets/svgs/baggage.svg";
+// import BaggageIcon from "assets/svgs/baggage.svg";
+import BaggageIcon from "public/images/bagthree.svg"
 import Counter from "components/Counter";
 import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
@@ -171,7 +172,7 @@ const CheckinBaggageCard = ({
         <figure>
           <BaggageIcon />
         </figure>
-        <p className="font-body text-primary-main text-xs mb-1">
+        <p className="font-body text-primary-main mt-4 text-xs mb-1">
           Extra Bag Up to {KG}kg
         </p>
         <p className="font-header  text-primary-main text-xl mb-3">

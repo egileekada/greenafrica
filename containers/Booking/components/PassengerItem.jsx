@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
-const ManagePassengerItem = ({ passenger, paxIndex }) => {
+const ManagePassengerItem = ({ passenger, paxIndex, Journey, index, setdata, checkin }) => {
   const { bookingResponse } = useSelector(sessionSelector);
   const [specials, setSpecials] = useState([]);
 
@@ -50,12 +50,29 @@ const ManagePassengerItem = ({ passenger, paxIndex }) => {
               return _segment?.PaxSeats[paxIndex]?.DepartureStation ? (
                 <div className="w-full mt-8 ">
                   <div className="trip__summary__item relative ">
-                    <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
+                    <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " > 
+                      {checkin && (
+                        <input
+                          disabled={
+                            Journey?.Segments[0]?.PaxSegments[paxIndex]
+                              .LiftStatus ||
+                            Journey?.PackageIndicator == 0
+                          }
+                          className="w-5 h-5 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2 mr-3"
+                          type="checkbox"
+                          id={`passenger-${index}-${paxIndex}`}
+                          value={passenger}
+                          name={`passenger-${index}-${paxIndex}`}
+                          onChange={(e) =>
+                            setdata(e, passenger, index)
+                          }
+                        />
+                      )}
                       {passenger?.Names[0]?.Title} {passenger?.Names[0]?.FirstName}
                       &nbsp;
                       {passenger?.Names[0]?.LastName}
                     </div> 
-                    <div className="flex flex-row items-center gap-x-10 mt-[45px]">
+                    <div className=" grid grid-cols-5 items-center gap-x-10 mt-[45px]">
 
                       {_Infants?.length > 0 && (
                         <div className=" flex items-center " >

@@ -5,7 +5,7 @@ import ArrowIcon from "assets/svgs/small-arrow.svg";
 import CheckinBaggageCard from "components/Cards/checkin/baggage";
 import CheckinReturnBaggageCard from "components/Cards/checkin/returnBaggage";
 
-import BaggageIcon from "assets/svgs/baggage.svg";
+import BaggageIcon from "public/images/bagthree.svg" 
 import { Fragment, useState, useEffect } from "react";
 import Popup from "components/Popup";
 import { useRouter } from "next/router";

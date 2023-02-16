@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import Popup from "components/Popup";
-import BaggageIcon from "../../public/images/bagthree.svg"
+import BaggageIcon from "public/images/bagthree.svg"
 // import BaggageIcon from "assets/svgs/baggage.svg";
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
@@ -266,13 +266,13 @@ const PassengerDetails = () => {
       >
         <section className="w-full bg-white rounded-xl ">
           <div className="flex flex-col items-center justify-center p-[50px]">
-            <h6 className="font-display text-xl mb-5">
+            <h6 className="font-display font-bold text-xl mb-5">
               No extra service selected for the return trip
             </h6>
-            <figure>
+            <figure className=" py-14 " >
               <BaggageIcon />
             </figure>
-            <p className="text-center font-body text-sm mb-6">
+            <p style={{fontSize: "14px"}} className="text-center font-medium font-body mb-6">
               Are you sure you want to leave without selectiing additional
               service for the return trip?
             </p>

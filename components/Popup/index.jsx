@@ -39,7 +39,7 @@ const Popup = ({
           </>
         )}
         <section
-          className={`ga__popup__main overflow-x-hidden bg-opacity-[0.3] lg:px-20 overflow-y-scroll min-h-[600px] scrollable ${activeClass}`}
+          className={`ga__popup__main overflow-x-hidden overflow-y-scroll h-[600px] scrollable ${activeClass}`}
         >
           {children}
         </section>

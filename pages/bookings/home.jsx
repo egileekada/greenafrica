@@ -734,8 +734,7 @@ const ManageBookings = (props) => {
             </nav>
           )}
 
-        <section className="w-full relative checkin bg-[#f4f4f4]">
-          <div className=" w-full absolute inset-x-0 h-[200px] top-0 z-10 bg-[#26205E] "  />
+        <section className="w-full relative checkin ">
           {bookingResponseLoading ? (
             <div className="px-12 py-12">
               <SkeletonLoader />
@@ -744,6 +743,7 @@ const ManageBookings = (props) => {
             </div>
           ) : (
             <section className="ga__section relative z-20 ">
+            <div className=" w-full absolute inset-x-0 h-[200px] top-0 z-20 bg-[#26205E] "  />
               {(verifyManageBookingResponse &&
                 verifyManageBookingResponse?.pnr.toLowerCase() ===
                   statePNR.toLowerCase()) ||
@@ -754,7 +754,7 @@ const ManageBookings = (props) => {
                   <p>Your booking has been confirmed</p>
                 </div>
               ) : null}
-              <div className="ga__section__main">
+              <div className="ga__section__main  relative z-20 ">
                 {/* <div className="mb-8 mt-16 xlg:mt-3">
                   {bookingResponse?.Booking ? (
                     <>
@@ -775,7 +775,7 @@ const ManageBookings = (props) => {
                 )}
               </div>
 
-              <div className="ga__section__side mr-8 ">
+              <div className="ga__section__side relative z-20  mr-8 ">
                 <IbeAdbar />
               </div>
             </section>
