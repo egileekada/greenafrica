@@ -72,7 +72,7 @@ const ManagePassengerItem = ({ passenger, paxIndex, Journey, index, setdata, che
                       &nbsp;
                       {passenger?.Names[0]?.LastName}
                     </div> 
-                    <div className=" grid grid-cols-5 items-center gap-x-10 mt-[45px]">
+                    <div className="flex flex-row items-center gap-x-20 mt-[45px]">
 
                       {_Infants?.length > 0 && (
                         <div className=" flex items-center " >
