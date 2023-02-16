@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import Popup from "components/Popup";
-import BaggageIcon from "assets/svgs/baggage.svg";
+import BaggageIcon from "../../public/images/bagthree.svg"
+// import BaggageIcon from "assets/svgs/baggage.svg";
 import BaseLayout from "layouts/Base";
 import IbeSidebar from "containers/IbeSidebar";
 import PassengerDetailsItem from "containers/PassengerDetails/PassengerDetailsItem";

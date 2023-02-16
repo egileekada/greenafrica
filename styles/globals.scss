@@ -19,6 +19,7 @@
     font-size: 14px;
     font-family: Satoshi, system-ui, sans-serif;
     scroll-behavior: smooth;
+    background-color:  #f4f4f4 !important;
   }
 }
 
@@ -74,7 +75,7 @@
   }
 
   .ga__section {
-    @apply md:flex flex-wrap xlg:flex-nowrap w-full flex-grow-0 flex-shrink-0;
+    @apply md:flex flex-wrap xlg:flex-nowrap bg-[#f4f4f4] w-full flex-grow-0 flex-shrink-0;
 
     &.bg-normal {
       // background-color: #f4f4f4;
@@ -130,7 +131,7 @@
 
   // Button
   .btn {
-    @apply font-normal font-body rounded-xl min-w-[133px] py-[15px] px-[20px] transition-all;
+    @apply font-bold font-body rounded-xl min-w-[133px] py-[15px] px-[20px] transition-all;
 
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;

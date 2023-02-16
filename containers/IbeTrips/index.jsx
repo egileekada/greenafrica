@@ -12,12 +12,12 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
 
   return (
     <section className="ibe__flight__trips ">
-      <h2 className="text-primary-main font-extrabold text-base mb-8 capitalize">
+      {/* <h2 className="text-primary-main font-extrabold text-base mb-8 capitalize">
         
         {parseInt(schedueIndex) === 0
           ? `DEPARTURE  `
           : ""}
-      </h2>
+      </h2> */}
 
       <Fragment>
         {flightAvailabilityLoading ? (

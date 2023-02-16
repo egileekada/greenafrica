@@ -159,7 +159,7 @@ const TripView = (props) => {
           </figure>
         </button>
       </nav>
-      <section className="w-full">
+      <section className="w-full ">
         <section className="ga__section">
           <div className="ga__section__main">
             <section className="flex flex-col mt-16 lg:mt-0">
@@ -410,7 +410,7 @@ const TripView = (props) => {
                     </p>
                   </div>
                   <button
-                    className={`btn !font-bold btn-primary w-full lg:w-[195px] ${
+                    className={`btn btn-primary w-full lg:w-[195px] ${
                       checked ? "" : "opacity-50 pointer-events-none"
                     }`}
                     onClick={handleMultipleSell}

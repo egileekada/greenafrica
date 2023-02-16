@@ -138,8 +138,9 @@ const IbeTripVariant = ({
           {fare_variant === "savr" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn border-primary-main text-primary-main border w-full text-center ${
-                parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
+              style={{ fontSize: "18px" }}
+              className={` btn w-full text-center !font-black  ${
+                parseInt(fare?.AvailableCount) < 1 ?  "disabled border-[#9E9BBF] text-[#9E9BBF] border " : " border-primary-main text-primary-main border "
               }`}
             >
               {parseInt(fare?.AvailableCount) < 1
@@ -150,8 +151,9 @@ const IbeTripVariant = ({
           {fare_variant === "clsc" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn border-primary-main text-primary-main border w-full text-center ${
-                parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
+              style={{ fontSize: "18px" }}
+              className={`btn w-full text-center !font-black ${
+                parseInt(fare?.AvailableCount) < 1 ? "disabled border-[#9E9BBF] text-[#9E9BBF] border " : " border-primary-main text-primary-main border "
               }`}
             >
               {parseInt(fare?.AvailableCount) < 1
@@ -162,8 +164,8 @@ const IbeTripVariant = ({
           {fare_variant === "flexi" && (
             <button
               onClick={() => handleBtnClick(fare)}
-              className={`btn  border-primary-main text-primary-main border w-full  text-center ${
-                parseInt(fare?.AvailableCount) < 1 ? "disabled" : ""
+              className={`btn w-full  text-center !font-black ${
+                parseInt(fare?.AvailableCount) < 1 ?  "disabled border-[#9E9BBF] text-[#9E9BBF] border " : " border-primary-main text-primary-main border "
               }`}
             >
               {parseInt(fare?.AvailableCount) < 1

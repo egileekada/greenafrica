@@ -316,7 +316,7 @@ const IbeTripPopup = ({
 
   return (
     <Fragment>
-      <Popup show={true} display={showPopUp} closeModal={closePopUp} top={true}>
+      <Popup show={true} display={showPopUp} width="w-[70%]" closeModal={closePopUp} top={true}>
         {sellFlightLoading ? (
           <Spin indicator={antIcon} />
         ) : (
@@ -339,56 +339,56 @@ const IbeTripPopup = ({
               </div>
               <div className=" w-full mt-5 pb-10 grid grid-cols-1 lg:grid-cols-3 gap-4 px-6 " >
                 <div className={` ${selected?.ProductClass === "GS" ? "border-[#26205E]": "border-[#9E9BBF] "} w-full h-full flex flex-col rounded-md border text-sm font-normal text-black pt-8 pb-4 px-5 `} >
-                  <p className=" font-bold text-[#26205E] text-xl " >gSaver</p>
+                  <p className=" font-bold text-[#26205E] text-[25px] " >gSaver</p>
                   <div className=" flex mt-9 " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Online Check-In</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium " >Online Check-In</p>
                   </div>
-                  <div className=" flex mt-3 " >
+                  <div className=" flex mt-3 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Free Hand Luggage (7KG)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Hand Luggage (7KG)</p>
                   </div>
-                  <div className=" flex mt-3 mb-14  " >
+                  <div className=" flex mt-3 items-center mb-14  " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Automatically Allocated Seat (Pay For Preferred Seat)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Automatically Allocated Seat (Pay For Preferred Seat)</p>
                   </div>
-                    <button disabled={svr?.AvailableCount === 0 || selected?.ProductClass === "GC" ? true: false}
-                      onClick={handleSell.bind(this, "savr")} className={` ${svr?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GS" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[45px] mt-auto rounded-xl w-full `} >{svr?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GC"? "gSaver": selected?.ProductClass === "GS" ? "Continue With gSaver" : "Switch To gSaver"}</button>
+                    <button  style={{ fontSize: "16px" }} disabled={svr?.AvailableCount === 0 || selected?.ProductClass === "GC" ? true: false}
+                      onClick={handleSell.bind(this, "savr")} className={` ${svr?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GS" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[55px] mt-auto rounded-xl w-full `} >{svr?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GC"? "gSaver": selected?.ProductClass === "GS" ? "Continue With gSaver" : "Switch To gSaver"}</button>
                 </div>
                 <div className={` ${selected?.ProductClass === "GC" ? "border-[#26205E]": "border-[#9E9BBF] "} w-full h-full flex flex-col rounded-md border text-sm font-normal text-black pt-8 pb-4 px-5 `} >
                   <div className=" w-full flex items-center justify-between " >
-                    <p className=" font-bold text-[#26205E] text-xl " >gClassic</p>
+                    <p className=" font-bold text-[#26205E] text-[25px] " >gClassic</p>
                     <button className=" text-sm bg-[#261F5E] text-[#47FF5A] font-bold py-[10px] rounded-lg px-[18px] " >Recommended</button>
                   </div>
                   <div className=" flex mt-9 " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Online Check-In</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Online Check-In</p>
                   </div>
-                  <div className=" flex mt-3 " >
+                  <div className=" flex mt-3 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Checked Baggage :15kg. Extra N500/KG</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Checked Baggage :15kg. Extra N500/KG</p>
                   </div>
-                  <div className=" flex mt-3 " >
+                  <div className=" flex mt-3 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Free Standard Seat (Pay for Non Standard)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Standard Seat (Pay for Non Standard)</p>
                   </div>
-                  <div className=" flex mt-3 mb-14  " >
+                  <div className=" flex mt-3 items-center mb-14  " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Free Hand Luggage (7KG)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Hand Luggage (7KG)</p>
                   </div>
                   <div className=" w-full mt-auto " >
 {/* 
@@ -408,54 +408,54 @@ const IbeTripPopup = ({
             </span>
           </div> */}
 
-                    <p className=" -mb-1 font-black text-xl " >{selected?.RuleNumber.toLowerCase() === "savr" ? "+"+clsc?.AmountDifference?.toLocaleString() :selected?.RuleNumber.toLowerCase() === "clsc" ? "" : "+"+clsc?.ExtraAmount?.toLocaleString()}</p>
+                    <p style={{ fontSize: "20px" }} className=" -mb-1 font-black" >{selected?.RuleNumber.toLowerCase() === "savr" ? "+"+clsc?.AmountDifference?.toLocaleString() :selected?.RuleNumber.toLowerCase() === "clsc" ? "" : "+"+clsc?.ExtraAmount?.toLocaleString()}</p>
                     {selected?.RuleNumber.toLowerCase() !== "clsc" && (
-                      <p className=" font-normal text-sm mb-4 " >more per person</p>
+                      <p style={{ fontSize: "14px" }} className=" font-normal mb-4 " >more per person</p>
                     )}
-                    <button disabled={clsc?.AvailableCount === 0 || selected?.ProductClass === "Gf" ? true: false}
-                      onClick={handleSell.bind(this, "clsc")} className={` ${clsc?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GC" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[45px] rounded-xl w-full `} >{clsc?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GF" ? "gClassic" : selected?.ProductClass === "GC" ? "Continue With gClassic" : "Switch To gClassic"}</button>
+                    <button style={{ fontSize: "16px" }} disabled={clsc?.AvailableCount === 0 || selected?.ProductClass === "Gf" ? true: false}
+                      onClick={handleSell.bind(this, "clsc")} className={` ${clsc?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GC" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[55px] rounded-xl w-full `} >{clsc?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GF" ? "gClassic" : selected?.ProductClass === "GC" ? "Continue With gClassic" : "Switch To gClassic"}</button>
                   </div>
                 </div>
                 <div className={` ${selected?.ProductClass === "GF" ? "border-[#26205E]": "border-[#9E9BBF] "} w-full h-full flex flex-col rounded-md border text-sm font-normal text-black pt-8 pb-4 px-5 `} >
                   <div className=" w-full flex items-center justify-between " >
-                    <p className=" font-bold text-[#26205E] text-xl " >gFlex</p>
+                    <p className=" font-bold text-[#26205E] text-[25px] " >gFlex</p>
                     <button className=" text-sm bg-[#261F5E] text-[#47FF5A] font-bold py-[10px] rounded-lg px-[18px] " >Max Comfort</button>
                   </div>
                   <div className=" flex mt-9 " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Online Check-In</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Online Check-In</p>
                   </div>
-                  <div className=" flex mt-3 " >
+                  <div className=" flex mt-3 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Free Airport Check-In</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Airport Check-In</p>
                   </div>
-                  <div className=" flex mt-3 " >
+                  <div className=" flex mt-3 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Free Checked Baggage</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Checked Baggage</p>
                   </div>
-                  <div className=" flex mt-3 " >
+                  <div className=" flex mt-3 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Free Seat Selection</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Seat Selection</p>
                   </div>
-                  <div className=" flex mt-3 mb-14  " >
+                  <div className=" flex mt-3 items-center mb-14  " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p>Free Hand Luggage (7KG)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Hand Luggage (7KG)</p>
                   </div>
                   <div className=" w-full mt-auto " > 
-                    <p className=" -mb-1 font-black text-xl " >+{selected?.RuleNumber.toLowerCase() === "savr" ? flex?.AmountDifference?.toLocaleString(): selected?.RuleNumber.toLowerCase() === "clsc" ? flex?.AdditionalAmount?.toLocaleString(): flex?.ExtraAmount?.toLocaleString()}</p>
-                    <p className=" font-normal text-sm mb-4 " >more per person</p>
-                    <button disabled={flex?.AvailableCount === 0 ? true: false}
-                      onClick={handleSell.bind(this, "flex")} className={` ${flex?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GF" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[45px] rounded-xl w-full `} >{flex?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GF" ? "Continue With gSaver" : "Switch To gFlex"}</button>
+                    <p style={{ fontSize: "20px" }} className=" -mb-1 font-black text-xl " >+{selected?.RuleNumber.toLowerCase() === "savr" ? flex?.AmountDifference?.toLocaleString(): selected?.RuleNumber.toLowerCase() === "clsc" ? flex?.AdditionalAmount?.toLocaleString(): flex?.ExtraAmount?.toLocaleString()}</p>
+                    <p style={{ fontSize: "14px" }} className=" font-normal text-sm mb-4 " >more per person</p>
+                    <button disabled={flex?.AvailableCount === 0 ? true: false} style={{ fontSize: "16px" }}
+                      onClick={handleSell.bind(this, "flex")} className={` ${flex?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GF" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[55px] rounded-xl w-full `} >{flex?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GF" ? "Continue With gSaver" : "Switch To gFlex"}</button>
                   </div>
                 </div>
               </div>

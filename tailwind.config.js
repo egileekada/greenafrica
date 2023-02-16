@@ -9,7 +9,7 @@ module.exports = {
     // borderWidth: {
     //   DEFAULT: "1px",
     // },
-    fontFamily: {
+    fontFamily: { 
       body: ["Satoshi"],
       title: ["Satoshi"],
       header: ["Satoshi"],

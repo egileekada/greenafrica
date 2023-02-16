@@ -25,7 +25,7 @@ const PassengerDetailsItem = ({
   const [wcChecked, setWCChecked] = useState(false);
   const [vpChecked, setVPChecked] = useState(false);
   const [hpChecked, setHPChecked] = useState(false);
-  const [insChecked, setInsChecked] = useState(false);
+  const [insChecked, setInsChecked] = useState(true);
   const [INSCHARGE, setIINSCHARGE] = useState(0);
   const [activeSSRS, setActiveSSRs] = useState([]);
   const [activeTab, setActiveTab] = useState("");
@@ -286,7 +286,7 @@ const PassengerDetailsItem = ({
                   </div>
                   <p className=" font-bold text-[#261F5E] mt-4 " >Insurance</p>
                   <div className=" my-4 " > 
-                    <Checkbox checked={insChecked} onChange={onInsuranceChange}>
+                    <Checkbox checked={insChecked}  onChange={onInsuranceChange}>
                     <label className="check-label">
                       <p className="ml-2 text-[#26205E]">
                         Travel Insurance ( ₦{INSCHARGE.toLocaleString()})

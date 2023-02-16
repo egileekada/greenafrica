@@ -323,7 +323,7 @@ const ManageBookings = (props) => {
                 {bookingResponse?.Booking?.BookingContacts?.map((_contact) => {
                   return (
                     <>
-                      <div className=" flex gap-6 " >
+                      <div className=" grid grid-cols-3 gap-6 " >
                         <div className=" flex items-center " >
                           <div className=" w-[53px] h-[53px] bg-[#9E9BBF2B] flex justify-center items-center " >
                             <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">

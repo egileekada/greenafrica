@@ -304,7 +304,7 @@ const BookingTab = ({ type, promocode }) => {
                 role="button"
               />
               <div className="w-full mx-2 px-2 md:px-0">
-                <p className="mb-0 text-xs  font-semibold text-[#979797]">FROM</p>
+                <p className="mb-0 text-xs !font-medium  text-[#979797]">FROM</p>
                 <Select
                   ref={originSelect}
                   openMenuOnFocus={true}
@@ -352,7 +352,7 @@ const BookingTab = ({ type, promocode }) => {
                 onClick={() => forcusOrigin(destinationSelect)}
               />
               <div className="w-full mx-2 px-2 md:px-0">
-                <p className="mb-0  font-semibold text-xs text-[#979797]">TO</p>
+                <p className="mb-0 !font-medium  text-xs text-[#979797]">TO</p>
                 <Select
                   ref={destinationSelect}
                   openMenuOnFocus={true}
@@ -402,14 +402,15 @@ const BookingTab = ({ type, promocode }) => {
                   />
                 </svg>
               </span>
-              <div className="flex-auto px-4 md:px-0">
-                <p className="mb-1 text-xs text-[#979797] font-semibold">DEPARTING</p>
+              <div className="flex-auto px-4 md:px-0 !text-base ">
+                <p className="mb-1 text-xs text-[#979797] font-medium">DEPARTING</p>
                 <DatePicker
                   id="departure"
                   clearIcon={null}
                   calendarIcon={null}
                   tileContent={hasContent}
-                  format={"d/M/y"}
+                  format={"d-M-y"}
+                  className=" font-title "
                   name="departure"
                   // onChange={(value) => console.log(value)}
                   onChange={(value) => setDepartureDateFormik(value)}
@@ -422,7 +423,7 @@ const BookingTab = ({ type, promocode }) => {
 
             {type && (
               // <CustomDatePicker value={setReturnDateFormik} title="RETURNING" />
-              <div className="booking__wrapper flex items-end">
+              <div className="booking__wrapper items-center w-full lg:w-[180px] justify-center h-[55px] hover:border-primary-main flex">
                 <span className="mr-2 ml-1 pb-1 hidden md:block">
                   <svg
                     width="26"
@@ -442,8 +443,8 @@ const BookingTab = ({ type, promocode }) => {
                   </svg>
                 </span>
 
-                <div className="flex-auto px-4 md:px-0">
-                  <p className="mb-1 text-xs text-[#979797] font-semibold">RETURNING</p>
+                <div className="flex-auto px-4 md:px-0 !text-base ">
+                  <p className="mb-1 text-xs text-[#979797] font-medium">RETURNING</p>
                   <DatePicker
                     id="return"
                     clearIcon={null}
@@ -452,7 +453,7 @@ const BookingTab = ({ type, promocode }) => {
                     className="datepicker border-0 w-full font-body"
                     minDate={new Date()}
                     name="return"
-                    format={"d/M/y"}
+                    format={"d-M-y"}
                     onChange={(value) => formik.setFieldValue("return", value)}
                     value={formik.values.return}
                     onKeyDown={(e) => e.preventDefault()}
@@ -469,7 +470,7 @@ const BookingTab = ({ type, promocode }) => {
               data-modal-toggle="defaultModal"
             >
               <div className="px-4 md:px-0">
-                <p className="mb-1 text-xs md:mx-4 text-[#979797]">
+                <p className="mb-1 text-xs md:mx-4 text-[#979797] font-medium">
                   PASSENGERS
                 </p>
                 <div
