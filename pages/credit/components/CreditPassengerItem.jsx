@@ -21,15 +21,15 @@ const CreditPassengerItem = ({
   const [wcPreSelected, setWCPreSelected] = useState(false);
   const [vpPreSelected, setVPPreSelected] = useState(false);
   const [hpPreSelected, setHPPreSelected] = useState(false);
-  const { bookingResponse } = useSelector(sessionSelector);
+  const { bookingResponse, boookingState } = useSelector(sessionSelector);
   const { newBookingSSRs, bookingSessionSSRs, goDifference } =
     useSelector(creditSelector);
   const dispatch = useDispatch();
 
   const _Arrival =
-    bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
+    boookingState?.Journeys[0]?.Segments[0]?.ArrivalStation;
   const _Departure =
-    bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation;
+    boookingState?.Journeys[0]?.Segments[0]?.DepartureStation;
 
   useEffect(() => {
     async function mapSessionSSRs() {

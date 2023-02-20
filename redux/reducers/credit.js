@@ -11,7 +11,6 @@ import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 import { GetSSRAvailabilityForBooking } from "services/bookingService";
 
-
 const initialState = {
   creditPnr: null,
   creditGoTrip: null,
@@ -485,6 +484,8 @@ export const fetchFlightAvailability =
       availabilityRequest.push(_departureRequest);
       availabilityRequest.push(_returnRequest);
     } else {
+      console.log("csaliiing fetchtrip ");
+
       let _singleAvailabilityRequest = {
         departureStation: departureStation,
         arrivalStation: arrivalStation,
@@ -833,93 +834,56 @@ export const FetchSSRAvailability = () => async (dispatch, getState) => {
   let _segmentKeyList = [];
 
   if (_bookingResponse) {
-    const JOURNEYS = _bookingResponse?.Booking?.Journeys;
-
-    if (JOURNEYS && JOURNEYS?.length > 0) {
-      if (currentBooking?.goTrip || currentBooking?.returnTrip) {
-        currentBooking?.goTrip &&
-          _segmentKeyList.push({
-            carrierCode:
-              currentBooking?.goTrip?.segment?.FlightDesignator?.CarrierCode,
-            flightNumber:
-              currentBooking?.goTrip?.segment?.FlightDesignator?.FlightNumber,
-            opSuffix: "",
-            departureDate: currentBooking?.goTrip?.segment?.STD,
-            departureDateSpecified: true,
-            arrivalStation: currentBooking?.goTrip?.segment?.ArrivalStation,
-            departureStation: currentBooking?.goTrip?.segment?.DepartureStation,
-          });
-        currentBooking?.returnTrip &&
-          _segmentKeyList.push({
-            carrierCode:
-              currentBooking?.returnTrip?.segment?.FlightDesignator
-                ?.CarrierCode,
-            flightNumber:
-              currentBooking?.returnTrip?.segment?.FlightDesignator
-                ?.FlightNumber,
-            opSuffix: "",
-            departureDate: currentBooking?.returnTrip?.segment?.STD,
-            departureDateSpecified: true,
-            arrivalStation: currentBooking?.returnTrip?.segment?.ArrivalStation,
-            departureStation:
-              currentBooking?.returnTrip?.segment?.DepartureStation,
-          });
-      } else {
-        JOURNEYS.map((_sessionJourney) => {
-          let newObj = {
-            carrierCode:
-              _sessionJourney?.Segments[0]?.FlightDesignator?.CarrierCode,
-            flightNumber:
-              _sessionJourney?.Segments[0]?.FlightDesignator?.FlightNumber,
-            opSuffix: "",
-            departureDate: _sessionJourney?.Segments[0]?.STD,
-            departureDateSpecified: true,
-            arrivalStation: _sessionJourney?.Segments[0]?.ArrivalStation,
-            departureStation: _sessionJourney?.Segments[0]?.DepartureStation,
-          };
-
-          _segmentKeyList.push(newObj);
+    if (currentBooking?.goTrip || currentBooking?.returnTrip) {
+      currentBooking?.goTrip &&
+        _segmentKeyList.push({
+          carrierCode:
+            currentBooking?.goTrip?.segment?.FlightDesignator?.CarrierCode,
+          flightNumber:
+            currentBooking?.goTrip?.segment?.FlightDesignator?.FlightNumber,
+          opSuffix: "",
+          departureDate: currentBooking?.goTrip?.segment?.STD,
+          departureDateSpecified: true,
+          arrivalStation: currentBooking?.goTrip?.segment?.ArrivalStation,
+          departureStation: currentBooking?.goTrip?.segment?.DepartureStation,
         });
-      }
+    }
 
-      let requestPayload = {
-        header: {
-          signature: currentSession?.signature,
-          messageContractVersion: "",
-          enableExceptionStackTrace: true,
-          contractVersion: 0,
-        },
-        getSsrAvailabilityForBookingRequestDto: {
-          getSsrAvailabilityForBookingRequest: {
-            ssrAvailabilityForBookingRequest: {
-              segmentKeyList: [..._segmentKeyList],
-              PassengerNumberList: [0],
-              inventoryControlled: true,
-              inventoryControlledSpecified: true,
-              nonInventoryControlled: true,
-              nonInventoryControlledSpecified: true,
-              seatDependent: true,
-              seatDependentSpecified: true,
-              nonSeatDependent: true,
-              nonSeatDependentSpecified: true,
-              currencyCode: "NGN",
-              ssrAvailabilityMode: 0,
-              ssrAvailabilityModeSpecified: true,
-              feePricingMode: 0,
-              feePricingModeSpecified: true,
-            },
+    let requestPayload = {
+      header: {
+        signature: currentSession?.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: true,
+        contractVersion: 0,
+      },
+      getSsrAvailabilityForBookingRequestDto: {
+        getSsrAvailabilityForBookingRequest: {
+          ssrAvailabilityForBookingRequest: {
+            segmentKeyList: [..._segmentKeyList],
+            PassengerNumberList: [0],
+            inventoryControlled: true,
+            inventoryControlledSpecified: true,
+            nonInventoryControlled: true,
+            nonInventoryControlledSpecified: true,
+            seatDependent: true,
+            seatDependentSpecified: true,
+            nonSeatDependent: true,
+            nonSeatDependentSpecified: true,
+            currencyCode: "NGN",
+            ssrAvailabilityMode: 0,
+            ssrAvailabilityModeSpecified: true,
+            feePricingMode: 0,
+            feePricingModeSpecified: true,
           },
         },
-      };
-      try {
-        const SSRAvailabilityResponse = await GetSSRAvailabilityForBooking(
-          requestPayload
-        );
-        await dispatch(
-          setSSRAvailabilityResponse(SSRAvailabilityResponse.data)
-        );
-      } catch (err) {}
-    }
+      },
+    };
+    try {
+      const SSRAvailabilityResponse = await GetSSRAvailabilityForBooking(
+        requestPayload
+      );
+      await dispatch(setSSRAvailabilityResponse(SSRAvailabilityResponse.data));
+    } catch (err) {}
   } else {
     notification.error({
       message: "Error",

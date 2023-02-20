@@ -147,31 +147,78 @@ const CreditTab = ({ type, promocode }) => {
     },
     enableReinitialize: false,
     onSubmit: async (values) => {
-      const _newDate = new Date(values?.departure);
-      const _check = isAfter(_newDate, new Date());
-      if (_check) {
-        const flightRequest = {
-          departureStation: values.origin.value,
-          arrivalStation: values.destination.value,
-          isRoundTrip: false,
-          totalPaxCount: bookingResponse?.Booking?.Passengers?.length,
-          minimumFarePrice: 0,
-          taxAmount: 0,
-          beginDate: format(_newDate, "yyyy-MM-dd"),
-          endDate: format(_newDate, "yyyy-MM-dd"),
-          currentDate: new Date(),
-        };
-        dispatch(saveCreditTripParams(flightRequest));
-        dispatch(fetchLowFareAvailability(flightRequest));
-        dispatch(fetchFlightAvailability(flightRequest));
+      if (isRoundTrip) {
+        // Round Trip
+        const departureDate = new Date(values?.departure);
+        const returnDate = new Date(values?.return);
+        const check = isBefore(departureDate, returnDate);
+        if (check) {
+          const tripRequest = {
+            departureStation: values.origin.value,
+            arrivalStation: values.destination.value,
+            isRoundTrip,
+            totalPaxCount: bookingResponse?.Booking?.Passengers?.length,
+            minimumFarePrice: 0,
+            taxAmount: 0,
+            currentDate: new Date(),
+            beginDate: format(departureDate, "yyyy-MM-dd"),
+            endDate: format(departureDate, "yyyy-MM-dd"),
+          };
+          const returnRequest = {
+            departureStation: values.destination.value,
+            arrivalStation: values.origin.value,
+            isRoundTrip,
+            totalPaxCount: bookingResponse?.Booking?.Passengers?.length,
+            minimumFarePrice: 0,
+            taxAmount: 0,
+            currentDate: new Date(),
+            beginDate: format(departureDate, "yyyy-MM-dd"),
+            endDate: format(departureDate, "yyyy-MM-dd"),
+            returnDate: format(returnDate, "yyyy-MM-dd"),
+          };
+
+          dispatch(saveCreditTripParams(tripRequest));
+          dispatch(saveCreditReturnParams(returnRequest));
+
+          dispatch(fetchLowFareAvailability(tripRequest));
+          dispatch(returnLowFareAvailability(returnRequest));
+
+          dispatch(fetchFlightAvailability(tripRequest, returnRequest));
+        } else {
+          notification.error({
+            message: "Error",
+            description: "Return date must be after departure date",
+          });
+        }
       } else {
-        notification.error({
-          message: "Error",
-          description: "Please select a valid date",
-        });
+        // One Way
+        const _newDate = new Date(values?.departure);
+        const _check = isAfter(_newDate, new Date());
+        if (_check) {
+          const flightRequest = {
+            departureStation: values.origin.value,
+            arrivalStation: values.destination.value,
+            isRoundTrip,
+            totalPaxCount: bookingResponse?.Booking?.Passengers?.length,
+            minimumFarePrice: 0,
+            taxAmount: 0,
+            beginDate: format(_newDate, "yyyy-MM-dd"),
+            endDate: format(_newDate, "yyyy-MM-dd"),
+            currentDate: new Date(),
+          };
+          dispatch(saveCreditTripParams(flightRequest));
+          dispatch(fetchLowFareAvailability(flightRequest));
+          dispatch(fetchFlightAvailability(flightRequest));
+        } else {
+          notification.error({
+            message: "Error",
+            description: "Please select a valid date",
+          });
+        }
+        dispatch(setCreditGoTrip(null));
+        dispatch(setCreditReturnTrip(null));
+        // One Way
       }
-      dispatch(setCreditGoTrip(null));
-      dispatch(setCreditReturnTrip(null));
     },
   });
 

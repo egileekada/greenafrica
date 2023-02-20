@@ -33,6 +33,8 @@ import {
 import PageFares from "./components/PageFares";
 import LogoIcon from "assets/svgs/logo.svg";
 import Spinner from "components/Spinner";
+import { useGetAccountByReferenceMutation } from "services/bookingApi";
+import { notification } from "antd";
 
 const ManageBookings = (props) => {
   const router = useRouter();
@@ -45,8 +47,9 @@ const ManageBookings = (props) => {
   const { tripParams, returnParams, managedPnrWithoutPayment } =
     useSelector(bookingSelector);
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
-  const { data: paymentConfigs, isLoading: paymentConfigLoading } =
-    useGetPaymentConfigsQuery();
+  const { data: paymentConfigs } = useGetPaymentConfigsQuery();
+  const [getAccountByReference] = useGetAccountByReferenceMutation();
+
   const { bookingId } = router.query;
 
   const ScrollToTop = () => {
@@ -74,6 +77,46 @@ const ManageBookings = (props) => {
         setStatePnr(pnr);
         dispatch(setManageBookingPnr(pnr));
         dispatch(GetBookingDetailsWithPNR({ pnr: pnr }));
+
+        const payload = {
+          header: {
+            signature: signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: true,
+            contractVersion: 0,
+          },
+          getAccountByReferenceRequestDto: {
+            getAccountByReferenceReqData: {
+              accountReference: pnr,
+              currencyCode: "NGN",
+              accountHolderType: 0,
+              accountHolderTypeSpecified: true,
+            },
+          },
+        };
+
+        getAccountByReference(payload)
+          .unwrap()
+          .then((data) => {
+            const _availableCredit = parseInt(data?.Account?.AvailableCredits);
+            if (_availableCredit > 0) {
+              router.push(
+                {
+                  pathname: "/credit/home",
+                  query: {
+                    pnr: pnr,
+                  },
+                },
+                "/credit/home"
+              );
+            }
+          })
+          .catch(() => {
+            notification.error({
+              message: "Error",
+              description: "Getting acount details failed",
+            });
+          });
       }
     }
   }
@@ -381,7 +424,7 @@ const ManageBookings = (props) => {
             <PageFares />
           </>
         ) : (
-          <p className="errorText">No Journeys</p>
+          <p className="errorText p-4">No Journeys</p>
         )}
       </>
     );

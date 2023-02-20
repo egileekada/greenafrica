@@ -329,8 +329,15 @@ export const bookingApi = createApi({
             enableExceptionStackTrace: false,
             contractVersion: 0,
           },
-           updateContactsRequestDto: payload.updateContactsRequestDto
+          updateContactsRequestDto: payload.updateContactsRequestDto,
         },
+      }),
+    }),
+    getAccountByReference: builder.mutation({
+      query: (payload) => ({
+        url: `/Account/GetAccountByReference`,
+        method: "POST",
+        body: payload,
       }),
     }),
   }),
@@ -352,5 +359,6 @@ export const {
   useCancelSSRMutation,
   useResellSSRMutation,
   useUpdatePassengerInfoMutation,
-  useUpdateContactInfoMutation
+  useUpdateContactInfoMutation,
+  useGetAccountByReferenceMutation,
 } = bookingApi;

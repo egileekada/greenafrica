@@ -31,6 +31,8 @@ import LogoIcon from "assets/svgs/logo.svg";
 
 import CreditPassengerItem from "./components/CreditPassengerItem";
 
+import { FetchStateFromServer } from "redux/reducers/session";
+
 const PassengerDetails = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -41,7 +43,7 @@ const PassengerDetails = () => {
   const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
   const NEW_SSRS = ["x20", "x15", "x10", "vprd", "wchr", "hprd"];
 
-  const { signature, bookingResponseLoading, bookingResponse } =
+  const { signature, sessionStateLoading, bookingState } =
     useSelector(sessionSelector);
 
   const {
@@ -82,7 +84,8 @@ const PassengerDetails = () => {
         const payload = {
           pnr: creditPnr,
         };
-        dispatch(GetBookingDetailsWithPNR(payload));
+        // dispatch(GetBookingDetailsWithPNR(payload));
+        dispatch(FetchStateFromServer());
       }
     }
     fetchBookingDetails();
@@ -95,8 +98,8 @@ const PassengerDetails = () => {
       }
 
       function fiilExistingSSRs() {
-        if (bookingResponse && bookingResponse?.Booking) {
-          const _TRIPS = bookingResponse?.Booking?.Journeys;
+        if (bookingState) {
+          const _TRIPS = bookingState?.Journeys;
           if (_TRIPS?.length > 0) {
             if (goDifference?.length > 0 || returnDifference?.length > 0) {
               // Do Nothing Gnihton Od
@@ -205,7 +208,7 @@ const PassengerDetails = () => {
       }
     }
     setExisitingSSRS();
-  }, [bookingResponse]);
+  }, [bookingState]);
 
   const ProceedToSellSSR = async () => {
     if (newBookingSSRs.length > 0 || newBookingReturnSSRs.length > 0) {
@@ -220,9 +223,9 @@ const PassengerDetails = () => {
 
       if (Extras?.length > 0) {
         const _Arrival =
-          bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.ArrivalStation;
+          bookingState?.Journeys[0]?.Segments[0]?.ArrivalStation;
         const _Departure =
-          bookingResponse?.Booking?.Journeys[0]?.Segments[0]?.DepartureStation;
+          bookingState?.Journeys[0]?.Segments[0]?.DepartureStation;
         const existingReturnSSRs = [...newBookingReturnSSRs];
         Extras.map((_item) => {
           const newObj = {
@@ -254,7 +257,7 @@ const PassengerDetails = () => {
           }
         }
 
-        if (bookingResponse?.Booking?.Journeys?.length > 1) {
+        if (bookingState?.Journeys?.length > 1) {
           if (bookingSessionReturnSSRs.length > 0) {
             if (returnParams && parseInt(returnParams?.LiftStatus) === 0) {
               newBookingReturnSSRsPayload = _extractUniqueDiffrenceById(
@@ -312,7 +315,7 @@ const PassengerDetails = () => {
         );
       }
     } else {
-      router.back();
+      router.push(`/credit/payment`);
     }
   };
 
@@ -321,7 +324,7 @@ const PassengerDetails = () => {
     dispatch(setReturnDifference(returnPayload));
 
     const segmentSSRRequests = [];
-    const _bookingResponse = bookingResponse;
+    const _bookingState = bookingState;
 
     let JourneyOneSSRs = [];
     let JourneyTwoSSRs = [];
@@ -376,8 +379,8 @@ const PassengerDetails = () => {
         })
       : null;
 
-    if (_bookingResponse) {
-      const JOURNEYS = _bookingResponse?.Booking?.Journeys;
+    if (_bookingState) {
+      const JOURNEYS = _bookingState?.Journeys;
       JOURNEYS.map((_journey, _index) => {
         let _segment = {
           flightDesignator: {
@@ -425,21 +428,21 @@ const PassengerDetails = () => {
       <section className="w-full pt-20 lg:pt-0">
         <section className="ga__section bg-normal">
           <div className="ga__section__main standalone">
-            {bookingResponseLoading || SSRAvailabilityLoading ? (
+            {sessionStateLoading || SSRAvailabilityLoading ? (
               <>
                 <SkeletonLoader />
                 <SkeletonLoader />
                 <SkeletonLoader />
               </>
-            ) : bookingResponse && bookingResponse?.Booking ? (
+            ) : bookingState  ? (
               <>
                 <h2 className="text-primary-main font-extrabold text-2xl mb-8">
                   Additional Services{" "}
                 </h2>
 
                 <section className="flex flex-col rounded-xl pb-1 bg-transparent">
-                  {bookingResponse?.Booking?.Passengers.length > 0 ? (
-                    bookingResponse?.Booking?.Passengers.map((_sesPax) => {
+                  {bookingState?.Passengers.length > 0 ? (
+                    bookingState?.Passengers.map((_sesPax) => {
                       return (
                         <>
                           <CreditPassengerItem
@@ -456,7 +459,7 @@ const PassengerDetails = () => {
                     <p className="errorText mb-8">No Passenger in Session</p>
                   )}
 
-                  {bookingResponse?.Booking?.Passengers.length > 0 && (
+                  {bookingState?.Passengers.length > 0 && (
                     <div className="flex items-center">
                       <button
                         onClick={() => router.back()}

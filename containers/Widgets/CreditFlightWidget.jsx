@@ -11,16 +11,6 @@ const CreditFlightWidget = () => {
   const [showPromo, setShowPromo] = useState(false);
   const [saveStatus, setSaveStatus] = useState(false);
 
-  const { bookingResponse } = useSelector(sessionSelector);
-
-  useEffect(() => {
-    if (bookingResponse) {
-      if (bookingResponse?.Booking?.Journeys.length > 0) {
-        setActiveTab(2);
-      }
-    }
-  }, [bookingResponse]);
-
   const promo = useRef(null);
 
   const saveVal = () => {
@@ -49,7 +39,7 @@ const CreditFlightWidget = () => {
             One Way
           </button>
 
-          {bookingResponse && bookingResponse?.Booking?.Journeys.length > 0 && (
+          {/* {bookingResponse && bookingResponse?.Booking?.Journeys.length > 0 && (
             <button
               onClick={() => setActiveTab(2)}
               className={`btn ${
@@ -59,7 +49,7 @@ const CreditFlightWidget = () => {
             >
               Round Trip
             </button>
-          )}
+          )} */}
         </div>
 
         <div className="flex">
@@ -108,9 +98,9 @@ const CreditFlightWidget = () => {
       </div>
       <section className="ga__desktop__filter__content px-5 py-[18px]">
         {activeTab === 1 && <CreditTab promocode={promocode} />}
-        {activeTab === 2 && (
+        {/* {activeTab === 2 && (
           <CreditTab type={"round_trip"} promocode={promocode} />
-        )}
+        )} */}
       </section>
     </section>
   );

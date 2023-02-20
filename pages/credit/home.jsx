@@ -31,6 +31,7 @@ import {
   useGetLocationsQuery,
   useGetPaymentConfigsQuery,
 } from "services/widgetApi.js";
+import { useGetAccountByReferenceMutation } from "services/bookingApi";
 import PageFares from "./components/PageFares";
 import LogoIcon from "assets/svgs/logo.svg";
 import Spinner from "components/Spinner";
@@ -39,6 +40,7 @@ const CreditHome = (props) => {
   const router = useRouter();
   const [statePNR, setStatePnr] = useState("");
   const [checkedIn, setCheckedIn] = useState(false);
+  const [availableCredit, setAvailableCredit] = useState(0);
   const [isCredit, setIsCredit] = useState(false);
   const [creditPayment, setCreditPayment] = useState(null);
 
@@ -51,6 +53,7 @@ const CreditHome = (props) => {
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: paymentConfigs, isLoading: paymentConfigLoading } =
     useGetPaymentConfigsQuery();
+  const [getAccountByReference] = useGetAccountByReferenceMutation();
 
   const { bookingId } = router.query;
 
@@ -89,9 +92,40 @@ const CreditHome = (props) => {
       if (bookingId !== undefined) {
         fetchBookingDetails(decryptPnr(bookingId));
       } else if (!props.pnr) {
-        router.push("/credit");
+        router.push("/bookings");
       } else {
         fetchBookingDetails(props.pnr);
+        const payload = {
+          header: {
+            signature: signature,
+            messageContractVersion: "",
+            enableExceptionStackTrace: true,
+            contractVersion: 0,
+          },
+          getAccountByReferenceRequestDto: {
+            getAccountByReferenceReqData: {
+              accountReference: props.pnr,
+              currencyCode: "NGN",
+              accountHolderType: 0,
+              accountHolderTypeSpecified: true,
+            },
+          },
+        };
+
+        getAccountByReference(payload)
+          .unwrap()
+          .then((data) => {
+            const _availableCredit = parseInt(data?.Account?.AvailableCredits);
+            if (_availableCredit > 0) {
+              setAvailableCredit(parseInt(data?.Account?.AvailableCredits));
+            }
+          })
+          .catch(() => {
+            notification.error({
+              message: "Error",
+              description: "Getting acount details failed",
+            });
+          });
       }
     }
   }, [router]);
@@ -664,13 +698,13 @@ const CreditHome = (props) => {
             </nav>
           )}
 
-        {creditPayment && (
+        {availableCredit && availableCredit > 0 && (
           <nav className="manage-booking-bar">
             <p className="font-display text-base text-primary-main">
               The amount on your credit shell is:
             </p>
             <button className="btn btn-primary">
-              ₦{Math.abs(creditPayment)?.toLocaleString()}
+              ₦{Math.abs(availableCredit)?.toLocaleString()}
             </button>
           </nav>
         )}

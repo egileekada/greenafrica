@@ -27,10 +27,6 @@ const ManageUpdateItenary = () => {
     creditFlightAvailabilityResponse,
   } = useSelector(creditSelector);
 
-  // useEffect(() => {
-  //   dispatch(setCreditGoTrip(null));
-  //   dispatch(setCreditReturnTrip(null));
-  // }, []);
 
   const proceedToTripView = () => {
     if (creditGoTrip?.journey || creditReturnTrip?.journey) {

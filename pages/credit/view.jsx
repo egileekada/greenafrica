@@ -301,7 +301,6 @@ const TripView = () => {
     ResellNewJourney(requestPayload)
       .unwrap()
       .then((data) => {
-        console.log("credit shell journey sold", data);
         router.push("/credit/services");
       })
       .catch((err) => {

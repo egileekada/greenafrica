@@ -52,11 +52,16 @@ export const widgetApi = createApi({
         body,
       }),
     }),
+    checkCreditShell: builder.query({
+      query: (payload) =>
+        `/payments/verify/${encodeURIComponent(
+          payload.reference
+        )}?email=${encodeURIComponent(
+          payload.email
+        )}&creditShell=true&signature=${encodeURIComponent(payload.signature)}`,
+    }),
   }),
 });
-
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 
 export const {
   useGetDestinationQuery,
@@ -71,5 +76,6 @@ export const {
   useInitiatePaymentMutation,
   useSendBoardingPassMutation,
   useVerifyPaymentQuery,
-  useGetPaymentConfigsQuery
+  useGetPaymentConfigsQuery,
+  useCheckCreditShellQuery,
 } = widgetApi;
