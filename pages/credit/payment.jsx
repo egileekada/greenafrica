@@ -4,8 +4,9 @@ import BaseLayout from "layouts/Base";
 import {
   paymentSelector,
   FetchPaymentGateways,
-  VerifyManageBookingPayment,
+  VerifyCreditShellPayment,
 } from "redux/reducers/payment";
+import { creditSelector } from "redux/reducers/credit";
 import {
   retrieveBookingFromState,
   sessionSelector,
@@ -15,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import SkeletonLoader from "components/SkeletonLoader";
 import PaymentMark from "assets/svgs/payment-mark.svg";
 import PaymentOutline from "assets/svgs/payment-outline.svg";
-
 import { notification } from "antd";
 import { useRouter } from "next/router";
 import { usePaystackPayment } from "react-paystack";
@@ -46,11 +46,16 @@ const CreditPayment = () => {
   const [creditModal, setCreditModal] = useState(false);
   const [creditQuery, setCreditQuery] = useState(null);
   const [totalFare, setTotalFare] = useState();
+  const [initialValues, setInitialValues] = useState({
+    pnr: "",
+    email: "",
+  });
 
   const { bookingState, bookingCommitLoading, signature } =
     useSelector(sessionSelector);
   const { gatewaysLoading, gatewaysResponse, verifyManageBookingLoading } =
     useSelector(paymentSelector);
+  const { creditPnr } = useSelector(creditSelector);
 
   const { data, isLoading } = useCheckCreditShellQuery(creditQuery, {
     skip: creditQuery ? false : true,
@@ -75,7 +80,7 @@ const CreditPayment = () => {
       reference?.message.toLowerCase() === "approved"
     ) {
       dispatch(
-        VerifyManageBookingPayment({
+        VerifyCreditShellPayment({
           ref: reference?.reference,
         })
       );
@@ -86,16 +91,24 @@ const CreditPayment = () => {
     console.log("closed");
   };
 
-  useEffect(
-    (data) => {
-      console.log("data outside", data);
+  useEffect(() => {
+    if (data) {
+      const isBalanceDue = data?.data?.isBalanceDue;
+      const _balanceDue = data?.data?.balanceDue;
 
-      if (data) {
-        console.log("data inside", data);
+      if (isBalanceDue && _balanceDue > 0) {
+        setTotalFare(data?.data?.balanceDue);
+      } else {
+        router.push(`/credit/confirm?pnr=${creditPnr}`);
       }
-    },
-    [data]
-  );
+      setInitialValues({
+        pnr: "",
+        email: "",
+      });
+      setCreditQuery(null);
+      setCreditModal(false);
+    }
+  }, [data]);
 
   useEffect(() => {
     async function fetchBookingDetails() {
@@ -184,7 +197,7 @@ const CreditPayment = () => {
       handleFlutterPayment({
         callback: (response) => {
           dispatch(
-            VerifyManageBookingPayment({
+            VerifyCreditShellPayment({
               ref: response?.tx_ref,
             })
           );
@@ -212,11 +225,9 @@ const CreditPayment = () => {
   };
 
   const formik = useFormik({
-    initialValues: {
-      pnr: "",
-      email: "",
-    },
+    initialValues,
     validationSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       formik.setSubmitting(true);
 

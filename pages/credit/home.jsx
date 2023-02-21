@@ -249,6 +249,8 @@ const CreditHome = (props) => {
 
   const PageCTA = () => {
     const _disabled = bookingResponse?.Booking?.Journeys?.length === 0;
+    const _journeyExists =
+      parseInt(bookingResponse?.Booking?.Journeys?.length) > 1;
 
     return (
       <section className={`flex flex-wrap md:flex-nowrap mx-6`}>
@@ -277,13 +279,17 @@ const CreditHome = (props) => {
         <button
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
             isCredit ? "" : "pointer-events-none opacity-50 cursor-not-allowed"
-          }`}
+          } ${
+            _journeyExists
+              ? "pointer-events-none opacity-50 cursor-not-allowed"
+              : ""
+          }  `}
           onClick={handleAddFlight}
         >
           Add Flight
         </button>
 
-        <button
+        {/* <button
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
             checkedIn ||
             parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0 ||
@@ -315,7 +321,7 @@ const CreditHome = (props) => {
           >
             Seat Management
           </a>
-        </Link>
+        </Link> */}
       </section>
     );
   };
@@ -665,7 +671,7 @@ const CreditHome = (props) => {
   };
 
   const handlePayment = () => {
-    router.push("/bookings/payment");
+    router.push("/credit/payment");
   };
 
   return (

@@ -7,7 +7,8 @@ import Fare from "containers/IbeSummary/Fare";
 import SummaryDetails from "containers/IbeSummary/SummaryDetails";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  GetBookingDetails,
+  // GetBookingDetails,
+  retrieveBooking,
   setSelectedSessionFare,
   setSelectedSessionJourney,
   sessionSelector,
@@ -25,16 +26,14 @@ import {
 } from "services/widgetApi.js";
 import SkeletonLoader from "components/SkeletonLoader";
 
-const TripConfirm = () => {
+const TripConfirm = (props) => {
   const router = useRouter();
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   let componentRef = useRef();
   const dispatch = useDispatch();
-  // const [segmentInfo, setSegmentInfo] = useState(null);
   const [isRoundTrip, setIsRoundTrip] = useState(false);
-
-  const { bookingResponseLoading, bookingResponse, signature } =
+  const { bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
 
   const ScrollToTop = () => {
@@ -48,13 +47,19 @@ const TripConfirm = () => {
     ScrollToTop();
   }, []);
 
-  // Don't re work - it currently breaks code
   useEffect(() => {
     async function fetchBookingDetails() {
-      dispatch(GetBookingDetails());
+      if (router.isReady) {
+        if (props.pnr) {
+          // dispatch(GetBookingDetails())
+          dispatch(retrieveBooking({
+            id: props.pnr
+          }));
+        }
+      }
     }
     fetchBookingDetails();
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (bookingResponse) {
@@ -350,3 +355,11 @@ const TripConfirm = () => {
 };
 
 export default TripConfirm;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      pnr: context.query.pnr ? context.query.pnr : "",
+    },
+  };
+}
