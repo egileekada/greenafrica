@@ -7,7 +7,8 @@ import Fare from "containers/IbeSummary/Fare";
 import SummaryDetails from "containers/IbeSummary/SummaryDetails";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  GetBookingDetails,
+  // GetBookingDetails,
+  retrieveBooking,
   setSelectedSessionFare,
   setSelectedSessionJourney,
   sessionSelector,
@@ -16,8 +17,7 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
 import { encryptPnr } from "lib/utils";
-import { atcb_action } from "add-to-calendar-button";
-import "add-to-calendar-button/assets/css/atcb.css";
+import ReactToPrint from "react-to-print";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
 import {
@@ -26,16 +26,14 @@ import {
 } from "services/widgetApi.js";
 import SkeletonLoader from "components/SkeletonLoader";
 
-const TripConfirm = () => {
+const TripConfirm = (props) => {
   const router = useRouter();
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: products, isLoading: productsLoading } = useGetProductsQuery();
   let componentRef = useRef();
   const dispatch = useDispatch();
-  // const [segmentInfo, setSegmentInfo] = useState(null);
   const [isRoundTrip, setIsRoundTrip] = useState(false);
-
-  const { bookingResponseLoading, bookingResponse, signature } =
+  const { bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
 
   const ScrollToTop = () => {
@@ -49,13 +47,19 @@ const TripConfirm = () => {
     ScrollToTop();
   }, []);
 
-  // Don't re work - it currently breaks code
   useEffect(() => {
     async function fetchBookingDetails() {
-      dispatch(GetBookingDetails());
+      if (router.isReady) {
+        if (props.pnr) {
+          // dispatch(GetBookingDetails())
+          dispatch(retrieveBooking({
+            id: props.pnr
+          }));
+        }
+      }
     }
     fetchBookingDetails();
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (bookingResponse) {
@@ -267,41 +271,6 @@ const TripConfirm = () => {
     );
   };
 
-  // Generate add booking to calendar data
-  const myData = [];
-
-  bookingResponse?.Booking?.Journeys.forEach((journey) => {
-    const data = {
-      name: `Flight to ${
-        !locationLoading &&
-        resolveAbbreviation(journey.Segments[0].ArrivalStation)
-      } (${journey.Segments[0].FlightDesignator?.CarrierCode} ${
-        journey.Segments[0].FlightDesignator?.FlightNumber
-      })`,
-      description: `Green Africa flight ${
-        journey.Segments[0].FlightDesignator?.CarrierCode
-      } ${journey.Segments[0].FlightDesignator?.FlightNumber} | ${
-        !locationLoading &&
-        resolveAbbreviation(journey.Segments[0].DepartureStation)
-      } (${journey.Segments[0].DepartureStation}) ${format(
-        new Date(journey.Segments[0]?.STD),
-        "hh:mm bbb"
-      )} (local time) - ${
-        !locationLoading &&
-        resolveAbbreviation(journey.Segments[0].ArrivalStation)
-      } (${journey.Segments[0].ArrivalStation}) ${format(
-        new Date(journey.Segments[0]?.STA),
-        "hh:mm bbb"
-      )} (local time)
-        
-      Booking number: ${bookingResponse?.Booking?.RecordLocator}`,
-      startDate: format(new Date(journey.Segments[0]?.STD), "yyyy-MM-dd"),
-      startTime: format(new Date(journey.Segments[0]?.STD), "HH:mm"),
-      endTime: format(new Date(journey.Segments[0]?.STA), "HH:mm"),
-    };
-    myData.push(data);
-  });
-
   return (
     <BaseLayout>
       <nav className="top__bar logo-holder">
@@ -339,26 +308,6 @@ const TripConfirm = () => {
 
                     {/* CTA */}
                     <section className="flex  flex-wrap md:flex-nowrap items-center px-6 lg:px-12">
-                      <button
-                        className="btn btn-primary font-title block h-full mb-3 md:mb-0 md:mr-3"
-                        onClick={() =>
-                          atcb_action({
-                            name: "name",
-                            dates: myData,
-                            options: [
-                              "Apple",
-                              "Google",
-                              "iCal",
-                              "Microsoft365",
-                              "Outlook.com",
-                              "Yahoo",
-                            ],
-                            iCalFileName: "Reminder-Event",
-                          })
-                        }
-                      >
-                        Add to Calendar
-                      </button>
                       <Link
                         href={`/bookings/home?bookingId=${encryptPnr(
                           bookingResponse?.Booking?.RecordLocator
@@ -406,3 +355,11 @@ const TripConfirm = () => {
 };
 
 export default TripConfirm;
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      pnr: context.query.pnr ? context.query.pnr : "",
+    },
+  };
+}

@@ -655,7 +655,7 @@ const PageFares = () => {
         ) : (
           <div className="ibe__sidebar__box">
             <div className="ibe__sidebar__empty h-[187px]">
-              <p>No Journey</p>
+              <p>No journey  on this booking record</p>
             </div>
           </div>
         )}

@@ -8,19 +8,20 @@ import FlightIcon from "assets/svgs/FlightTwo.svg";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  bookingSelector,
+  creditSelector,
   fetchLowFareAvailability,
   fetchFlightAvailability,
-  setTripParams,
-  setGoTrip,
-} from "redux/reducers/booking";
-
+  saveCreditTripParams,
+  setCreditGoTrip,
+} from "redux/reducers/credit";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 import { format } from "date-fns";
 import isAfter from "date-fns/isAfter";
 import { notification } from "antd";
 
-const BookingIbeHeader = () => {
+const CreditIbeHeader = () => {
   const dispatch = useDispatch();
+  const { data } = useGetLocationsQuery();
 
   const [dateList, setDateList] = useState([]);
   const [fareDateList, setFareDateList] = useState([]);
@@ -31,11 +32,11 @@ const BookingIbeHeader = () => {
   const [loaded, setLoaded] = useState(true);
 
   const {
-    tripParams,
-    returnParams,
+    creditTripParams,
+    creditReturnParams,
     lowFareAvailabilityLoading,
     lowFareAvailabilityResponse,
-  } = useSelector(bookingSelector);
+  } = useSelector(creditSelector);
 
   const _length = window.innerWidth > 1200 ? 7 : 3;
 
@@ -45,28 +46,33 @@ const BookingIbeHeader = () => {
   useEffect(() => {
     if (
       lowFareAvailabilityResponse &&
-      lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
+      lowFareAvailabilityResponse?.GetAvailabilityResponse
     ) {
       const _dateList =
-        lowFareAvailabilityResponse?.LowFareTripAvailabilityResponse
-          ?.LowFareAvailabilityResponseList[0]?.DateMarketLowFareList;
+        lowFareAvailabilityResponse?.GetAvailabilityResponse?.Schedule;
 
       setDateList([..._dateList]);
 
       const _fareDateList = [];
       _dateList.map((_dateListItem, _dl) => {
+        const totalServiceCharge =
+          _dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.PaxFares[0].ServiceCharges.reduce(
+            (accumulator, object) => {
+              return accumulator + object.Amount;
+            },
+            0
+          );
+
         let newObj = {};
-        newObj.id = newObj.date = _dateListItem?.DepartureDate;
-        newObj.date = newObj.date = _dateListItem?.DepartureDate;
-        newObj.cost =
-          parseInt(_dateListItem?.FareAmount) +
-          parseInt(_dateListItem?.TaxesAndFeesAmount);
+        newObj.id = `${_dateListItem?.Journeys[0]?.Segments[0]?.Fares[0]?.FareSellKey}${_dl}`;
+        newObj.date = _dateListItem?.DepartureDate;
+        newObj.cost = totalServiceCharge;
         _fareDateList.push(newObj);
       });
       setFareDateList([..._fareDateList]);
 
-      if (tripParams?.recurrent) {
-        const _selectedDate = new Date(tripParams?.beginDate);
+      if (creditTripParams?.recurrent) {
+        const _selectedDate = new Date(creditTripParams?.beginDate);
         let _dateIndex = _fareDateList.findIndex((object) => {
           return (
             format(new Date(object.date), "yyyy-MM-dd") ===
@@ -88,7 +94,7 @@ const BookingIbeHeader = () => {
         if (recurrent) {
           paginate(1, _fareDateList);
         } else {
-          const selectedDate = new Date(tripParams?.beginDate);
+          const selectedDate = new Date(creditTripParams?.beginDate);
           let dateIndex = _fareDateList.findIndex((object) => {
             return (
               format(new Date(object.date), "yyyy-MM-dd") ===
@@ -129,7 +135,7 @@ const BookingIbeHeader = () => {
       const lastDate = new Date(fareDateList[fareDateList.length - 1]?.date);
 
       const newFlightRequest = {
-        ...tripParams,
+        ...creditTripParams,
         currentDate: lastDate,
       };
       setRecurrent(true);
@@ -153,7 +159,7 @@ const BookingIbeHeader = () => {
 
   const FetchNewTrips = (_dateItem) => {
     const _newDate = new Date(_dateItem?.date);
-    const _check = isAfter(_newDate, new Date(returnParams?.returnSTD));
+    const _check = isAfter(_newDate, new Date(creditReturnParams?.returnDate));
 
     if (_check) {
       notification.error({
@@ -163,28 +169,45 @@ const BookingIbeHeader = () => {
       });
     } else {
       const flightRequest = {
-        ...tripParams,
+        ...creditTripParams,
         beginDate: format(_newDate, "yyyy-MM-dd"),
         endDate: format(_newDate, "yyyy-MM-dd"),
         recurrent: true,
       };
-      dispatch(setGoTrip(null));
-      dispatch(setTripParams(flightRequest));
-      dispatch(fetchFlightAvailability(flightRequest, returnParams));
+      dispatch(setCreditGoTrip(null));
+      dispatch(saveCreditTripParams(flightRequest));
+      dispatch(fetchFlightAvailability(flightRequest, creditReturnParams));
+
+      dispatch(setCreditGoTrip(null));
+    }
+  };
+
+  const resolveAbbreviation = (abrreviation) => {
+    if (data) {
+      const [{ name, code }] = data?.data?.items.filter(
+        (location) => location.code === abrreviation
+      );
+
+      return `${name} (${code})`;
+    } else {
+      return "";
     }
   };
 
   return (
-    <section className="ibe__flight__info">
+    <section className={`ibe__flight__info`}>
       <section className="ibe__flight__info__destination">
-        <p className="mx-4">{tripParams?.departureStation}</p>
+        <p className="mx-4">
+          {creditTripParams?.departureStation &&
+            resolveAbbreviation(creditTripParams?.departureStation)}
+        </p>
         <figure>
           <ArrowTo />
         </figure>
-        <p className="mx-4">{tripParams?.arrivalStation}</p>
-        {/* {currentPage && <p> currentPage:: {currentPage}</p>}
-        {width && <p> width:: {width}</p>}
-        {_length && <p> _length:: {_length}</p>} */}
+        <p className="mx-4">
+          {creditTripParams?.arrivalStation &&
+            resolveAbbreviation(creditTripParams?.arrivalStation)}
+        </p>
 
         <figure className="flightCircle">
           <FlightIcon />
@@ -213,12 +236,12 @@ const BookingIbeHeader = () => {
                         i === currentFDateList.length - 1 ? "b-r-none" : ""
                       }`}
                     >
-                      {tripParams && (
+                      {creditTripParams && (
                         <button
                           className={`${
                             format(new Date(_dateItem?.date), "yyyy-MM-dd") ===
                             format(
-                              new Date(tripParams?.beginDate),
+                              new Date(creditTripParams?.beginDate),
                               "yyyy-MM-dd"
                             )
                               ? "active"
@@ -229,11 +252,13 @@ const BookingIbeHeader = () => {
                           <h6 className="text-center">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
-                          {_dateItem?.cost > 0 ? (
-                            <p> ₦{_dateItem?.cost.toLocaleString()}</p>
-                          ) : (
-                            <p>No Flight</p>
-                          )}
+                          <p>
+                            {" "}
+                            ₦
+                            {parseInt(_dateItem?.cost) > -1
+                              ? _dateItem?.cost?.toLocaleString()
+                              : 0}
+                          </p>
                         </button>
                       )}
                     </div>
@@ -259,4 +284,4 @@ const BookingIbeHeader = () => {
   );
 };
 
-export default BookingIbeHeader;
+export default CreditIbeHeader;

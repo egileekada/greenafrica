@@ -11,6 +11,7 @@ import {
   sessionSelector,
   GetBookingDetailsWithPNR,
 } from "redux/reducers/session";
+import { setCreditPnr } from "redux/reducers/credit";
 import {
   bookingSelector,
   saveTripParams,
@@ -30,16 +31,19 @@ import {
   useGetLocationsQuery,
   useGetPaymentConfigsQuery,
 } from "services/widgetApi.js";
+import { useGetAccountByReferenceMutation } from "services/bookingApi";
 import PageFares from "./components/PageFares";
 import LogoIcon from "assets/svgs/logo.svg";
 import Spinner from "components/Spinner";
-import { useGetAccountByReferenceMutation } from "services/bookingApi";
-import { notification } from "antd";
 
-const ManageBookings = (props) => {
+const CreditHome = (props) => {
   const router = useRouter();
   const [statePNR, setStatePnr] = useState("");
   const [checkedIn, setCheckedIn] = useState(false);
+  const [availableCredit, setAvailableCredit] = useState(0);
+  const [isCredit, setIsCredit] = useState(false);
+  const [creditPayment, setCreditPayment] = useState(null);
+
   const dispatch = useDispatch();
   const { bookingResponseLoading, bookingResponse, signature } =
     useSelector(sessionSelector);
@@ -47,7 +51,8 @@ const ManageBookings = (props) => {
   const { tripParams, returnParams, managedPnrWithoutPayment } =
     useSelector(bookingSelector);
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
-  const { data: paymentConfigs } = useGetPaymentConfigsQuery();
+  const { data: paymentConfigs, isLoading: paymentConfigLoading } =
+    useGetPaymentConfigsQuery();
   const [getAccountByReference] = useGetAccountByReferenceMutation();
 
   const { bookingId } = router.query;
@@ -71,15 +76,25 @@ const ManageBookings = (props) => {
     ScrollToTop();
   }, []);
 
-  const parsed = router.asPath.split(/\?/)[1];
-
   async function fetchBookingDetails(pnr) {
     if (signature) {
       if (pnr) {
         setStatePnr(pnr);
         dispatch(setManageBookingPnr(pnr));
         dispatch(GetBookingDetailsWithPNR({ pnr: pnr }));
+      }
+    }
+  }
 
+  useEffect(() => {
+    if (router.isReady) {
+      //check if pnr is encrypted
+      if (bookingId !== undefined) {
+        fetchBookingDetails(decryptPnr(bookingId));
+      } else if (!props.pnr) {
+        router.push("/bookings");
+      } else {
+        fetchBookingDetails(props.pnr);
         const payload = {
           header: {
             signature: signature,
@@ -89,7 +104,7 @@ const ManageBookings = (props) => {
           },
           getAccountByReferenceRequestDto: {
             getAccountByReferenceReqData: {
-              accountReference: pnr,
+              accountReference: props.pnr,
               currencyCode: "NGN",
               accountHolderType: 0,
               accountHolderTypeSpecified: true,
@@ -102,15 +117,7 @@ const ManageBookings = (props) => {
           .then((data) => {
             const _availableCredit = parseInt(data?.Account?.AvailableCredits);
             if (_availableCredit > 0) {
-              router.push(
-                {
-                  pathname: "/credit/home",
-                  query: {
-                    pnr: pnr,
-                  },
-                },
-                "/credit/home"
-              );
+              setAvailableCredit(parseInt(data?.Account?.AvailableCredits));
             }
           })
           .catch(() => {
@@ -121,34 +128,32 @@ const ManageBookings = (props) => {
           });
       }
     }
-  }
-
-  useEffect(() => {
-    if (router.isReady) {
-      //check if pnr is encrypted
-      if (bookingId !== undefined) {
-        let parsedBookingId = parsed.split("bookingId=").pop();
-
-        fetchBookingDetails(decryptPnr(parsedBookingId));
-      } else if (!props.pnr) {
-        router.push("/bookings");
-      } else {
-        fetchBookingDetails(props.pnr);
-      }
-    }
   }, [router]);
 
   useEffect(() => {
-    if (
-      bookingResponse &&
-      bookingResponse?.Booking &&
-      bookingResponse?.Booking?.Journeys?.length > 0
-    ) {
-      const _manageIndicator = parseInt(bookingResponse?.ManageIndicator);
-      if (_manageIndicator > 0) {
-        setCheckedIn(true);
-      } else {
-        setCheckedIn(false);
+    if (bookingResponse && bookingResponse?.Booking) {
+      dispatch(setCreditPnr(bookingResponse?.Booking?.RecordLocator));
+      const Payments = bookingResponse?.Booking?.Payments;
+
+      let creditShell = Payments.findIndex((object) => {
+        return (
+          object?.PaymentMethodCode?.toLowerCase() === "cs" &&
+          object?.PaymentAmount < 0
+        );
+      });
+
+      if (creditShell > -1) {
+        setIsCredit(true);
+        setCreditPayment(Payments[creditShell]?.PaymentAmount);
+      }
+
+      if (bookingResponse?.Booking?.Journeys?.length > 0) {
+        const _manageIndicator = parseInt(bookingResponse?.ManageIndicator);
+        if (_manageIndicator > 0) {
+          setCheckedIn(true);
+        } else {
+          setCheckedIn(false);
+        }
       }
     }
   }, [bookingResponse]);
@@ -243,15 +248,16 @@ const ManageBookings = (props) => {
   });
 
   const PageCTA = () => {
+    const _disabled = bookingResponse?.Booking?.Journeys?.length === 0;
+    const _journeyExists =
+      parseInt(bookingResponse?.Booking?.Journeys?.length) > 1;
+
     return (
-      <section
-        className={`flex flex-wrap md:flex-nowrap mx-6 ${
-          checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
-        }`}
-        // className={`flex flex-wrap md:flex-nowrap mx-6`}
-      >
+      <section className={`flex flex-wrap md:flex-nowrap mx-6`}>
         <button
-          className="btn btn-primary font-title block h-full mb-3 md:mb-0 md:mr-3"
+          className={`btn btn-primary font-title block h-full mb-3 md:mb-0 md:mr-3 ${
+            _disabled ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+          }`}
           onClick={() =>
             atcb_action({
               name: "name",
@@ -272,8 +278,22 @@ const ManageBookings = (props) => {
         </button>
         <button
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
+            isCredit ? "" : "pointer-events-none opacity-50 cursor-not-allowed"
+          } ${
+            _journeyExists
+              ? "pointer-events-none opacity-50 cursor-not-allowed"
+              : ""
+          }  `}
+          onClick={handleAddFlight}
+        >
+          Add Flight
+        </button>
+
+        {/* <button
+          className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
             checkedIn ||
-            parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0
+            parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0 ||
+            _disabled
               ? "pointer-events-none opacity-50 cursor-not-allowed"
               : ""
           } `}
@@ -283,9 +303,10 @@ const ManageBookings = (props) => {
         </button>
         <button
           onClick={handleServices}
-          // className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 `}
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
-            checkedIn ? "pointer-events-none opacity-50 cursor-not-allowed" : ""
+            checkedIn || _disabled
+              ? "pointer-events-none opacity-50 cursor-not-allowed"
+              : ""
           }`}
         >
           Manage Services
@@ -293,14 +314,14 @@ const ManageBookings = (props) => {
         <Link href="/bookings/seat-selection">
           <a
             className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 text-center ${
-              checkedIn
+              checkedIn || _disabled
                 ? "pointer-events-none opacity-50 cursor-not-allowed"
                 : ""
             }`}
           >
             Seat Management
           </a>
-        </Link>
+        </Link> */}
       </section>
     );
   };
@@ -418,18 +439,21 @@ const ManageBookings = (props) => {
     return (
       <>
         {bookingResponse?.Booking?.Journeys?.length > 0 ? (
-          <>
-            {bookingResponse?.Booking?.Journeys.map((_journey, _index) => (
-              <SingleJourneyItem journey={_journey} journeyIndex={_index} />
-            ))}
-            <PageCTA />
-            <PassengersSection />
-            <PaymentContact />
-            <PageFares />
-          </>
+          bookingResponse?.Booking?.Journeys.map((_journey, _index) => (
+            <SingleJourneyItem journey={_journey} journeyIndex={_index} />
+          ))
         ) : (
-          <p className="errorText p-4">No Journeys</p>
+          <section className="px-10 py-10">
+            <p>No Journeys</p>
+          </section>
         )}
+
+        <section className="mt-5">
+          <PageCTA />
+        </section>
+        <PassengersSection />
+        <PaymentContact />
+        <PageFares />
       </>
     );
   };
@@ -528,6 +552,10 @@ const ManageBookings = (props) => {
       dispatch(saveTripParams(tripPayload));
       router.push("/bookings/change-flight");
     }
+  };
+
+  const handleAddFlight = () => {
+    router.push("/credit/add-flight");
   };
 
   const handleServices = () => {
@@ -643,7 +671,7 @@ const ManageBookings = (props) => {
   };
 
   const handlePayment = () => {
-    router.push("/bookings/payment");
+    router.push("/credit/payment");
   };
 
   return (
@@ -675,6 +703,17 @@ const ManageBookings = (props) => {
               </button>
             </nav>
           )}
+
+        {availableCredit && availableCredit > 0 && (
+          <nav className="manage-booking-bar">
+            <p className="font-display text-base text-primary-main">
+              The amount on your credit shell is:
+            </p>
+            <button className="btn btn-primary">
+              ₦{Math.abs(availableCredit)?.toLocaleString()}
+            </button>
+          </nav>
+        )}
 
         <section className="w-full checkin">
           {bookingResponseLoading ? (
@@ -727,7 +766,7 @@ const ManageBookings = (props) => {
   );
 };
 
-export default ManageBookings;
+export default CreditHome;
 
 export async function getServerSideProps(context) {
   return {

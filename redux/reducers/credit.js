@@ -12,17 +12,17 @@ import addDays from "date-fns/addDays";
 import { GetSSRAvailabilityForBooking } from "services/bookingService";
 
 const initialState = {
-  manageBookingPnr: null,
-  managedPnrWithoutPayment: null,
-  testBooking: "tee",
-  tripParams: null,
-  returnParams: null,
+  creditPnr: null,
+  creditGoTrip: null,
+  creditReturnTrip: null,
+  creditTripParams: null,
+  creditReturnParams: null,
   lowFareAvailabilityLoading: false,
   lowFareAvailabilityResponse: null,
   returnFareAvailabilityLoading: false,
   returnFareAvailabilityResponse: null,
-  manageFlightAvailabilityLoading: false,
-  manageFlightAvailabilityResponse: null,
+  creditFlightAvailabilityLoading: false,
+  creditFlightAvailabilityResponse: null,
   resellLoading: false,
 
   goTrip: null,
@@ -51,21 +51,26 @@ const initialState = {
   newReturnSSRs: [],
 };
 
-export const bookingSlice = createSlice({
-  name: "booking",
+export const creditSlice = createSlice({
+  name: "credit",
   initialState,
   reducers: {
-    setManageBookingPnr: (state, { payload }) => {
-      state.manageBookingPnr = payload;
+    setCreditPnr: (state, { payload }) => {
+      state.creditPnr = payload;
     },
-    setManagedPnrWithoutPayment: (state, { payload }) => {
-      state.managedPnrWithoutPayment = payload;
+    setCreditGoTrip: (state, { payload }) => {
+      state.creditGoTrip = payload;
+      state.goTrip = payload;
+    },
+    setCreditReturnTrip: (state, { payload }) => {
+      state.creditReturnTrip = payload;
+      state.returnTrip = payload;
     },
     setTripParams: (state, { payload }) => {
-      state.tripParams = payload;
+      state.creditTripParams = payload;
     },
     setReturnParams: (state, { payload }) => {
-      state.returnParams = payload;
+      state.creditReturnParams = payload;
     },
     setLowFareAvailabilityLoading: (state, { payload }) => {
       state.lowFareAvailabilityLoading = payload;
@@ -79,11 +84,11 @@ export const bookingSlice = createSlice({
     setReturnFareAvailabilityResponse: (state, { payload }) => {
       state.returnFareAvailabilityResponse = payload;
     },
-    setManageFlightAvailabilityLoading: (state, { payload }) => {
-      state.manageFlightAvailabilityLoading = payload;
+    setCreditFlightAvailabilityLoading: (state, { payload }) => {
+      state.creditFlightAvailabilityLoading = payload;
     },
-    setManageFlightAvailabilityResponse: (state, { payload }) => {
-      state.manageFlightAvailabilityResponse = payload;
+    setCreditFlightAvailabilityResponse: (state, { payload }) => {
+      state.creditFlightAvailabilityResponse = payload;
     },
     setResellLoading: (state, { payload }) => {
       state.resellLoading = payload;
@@ -153,16 +158,17 @@ export const bookingSlice = createSlice({
 });
 
 export const {
-  setManageBookingPnr,
-  setManagedPnrWithoutPayment,
+  setCreditPnr,
+  setCreditGoTrip,
+  setCreditReturnTrip,
   setTripParams,
   setReturnParams,
   setLowFareAvailabilityLoading,
   setLowFareAvailabilityResponse,
   setReturnFareAvailabilityLoading,
   setReturnFareAvailabilityResponse,
-  setManageFlightAvailabilityLoading,
-  setManageFlightAvailabilityResponse,
+  setCreditFlightAvailabilityLoading,
+  setCreditFlightAvailabilityResponse,
   setResellLoading,
   setGoTrip,
   setReturnTrip,
@@ -187,93 +193,18 @@ export const {
 
   setNewSSRS,
   setNewReturnSSRS,
-} = bookingSlice.actions;
+} = creditSlice.actions;
 
-export const bookingSelector = (state) => state.booking;
-export default bookingSlice.reducer;
+export const creditSelector = (state) => state.credit;
+export default creditSlice.reducer;
 
-export const saveTripParams = (payload) => async (dispatch) => {
+export const saveCreditTripParams = (payload) => async (dispatch) => {
   dispatch(setTripParams(payload));
 };
 
-export const saveReturnParams = (payload) => async (dispatch) => {
+export const saveCreditReturnParams = (payload) => async (dispatch) => {
   dispatch(setReturnParams(payload));
 };
-
-export const _fetchLowFareAvailability =
-  (payload) => async (dispatch, getState) => {
-    const currentState = getState().session;
-    dispatch(setLowFareAvailabilityLoading(true));
-
-    const {
-      departureStation,
-      arrivalStation,
-      currentDate,
-      taxAmount,
-      minimumFarePrice,
-    } = payload;
-
-    const requestPayload = {
-      signature: currentState.signature,
-      messageContractVersion: "",
-      enableExceptionStackTrace: true,
-      contractVersion: 0,
-      lowFareTripAvailabilityRequest: {
-        bypassCache: false,
-        bypassCacheSpecified: true,
-        includeTaxesAndFees: true,
-        includeTaxesAndFeesSpecified: true,
-        groupBydate: false,
-        groupBydateSpecified: true,
-        parameterSetID: 0,
-        parameterSetIDSpecified: true,
-        currencyCode: "NGN",
-        lowFareAvailabilityRequestList: [
-          {
-            departureStationList: [departureStation],
-            arrivalStationList: [arrivalStation],
-            beginDate: format(new Date(currentDate), "yyyy-MM-dd"),
-            beginDateSpecified: true,
-            endDate: format(addDays(new Date(currentDate), 27), "yyyy-MM-dd"),
-            endDateSpecified: true,
-          },
-        ],
-        productClassList: [],
-        loyaltyFilter: 0,
-        loyaltyFilterSpecified: true,
-        flightFilter: 0,
-        flightFilterSpecified: true,
-        getAllDetails: false,
-        getAllDetailsSpecified: true,
-        paxCount: 1,
-        paxCountSpecified: true,
-        paxPriceTypeList: [
-          {
-            paxType: "ADT",
-            paxCount: 1,
-            paxCountSpecified: true,
-          },
-        ],
-        maximumConnectingFlights: 20,
-        maximumConnectingFlightsSpecified: true,
-        // minimumFarePrice: parseInt(minimumFarePrice),
-        // taxAmount: parseInt(taxAmount),
-        totalAmount: parseInt(minimumFarePrice),
-        totalTaxAmount: parseInt(taxAmount),
-      },
-    };
-
-    try {
-      const Response = await GetLowFareAvailability(requestPayload);
-      await dispatch(setLowFareAvailabilityResponse(Response.data));
-    } catch (err) {
-      notification.error({
-        message: "Error",
-        description: "Fetch Low Fares failed",
-      });
-    }
-    dispatch(setLowFareAvailabilityLoading(false));
-  };
 
 export const fetchLowFareAvailability =
   (payload) => async (dispatch, getState) => {
@@ -348,87 +279,15 @@ export const fetchLowFareAvailability =
       const Response = await GetLowFareAvailability(requestPayload);
       await dispatch(setLowFareAvailabilityResponse(Response.data));
     } catch (err) {
+      await dispatch(setLowFareAvailabilityResponse([]));
+      dispatch(setLowFareAvailabilityLoading(false));
+
       notification.error({
         message: "Error",
         description: "Fetch Low Fares failed",
       });
     }
     dispatch(setLowFareAvailabilityLoading(false));
-  };
-
-export const _returnLowFareAvailability =
-  (payload) => async (dispatch, getState) => {
-    const currentState = getState().session;
-    dispatch(setReturnFareAvailabilityLoading(true));
-
-    const {
-      departureStation,
-      arrivalStation,
-      currentDate,
-      taxAmount,
-      minimumFarePrice,
-    } = payload;
-
-    const requestPayload = {
-      signature: currentState.signature,
-      messageContractVersion: "",
-      enableExceptionStackTrace: true,
-      contractVersion: 0,
-      lowFareTripAvailabilityRequest: {
-        bypassCache: false,
-        bypassCacheSpecified: true,
-        includeTaxesAndFees: true,
-        includeTaxesAndFeesSpecified: true,
-        groupBydate: false,
-        groupBydateSpecified: true,
-        parameterSetID: 0,
-        parameterSetIDSpecified: true,
-        currencyCode: "NGN",
-        lowFareAvailabilityRequestList: [
-          {
-            departureStationList: [arrivalStation],
-            arrivalStationList: [departureStation],
-            beginDate: format(new Date(currentDate), "yyyy-MM-dd"),
-            beginDateSpecified: true,
-            endDate: format(addDays(new Date(currentDate), 27), "yyyy-MM-dd"),
-            endDateSpecified: true,
-          },
-        ],
-        productClassList: [],
-        loyaltyFilter: 0,
-        loyaltyFilterSpecified: true,
-        flightFilter: 0,
-        flightFilterSpecified: true,
-        getAllDetails: false,
-        getAllDetailsSpecified: true,
-        paxCount: 1,
-        paxCountSpecified: true,
-        paxPriceTypeList: [
-          {
-            paxType: "ADT",
-            paxCount: 1,
-            paxCountSpecified: true,
-          },
-        ],
-        maximumConnectingFlights: 20,
-        maximumConnectingFlightsSpecified: true,
-        // minimumFarePrice: parseInt(minimumFarePrice),
-        // taxAmount: parseInt(taxAmount),
-        totalAmount: parseInt(minimumFarePrice),
-        totalTaxAmount: parseInt(taxAmount),
-      },
-    };
-
-    try {
-      const Response = await GetLowFareAvailability(requestPayload);
-      await dispatch(setReturnFareAvailabilityResponse(Response.data));
-    } catch (err) {
-      notification.error({
-        message: "Error",
-        description: "Fetch Return Low Fares failed",
-      });
-    }
-    dispatch(setReturnFareAvailabilityLoading(false));
   };
 
 export const returnLowFareAvailability =
@@ -506,6 +365,8 @@ export const returnLowFareAvailability =
       const Response = await GetLowFareAvailability(requestPayload);
       await dispatch(setReturnFareAvailabilityResponse(Response.data));
     } catch (err) {
+      await dispatch(setReturnFareAvailabilityResponse([]));
+      dispatch(setReturnFareAvailabilityLoading(false));
       notification.error({
         message: "Error",
         description: "Fetch Return Low Fares failed",
@@ -518,7 +379,7 @@ export const fetchFlightAvailability =
   (tripPayload, returnPayload = {}) =>
   async (dispatch, getState) => {
     const currentState = getState().session;
-    dispatch(setManageFlightAvailabilityLoading(true));
+    dispatch(setCreditFlightAvailabilityLoading(true));
 
     const {
       departureStation,
@@ -623,6 +484,8 @@ export const fetchFlightAvailability =
       availabilityRequest.push(_departureRequest);
       availabilityRequest.push(_returnRequest);
     } else {
+      console.log("csaliiing fetchtrip ");
+
       let _singleAvailabilityRequest = {
         departureStation: departureStation,
         arrivalStation: arrivalStation,
@@ -685,10 +548,9 @@ export const fetchFlightAvailability =
 
     try {
       const flightAvalaibilty = await GetAvailability(requestPayload);
-      // const flightAvalaibilty = await GetAvailabilityRequest(requestPayload);
       const availabilityResponse = flightAvalaibilty.data;
       await dispatch(
-        setManageFlightAvailabilityResponse(
+        setCreditFlightAvailabilityResponse(
           availabilityResponse?.GetTripAvailabilityResponse
         )
       );
@@ -699,7 +561,7 @@ export const fetchFlightAvailability =
       // });
       console.log("er", err.response);
     }
-    dispatch(setManageFlightAvailabilityLoading(false));
+    dispatch(setCreditFlightAvailabilityLoading(false));
   };
 
 export const ResellNewJourney = () => async (dispatch, getState) => {
@@ -962,102 +824,66 @@ export const ResellNewJourney = () => async (dispatch, getState) => {
   dispatch(setResellLoading(false));
 };
 
+// SSR
 export const FetchSSRAvailability = () => async (dispatch, getState) => {
   dispatch(setSSRAvailabilityLoading(true));
-  const currentBooking = getState().booking;
+  const currentBooking = getState().credit;
   const currentSession = getState().session;
 
   const _bookingResponse = currentSession?.bookingResponse;
   let _segmentKeyList = [];
 
   if (_bookingResponse) {
-    const JOURNEYS = _bookingResponse?.Booking?.Journeys;
-
-    if (JOURNEYS && JOURNEYS?.length > 0) {
-      if (currentBooking?.goTrip || currentBooking?.returnTrip) {
-        currentBooking?.goTrip &&
-          _segmentKeyList.push({
-            carrierCode:
-              currentBooking?.goTrip?.segment?.FlightDesignator?.CarrierCode,
-            flightNumber:
-              currentBooking?.goTrip?.segment?.FlightDesignator?.FlightNumber,
-            opSuffix: "",
-            departureDate: currentBooking?.goTrip?.segment?.STD,
-            departureDateSpecified: true,
-            arrivalStation: currentBooking?.goTrip?.segment?.ArrivalStation,
-            departureStation: currentBooking?.goTrip?.segment?.DepartureStation,
-          });
-        currentBooking?.returnTrip &&
-          _segmentKeyList.push({
-            carrierCode:
-              currentBooking?.returnTrip?.segment?.FlightDesignator
-                ?.CarrierCode,
-            flightNumber:
-              currentBooking?.returnTrip?.segment?.FlightDesignator
-                ?.FlightNumber,
-            opSuffix: "",
-            departureDate: currentBooking?.returnTrip?.segment?.STD,
-            departureDateSpecified: true,
-            arrivalStation: currentBooking?.returnTrip?.segment?.ArrivalStation,
-            departureStation:
-              currentBooking?.returnTrip?.segment?.DepartureStation,
-          });
-      } else {
-        JOURNEYS.map((_sessionJourney) => {
-          let newObj = {
-            carrierCode:
-              _sessionJourney?.Segments[0]?.FlightDesignator?.CarrierCode,
-            flightNumber:
-              _sessionJourney?.Segments[0]?.FlightDesignator?.FlightNumber,
-            opSuffix: "",
-            departureDate: _sessionJourney?.Segments[0]?.STD,
-            departureDateSpecified: true,
-            arrivalStation: _sessionJourney?.Segments[0]?.ArrivalStation,
-            departureStation: _sessionJourney?.Segments[0]?.DepartureStation,
-          };
-
-          _segmentKeyList.push(newObj);
+    if (currentBooking?.goTrip || currentBooking?.returnTrip) {
+      currentBooking?.goTrip &&
+        _segmentKeyList.push({
+          carrierCode:
+            currentBooking?.goTrip?.segment?.FlightDesignator?.CarrierCode,
+          flightNumber:
+            currentBooking?.goTrip?.segment?.FlightDesignator?.FlightNumber,
+          opSuffix: "",
+          departureDate: currentBooking?.goTrip?.segment?.STD,
+          departureDateSpecified: true,
+          arrivalStation: currentBooking?.goTrip?.segment?.ArrivalStation,
+          departureStation: currentBooking?.goTrip?.segment?.DepartureStation,
         });
-      }
+    }
 
-      let requestPayload = {
-        header: {
-          signature: currentSession?.signature,
-          messageContractVersion: "",
-          enableExceptionStackTrace: true,
-          contractVersion: 0,
-        },
-        getSsrAvailabilityForBookingRequestDto: {
-          getSsrAvailabilityForBookingRequest: {
-            ssrAvailabilityForBookingRequest: {
-              segmentKeyList: [..._segmentKeyList],
-              PassengerNumberList: [0],
-              inventoryControlled: true,
-              inventoryControlledSpecified: true,
-              nonInventoryControlled: true,
-              nonInventoryControlledSpecified: true,
-              seatDependent: true,
-              seatDependentSpecified: true,
-              nonSeatDependent: true,
-              nonSeatDependentSpecified: true,
-              currencyCode: "NGN",
-              ssrAvailabilityMode: 0,
-              ssrAvailabilityModeSpecified: true,
-              feePricingMode: 0,
-              feePricingModeSpecified: true,
-            },
+    let requestPayload = {
+      header: {
+        signature: currentSession?.signature,
+        messageContractVersion: "",
+        enableExceptionStackTrace: true,
+        contractVersion: 0,
+      },
+      getSsrAvailabilityForBookingRequestDto: {
+        getSsrAvailabilityForBookingRequest: {
+          ssrAvailabilityForBookingRequest: {
+            segmentKeyList: [..._segmentKeyList],
+            PassengerNumberList: [0],
+            inventoryControlled: true,
+            inventoryControlledSpecified: true,
+            nonInventoryControlled: true,
+            nonInventoryControlledSpecified: true,
+            seatDependent: true,
+            seatDependentSpecified: true,
+            nonSeatDependent: true,
+            nonSeatDependentSpecified: true,
+            currencyCode: "NGN",
+            ssrAvailabilityMode: 0,
+            ssrAvailabilityModeSpecified: true,
+            feePricingMode: 0,
+            feePricingModeSpecified: true,
           },
         },
-      };
-      try {
-        const SSRAvailabilityResponse = await GetSSRAvailabilityForBooking(
-          requestPayload
-        );
-        await dispatch(
-          setSSRAvailabilityResponse(SSRAvailabilityResponse.data)
-        );
-      } catch (err) {}
-    }
+      },
+    };
+    try {
+      const SSRAvailabilityResponse = await GetSSRAvailabilityForBooking(
+        requestPayload
+      );
+      await dispatch(setSSRAvailabilityResponse(SSRAvailabilityResponse.data));
+    } catch (err) {}
   } else {
     notification.error({
       message: "Error",

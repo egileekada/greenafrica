@@ -281,9 +281,6 @@ const SummaryDetails = ({ isRoundTrip }) => {
                 : null}
             </section>
           );
-          {
-            /* ); */
-          }
         })}
       </>
     );
@@ -300,55 +297,46 @@ const SummaryDetails = ({ isRoundTrip }) => {
               </h2>
               <div className="flex flex-col">
                 <section className="flex flex-col">
-                  {bookingResponse?.Booking?.Payments?.map((_payment) => {
-                    return (
-                      <>
-                        <div className="trip__summary__details">
-                          <div className="f-1">
-                            <h5>Type:</h5>
-                          </div>
-                          <div className="f-1">
-                            <h6>
-                              {paymentConfigs &&
-                                resolvePaymnet(_payment?.PaymentMethodCode)}
-                            </h6>
-                          </div>
-                        </div>
-                        <div className="trip__summary__details">
-                          <div className="f-1">
-                            <h5>Date:</h5>
-                          </div>
-                          <div className="f-1">
-                            <h6>
-                              {format(
-                                new Date(_payment?.ApprovalDate),
-                                "d MMMM yyyy"
-                              )}
-                            </h6>
-                          </div>
-                        </div>
-                        {/* 28 October 2022 */}
-                        <div className="trip__summary__details">
-                          <div className="f-1">
-                            <h5>Status:</h5>
-                          </div>
-                          <div className="f-1">
-                            <h6>{formatPaymentStatus(_payment?.Status)}</h6>
-                          </div>
-                        </div>
-                        <div className="trip__summary__details">
-                          <div className="f-1">
-                            <h5>Total Fare:</h5>
-                          </div>
-                          <div className="f-1">
-                            <h6>
-                              ₦{_payment?.PaymentAmount?.toLocaleString("NGN")}
-                            </h6>
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
+                  <div className="trip__summary__details">
+                    <div className="f-1">
+                      <h5>Type:</h5>
+                    </div>
+                    <div className="f-1">
+                      <h6>
+                        {paymentConfigs &&
+                          resolvePaymnet(_payment?.PaymentMethodCode)}
+                      </h6>
+                    </div>
+                  </div>
+                  <div className="trip__summary__details">
+                    <div className="f-1">
+                      <h5>Date:</h5>
+                    </div>
+                    <div className="f-1">
+                      <h6>
+                        {format(
+                          new Date(_payment?.ApprovalDate),
+                          "d MMMM yyyy"
+                        )}
+                      </h6>
+                    </div>
+                  </div>
+                  <div className="trip__summary__details">
+                    <div className="f-1">
+                      <h5>Status:</h5>
+                    </div>
+                    <div className="f-1">
+                      <h6>{formatPaymentStatus(_payment?.Status)}</h6>
+                    </div>
+                  </div>
+                  <div className="trip__summary__details">
+                    <div className="f-1">
+                      <h5>Total Fare:</h5>
+                    </div>
+                    <div className="f-1">
+                      <h6>₦{_payment?.PaymentAmount?.toLocaleString("NGN")}</h6>
+                    </div>
+                  </div>
                 </section>
               </div>
             </section>
