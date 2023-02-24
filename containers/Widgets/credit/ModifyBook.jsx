@@ -10,6 +10,7 @@ import { useGetDestinationQuery } from "../../../services/widgetApi";
 import DatesIcon from "assets/svgs/dates.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  creditSelector,
   saveCreditTripParams,
   saveCreditReturnParams,
   fetchLowFareAvailability,
@@ -17,7 +18,6 @@ import {
   fetchFlightAvailability,
   setCreditGoTrip,
   setCreditReturnTrip,
-  creditSelector,
 } from "redux/reducers/credit";
 
 import { sessionSelector } from "redux/reducers/session";
@@ -25,22 +25,14 @@ import isAfter from "date-fns/isAfter";
 import isBefore from "date-fns/isBefore";
 import { notification } from "antd";
 
-const CreditTab = ({ type, promocode }) => {
+const ModifyCreditTab = ({ type, promocode }) => {
   const dispatch = useDispatch();
   const { data } = useGetDestinationQuery();
   const [arrivals, setArrivals] = useState([]);
-  const [isRoundTrip, setRoundTrip] = useState(false);
 
   const { bookingResponse } = useSelector(sessionSelector);
-  const { lowFareAvailabilityLoading } = useSelector(creditSelector);
-
-  useEffect(() => {
-    if (bookingResponse) {
-      if (bookingResponse?.Booking?.Journeys.length > 0) {
-        setRoundTrip(true);
-      }
-    }
-  }, [bookingResponse]);
+  const { lowFareAvailabilityLoading, creditTripParams, creditReturnParams } =
+    useSelector(creditSelector);
 
   const originSelect = useRef(null);
   const destinationSelect = useRef(null);
@@ -205,12 +197,12 @@ const CreditTab = ({ type, promocode }) => {
                   openMenuOnFocus={true}
                   id="from"
                   instanceId="from"
-                  placeholder="Origin"
+                  placeholder={creditTripParams?.departureStation}
                   formatOptionLabel={formatOptionLabel}
                   components={{ Option }}
                   name="origin"
-                  defaultValue="Origin"
-                  value={formik.values.origin}
+                  defaultValue={creditTripParams?.departureStation}
+                  value={creditTripParams?.departureStation}
                   onChange={(value) => (
                     formik.setFieldValue("origin", value),
                     formik.setFieldValue("destination", " "),
@@ -251,15 +243,15 @@ const CreditTab = ({ type, promocode }) => {
                   openMenuOnFocus={true}
                   id="destination"
                   instanceId="destination"
-                  placeholder="Destination"
+                  placeholder={creditTripParams?.arrivalStation}
                   formatOptionLabel={formatOptionLabel}
                   components={{ Option }}
                   options={arrivals}
                   className="border-0 invalid:border-pink-500 invalid:text-pink-600"
                   styles={colourStyles}
                   name="destination"
-                  defaultValue={formik.values.destination}
-                  value={formik.values.destination}
+                  defaultValue={creditTripParams?.arrivalStation}
+                  value={creditTripParams?.arrivalStation}
                   onChange={(value) => {
                     formik.setFieldValue("destination", value);
                   }}
@@ -340,4 +332,4 @@ const CreditTab = ({ type, promocode }) => {
   );
 };
 
-export default CreditTab;
+export default ModifyCreditTab;

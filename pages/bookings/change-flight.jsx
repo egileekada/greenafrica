@@ -99,8 +99,6 @@ const ManageUpdateItenary = () => {
                 </div>
               ) : (
                 <>
-                  {/* <p>Trip {tripParams?.LiftStatus}</p>
-                  <p>Return Trip {returnParams?.LiftStatus}</p> */}
                   {manageFlightAvailabilityResponse ? (
                     manageFlightAvailabilityResponse?.Schedules.length > 0 ? (
                       <>
