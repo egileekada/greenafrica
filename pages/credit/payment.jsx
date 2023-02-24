@@ -28,6 +28,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import FormError from "components/formError";
 import { useCheckCreditShellQuery } from "services/widgetApi";
+import toast from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
   pnr: Yup.string()
@@ -89,19 +90,15 @@ const CreditPayment = () => {
 
   useEffect(() => {
     if (data) {
+      toast.success("Payment with credit shell succesful");
       const isBalanceDue = data?.data?.isBalanceDue;
       const _balanceDue = data?.data?.balanceDue;
-      7;
 
       if (isBalanceDue && _balanceDue > 0) {
         setTotalFare(data?.data?.balanceDue);
       } else {
         router.push(`/credit/confirm?pnr=${creditPnr}`);
       }
-      setInitialValues({
-        pnr: "",
-        email: "",
-      });
       setCreditQuery(null);
       setCreditModal(false);
     }
@@ -223,7 +220,7 @@ const CreditPayment = () => {
 
   const formik = useFormik({
     initialValues: {
-      pnr:  bookingState?.RecordLocator,
+      pnr: bookingState?.RecordLocator,
       email: bookingState?.BookingContacts[0]?.EmailAddress,
     },
     validationSchema,
@@ -242,7 +239,6 @@ const CreditPayment = () => {
     },
   });
 
- 
   return (
     <BaseLayout>
       <section className="w-full">
@@ -407,7 +403,6 @@ const CreditPayment = () => {
                       message={formik.errors.email}
                     />
                   </div>
-
 
                   <div className="my-3 lg:ml-auto">
                     <button

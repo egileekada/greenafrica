@@ -476,7 +476,7 @@ const PassengerDetails = () => {
                     </div>
                   )}
 
-                  <p>{JSON.stringify(newBookingSSRs)}</p>
+                  {/* <p>{JSON.stringify(newBookingSSRs)}</p> */}
                 </section>
               </>
             ) : (
