@@ -55,19 +55,19 @@ const ManagePassengerItem = ({download, signature, passenger, paxIndex, Journey,
         document.body.appendChild(link);
         link.click();
         link.remove();
-        console.log(data.data.message);
-        // notification.success({
-        //   message: "Success",
-        //   description: data.data.message,
-        // });
+        // console.log(data.data.message);
+        notification.success({
+          message: "Success",
+          description: data.data.message,
+        });
       })
       .catch((error) => {
 
-        console.log("An Error Occured");
-        // notification.error({
-        //   message: "Error",
-        //   description: "An Error Occured",
-        // });
+        // console.log("An Error Occured");
+        notification.error({
+          message: "Error",
+          description: "An Error Occured",
+        });
       });
   };
 
