@@ -423,7 +423,6 @@ const TripView = () => {
                     });
                 }
 
-                // router.push(`/bookings/confirm`);
               })
               .catch(() => {
                 notification.error({
