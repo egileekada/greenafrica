@@ -333,7 +333,7 @@ const BookingTab = ({ type, promocode }) => {
                 role="button"
                 src="/images/to_from.svg"
                 alt=""
-                className="absolute -right-6 bottom-2.5 invisible lg:visible z-10"
+                className="absolute right-0 top-10 lg:-right-6 bottom-2.5 visible z-10"
               />
             </div>
 
@@ -379,7 +379,7 @@ const BookingTab = ({ type, promocode }) => {
           <div
             className={`${
               type === "round_trip w-fit md:grid-cols-2 " && "lg:grid-cols-2 md:col-span-2 "
-            } hidden md:flex grid-cols-1 lg:w-fit gap-2 `}
+            } flex grid-cols-1 lg:w-fit gap-2 `}
           >
 
             {/* <CustomDatePicker value={setDepartureDateFormik} title="DEPARTING" /> */}
@@ -466,7 +466,7 @@ const BookingTab = ({ type, promocode }) => {
 
           <div className="flex gap-2 xl:max-w-[280px] w-fit h-[55px] xl:flex-1">
             <div
-              className="booking__wrapper w-full lg:w-auto font-semibold hover:border-primary-main hidden md:flex flex-auto"
+              className="booking__wrapper w-full lg:w-auto font-semibold hover:border-primary-main flex flex-auto"
               data-modal-toggle="defaultModal"
             >
               <div className="px-4 md:px-0">

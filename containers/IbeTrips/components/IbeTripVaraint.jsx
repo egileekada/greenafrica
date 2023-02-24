@@ -98,7 +98,7 @@ const IbeTripVariant = ({
               </p>
             </div>
             <ul className="mt-7 mb-10 px-4 md:px-12">
-              {!featureLoading &&
+              {featureLoading &&
                 productsFeatures?.data.product_services.map(
                   (feature, index) => (
                     <li className="flex items-center mb-6" key={index}>
@@ -138,6 +138,7 @@ const IbeTripVariant = ({
           {fare_variant === "savr" && (
             <button
               onClick={() => handleBtnClick(fare)}
+              disabled={parseInt(fare?.AvailableCount) < 1 ?  true : false}
               style={{ fontSize: "18px" }}
               className={` btn w-full text-center !font-black  ${
                 parseInt(fare?.AvailableCount) < 1 ?  "disabled border-[#9E9BBF] text-[#9E9BBF] border " : " border-primary-main text-primary-main border "
@@ -151,6 +152,7 @@ const IbeTripVariant = ({
           {fare_variant === "clsc" && (
             <button
               onClick={() => handleBtnClick(fare)}
+              disabled={parseInt(fare?.AvailableCount) < 1 ?  true : false}
               style={{ fontSize: "18px" }}
               className={`btn w-full text-center !font-black ${
                 parseInt(fare?.AvailableCount) < 1 ? "disabled border-[#9E9BBF] text-[#9E9BBF] border " : " border-primary-main text-primary-main border "
@@ -164,6 +166,7 @@ const IbeTripVariant = ({
           {fare_variant === "flexi" && (
             <button
               onClick={() => handleBtnClick(fare)}
+              disabled={parseInt(fare?.AvailableCount) < 1 ?  true : false}
               className={`btn w-full  text-center !font-black ${
                 parseInt(fare?.AvailableCount) < 1 ?  "disabled border-[#9E9BBF] text-[#9E9BBF] border " : " border-primary-main text-primary-main border "
               }`}

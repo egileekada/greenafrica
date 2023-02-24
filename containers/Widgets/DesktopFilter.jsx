@@ -42,7 +42,7 @@ const DesktopFilter = () => {
             onClick={() => setActiveTab(1)}
             className={`btn ${
               activeTab === 1 ? "btn-primary white font-title font-bold " : " font-bold btn-text"
-            } mr-[22px]`}
+            } mr-3 lg:mr-[22px]`}
           >
             One Way
           </button>
@@ -52,13 +52,13 @@ const DesktopFilter = () => {
             }}
             className={`btn ${
               activeTab === 2 ? "btn-primary white font-title font-bold " : "btn-text font-bold "
-            } mr-[22px]`}
+            } lg:mr-[22px]`}
           >
             Round Trip
           </button>
         </div>
 
-        <div className="flex">
+        <div className=" hidden lg:flex">
           {showPromo ? (
             <>
               <div className="relative">

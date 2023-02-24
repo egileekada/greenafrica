@@ -408,10 +408,17 @@ const IbeTripPopup = ({
             </span>
           </div> */}
 
-                    <p style={{ fontSize: "20px" }} className=" -mb-1 font-black" >{selected?.RuleNumber.toLowerCase() === "savr" ? "+"+clsc?.AmountDifference?.toLocaleString() :selected?.RuleNumber.toLowerCase() === "clsc" ? "" : "+"+clsc?.ExtraAmount?.toLocaleString()}</p>
-                    {selected?.RuleNumber.toLowerCase() !== "clsc" && (
-                      <p style={{ fontSize: "14px" }} className=" font-normal mb-4 " >more per person</p>
-                    )}
+                    <div className='w-full flex justify-between items-center mb-4' > 
+                      <div> 
+                        <p style={{ fontSize: "20px" }} className=" -mb-1 font-black" >{selected?.RuleNumber.toLowerCase() === "savr" ? "+"+clsc?.AmountDifference?.toLocaleString() :selected?.RuleNumber.toLowerCase() === "clsc" || selected?.RuleNumber.toLowerCase() === "flex" ? "" : "+"+clsc?.ExtraAmount?.toLocaleString()}</p>
+                        {selected?.RuleNumber.toLowerCase() !== "clsc" || selected?.RuleNumber.toLowerCase() !== "flex" && (
+                          <p style={{ fontSize: "14px" }} className=" font-normal  " >more per person</p>
+                        )}
+                        </div>
+                        <div className=" text-[#47FF5A] bg-primary-main h-[37px] w-[97px] pt-1 pl-2 flex justify-center items-center !font-semibold font-body px-3 rounded-tl-[24px] " > 
+                          Save 20%
+                        </div>
+                      </div>
                     <button style={{ fontSize: "16px" }} disabled={clsc?.AvailableCount === 0 || selected?.ProductClass === "Gf" ? true: false}
                       onClick={handleSell.bind(this, "clsc")} className={` ${clsc?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GC" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[55px] rounded-xl w-full `} >{clsc?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GF" ? "gClassic" : selected?.ProductClass === "GC" ? "Continue With gClassic" : "Switch To gClassic"}</button>
                   </div>
@@ -452,8 +459,19 @@ const IbeTripPopup = ({
                       <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Hand Luggage (7KG)</p>
                   </div>
                   <div className=" w-full mt-auto " > 
-                    <p style={{ fontSize: "20px" }} className=" -mb-1 font-black text-xl " >+{selected?.RuleNumber.toLowerCase() === "savr" ? flex?.AmountDifference?.toLocaleString(): selected?.RuleNumber.toLowerCase() === "clsc" ? flex?.AdditionalAmount?.toLocaleString(): flex?.ExtraAmount?.toLocaleString()}</p>
-                    <p style={{ fontSize: "14px" }} className=" font-normal text-sm mb-4 " >more per person</p>
+                  <div className='w-full flex justify-between items-center mb-4 ' > 
+                    <div> 
+                      {selected?.RuleNumber.toLowerCase() !== "flex" && (
+                        <p style={{ fontSize: "20px" }} className=" -mb-1 font-black text-xl " >+{selected?.RuleNumber.toLowerCase() === "savr" ? flex?.AmountDifference?.toLocaleString(): selected?.RuleNumber.toLowerCase() === "clsc" ? flex?.AdditionalAmount?.toLocaleString(): flex?.ExtraAmount?.toLocaleString()}</p>
+                      )}
+                      {selected?.RuleNumber.toLowerCase() !== "flex" && (
+                        <p style={{ fontSize: "14px" }} className=" font-normal text-sm  " >more per person</p> 
+                      )}
+                    </div>
+                    <div className=" text-[#47FF5A] bg-primary-main h-[37px] w-[97px] pt-1 pl-2 flex justify-center items-center !font-semibold font-body px-3 rounded-tl-[24px] " > 
+                      Save 30%
+                    </div>
+                  </div>
                     <button disabled={flex?.AvailableCount === 0 ? true: false} style={{ fontSize: "16px" }}
                       onClick={handleSell.bind(this, "flex")} className={` ${flex?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GF" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[55px] rounded-xl w-full `} >{flex?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GF" ? "Continue With gSaver" : "Switch To gFlex"}</button>
                   </div>

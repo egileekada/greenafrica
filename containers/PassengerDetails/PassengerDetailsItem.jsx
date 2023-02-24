@@ -17,6 +17,7 @@ const PassengerDetailsItem = ({
   setSSRs,
   setReturnSSRs,
   selectedReturnSSRs,
+  index
 }) => {
   const { data: specialAssistances, isLoading } =
     useGetSpecialAssistancesQuery();
@@ -189,67 +190,9 @@ const PassengerDetailsItem = ({
   console.log(sessionStateResponse);
 
   return (
-    <section className="flex flex-col lg:bg-white bg-[#F3F3F7] md:px-0 px-6 rounded-xl mb-6">
+    <section className="flex flex-col">
       {SSRAvailabilityResponse ? (
-        <div className=" w-full " >
-          <div className=" w-full pb-[26px] pt-[41px] md:px-[32px] lg:border-b lg:border-[#9E9BBF33] " >
-            <p className=" font-bold text-2xl text-[#261F5E] " >Add Bags now & save</p>
-            <p className=" font-medium text-sm text-[#5F5B82] ">Save money by buying now bags now instead of paying at the airport</p>
-          </div>
-          <div className=" w-full grid grid-cols-1 lg:grid-cols-3 lg:bg-transparent px-3 bg-white lg:gap-3 lg:py-[50px] lg:px-[42px] rounded-xl  lg:border-b lg:border-[#9E9BBF33] " >
-            <div className="  w-full flex lg:py-0 py-3 px-3 items-center" >
-              <div className="md:block hidden " >
-                <BagOne />
-              </div>
-              <div className=" md:hidden flex items-center  " > 
-                <BagSmall />
-                <p className=" font-bold ml-4 text-[#261F5E]" >10kg Checked Bag</p>
-              </div>
-              <div className=" md:block hidden ml-5 " >
-                <p className=" font-bold text-[#261F5E]" >10kg Checked Bag</p>
-                <p className=" font-medium text-[#5F5B82] my-1 text-sm">Up to 2 pieces</p>
-                <p className=" font-medium text-[#5F5B82] text-sm">Starts from ₦3,500</p>
-              </div>
-              <div className=" md:hidden block ml-auto " >
-                <p className=" font-medium text-[#5F5B82] text-sm">From N3,500</p> 
-              </div>
-            </div>
-            <div className=" w-full lg:py-0 py-3 px-3  border-b border-t lg:border-t-0 lg:border-b-0 border-[#9E9BBF33]  flex " >
-              <div className="md:block hidden " >
-                <BagTwo />
-              </div>
-              <div className=" md:hidden flex items-center  " > 
-                <BagSmall />
-                <p className=" font-bold ml-4 text-[#261F5E]" >10kg Checked Bag</p>
-              </div>
-              <div className=" md:block hidden ml-5 " >
-                <p className=" font-bold text-[#261F5E]" >10kg Checked Bag</p>
-                <p className=" font-medium text-[#5F5B82] my-1 text-sm">Up to 2 pieces</p>
-                <p className=" font-medium text-[#5F5B82] text-sm">Starts from ₦3,500</p>
-              </div>
-              <div className=" md:hidden block ml-auto " >
-                <p className=" font-medium text-[#5F5B82] text-sm">From N3,500</p> 
-              </div>
-            </div>
-            <div className=" w-full flex lg:py-0 py-3 px-3  " >
-              <div className="md:block hidden " >
-                <BagThree />
-              </div>
-              <div className=" md:hidden flex items-center  " > 
-                <BagSmall />
-                <p className=" font-bold ml-4 text-[#261F5E]" >10kg Checked Bag</p>
-              </div>
-              <div className=" md:block hidden ml-5 " >
-                <p className=" font-bold text-[#261F5E]" >10kg Checked Bag</p>
-                <p className=" font-medium text-[#5F5B82] my-1 text-sm">Up to 2 pieces</p>
-                <p className=" font-medium text-[#5F5B82] text-sm">Starts from ₦3,500</p>
-              </div>
-              <div className=" md:hidden block ml-auto " >
-                <p className=" font-medium text-[#5F5B82] text-sm">From N3,500</p> 
-              </div>
-            </div>
-          </div>
-          <div className=" w-full   lg:px-[32px] lg:mt-0 mt-3 py-[35px] " >
+          <div className=" w-full   lg:px-[32px] lg:my-6 mt-3 " >
             <div className=" w-full bg-white rounded-md border border-[#261F5E] lg:border-[#9E9BBF] " >
               <div className=" w-full h-[48px] rounded-t-md px-7 bg-[#F3F3F7] flex items-center " > 
                 <p className=" font-bold text-[#261F5E] " >{`${passenger?.firstName}  ${passenger?.lastName} `}</p>
@@ -307,7 +250,6 @@ const PassengerDetailsItem = ({
               </div>
             </div>
           </div>
-        </div>
       ) : (
         <p>No SSR</p>
       )}

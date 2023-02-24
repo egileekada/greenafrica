@@ -75,7 +75,7 @@
   }
 
   .ga__section {
-    @apply md:flex flex-wrap xlg:flex-nowrap bg-[#f4f4f4] w-full flex-grow-0 flex-shrink-0;
+    @apply md:flex flex-wrap xlg:flex-nowrap lg:px-0 px-4 bg-[#f4f4f4] w-full flex-grow-0 flex-shrink-0;
 
     &.bg-normal {
       // background-color: #f4f4f4;
@@ -408,7 +408,7 @@
   }
 
   .ibe__flight__info {
-    @apply bg-[#ffffff] rounded-md mb-14;
+    @apply bg-[#ffffff] rounded-md mb-14 ;
 
     &__destination {
       @apply bg-[#26205e]  h-[78px] flex items-center relative px-4 lg:px-12;

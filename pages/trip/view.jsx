@@ -159,7 +159,7 @@ const TripView = (props) => {
           </figure>
         </button>
       </nav>
-      <section className="w-full ">
+      <section className="w-full  ">
         <section className="ga__section">
           <div className="ga__section__main">
             <section className="flex flex-col mt-16 lg:mt-0">

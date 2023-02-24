@@ -37,6 +37,7 @@ const IbeHeader = (props) => {
   const [recurrent, setRecurrent] = useState(false);
   const [currentDate, setCurrentDate] = useState();
   const [loaded, setLoaded] = useState(true);
+  const [length, setLength] = useState(width > 1200 ? 7 : 3);
   console.log(new Date(flightParams?.beginDate).toDateString().slice(3));
   const {
     lowFareAvailabilityLoading,
@@ -48,6 +49,11 @@ const IbeHeader = (props) => {
 
   var indexOfLastPost = currentPage * length;
   var indexOfFirstPost = indexOfLastPost - length;
+
+
+  useEffect(() => {
+    setLength(width > 1200 ? 7 : 3);
+  }, [width]);
 
   useEffect(() => {
     if (
@@ -269,13 +275,13 @@ const IbeHeader = (props) => {
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
-                          <h6 className="text-center font-medium md:text-[14px]">
+                          <h6 className="text-center !font-medium md:!text-[14px]">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (
-                            <p className=" !font-bold !text-base !lg:text-[24px] " > ₦{_dateItem?.cost.toLocaleString()}</p>
+                            <p className=" !font-black !text-base lg:!text-[22px] " > ₦{_dateItem?.cost.toLocaleString()}</p>
                           ) : (
-                            <p className=" !font-bold !text-sm !lg:text-2xl ">No Flight</p>
+                            <p className=" !font-bold !text-sm lg:!text-2xl ">No Flight</p>
                           )}
                         </button>
                       )}
