@@ -209,7 +209,6 @@ const TripView = () => {
   };
 
   const resellJourney = () => {
-    //Refactor Begin
     const paxPriceTypes = [];
     const _serviceBundleList = [];
 
@@ -304,15 +303,15 @@ const TripView = () => {
       JourneyTwoSegmentSSRRequest = {
         flightDesignator: {
           carrierCode:
-            creditReturnParams?.segment?.FlightDesignator?.CarrierCode,
+            creditReturnTrip?.segment?.FlightDesignator?.CarrierCode,
           flightNumber:
-            creditReturnParams?.segment?.FlightDesignator?.FlightNumber,
+            creditReturnTrip?.segment?.FlightDesignator?.FlightNumber,
           opSuffix: "",
         },
-        std: creditReturnParams?.segment?.STD,
+        std: creditReturnTrip?.segment?.STD,
         stdSpecified: true,
-        departureStation: creditReturnParams?.segment?.DepartureStation,
-        arrivalStation: creditReturnParams?.segment?.ArrivalStation,
+        departureStation: creditReturnTrip?.segment?.DepartureStation,
+        arrivalStation: creditReturnTrip?.segment?.ArrivalStation,
         paxSSRs: [
           ...JourneyTwoSSRsExSeat.filter((ssrItem) =>
             ALLOWED__SSRS.includes(ssrItem?.SSRCode)
@@ -358,6 +357,7 @@ const TripView = () => {
       },
     };
 
+  
     ResellNewJourney(requestPayload)
       .unwrap()
       .then((data) => {
@@ -402,11 +402,9 @@ const TripView = () => {
                       ?.BalanceDue
                   ) > 0
                 ) {
-                  console.log("making payment");
                   router.push(`/credit/payment`);
                 } else {
-                  console.log("making booking commmit");
-
+                  console.log('commmitin without payment')
                   bookingCommitWithoutPayment()
                     .unwrap()
                     .then((data) => {
@@ -452,128 +450,12 @@ const TripView = () => {
       .catch((err) => {
         const errText =
           err?.response?.data?.BookingUpdateResponseData?.Error?.ErrorText;
+        console.log(' errText', errText);
         notification.error({
           message: "Error",
           description: errText ? errText : "Sell Request failed",
         });
       });
-
-    //Refactor End
-  };
-
-  const _resellJourney = () => {
-    //Refactor Begin
-    const paxPriceTypes = [];
-    const _serviceBundleList = [];
-
-    const ADULT_COUNT = bookingResponse?.Booking?.Passengers.filter((_pax) => {
-      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "adt";
-    }).length;
-
-    const CHILD_COUNT = bookingResponse?.Booking?.Passengers.filter((_pax) => {
-      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "chd";
-    }).length;
-
-    const totalPaxCount = bookingResponse?.Booking?.Passengers?.length;
-
-    if (ADULT_COUNT > 0) {
-      const _newPType = {
-        paxType: "ADT",
-        paxDiscountCode: "",
-        paxCount: ADULT_COUNT,
-        paxCountSpecified: true,
-      };
-      paxPriceTypes.push(_newPType);
-    }
-
-    if (CHILD_COUNT > 0) {
-      const _newPType = {
-        paxType: "CHD",
-        paxDiscountCode: "",
-        paxCount: CHILD_COUNT,
-        paxCountSpecified: true,
-      };
-      paxPriceTypes.push(_newPType);
-    }
-
-    const _journeySellKeys = [];
-
-    // SSR RELATED
-    let JourneyOneSegmentSSRRequest = null;
-    let JourneyTwoSegmentSSRRequest = null;
-    let JourneyOne = null;
-    let JourneyTwo = null;
-    // SSR RELATED
-
-    if (creditGoTrip) {
-      let newObj = {
-        JourneySellKey: creditGoTrip?.journey?.JourneySellKey,
-        FareSellKey: creditGoTrip?.fare?.FareSellKey,
-        standbyPriorityCode: "",
-        packageIndicator: "",
-      };
-      _journeySellKeys.push(newObj);
-      _serviceBundleList.push(creditGoTrip?.fare?.RuleNumber);
-    }
-
-    if (creditReturnTrip) {
-      let newObj = {
-        JourneySellKey: creditReturnTrip?.journey?.JourneySellKey,
-        FareSellKey: creditReturnTrip?.fare?.FareSellKey,
-        standbyPriorityCode: "",
-        packageIndicator: "",
-      };
-      _journeySellKeys.push(newObj);
-      _serviceBundleList.push(creditReturnTrip?.fare?.RuleNumber);
-    }
-
-    const requestPayload = {
-      sellRequestDto: {
-        sellRequest: {
-          sellRequestData: {
-            sellBy: 0,
-            sellBySpecified: true,
-            sellJourneyByKeyRequest: {
-              sellJourneyByKeyRequestData: {
-                actionStatusCode: "NN",
-                journeySellKeys: [..._journeySellKeys],
-                paxPriceType: [...paxPriceTypes],
-                currencyCode: "NGN",
-                paxCount: totalPaxCount,
-                paxCountSpecified: true,
-                loyaltyFilter: 0,
-                loyaltyFilterSpecified: true,
-                isAllotmentMarketFare: false,
-                isAllotmentMarketFareSpecified: true,
-                preventOverLap: false,
-                preventOverLapSpecified: true,
-                replaceAllPassengersOnUpdate: false,
-                replaceAllPassengersOnUpdateSpecified: true,
-                serviceBundleList: [..._serviceBundleList],
-                applyServiceBundle: 1,
-                applyServiceBundleSpecified: true,
-              },
-            },
-          },
-        },
-      },
-    };
-
-    ResellNewJourney(requestPayload)
-      .unwrap()
-      .then((data) => {
-        router.push("/credit/services");
-      })
-      .catch((err) => {
-        const errText =
-          err?.response?.data?.BookingUpdateResponseData?.Error?.ErrorText;
-        notification.error({
-          message: "Error",
-          description: errText ? errText : "Sell Request failed",
-        });
-      });
-
-    //Refactor End
   };
 
   const resolveAbbreviation = (abrreviation) => {
