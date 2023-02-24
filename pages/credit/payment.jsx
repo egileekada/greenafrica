@@ -28,6 +28,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import FormError from "components/formError";
 import { useCheckCreditShellQuery } from "services/widgetApi";
+import toast from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
   pnr: Yup.string()
@@ -46,10 +47,6 @@ const CreditPayment = () => {
   const [creditModal, setCreditModal] = useState(false);
   const [creditQuery, setCreditQuery] = useState(null);
   const [totalFare, setTotalFare] = useState();
-  const [initialValues, setInitialValues] = useState({
-    pnr: "",
-    email: "",
-  });
 
   const { bookingState, bookingCommitLoading, signature } =
     useSelector(sessionSelector);
@@ -93,6 +90,7 @@ const CreditPayment = () => {
 
   useEffect(() => {
     if (data) {
+      toast.success("Payment with credit shell succesful");
       const isBalanceDue = data?.data?.isBalanceDue;
       const _balanceDue = data?.data?.balanceDue;
 
@@ -101,10 +99,6 @@ const CreditPayment = () => {
       } else {
         router.push(`/credit/confirm?pnr=${creditPnr}`);
       }
-      setInitialValues({
-        pnr: "",
-        email: "",
-      });
       setCreditQuery(null);
       setCreditModal(false);
     }
@@ -225,7 +219,10 @@ const CreditPayment = () => {
   };
 
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      pnr: bookingState?.RecordLocator,
+      email: bookingState?.BookingContacts[0]?.EmailAddress,
+    },
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
@@ -406,8 +403,6 @@ const CreditPayment = () => {
                       message={formik.errors.email}
                     />
                   </div>
-
-                  <p>creditQuery::{JSON.stringify(creditQuery)}</p>
 
                   <div className="my-3 lg:ml-auto">
                     <button
