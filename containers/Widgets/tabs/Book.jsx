@@ -294,7 +294,7 @@ const BookingTab = ({ type, promocode }) => {
                 formik.touched.origin && formik.errors.origin
                   ? "border border-[#de0150]"
                   : ""
-              } flex items-center justify-center h-[55px] hover:border-primary-main booking__wrapper `}
+              } flex items-center justify-center h-[50px] lg:h-[55px] hover:border-primary-main booking__wrapper `}
             >
               <img
                 src="/images/widget_from.svg"
@@ -333,7 +333,7 @@ const BookingTab = ({ type, promocode }) => {
                 role="button"
                 src="/images/to_from.svg"
                 alt=""
-                className="absolute right-0 top-10 lg:-right-6 bottom-2.5 visible z-10"
+                className="absolute right-0 top-10 lg:top-2 lg:-right-6 bottom-2.5 visible z-10"
               />
             </div>
 
@@ -342,7 +342,7 @@ const BookingTab = ({ type, promocode }) => {
                 formik.touched.destination && formik.errors.destination
                   ? "border border-[#de0150]"
                   : ""
-              } flex items-center justify-center h-[55px] hover:border-primary-main booking__wrapper`}
+              } flex items-center justify-center h-[50px] lg:h-[55px] hover:border-primary-main booking__wrapper`}
             >
               <img
                 src="/images/widget_to.svg"
@@ -383,7 +383,7 @@ const BookingTab = ({ type, promocode }) => {
           >
 
             {/* <CustomDatePicker value={setDepartureDateFormik} title="DEPARTING" /> */}
-            <div className="booking__wrapper items-center w-full lg:w-[180px] justify-center h-[55px] hover:border-primary-main flex">
+            <div className="booking__wrapper items-center w-full lg:w-[180px] justify-center h-[50px] lg:h-[55px] hover:border-primary-main flex">
               <span className="mr-2 ml-1 pb-1 hidden md:block">
                 <svg
                   width="26"
@@ -423,7 +423,7 @@ const BookingTab = ({ type, promocode }) => {
 
             {type && (
               // <CustomDatePicker value={setReturnDateFormik} title="RETURNING" />
-              <div className="booking__wrapper items-center w-full lg:w-[180px] justify-center h-[55px] hover:border-primary-main flex">
+              <div className="booking__wrapper items-center w-full lg:w-[180px] justify-center h-[50px] lg:h-[55px] hover:border-primary-main flex">
                 <span className="mr-2 ml-1 pb-1 hidden md:block">
                   <svg
                     width="26"
@@ -464,7 +464,7 @@ const BookingTab = ({ type, promocode }) => {
             )}
           </div>
 
-          <div className="flex gap-2 xl:max-w-[280px] w-fit h-[55px] xl:flex-1">
+          <div className="flex gap-2 xl:max-w-[280px] w-full h-[50px] lg:h-[55px] xl:flex-1">
             <div
               className="booking__wrapper w-full lg:w-auto font-semibold hover:border-primary-main flex flex-auto"
               data-modal-toggle="defaultModal"
@@ -632,7 +632,7 @@ const BookingTab = ({ type, promocode }) => {
                         <div
                           onClick={()=> setShow(false)} 
                           role="button"
-                          className="btn btn-primary flex cursor-pointer z-[70] justify-center items-center font-bold mt-4 w-full font-title h-[50px]"  
+                          className="btn btn-primary flex cursor-pointer z-[70] justify-center items-center font-bold mt-4 w-fu font-title h-[50px]"  
                         >
                           Done
                         </div>
@@ -645,7 +645,7 @@ const BookingTab = ({ type, promocode }) => {
 
             <div className="w-full md:w-[159px]">
               <button
-                className="btn btn-primary font-bold w-full md:w-auto font-title block h-[55px]"
+                className="btn btn-primary font-bold !w-full md:w-auto font-title block h-[50px] lg:h-[55px]"
                 type="submit"
                 disabled={formik.isSubmitting}
               >

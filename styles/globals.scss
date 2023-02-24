@@ -131,7 +131,7 @@
 
   // Button
   .btn {
-    @apply font-bold font-body rounded-xl min-w-[133px] py-[15px] px-[20px] transition-all;
+    @apply font-bold font-body rounded-xl lg:min-w-[133px] py-3 min-w-full lg:py-[15px] lg:px-[20px] transition-all;
 
     &.btn-primary {
       @apply bg-primary-main text-green hover:bg-opacity-80;
