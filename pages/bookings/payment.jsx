@@ -114,8 +114,6 @@ const BookingPayment = () => {
         signature,
       };
 
-      // console.log("payload", payload);
-
       const gateway = gatewaysResponse?.data?.items.filter(
         (gate) => gate.id === selected
       );

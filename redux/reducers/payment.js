@@ -3,6 +3,7 @@ import {
   GetPaymentGateways,
   InitializePayment,
   VerifyPayment,
+  VerifyCreditShell,
 } from "services/paymentService";
 import { notification } from "antd";
 import { PURGE } from "redux-persist";
@@ -16,6 +17,8 @@ const initialState = {
   verifyPaymentResponse: null,
   verifyManageBookingLoading: false,
   verifyManageBookingResponse: null,
+  verifyCreditShellLoading: false,
+  verifyCreditShellResponse: null,
 };
 
 export const paymentSlice = createSlice({
@@ -47,6 +50,13 @@ export const paymentSlice = createSlice({
     setVerifyManageBookingResponse: (state, { payload }) => {
       state.verifyManageBookingResponse = payload;
     },
+
+    setVerifyCreditShellLoading: (state, { payload }) => {
+      state.verifyCreditShellLoading = payload;
+    },
+    setVerifyCreditShellResponse: (state, { payload }) => {
+      state.verifyCreditShellResponse = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => initialState); // THIS LINE
@@ -62,6 +72,9 @@ export const {
   setVerifyPaymentResponse,
   setVerifyManageBookingLoading,
   setVerifyManageBookingResponse,
+
+  setVerifyCreditShellLoading,
+  setVerifyCreditShellResponse,
 } = paymentSlice.actions;
 export const paymentSelector = (state) => state.payment;
 export default paymentSlice.reducer;
@@ -133,4 +146,44 @@ export const VerifyManageBookingPayment = (payload) => async (dispatch) => {
   }
 
   dispatch(setVerifyManageBookingLoading(false));
+};
+
+export const checkCreditShell = (payload) => async (dispatch) => {
+  dispatch(setVerifyManageBookingLoading(true));
+
+  try {
+    const Response = await VerifyCreditShell(payload);
+    dispatch(setVerifyManageBookingResponse(Response?.data?.data));
+    if (Response?.data?.data?.pnr) {
+      const PNR = Response?.data?.data?.pnr;
+      window.location.assign(`/bookings/home?pnr=${PNR}`);
+    }
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Verify Manage Booking Payment Failed",
+    });
+  }
+
+  dispatch(setVerifyManageBookingLoading(false));
+};
+
+export const VerifyCreditShellPayment = (payload) => async (dispatch) => {
+  dispatch(setVerifyCreditShellLoading(true));
+
+  try {
+    const Response = await VerifyPayment(payload.ref);
+    dispatch(setVerifyCreditShellResponse(Response?.data?.data));
+    if (Response?.data?.data?.pnr) {
+      const PNR = Response?.data?.data?.pnr;
+      window.location.assign(`/credit/confirm?pnr=${PNR}`);
+    }
+  } catch (err) {
+    notification.error({
+      message: "Error",
+      description: "Verify Manage Booking Payment Failed",
+    });
+  }
+
+  dispatch(setVerifyCreditShellLoading(false));
 };

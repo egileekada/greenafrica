@@ -3,9 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
-import AeroTwoIcon from "assets/svgs/aerotwo.svg";
-import AeroIcon from "assets/svgs/aero.svg";
-import DottedLine from "assets/svgs/dotted-line.svg";
 import Fare from "containers/IbeSummary/Fare";
 import SummaryDetails from "containers/IbeSummary/SummaryDetails";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +17,8 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
 import { encryptPnr } from "lib/utils";
-import ReactToPrint from "react-to-print";
+import { atcb_action } from "add-to-calendar-button";
+import "add-to-calendar-button/assets/css/atcb.css";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
 import {
@@ -312,6 +310,41 @@ const TripConfirm = () => {
       </section>
     );
   };
+
+  // Generate add booking to calendar data
+  const myData = [];
+
+  bookingResponse?.Booking?.Journeys.forEach((journey) => {
+    const data = {
+      name: `Flight to ${
+        !locationLoading &&
+        resolveAbbreviation(journey.Segments[0].ArrivalStation)
+      } (${journey.Segments[0].FlightDesignator?.CarrierCode} ${
+        journey.Segments[0].FlightDesignator?.FlightNumber
+      })`,
+      description: `Green Africa flight ${
+        journey.Segments[0].FlightDesignator?.CarrierCode
+      } ${journey.Segments[0].FlightDesignator?.FlightNumber} | ${
+        !locationLoading &&
+        resolveAbbreviation(journey.Segments[0].DepartureStation)
+      } (${journey.Segments[0].DepartureStation}) ${format(
+        new Date(journey.Segments[0]?.STD),
+        "hh:mm bbb"
+      )} (local time) - ${
+        !locationLoading &&
+        resolveAbbreviation(journey.Segments[0].ArrivalStation)
+      } (${journey.Segments[0].ArrivalStation}) ${format(
+        new Date(journey.Segments[0]?.STA),
+        "hh:mm bbb"
+      )} (local time)
+        
+      Booking number: ${bookingResponse?.Booking?.RecordLocator}`,
+      startDate: format(new Date(journey.Segments[0]?.STD), "yyyy-MM-dd"),
+      startTime: format(new Date(journey.Segments[0]?.STD), "HH:mm"),
+      endTime: format(new Date(journey.Segments[0]?.STA), "HH:mm"),
+    };
+    myData.push(data);
+  });
 
   return (
     <BaseLayout>

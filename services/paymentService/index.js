@@ -29,3 +29,18 @@ export const InitializePayment = async (payload) => {
     }
   });
 };
+
+export const VerifyCreditShell = async (payload) => {
+  let request = axios.get(
+    `${BASE_URL}payments/verify/${encodeURIComponent(
+      payload.reference
+    )}?email=${encodeURIComponent(
+      payload.email
+    )}&creditShell=true&signature=${encodeURIComponent(payload.signature)}`
+  );
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};

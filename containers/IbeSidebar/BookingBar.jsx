@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 import Spinner from "components/Spinner";
 
-import FlightInfo from "./Booking/FlightInfo";
+// import FlightInfo from "./Booking/FlightInfo";
 
 const BookingBar = ({ enableEdit = false }) => {
   const { sessionStateResponse, sessionStateLoading } =

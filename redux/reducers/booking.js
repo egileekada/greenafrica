@@ -11,7 +11,6 @@ import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 import { GetSSRAvailabilityForBooking } from "services/bookingService";
 
-
 const initialState = {
   manageBookingPnr: null,
   managedPnrWithoutPayment: null,
@@ -25,6 +24,7 @@ const initialState = {
   manageFlightAvailabilityLoading: false,
   manageFlightAvailabilityResponse: null,
   resellLoading: false,
+
   goTrip: null,
   returnTrip: null,
   tripModified: false,
@@ -88,6 +88,7 @@ export const bookingSlice = createSlice({
     setResellLoading: (state, { payload }) => {
       state.resellLoading = payload;
     },
+
     setGoTrip: (state, { payload }) => {
       state.goTrip = payload;
     },

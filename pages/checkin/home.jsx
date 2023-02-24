@@ -43,7 +43,9 @@ const CheckInDetails = (props) => {
   const { signature, sessionLoading, bookingResponseLoading, bookingResponse } =
     useSelector(sessionSelector);
 
-  async function initSession(pnr) {
+  const parsed = router.asPath.split(/\?/)[1];
+
+  function initSession(pnr) {
     if (pnr) {
       dispatch(setCheckinPNR(pnr));
       dispatch(GetBookingDetailsWithPNR({ pnr: pnr }));
@@ -55,7 +57,8 @@ const CheckInDetails = (props) => {
     if (router.isReady) {
       //check if pnr is encrypted
       if (bookingId !== undefined) {
-        initSession(decryptPnr(bookingId));
+        let parsedBookingId = parsed.split("bookingId=").pop();
+        initSession(decryptPnr(parsedBookingId));
       } else if (!props.pnr) {
         router.push("/checkin");
       } else {

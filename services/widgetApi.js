@@ -53,6 +53,14 @@ export const widgetApi = createApi({
         body,
       }),
     }),
+    checkCreditShell: builder.query({
+      query: (payload) =>
+        `/payments/verify/${encodeURIComponent(
+          payload.reference
+        )}?email=${encodeURIComponent(
+          payload.email
+        )}&creditShell=true&signature=${encodeURIComponent(payload.signature)}`,
+    }),
   }),
 }); 
  
@@ -62,9 +70,6 @@ export const getLowFare = async (from = null, to = null) => {
   );
   return data;
 };
-
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 
 export const {
   useGetDestinationQuery,
@@ -79,5 +84,6 @@ export const {
   useInitiatePaymentMutation,
   useSendBoardingPassMutation,
   useVerifyPaymentQuery,
-  useGetPaymentConfigsQuery, 
+  useGetPaymentConfigsQuery,
+  useCheckCreditShellQuery,
 } = widgetApi;

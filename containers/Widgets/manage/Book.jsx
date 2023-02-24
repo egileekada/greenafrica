@@ -208,7 +208,6 @@ const ManageBookingTab = ({ type, promocode }) => {
 
   return (
     <>
-      {/* <p>formik {JSON.stringify(formik.values)}</p> */}
       <form onSubmit={formik.handleSubmit}>
         <div className="flex flex-wrap lg:flex-nowrap">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:col-span-2 pointer-events-none cursor-not-allowed opacity-50 basis-full lg:basis-[40%] flex-grow-0">

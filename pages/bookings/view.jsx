@@ -199,7 +199,6 @@ const TripView = () => {
   };
 
   const resellJourney = () => {
-    // dispatch(ResellNewJourney());
     //Refactor Begin
     const paxPriceTypes = [];
     const _serviceBundleList = [];
