@@ -4,51 +4,53 @@ import BaseLayout from "layouts/Base";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  bookingSelector,
+  creditSelector,
   fetchFlightAvailability,
   fetchLowFareAvailability,
   returnLowFareAvailability,
-} from "redux/reducers/booking";
+} from "redux/reducers/credit";
 import { sessionSelector } from "redux/reducers/session";
 import SkeletonLoader from "components/SkeletonLoader";
-import IbeTrips from "containers/Booking/IbeTrips";
-import BookingIbeHeader from "containers/Booking/IbeHeader";
-import ReturnBookingIbeHeader from "containers/Booking/IbeHeader/ReturnIbeHeader";
+import IbeTrips from "containers/Credit/IbeTrips";
+import CreditIbeHeader from "containers/Credit/IbeHeader";
+import ReturnBookingIbeHeader from "containers/Credit/IbeHeader/ReturnIbeHeader";
 import { notification } from "antd";
-import ManageFlightWidget from "containers/Widgets/ManageFlightWidget";
+import CreditFlightWidget from "containers/Widgets/CreditFlightWidget";
 import LogoIcon from "assets/svgs/logo.svg";
 
 const ManageUpdateItenary = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const {
-    goTrip,
-    returnTrip,
-    tripParams,
-    returnParams,
-    manageFlightAvailabilityLoading,
-    manageFlightAvailabilityResponse,
-  } = useSelector(bookingSelector);
+    creditAction,
+    creditGoTrip,
+    creditReturnTrip,
+    creditTripParams,
+    creditReturnParams,
+    creditFlightAvailabilityLoading,
+    creditFlightAvailabilityResponse,
+  } = useSelector(creditSelector);
+
   const { bookingResponse } = useSelector(sessionSelector);
-  const [isRoundTrip, setIsRoundTrip] = useState(false);
 
   useEffect(() => {
     if (bookingResponse) {
       if (bookingResponse?.Booking?.Journeys.length > 1) {
         // Round Trip
-        if (!tripParams || !returnParams) {
+        if (!creditTripParams || !creditReturnParams) {
           router.back();
         } else {
-          bookingResponse?.Booking?.Journeys.length > 1 && setIsRoundTrip(true);
-          dispatch(fetchFlightAvailability(tripParams, returnParams));
-          dispatch(fetchLowFareAvailability(tripParams));
-          dispatch(returnLowFareAvailability(returnParams));
+          dispatch(
+            fetchFlightAvailability(creditTripParams, creditReturnParams)
+          );
+          dispatch(fetchLowFareAvailability(creditTripParams));
+          dispatch(returnLowFareAvailability(creditReturnParams));
         }
       } else {
         // One Way
-        !tripParams && router.back();
-        dispatch(fetchFlightAvailability(tripParams));
-        dispatch(fetchLowFareAvailability(tripParams));
+        !creditTripParams && router.back();
+        dispatch(fetchFlightAvailability(creditTripParams));
+        dispatch(fetchLowFareAvailability(creditTripParams));
       }
     } else {
       router.back();
@@ -56,8 +58,10 @@ const ManageUpdateItenary = () => {
   }, [bookingResponse]);
 
   const proceedToTripView = () => {
-    if (goTrip?.journey || returnTrip?.journey) {
-      router.push("/bookings/view");
+    if (creditGoTrip?.journey || creditReturnTrip?.journey) {
+      creditAction === "modify"
+        ? router.push("/credit/view-trip")
+        : router.push("/credit/view");
     } else {
       notification.error({
         message: "Error",
@@ -87,11 +91,11 @@ const ManageUpdateItenary = () => {
             </h2>
 
             <div className="flex flex-col mb-8">
-              <ManageFlightWidget />
+              <CreditFlightWidget />
             </div>
 
             <section className="flex flex-col  rounded-xl pb-12">
-              {manageFlightAvailabilityLoading ? (
+              {creditFlightAvailabilityLoading ? (
                 <div className="px-12 py-12">
                   <SkeletonLoader />
                   <SkeletonLoader />
@@ -99,35 +103,30 @@ const ManageUpdateItenary = () => {
                 </div>
               ) : (
                 <>
-                  {/* <p>Trip {tripParams?.LiftStatus}</p>
-                  <p>Return Trip {returnParams?.LiftStatus}</p> */}
-                  {manageFlightAvailabilityResponse ? (
-                    manageFlightAvailabilityResponse?.Schedules.length > 0 ? (
+                  {creditFlightAvailabilityResponse ? (
+                    creditFlightAvailabilityResponse?.Schedules.length > 0 ? (
                       <>
-                        {manageFlightAvailabilityResponse?.Schedules.map(
+                        {creditFlightAvailabilityResponse?.Schedules.map(
                           (_schedule, _schedueIndex) => {
                             return (
                               <>
                                 {_schedueIndex === 0 ? (
-                                  <BookingIbeHeader />
+                                  <CreditIbeHeader />
                                 ) : (
-                                  <ReturnBookingIbeHeader />
+                                  <>
+                                    <ReturnBookingIbeHeader />
+                                  </>
                                 )}
 
                                 <IbeTrips
                                   flightSchedule={_schedule}
                                   schedueIndex={_schedueIndex}
-                                  liftStatus={
-                                    parseInt(_schedueIndex) === 0
-                                      ? tripParams?.LiftStatus
-                                      : returnParams?.LiftStatus
-                                  }
                                 />
                               </>
                             );
                           }
                         )}
-                        {goTrip?.journey || returnTrip?.journey ? (
+                        {creditGoTrip?.journey || creditReturnTrip?.journey ? (
                           <div className="flex items-center">
                             <button
                               onClick={() => router.back()}
@@ -138,7 +137,8 @@ const ManageUpdateItenary = () => {
                             <button
                               onClick={proceedToTripView}
                               className={`btn btn-primary ${
-                                goTrip?.journey || returnTrip?.journey
+                                creditGoTrip?.journey ||
+                                creditReturnTrip?.journey
                                   ? ""
                                   : "pointer-events-none cursor-none disabled"
                               } `}

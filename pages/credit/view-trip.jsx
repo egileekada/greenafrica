@@ -12,9 +12,9 @@ import WorkIcon from "assets/svgs/work.svg";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  bookingSelector,
-  setManagedPnrWithoutPayment,
-} from "redux/reducers/booking";
+  creditSelector,
+  setCreditPnrWithoutPayment,
+} from "redux/reducers/credit";
 import { sessionSelector } from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
@@ -32,10 +32,14 @@ const TripView = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
-  const { goTrip, returnTrip, tripParams, returnParams } =
-    useSelector(bookingSelector);
+  const {
+    creditGoTrip,
+    creditReturnTrip,
+    creditTripParams,
+    creditReturnParams,
+  } = useSelector(creditSelector);
   const { bookingResponse } = useSelector(sessionSelector);
-  const { data, isLoading } = useGetLocationsQuery();
+  const { data } = useGetLocationsQuery();
 
   const [ResellSSR, { isLoading: resellingSSR }] = useResellSSRMutation();
   const [CancelSSR, { isLoading: cancellingSSR }] = useCancelSSRMutation();
@@ -77,8 +81,14 @@ const TripView = () => {
           {trip?.segment && resolveAbbreviation(trip?.segment?.ArrivalStation)}{" "}
           On{" "}
           {trip?.segment?.schedueIndex === 1
-            ? format(new Date(returnParams?.returnDate), "EEEE, LLLL dd yyyy")
-            : format(new Date(tripParams?.beginDate), "EEEE, LLLL dd yyyy")}
+            ? format(
+                new Date(creditReturnParams?.returnDate),
+                "EEEE, LLLL dd yyyy"
+              )
+            : format(
+                new Date(creditTripParams?.beginDate),
+                "EEEE, LLLL dd yyyy"
+              )}
         </h2>
 
         {/* TripHeader */}
@@ -177,12 +187,12 @@ const TripView = () => {
               </figure>
               <h4 className="mb-0">7kg hand luggage: 55 x40 x 24cm</h4>
             </div>
-            <button
+            {/* <button
               onClick={changeFlight}
               className="btn btn-outline basis-full lg:basis-auto flex-shrink-0"
             >
               Change Flight
-            </button>
+            </button> */}
           </div>
         </div>
         {/* Flight Number */}
@@ -191,11 +201,11 @@ const TripView = () => {
   };
 
   const goChangeFlight = () => {
-    router.push("/bookings/change-flight");
+    router.push("/credit/change-flight");
   };
 
   const returnChangeFlight = () => {
-    router.push("/bookings/change-flight");
+    router.push("/credit/change-flight");
   };
 
   const resellJourney = () => {
@@ -234,21 +244,22 @@ const TripView = () => {
     }
 
     const _journeySellKeys = [];
+
     // SSR RELATED
     let JourneyOneSegmentSSRRequest = null;
     let JourneyTwoSegmentSSRRequest = null;
     let JourneyOne = null;
     let JourneyTwo = null;
     // SSR RELATED
-    if (goTrip) {
+    if (creditGoTrip) {
       let newObj = {
-        JourneySellKey: goTrip?.journey?.JourneySellKey,
-        FareSellKey: goTrip?.fare?.FareSellKey,
+        JourneySellKey: creditGoTrip?.journey?.JourneySellKey,
+        FareSellKey: creditGoTrip?.fare?.FareSellKey,
         standbyPriorityCode: "",
         packageIndicator: "",
       };
       _journeySellKeys.push(newObj);
-      _serviceBundleList.push(goTrip?.fare?.RuleNumber);
+      _serviceBundleList.push(creditGoTrip?.fare?.RuleNumber);
 
       const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
 
@@ -259,14 +270,14 @@ const TripView = () => {
 
       JourneyOneSegmentSSRRequest = {
         flightDesignator: {
-          carrierCode: goTrip?.segment?.FlightDesignator?.CarrierCode,
-          flightNumber: goTrip?.segment?.FlightDesignator?.FlightNumber,
+          carrierCode: creditGoTrip?.segment?.FlightDesignator?.CarrierCode,
+          flightNumber: creditGoTrip?.segment?.FlightDesignator?.FlightNumber,
           opSuffix: "",
         },
-        std: goTrip?.segment?.STD,
+        std: creditGoTrip?.segment?.STD,
         stdSpecified: true,
-        departureStation: goTrip?.segment?.DepartureStation,
-        arrivalStation: goTrip?.segment?.ArrivalStation,
+        departureStation: creditGoTrip?.segment?.DepartureStation,
+        arrivalStation: creditGoTrip?.segment?.ArrivalStation,
         paxSSRs: [...JourneyOneSSRsExSeat],
       };
       JourneyOne = {
@@ -275,15 +286,16 @@ const TripView = () => {
       };
     }
 
-    if (returnTrip) {
+    if (creditReturnTrip) {
       let newObj = {
-        JourneySellKey: returnTrip?.journey?.JourneySellKey,
-        FareSellKey: returnTrip?.fare?.FareSellKey,
+        JourneySellKey: creditReturnTrip?.journey?.JourneySellKey,
+        FareSellKey: creditReturnTrip?.fare?.FareSellKey,
         standbyPriorityCode: "",
         packageIndicator: "",
       };
       _journeySellKeys.push(newObj);
-      _serviceBundleList.push(returnTrip?.fare?.RuleNumber);
+      _serviceBundleList.push(creditReturnTrip?.fare?.RuleNumber);
+
       const ALLOWED__SSRS = ["X20", "X15", "X10", "VPRD", "WCHR", "HPRD"];
 
       const JourneyTwoSSRsExSeat =
@@ -291,14 +303,16 @@ const TripView = () => {
 
       JourneyTwoSegmentSSRRequest = {
         flightDesignator: {
-          carrierCode: returnTrip?.segment?.FlightDesignator?.CarrierCode,
-          flightNumber: returnTrip?.segment?.FlightDesignator?.FlightNumber,
+          carrierCode:
+            creditReturnParams?.segment?.FlightDesignator?.CarrierCode,
+          flightNumber:
+            creditReturnParams?.segment?.FlightDesignator?.FlightNumber,
           opSuffix: "",
         },
-        std: returnTrip?.segment?.STD,
+        std: creditReturnParams?.segment?.STD,
         stdSpecified: true,
-        departureStation: returnTrip?.segment?.DepartureStation,
-        arrivalStation: returnTrip?.segment?.ArrivalStation,
+        departureStation: creditReturnParams?.segment?.DepartureStation,
+        arrivalStation: creditReturnParams?.segment?.ArrivalStation,
         paxSSRs: [
           ...JourneyTwoSSRsExSeat.filter((ssrItem) =>
             ALLOWED__SSRS.includes(ssrItem?.SSRCode)
@@ -346,12 +360,13 @@ const TripView = () => {
 
     ResellNewJourney(requestPayload)
       .unwrap()
-      .then(() => {
+      .then((data) => {
         const segmentSSRRequests = [];
         JourneyOneSegmentSSRRequest &&
           segmentSSRRequests.push(JourneyOneSegmentSSRRequest);
         JourneyTwoSegmentSSRRequest &&
           segmentSSRRequests.push(JourneyTwoSegmentSSRRequest);
+
         ResellSSR(segmentSSRRequests)
           .unwrap()
           .then((data) => {
@@ -381,9 +396,6 @@ const TripView = () => {
             CancelSSR(cancelSSRRequest)
               .unwrap()
               .then((data) => {
-                // dispatch(setGoTrip(null));
-                // dispatch(setReturnTrip(null));
-
                 if (
                   parseInt(
                     data?.BookingUpdateResponseData?.Success?.PNRAmount
@@ -391,7 +403,7 @@ const TripView = () => {
                   ) > 0
                 ) {
                   console.log("making payment");
-                  router.push(`/bookings/payment`);
+                  router.push(`/credit/payment`);
                 } else {
                   console.log("making booking commmit");
 
@@ -399,20 +411,20 @@ const TripView = () => {
                     .unwrap()
                     .then((data) => {
                       dispatch(
-                        setManagedPnrWithoutPayment(
+                        setCreditPnrWithoutPayment(
                           data?.BookingUpdateResponseData?.Success
                             ?.RecordLocator
                         )
                       );
-                      router.push(
+                     router.push(
                         {
-                          pathname: "/bookings/home",
+                          pathname: "/credit/home",
                           query: {
                             pnr: data?.BookingUpdateResponseData?.Success
                               ?.RecordLocator,
                           },
                         },
-                        "/bookings/home"
+                        "/credit/home"
                       );
                     })
                     .catch((error) => {
@@ -422,8 +434,6 @@ const TripView = () => {
                       });
                     });
                 }
-
-                // router.push(`/bookings/confirm`);
               })
               .catch(() => {
                 notification.error({
@@ -438,6 +448,121 @@ const TripView = () => {
               description: "Sell Services failed",
             });
           });
+      })
+      .catch((err) => {
+        const errText =
+          err?.response?.data?.BookingUpdateResponseData?.Error?.ErrorText;
+        notification.error({
+          message: "Error",
+          description: errText ? errText : "Sell Request failed",
+        });
+      });
+
+    //Refactor End
+  };
+
+  const _resellJourney = () => {
+    //Refactor Begin
+    const paxPriceTypes = [];
+    const _serviceBundleList = [];
+
+    const ADULT_COUNT = bookingResponse?.Booking?.Passengers.filter((_pax) => {
+      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "adt";
+    }).length;
+
+    const CHILD_COUNT = bookingResponse?.Booking?.Passengers.filter((_pax) => {
+      return _pax?.PassengerTypeInfo?.PaxType.toLowerCase() === "chd";
+    }).length;
+
+    const totalPaxCount = bookingResponse?.Booking?.Passengers?.length;
+
+    if (ADULT_COUNT > 0) {
+      const _newPType = {
+        paxType: "ADT",
+        paxDiscountCode: "",
+        paxCount: ADULT_COUNT,
+        paxCountSpecified: true,
+      };
+      paxPriceTypes.push(_newPType);
+    }
+
+    if (CHILD_COUNT > 0) {
+      const _newPType = {
+        paxType: "CHD",
+        paxDiscountCode: "",
+        paxCount: CHILD_COUNT,
+        paxCountSpecified: true,
+      };
+      paxPriceTypes.push(_newPType);
+    }
+
+    const _journeySellKeys = [];
+
+    // SSR RELATED
+    let JourneyOneSegmentSSRRequest = null;
+    let JourneyTwoSegmentSSRRequest = null;
+    let JourneyOne = null;
+    let JourneyTwo = null;
+    // SSR RELATED
+
+    if (creditGoTrip) {
+      let newObj = {
+        JourneySellKey: creditGoTrip?.journey?.JourneySellKey,
+        FareSellKey: creditGoTrip?.fare?.FareSellKey,
+        standbyPriorityCode: "",
+        packageIndicator: "",
+      };
+      _journeySellKeys.push(newObj);
+      _serviceBundleList.push(creditGoTrip?.fare?.RuleNumber);
+    }
+
+    if (creditReturnTrip) {
+      let newObj = {
+        JourneySellKey: creditReturnTrip?.journey?.JourneySellKey,
+        FareSellKey: creditReturnTrip?.fare?.FareSellKey,
+        standbyPriorityCode: "",
+        packageIndicator: "",
+      };
+      _journeySellKeys.push(newObj);
+      _serviceBundleList.push(creditReturnTrip?.fare?.RuleNumber);
+    }
+
+    const requestPayload = {
+      sellRequestDto: {
+        sellRequest: {
+          sellRequestData: {
+            sellBy: 0,
+            sellBySpecified: true,
+            sellJourneyByKeyRequest: {
+              sellJourneyByKeyRequestData: {
+                actionStatusCode: "NN",
+                journeySellKeys: [..._journeySellKeys],
+                paxPriceType: [...paxPriceTypes],
+                currencyCode: "NGN",
+                paxCount: totalPaxCount,
+                paxCountSpecified: true,
+                loyaltyFilter: 0,
+                loyaltyFilterSpecified: true,
+                isAllotmentMarketFare: false,
+                isAllotmentMarketFareSpecified: true,
+                preventOverLap: false,
+                preventOverLapSpecified: true,
+                replaceAllPassengersOnUpdate: false,
+                replaceAllPassengersOnUpdateSpecified: true,
+                serviceBundleList: [..._serviceBundleList],
+                applyServiceBundle: 1,
+                applyServiceBundleSpecified: true,
+              },
+            },
+          },
+        },
+      },
+    };
+
+    ResellNewJourney(requestPayload)
+      .unwrap()
+      .then((data) => {
+        router.push("/credit/services");
       })
       .catch((err) => {
         const errText =
@@ -473,14 +598,19 @@ const TripView = () => {
           <div className="ga__section__main flex-grow">
             <section className="flex flex-col mt-16 lg:mt-0">
               <section className="flex flex-col">
-                {goTrip?.journey && goTrip?.fare && goTrip?.segment && (
-                  <JourneyItem trip={goTrip} changeFlight={goChangeFlight} />
-                )}
-                {returnTrip?.journey &&
-                  returnTrip?.fare &&
-                  returnTrip?.segment && (
+                {creditGoTrip?.journey &&
+                  creditGoTrip?.fare &&
+                  creditGoTrip?.segment && (
                     <JourneyItem
-                      trip={returnTrip}
+                      trip={creditGoTrip}
+                      changeFlight={goChangeFlight}
+                    />
+                  )}
+                {creditReturnTrip?.journey &&
+                  creditReturnTrip?.fare &&
+                  creditReturnTrip?.segment && (
+                    <JourneyItem
+                      trip={creditReturnTrip}
                       changeFlight={returnChangeFlight}
                     />
                   )}

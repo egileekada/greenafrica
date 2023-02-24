@@ -11,15 +11,15 @@ import {
   sessionSelector,
   GetBookingDetailsWithPNR,
 } from "redux/reducers/session";
-import { setCreditPnr } from "redux/reducers/credit";
 import {
-  bookingSelector,
-  saveTripParams,
-  saveReturnParams,
-} from "redux/reducers/booking";
+  setCreditPnr,
+  saveCreditTripParams,
+  saveCreditReturnParams,
+  setActionSource,
+} from "redux/reducers/credit";
+import { bookingSelector } from "redux/reducers/booking";
 import { paymentSelector } from "redux/reducers/payment";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import { decryptPnr } from "lib/utils";
@@ -51,8 +51,7 @@ const CreditHome = (props) => {
   const { tripParams, returnParams, managedPnrWithoutPayment } =
     useSelector(bookingSelector);
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
-  const { data: paymentConfigs, isLoading: paymentConfigLoading } =
-    useGetPaymentConfigsQuery();
+  const { data: paymentConfigs } = useGetPaymentConfigsQuery();
   const [getAccountByReference] = useGetAccountByReferenceMutation();
 
   const { bookingId } = router.query;
@@ -289,7 +288,7 @@ const CreditHome = (props) => {
           Add Flight
         </button>
 
-        {/* <button
+        <button
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
             checkedIn ||
             parseInt(bookingResponse?.Booking?.BookingSum?.BalanceDue) > 0 ||
@@ -301,7 +300,7 @@ const CreditHome = (props) => {
         >
           Change Flight
         </button>
-        <button
+        {/*  <button
           onClick={handleServices}
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
             checkedIn || _disabled
@@ -468,7 +467,7 @@ const CreditHome = (props) => {
     );
   };
 
-  const handleItenary = () => {
+  const handleItenary = () => { 
     let _JourneyOneTax = 0;
     let _JourneyOneFare = 0;
 
@@ -506,8 +505,6 @@ const CreditHome = (props) => {
       currentDate: new Date(),
       LiftStatus: bookingResponse?.Booking?.Journeys[0]?.State,
     };
-
-    // const goStd = bookingResponse?.Booking?.Journeys[0].Segments[0].STD;
 
     if (bookingResponse?.Booking?.Journeys.length > 1) {
       let _JourneyTwoTax = 0;
@@ -555,16 +552,18 @@ const CreditHome = (props) => {
         LiftStatus: bookingResponse?.Booking?.Journeys[1]?.State,
       };
 
-      dispatch(saveTripParams(tripPayload));
-      dispatch(saveReturnParams(returnPayload));
-      router.push("/bookings/change-flight");
+      dispatch(saveCreditTripParams(tripPayload));
+      dispatch(saveCreditReturnParams(returnPayload));
+      router.push("/credit/change-flight");
     } else {
-      dispatch(saveTripParams(tripPayload));
-      router.push("/bookings/change-flight");
+      dispatch(saveCreditTripParams(tripPayload));
+      router.push("/credit/change-flight");
     }
+    dispatch(setActionSource("modify"));
   };
 
   const handleAddFlight = () => {
+    dispatch(setActionSource("add"));
     router.push("/credit/add-flight");
   };
 
@@ -580,11 +579,11 @@ const CreditHome = (props) => {
           ...returnParams,
           LiftStatus: bookingResponse?.Booking?.Journeys[1]?.State,
         };
-        dispatch(saveTripParams(tripPayload));
-        dispatch(saveReturnParams(returnPayload));
+        dispatch(saveCreditTripParams(tripPayload));
+        dispatch(saveCreditReturnParams(returnPayload));
         router.push("/bookings/services");
       } else {
-        dispatch(saveTripParams(tripPayload));
+        dispatch(saveCreditTripParams(tripPayload));
         router.push("/bookings/services");
       }
     }

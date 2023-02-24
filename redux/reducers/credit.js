@@ -11,8 +11,11 @@ import format from "date-fns/format";
 import addDays from "date-fns/addDays";
 import { GetSSRAvailabilityForBooking } from "services/bookingService";
 
+// creditActionSource: = add,modify
 const initialState = {
+  creditAction: null,
   creditPnr: null,
+  creditPnrWithoutPayment: null,
   creditGoTrip: null,
   creditReturnTrip: null,
   creditTripParams: null,
@@ -55,8 +58,14 @@ export const creditSlice = createSlice({
   name: "credit",
   initialState,
   reducers: {
+    setActionSource: (state, { payload }) => {
+      state.creditAction = payload;
+    },
     setCreditPnr: (state, { payload }) => {
       state.creditPnr = payload;
+    },
+    setCreditPnrWithoutPayment: (state, { payload }) => {
+      state.creditPnrWithoutPayment = payload;
     },
     setCreditGoTrip: (state, { payload }) => {
       state.creditGoTrip = payload;
@@ -158,6 +167,7 @@ export const creditSlice = createSlice({
 });
 
 export const {
+  setActionSource,
   setCreditPnr,
   setCreditGoTrip,
   setCreditReturnTrip,

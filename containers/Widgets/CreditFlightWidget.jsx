@@ -1,17 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState, useRef, useEffect } from "react";
 import PromoIcon from "assets/svgs/promo.svg";
+import { creditSelector } from "redux/reducers/credit";
 import { sessionSelector } from "redux/reducers/session";
 import { useSelector } from "react-redux";
 import CreditTab from "./credit/Book";
+import ModifyCreditTab from "./credit/ModifyBook";
 
 const CreditFlightWidget = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [promocode, setPromocode] = useState(null);
   const [showPromo, setShowPromo] = useState(false);
   const [saveStatus, setSaveStatus] = useState(false);
+  const { creditAction } = useSelector(creditSelector);
+  const { bookingResponse } = useSelector(sessionSelector);
 
   const promo = useRef(null);
+
+  useEffect(() => {
+    if (bookingResponse) {
+      if (bookingResponse?.Booking?.Journeys.length > 1) {
+        setActiveTab(2);
+      }
+    }
+  }, [bookingResponse]);
 
   const saveVal = () => {
     if (promocode !== null && promocode.length > 1) {
@@ -39,20 +51,22 @@ const CreditFlightWidget = () => {
             One Way
           </button>
 
-          {/* {bookingResponse && bookingResponse?.Booking?.Journeys.length > 0 && (
-            <button
-              onClick={() => setActiveTab(2)}
-              className={`btn ${
-                activeTab === 2 ? "btn-primary white font-title" : "btn-text"
-              } mr-[22px]`}
-              disabled={true}
-            >
-              Round Trip
-            </button>
-          )} */}
+          {creditAction === "modify" &&
+            bookingResponse &&
+            bookingResponse?.Booking?.Journeys.length > 0 && (
+              <button
+                onClick={() => setActiveTab(2)}
+                className={`btn ${
+                  activeTab === 2 ? "btn-primary white font-title" : "btn-text"
+                } mr-[22px]`}
+                disabled={true}
+              >
+                Round Trip
+              </button>
+            )}
         </div>
 
-        <div className="flex">
+        {/* <div className="flex">
           {showPromo ? (
             <>
               <div className="relative">
@@ -94,14 +108,27 @@ const CreditFlightWidget = () => {
               <span className="text-primary">Use promo code</span>
             </button>
           )}
-        </div>
+        </div> */}
       </div>
-      <section className="ga__desktop__filter__content px-5 py-[18px]">
-        {activeTab === 1 && <CreditTab promocode={promocode} />}
-        {/* {activeTab === 2 && (
-          <CreditTab type={"round_trip"} promocode={promocode} />
-        )} */}
-      </section>
+
+      {creditAction === "modify" ? (
+        <>
+          <section className="ga__desktop__filter__content px-5 py-[18px]">
+            {activeTab === 1 && <ModifyCreditTab promocode={promocode} />}
+
+            {creditAction === "modify" &&
+              bookingResponse &&
+              bookingResponse?.Booking?.Journeys.length > 0 &&
+              activeTab === 2 && (
+                <ModifyCreditTab type={"round_trip"} promocode={promocode} />
+              )}
+          </section>
+        </>
+      ) : (
+        <section className="ga__desktop__filter__content px-5 py-[18px]">
+          {activeTab === 1 && <CreditTab promocode={promocode} />}
+        </section>
+      )}
     </section>
   );
 };
