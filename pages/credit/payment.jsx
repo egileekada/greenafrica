@@ -46,10 +46,6 @@ const CreditPayment = () => {
   const [creditModal, setCreditModal] = useState(false);
   const [creditQuery, setCreditQuery] = useState(null);
   const [totalFare, setTotalFare] = useState();
-  const [initialValues, setInitialValues] = useState({
-    pnr: "",
-    email: "",
-  });
 
   const { bookingState, bookingCommitLoading, signature } =
     useSelector(sessionSelector);
@@ -95,6 +91,7 @@ const CreditPayment = () => {
     if (data) {
       const isBalanceDue = data?.data?.isBalanceDue;
       const _balanceDue = data?.data?.balanceDue;
+      7;
 
       if (isBalanceDue && _balanceDue > 0) {
         setTotalFare(data?.data?.balanceDue);
@@ -225,7 +222,10 @@ const CreditPayment = () => {
   };
 
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      pnr:  bookingState?.RecordLocator,
+      email: bookingState?.BookingContacts[0]?.EmailAddress,
+    },
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
@@ -242,6 +242,7 @@ const CreditPayment = () => {
     },
   });
 
+ 
   return (
     <BaseLayout>
       <section className="w-full">
@@ -407,7 +408,6 @@ const CreditPayment = () => {
                     />
                   </div>
 
-                  <p>creditQuery::{JSON.stringify(creditQuery)}</p>
 
                   <div className="my-3 lg:ml-auto">
                     <button

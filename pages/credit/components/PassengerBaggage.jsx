@@ -3,7 +3,6 @@ import FlightIcon from "assets/svgs/aero.svg";
 import ArrowIcon from "assets/svgs/small-arrow.svg";
 
 import BoookingBaggageCard from "components/Cards/credit/baggage";
-import BookingReturnBaggageCard from "components/Cards/credit/returnBaggage";
 
 import BaggageIcon from "assets/svgs/baggage.svg";
 import { Fragment, useState, useEffect } from "react";
@@ -129,12 +128,9 @@ const CreditPassengerBaggage = ({
                   return _list?.AvailablePaxSSRList.filter((_SSR) => {
                     return ALLOWED__SSRS.includes(_SSR?.SSRCode);
                   }).map((_SSRITEM) => {
-                    const _ARRIVAL =
-                      bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                        ?.ArrivalStation;
-                    const _DEPARTURE =
-                      bookingResponse?.Booking?.Journeys[0]?.Segments[0]
-                        ?.DepartureStation;
+                  
+                    const _ARRIVAL = creditTripParams?.arrivalStation;
+                    const _DEPARTURE = creditTripParams?.departureStation;
 
                     const passengerGoSSRs = preSelectedGoSSRS.filter((_ssr) => {
                       return (

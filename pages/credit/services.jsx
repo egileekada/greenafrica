@@ -475,6 +475,8 @@ const PassengerDetails = () => {
                       </button>
                     </div>
                   )}
+
+                  <p>{JSON.stringify(newBookingSSRs)}</p>
                 </section>
               </>
             ) : (
