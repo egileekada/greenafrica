@@ -422,7 +422,7 @@ const CheckInDetails = () => {
                               {bookingResponse?.Booking?.Passengers.map(
                                 (passenger, pIndex) => (
 
-                                  <ManagePassengerItem passenger={passenger} signature={signature} LoadingPass={LoadingPass} sendBoardingPass={sendBoardingPass} index={index} Journey={Journey} paxIndex={pIndex} checkin={true}  /> 
+                                  <ManagePassengerItem download={true} passenger={passenger} signature={signature} LoadingPass={LoadingPass} sendBoardingPass={sendBoardingPass} index={index} Journey={Journey} paxIndex={pIndex} checkin={true}  /> 
                                   // <>
                                   //   {Journey?.Segments[0]?.PaxSegments[pIndex]
                                   //     ?.LiftStatus === 1 && (

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { sessionSelector } from "redux/reducers/session";
 
-const ManagePassengerItem = ({signature, passenger, paxIndex, Journey, index, setdata, checkin, sendBoardingPass, LoadingPass }) => {
+const ManagePassengerItem = ({download, signature, passenger, paxIndex, Journey, index, setdata, checkin, sendBoardingPass, LoadingPass }) => {
   const { bookingResponse } = useSelector(sessionSelector);
   const [specials, setSpecials] = useState([]);
 
@@ -242,30 +242,12 @@ const ManagePassengerItem = ({signature, passenger, paxIndex, Journey, index, se
                         })}
                       </section> */}
                     </div>
-                    <div className=" w-full flex justify-start border-[#0000001A] border-t  px-6 py-5 " >
-                      <button
-                        className="btn btn-primary !text-white md:mr-1 flex items-center basis-full md:basis-auto mb-3 md:mb-0"
-                        onClick={() =>
-                          triggerDownloadBoardingPass(
-                            passenger.PassengerNumber,
-                            Journey?.Segments[0]
-                              ?.DepartureStation,
-                            Journey?.Segments[0]
-                              ?.ArrivalStation
-                          )
-                        }
-                        disabled={LoadingPass}
-                      >
-                        <svg className=" mr-3 " width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M19 12C18.7348 12 18.4804 12.1054 18.2929 12.2929C18.1054 12.4804 18 12.7348 18 13V17C18 17.2652 17.8946 17.5196 17.7071 17.7071C17.5196 17.8946 17.2652 18 17 18H3C2.73478 18 2.48043 17.8946 2.29289 17.7071C2.10536 17.5196 2 17.2652 2 17V13C2 12.7348 1.89464 12.4804 1.70711 12.2929C1.51957 12.1054 1.26522 12 1 12C0.734784 12 0.48043 12.1054 0.292893 12.2929C0.105357 12.4804 0 12.7348 0 13V17C0 17.7956 0.316071 18.5587 0.87868 19.1213C1.44129 19.6839 2.20435 20 3 20H17C17.7956 20 18.5587 19.6839 19.1213 19.1213C19.6839 18.5587 20 17.7956 20 17V13C20 12.7348 19.8946 12.4804 19.7071 12.2929C19.5196 12.1054 19.2652 12 19 12ZM9.29 13.71C9.3851 13.801 9.49725 13.8724 9.62 13.92C9.7397 13.9729 9.86913 14.0002 10 14.0002C10.1309 14.0002 10.2603 13.9729 10.38 13.92C10.5028 13.8724 10.6149 13.801 10.71 13.71L14.71 9.71C14.8983 9.5217 15.0041 9.2663 15.0041 9C15.0041 8.7337 14.8983 8.4783 14.71 8.29C14.5217 8.1017 14.2663 7.99591 14 7.99591C13.7337 7.99591 13.4783 8.1017 13.29 8.29L11 10.59V1C11 0.734784 10.8946 0.48043 10.7071 0.292893C10.5196 0.105357 10.2652 0 10 0C9.73478 0 9.48043 0.105357 9.29289 0.292893C9.10536 0.48043 9 0.734784 9 1V10.59L6.71 8.29C6.61676 8.19676 6.50607 8.1228 6.38425 8.07234C6.26243 8.02188 6.13186 7.99591 6 7.99591C5.86814 7.99591 5.73757 8.02188 5.61575 8.07234C5.49393 8.1228 5.38324 8.19676 5.29 8.29C5.19676 8.38324 5.1228 8.49393 5.07234 8.61575C5.02188 8.73757 4.99591 8.86814 4.99591 9C4.99591 9.13186 5.02188 9.26243 5.07234 9.38425C5.1228 9.50607 5.19676 9.61676 5.29 9.71L9.29 13.71Z" fill="white"/>
-                        </svg>
-                        Download Boarding Pass
-                      </button>
-
+                    {download && (
+                      <div className=" w-full flex justify-start border-[#0000001A] border-t  px-6 py-5 " >
                         <button
-                          className="btn btn-outline ml-3 flex items-center basis-full md:basis-auto"
+                          className="btn btn-primary !text-white md:mr-1 flex items-center basis-full md:basis-auto mb-3 md:mb-0"
                           onClick={() =>
-                            triggerEmailBoardingPass(
+                            triggerDownloadBoardingPass(
                               passenger.PassengerNumber,
                               Journey?.Segments[0]
                                 ?.DepartureStation,
@@ -275,12 +257,32 @@ const ManagePassengerItem = ({signature, passenger, paxIndex, Journey, index, se
                           }
                           disabled={LoadingPass}
                         >
-                          <svg className=" mr-3 fill-current " width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 0H2C0.9 0 0.00999999 0.9 0.00999999 2L0 14C0 15.1 0.9 16 2 16H18C19.1 16 20 15.1 20 14V2C20 0.9 19.1 0 18 0ZM17.6 4.25L10.53 8.67C10.21 8.87 9.79 8.87 9.47 8.67L2.4 4.25C2.15 4.09 2 3.82 2 3.53C2 2.86 2.73 2.46 3.3 2.81L10 7L16.7 2.81C17.27 2.46 18 2.86 18 3.53C18 3.82 17.85 4.09 17.6 4.25Z"/>
+                          <svg className=" mr-3 " width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12C18.7348 12 18.4804 12.1054 18.2929 12.2929C18.1054 12.4804 18 12.7348 18 13V17C18 17.2652 17.8946 17.5196 17.7071 17.7071C17.5196 17.8946 17.2652 18 17 18H3C2.73478 18 2.48043 17.8946 2.29289 17.7071C2.10536 17.5196 2 17.2652 2 17V13C2 12.7348 1.89464 12.4804 1.70711 12.2929C1.51957 12.1054 1.26522 12 1 12C0.734784 12 0.48043 12.1054 0.292893 12.2929C0.105357 12.4804 0 12.7348 0 13V17C0 17.7956 0.316071 18.5587 0.87868 19.1213C1.44129 19.6839 2.20435 20 3 20H17C17.7956 20 18.5587 19.6839 19.1213 19.1213C19.6839 18.5587 20 17.7956 20 17V13C20 12.7348 19.8946 12.4804 19.7071 12.2929C19.5196 12.1054 19.2652 12 19 12ZM9.29 13.71C9.3851 13.801 9.49725 13.8724 9.62 13.92C9.7397 13.9729 9.86913 14.0002 10 14.0002C10.1309 14.0002 10.2603 13.9729 10.38 13.92C10.5028 13.8724 10.6149 13.801 10.71 13.71L14.71 9.71C14.8983 9.5217 15.0041 9.2663 15.0041 9C15.0041 8.7337 14.8983 8.4783 14.71 8.29C14.5217 8.1017 14.2663 7.99591 14 7.99591C13.7337 7.99591 13.4783 8.1017 13.29 8.29L11 10.59V1C11 0.734784 10.8946 0.48043 10.7071 0.292893C10.5196 0.105357 10.2652 0 10 0C9.73478 0 9.48043 0.105357 9.29289 0.292893C9.10536 0.48043 9 0.734784 9 1V10.59L6.71 8.29C6.61676 8.19676 6.50607 8.1228 6.38425 8.07234C6.26243 8.02188 6.13186 7.99591 6 7.99591C5.86814 7.99591 5.73757 8.02188 5.61575 8.07234C5.49393 8.1228 5.38324 8.19676 5.29 8.29C5.19676 8.38324 5.1228 8.49393 5.07234 8.61575C5.02188 8.73757 4.99591 8.86814 4.99591 9C4.99591 9.13186 5.02188 9.26243 5.07234 9.38425C5.1228 9.50607 5.19676 9.61676 5.29 9.71L9.29 13.71Z" fill="white"/>
                           </svg>
-                          Email Boarding Pass
+                          Download Boarding Pass
                         </button>
-                    </div>
+
+                          <button
+                            className="btn btn-outline ml-3 flex items-center basis-full md:basis-auto"
+                            onClick={() =>
+                              triggerEmailBoardingPass(
+                                passenger.PassengerNumber,
+                                Journey?.Segments[0]
+                                  ?.DepartureStation,
+                                Journey?.Segments[0]
+                                  ?.ArrivalStation
+                              )
+                            }
+                            disabled={LoadingPass}
+                          >
+                            <svg className=" mr-3 fill-current " width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M18 0H2C0.9 0 0.00999999 0.9 0.00999999 2L0 14C0 15.1 0.9 16 2 16H18C19.1 16 20 15.1 20 14V2C20 0.9 19.1 0 18 0ZM17.6 4.25L10.53 8.67C10.21 8.87 9.79 8.87 9.47 8.67L2.4 4.25C2.15 4.09 2 3.82 2 3.53C2 2.86 2.73 2.46 3.3 2.81L10 7L16.7 2.81C17.27 2.46 18 2.86 18 3.53C18 3.82 17.85 4.09 17.6 4.25Z"/>
+                            </svg>
+                            Email Boarding Pass
+                          </button>
+                      </div>
+                    )}
                   </div>
                 </div>
           ) : null;
