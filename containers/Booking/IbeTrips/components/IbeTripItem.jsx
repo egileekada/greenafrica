@@ -67,38 +67,31 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
               );
             })}
           </p>
-          <div className="flex justify-between">
-            <div className="flex flex-col">
-              <h5 className="tripType">
-                {flightTime && format(new Date(flightTime?.STD), "HH:mm")}
-              </h5>
-
-              <p className="tripCity">
-                {flightTime &&
-                  !locationLoading &&
-                  resolveAbbreviation(flightTime?.DepartureStation)}
-              </p>
-
-              {/* <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute left-6 top-3">
-                selected
-              </p> */}
+            <div className="flex justify-between mt-3">
+              <div className="flex flex-col">
+                <p className=" font-extrabold !text-3xl text-primary-main ">
+                  {flightTime && format(new Date(flightTime?.STD), "HH:mm")}
+                </p>
+                <p className=" font-semibold text-black !text-base ">
+                  {flightTime &&
+                    resolveAbbreviation(flightTime?.DepartureStation)}
+                </p>
+              </div>
+              <div className="tripIconPath">
+                <DottedLine className="dotted-svg" />
+                <AeroTwoIcon className="aero-svg" />
+                <DottedLine className="dotted-svg" />
+              </div>
+              <div className="flex flex-col items-end">
+                <h5 className=" font-extrabold !text-3xl text-primary-main">
+                  {flightTime && format(new Date(flightTime?.STA), "HH:mm")}
+                </h5>
+                <p className="font-semibold text-black !text-base">
+                  {flightTime &&
+                    resolveAbbreviation(flightTime?.ArrivalStation)}
+                </p>
+              </div>
             </div>
-            <div className="tripIconPath">
-              <DottedLine className="dotted-svg" />
-              <AeroTwoIcon className="aero-svg" />
-              <DottedLine className="dotted-svg" />
-            </div>
-            <div className="flex flex-col items-end">
-              <h5 className="tripType right-text">
-                {flightTime && format(new Date(flightTime?.STA), "HH:mm")}
-              </h5>
-              <p className="tripCity right-text">
-                {flightTime &&
-                  !locationLoading &&
-                  resolveAbbreviation(flightTime?.ArrivalStation)}{" "}
-              </p>
-            </div>
-          </div>
           <p className="tripTime self-center">
             {flightTime &&
               timeConvert(
@@ -112,27 +105,30 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
         <div className="basis-full lg:basis-[30%] mt-4 lg:mt-0 flex justify-end items-center relative">
           {!isVisible ? (
             <button
-              className="btn btn-primary w-full lg:w-[200px] flex items-center justify-center text-center group lg:ml-4"
+              className="btn btn-primary w-full lg:w-[200px] !font-semibold flex items-center justify-center text-center group lg:ml-4"
               onClick={() => setIsVisible(!isVisible)}
             >
+              {/* <span className="text-white mr-3">From ₦16,501</span> */}
               <span className="text-white mr-3">
                 {leastFare ? `From ₦${leastFare.toLocaleString()}` : "Proceed"}
               </span>
-              <CaretDown />
             </button>
           ) : (
             <button
               className="btn btn-outline dotted w-full lg:w-[200px] flex items-center justify-center text-center  group lg:ml-4"
               onClick={() => setIsVisible(false)}
             >
-              <span className="text-primary-main mr-2">Select a product</span>
+              <span className="text-primary-main !font-semibold mr-2">Close</span>
+              <div className=" rotate-180 " >
+                <CaretDown />
+              </div>
             </button>
           )}
         </div>
 
         {goTrip?.journey?.JourneySellKey.toLowerCase() ===
         journey?.JourneySellKey.toLowerCase() ? (
-          <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute top-[12px] text-[8px]">
+          <p className="bg-primary-main text-green py-1 px-2 !font-semibold text-[10px] rounded-[4px] absolute top-[12px] ">
             Go Selected -{" "}
             {goTrip?.fare?.RuleNumber.toLowerCase() === "savr" && "gSaver"}
             {goTrip?.fare?.RuleNumber.toLowerCase() === "flex" && "gFlex"}
@@ -142,7 +138,7 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
 
         {returnTrip?.journey?.JourneySellKey.toLowerCase() ===
         journey?.JourneySellKey.toLowerCase() ? (
-          <p className="bg-primary-main text-green py-1 px-2  rounded-[4px] absolute top-[12px] text-[8px]">
+          <p className="bg-primary-main text-green py-1 px-2 !font-semibold text-[10px] rounded-[4px] absolute top-[12px]">
             Return Selected -{" "}
             {returnTrip?.fare?.RuleNumber.toLowerCase() === "savr" && "gSaver"}
             {returnTrip?.fare?.RuleNumber.toLowerCase() === "flex" && "gFlex"}

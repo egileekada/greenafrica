@@ -85,10 +85,10 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
             </p>
             <div className="flex justify-between">
               <div className="flex flex-col">
-                <h5 className="tripType">
+                <p className=" font-extrabold !text-3xl text-primary-main">
                   {flightTime && format(new Date(flightTime?.STD), "HH:mm")}
-                </h5>
-                <p className="tripCity">
+                </p>
+                <p className="font-semibold text-black !text-base ">
                   {flightTime &&
                     resolveAbbreviation(flightTime?.DepartureStation)}
                 </p>
@@ -99,10 +99,10 @@ const IbeTripItem = ({ journey, schedueIndex }) => {
                 <DottedLine className="dotted-svg" />
               </div>
               <div className="flex flex-col items-end">
-                <h5 className="tripType right-text">
+                <p className="font-extrabold !text-3xl text-primary-main">
                   {flightTime && format(new Date(flightTime?.STA), "HH:mm")}
-                </h5>
-                <p className="tripCity right-text">
+                </p>
+                <p className="font-semibold text-black !text-base">
                   {flightTime &&
                     resolveAbbreviation(flightTime?.ArrivalStation)}
                 </p>

@@ -24,12 +24,12 @@ const IbeTripVariant = ({
       ? "flexi"
       : fare?.RuleNumber.toLowerCase();
 
-  const fare_name =
-    fare?.RuleNumber.toLowerCase() === "flex"
-      ? "Flex"
-      : fare?.RuleNumber.toLowerCase() === "savr"
-      ? "Saver"
-      : "Classic";
+  // const fare_name =
+  //   fare?.RuleNumber.toLowerCase() === "flex"
+  //     ? "Flex"
+  //     : fare?.RuleNumber.toLowerCase() === "savr"
+  //     ? "Saver"
+  //     : "Classic";
 
   const totalServiceCharge = fare.PaxFares[0].ServiceCharges.reduce(
     (accumulator, object) => {
@@ -37,6 +37,14 @@ const IbeTripVariant = ({
     },
     0
   );
+
+  const fare_name = () => { 
+    return fare?.RuleNumber.toLowerCase() === "flex"
+      ? "Flex"
+      : fare?.RuleNumber.toLowerCase() === "savr"
+      ? "Saver"
+      : "Classic";;
+  }; 
 
   const handleBtnClick = (_fare) => {
     // cons
@@ -78,19 +86,18 @@ const IbeTripVariant = ({
   return (
     <Fragment>
       <section className={`ibe__trip__variant ${fare_variant}`}>
-        <div className="flex flex-col">
-          <div className="type-header">
-            <h2 className="text-center font-display font-extrabold text-3xl text-white my-2">
-              g{fare_name}
-              {/* {journey?.JourneySellKey} */}
+        <div className="flex flex-col rounded-t-md ">
+          <div className=" px-6 md:px-14 border-b border-b-[#0000001A] type-header rounded-t-md ">
+            <h2 className=" font-display font-extrabold text-2xl text-[#261F5E] my-2">
+              {fare_name()}
             </h2>
-            <p className="text-white font-normal text-center mb-1">
+            <p className="text-[#261F5E] font-normal mb-1">
               {fare?.RuleNumber.toLowerCase() === "savr" ? (
                 <span>&nbsp;</span>
               ) : fare?.RuleNumber.toLowerCase() === "flex" ? (
                 "For Comfort & Convenience"
               ) : (
-                "Recommended For You"
+                "We Recommend "
               )}
             </p>
           </div>

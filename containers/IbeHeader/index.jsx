@@ -225,7 +225,7 @@ const IbeHeader = (props) => {
               <p className=" !text-sm !font-black " >{(currentDate+"").toUpperCase()}</p>
               <p className=" !text-sm !font-medium !text-[#A49FDC] " >1 PASSENGER</p>
             </div>
-            <Setting />
+            {/* <Setting /> */}
           </div>
         </section>
       )}
