@@ -336,9 +336,9 @@ const CheckInDetails = () => {
                             )}
                           </div>
 
-                          <div className="mx-6 relative ">
+                          <div className="mx-6 mt-3 relative ">
                             <h3 className="title-text">
-                              DEPARTURE:{" "}
+                               {index === 0 ? "DEPARTURE:": "RETURNING: "}{" "}
                               {bookingData &&
                                 format(
                                   new Date(
@@ -349,7 +349,7 @@ const CheckInDetails = () => {
                             </h3>
                           </div>
                           <section
-                            className="ibe__trip__item checkinView bordered mx-6 my-3"
+                            className="ibe__trip__item checkinView bordered mx-6 my-1"
                             key={index}
                           >
                             <p className="bg-primary-main font-bold text-green py-1 px-4 rounded-[4px] absolute left-6 top-5">
@@ -363,14 +363,14 @@ const CheckInDetails = () => {
                               </p>
                               <div className="flex justify-between">
                                 <div className="flex flex-col">
-                                  <h5 className="tripType">
+                                  <p className="font-extrabold !text-3xl text-primary-main">
                                     {bookingResponse &&
                                       format(
                                         new Date(Journey.Segments[0].STD),
                                         "HH:mm"
                                       )}
-                                  </h5>
-                                  <p className="tripCity">
+                                  </p>
+                                  <p className=" font-semibold text-black !text-base">
                                     {!locationLoading &&
                                       resolveAbbreviation(
                                         Journey?.Segments[0]?.DepartureStation
@@ -383,14 +383,14 @@ const CheckInDetails = () => {
                                   <DottedLine className="dotted-svg" />
                                 </div>
                                 <div className="flex flex-col  items-end">
-                                  <h5 className="tripType right-text">
+                                  <h5 className="font-extrabold !text-3xl text-primary-main right-text">
                                     {bookingResponse &&
                                       format(
                                         new Date(Journey.Segments[0].STA),
                                         "HH:mm"
                                       )}
                                   </h5>
-                                  <p className="tripCity right-text">
+                                  <p className="font-semibold text-black !text-base right-text">
                                     {!locationLoading &&
                                       resolveAbbreviation(
                                         Journey?.Segments[0]?.ArrivalStation
@@ -525,68 +525,71 @@ const CheckInDetails = () => {
                           {Journey?.Segments[0]?.PaxSegments.some(
                             (passengers) => passengers.LiftStatus === 0
                           ) && (
-                            <>
-                              <div className="mx-6">
+                            <div className=" w-full px-6 " >
+                              {/* <div className="mx-6">
                                 <h4 className="text-primary-main font-semibold mt-3">
                                   PASSENGERS AWAITING CHECK IN
                                 </h4>
-                              </div>
+                              </div> */}
                               {bookingResponse?.Booking?.Passengers.map(
                                 (passenger, pIndex) => (
                                   <>
                                     {Journey?.Segments[0]?.PaxSegments[pIndex]
                                       ?.LiftStatus === 0 && (
-                                      <section
-                                        className="ibe__trip__passengers checkinView mx-6 mb-3"
-                                        key={pIndex}
-                                      >
-                                        <div className="md:flex bordered p-4">
-                                          <div className="flex items-center w-full">
-                                            <p className="ml-2 text-lg font-semibold capitalize w-full flex items-center">
-                                              {passenger.Names[0].FirstName}{" "}
-                                              {passenger.Names[0].LastName}
-                                            </p>
-                                          </div>
-                                        </div>
 
-                                        <div className="trip-details">
-                                          <div className="trip-details-item">
-                                            <h6>SEAT NUMBER</h6>
-                                            {Journey.Segments[0].PaxSeats
-                                              .length > 0 ? (
-                                              <h5 className="flex items-center text-center">
-                                                <span>
-                                                  {
-                                                    Journey.Segments[0].PaxSeats.filter(
-                                                      (seat) =>
-                                                        seat.PassengerNumber ==
-                                                        passenger.PassengerNumber
-                                                    )[0]?.UnitDesignator
-                                                  }
-                                                </span>
-                                              </h5>
-                                            ) : (
-                                              <h5 className="flex items-center">
-                                                <span>None</span>
-                                              </h5>
-                                            )}
-                                          </div>
-                                          {Journey.Segments[0].PaxSSRs.length >
-                                            0 && (
-                                            <>
-                                              {PassengerBags(
-                                                Journey.Segments[0].PaxSSRs,
-                                                passenger.PassengerNumber
-                                              )}
-                                            </>
-                                          )}
-                                        </div>
-                                      </section>
+
+                                      <ManagePassengerItem download={false} passenger={passenger} signature={signature} LoadingPass={LoadingPass} sendBoardingPass={sendBoardingPass} index={index} Journey={Journey} paxIndex={pIndex} checkin={true}  /> 
+                                      // <section
+                                      //   className="ibe__trip__passengers checkinView mx-6 mb-3"
+                                      //   key={pIndex}
+                                      // >
+                                      //   <div className="md:flex bordered p-4">
+                                      //     <div className="flex items-center w-full">
+                                      //       <p className="ml-2 text-lg font-semibold capitalize w-full flex items-center">
+                                      //         {passenger.Names[0].FirstName}{" "}
+                                      //         {passenger.Names[0].LastName}
+                                      //       </p>
+                                      //     </div>
+                                      //   </div>
+
+                                      //   <div className="trip-details">
+                                      //     <div className="trip-details-item">
+                                      //       <h6>SEAT NUMBER</h6>
+                                      //       {Journey.Segments[0].PaxSeats
+                                      //         .length > 0 ? (
+                                      //         <h5 className="flex items-center text-center">
+                                      //           <span>
+                                      //             {
+                                      //               Journey.Segments[0].PaxSeats.filter(
+                                      //                 (seat) =>
+                                      //                   seat.PassengerNumber ==
+                                      //                   passenger.PassengerNumber
+                                      //               )[0]?.UnitDesignator
+                                      //             }
+                                      //           </span>
+                                      //         </h5>
+                                      //       ) : (
+                                      //         <h5 className="flex items-center">
+                                      //           <span>None</span>
+                                      //         </h5>
+                                      //       )}
+                                      //     </div>
+                                      //     {Journey.Segments[0].PaxSSRs.length >
+                                      //       0 && (
+                                      //       <>
+                                      //         {PassengerBags(
+                                      //           Journey.Segments[0].PaxSSRs,
+                                      //           passenger.PassengerNumber
+                                      //         )}
+                                      //       </>
+                                      //     )}
+                                      //   </div>
+                                      // </section>
                                     )}
                                   </>
                                 )
                               )}
-                            </>
+                            </div>
                           )}
                         </>
                       ))}
