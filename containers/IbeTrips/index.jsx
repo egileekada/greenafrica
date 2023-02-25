@@ -27,7 +27,7 @@ const IbeTrips = ({ flightSchedule, schedueIndex }) => {
             className="flex flex-col"
             // id={schedueIndex === 0 ? "departureContainer" : "returnContainer"}
           >
-            {!flightSchedule ? (
+            {flightSchedule ? (
               flightSchedule.length > 0 ? (
                 flightSchedule.map((_schedule) => {
                   return _schedule.Journeys.map((_journey, _journeyIndex) => {

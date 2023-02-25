@@ -421,14 +421,14 @@ const CheckInDetails = (props) => {
                         </p>
                         <div className="flex justify-between">
                           <div className="flex flex-col">
-                            <h5 className="tripType">
+                            <p className="font-extrabold !text-3xl text-primary-main">
                               {bookingResponse &&
                                 format(
                                   new Date(Journey.Segments[0].STD),
                                   "HH:mm"
                                 )}
-                            </h5>
-                            <p className="tripCity">
+                            </p>
+                            <p className="font-semibold text-black !text-base">
                               {!locationLoading &&
                                 resolveAbbreviation(
                                   Journey?.Segments[0]?.DepartureStation
@@ -441,14 +441,14 @@ const CheckInDetails = (props) => {
                             <DottedLine className="dotted-svg" />
                           </div>
                           <div className="flex flex-col  items-end">
-                            <h5 className="tripType right-text">
+                            <p className="font-extrabold !text-3xl text-primary-main right-text">
                               {bookingResponse &&
                                 format(
                                   new Date(Journey.Segments[0].STA),
                                   "HH:mm"
                                 )}
-                            </h5>
-                            <p className="tripCity right-text">
+                            </p>
+                            <p className="font-semibold text-black !text-base right-text">
                               {!locationLoading &&
                                 resolveAbbreviation(
                                   Journey?.Segments[0]?.ArrivalStation

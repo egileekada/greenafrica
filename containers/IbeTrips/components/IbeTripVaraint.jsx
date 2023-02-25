@@ -78,6 +78,8 @@ const IbeTripVariant = ({
     setSkip(false);
   }, [fare?.ProductClass]);
 
+  console.log(productsFeatures);
+
   return (
     <Fragment>
       <section className={`ibe__trip__variant rounded-t-md relative ${fare_variant} `}>
@@ -98,7 +100,7 @@ const IbeTripVariant = ({
               </p>
             </div>
             <ul className="mt-7 mb-10 px-4 md:px-12">
-              {featureLoading &&
+              {!featureLoading &&
                 productsFeatures?.data.product_services.map(
                   (feature, index) => (
                     <li className="flex items-center mb-6" key={index}>
