@@ -76,9 +76,7 @@ const IbeTripVariant = ({
 
   React.useState(() => {
     setSkip(false);
-  }, [fare?.ProductClass]);
-
-  console.log(productsFeatures);
+  }, [fare?.ProductClass]); 
 
   return (
     <Fragment>
