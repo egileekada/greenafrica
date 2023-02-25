@@ -234,11 +234,11 @@ const ReturnIbeHeader = () => {
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
-                          <h6 className="text-center font-medium md:text-[14px]">
+                          <h6 className="text-center !font-medium md:!text-[14px]">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
                           {_dateItem?.cost > 0 ? (
-                            <p className=" !font-bold !text-base !lg:text-[24px] " > ₦{_dateItem?.cost.toLocaleString()}</p>
+                            <p className="  !font-black !text-base lg:!text-[22px] " > ₦{_dateItem?.cost.toLocaleString()}</p>
                           ) : (
                             <p className=" !font-bold !text-sm !lg:text-2xl ">No Flight</p>
                           )}
