@@ -91,7 +91,7 @@ const CreditHome = (props) => {
       if (bookingId !== undefined) {
         fetchBookingDetails(decryptPnr(bookingId));
       } else if (!props.pnr) {
-        router.push("/bookings");
+        router.push("/credit");
       } else {
         fetchBookingDetails(props.pnr);
         const payload = {
@@ -300,7 +300,7 @@ const CreditHome = (props) => {
         >
           Change Flight
         </button>
-        {/*  <button
+        <button
           onClick={handleServices}
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
             checkedIn || _disabled
@@ -310,7 +310,7 @@ const CreditHome = (props) => {
         >
           Manage Services
         </button>
-        <Link href="/bookings/seat-selection">
+        {/*   <Link href="/bookings/seat-selection">
           <a
             className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 text-center ${
               checkedIn || _disabled
@@ -327,120 +327,108 @@ const CreditHome = (props) => {
 
   const PaymentContact = () => {
     return (
-      <>
-        {bookingResponse?.Booking?.Payments?.map((_payment) => {
-          return (
-            <section className=" mx-6 mt-6 flex justify-between">
-              <div className="basis-[48%]">
-                <div className="trip__summary__item">
-                  <h2 className="trip-title mb-2 font-semibold text-primary-main">
-                    PAYMENT DETAILS
-                  </h2>
-                  <div className="flex flex-col">
-                    <section className="flex flex-col">
-                      {bookingResponse?.Booking?.Payments?.map((_payment) => {
-                        return (
-                          <>
-                            <div className="trip__summary__details">
-                              <div className="f-1">
-                                <h5>Type:</h5>
-                              </div>
-                              <div className="f-1">
-                                <h6>
-                                  {paymentConfigs &&
-                                    resolvePaymnet(_payment?.PaymentMethodCode)}
-                                </h6>
-                              </div>
-                            </div>
-                            <div className="trip__summary__details">
-                              <div className="f-1">
-                                <h5>Date:</h5>
-                              </div>
-                              <div className="f-1">
-                                <h6>
-                                  {format(
-                                    new Date(_payment?.ApprovalDate),
-                                    "d MMMM yyyy"
-                                  )}
-                                </h6>
-                              </div>
-                            </div>
-                            <div className="trip__summary__details">
-                              <div className="f-1">
-                                <h5>Status:</h5>
-                              </div>
-                              <div className="f-1">
-                                <h6>{formatPaymentStatus(_payment?.Status)}</h6>
-                              </div>
-                            </div>
-                            <div className="trip__summary__details">
-                              <div className="f-1">
-                                <h5>Total Fare:</h5>
-                              </div>
-                              <div className="f-1">
-                                <h6>
-                                  ₦
-                                  {_payment?.PaymentAmount?.toLocaleString(
-                                    "NGN"
-                                  )}
-                                </h6>
-                              </div>
-                            </div>
-                          </>
-                        );
-                      })}
-                    </section>
-                  </div>
+      <section className="flex mx-6 mt-6 justify-between">
+        <div className="basis-[48%]">
+          {bookingResponse?.Booking?.Payments?.map((_payment) => {
+            return (
+              <div className="trip__summary__item !mb-6">
+                <h2 className="trip-title mb-2 font-semibold text-primary-main">
+                  PAYMENT DETAILS
+                </h2>
+                <div className="flex flex-col">
+                  <section className="flex flex-col">
+                    <>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Type:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>
+                            {paymentConfigs &&
+                              resolvePaymnet(_payment?.PaymentMethodCode)}
+                          </h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Date:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>
+                            {format(
+                              new Date(_payment?.ApprovalDate),
+                              "d MMMM yyyy"
+                            )}
+                          </h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Status:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>{formatPaymentStatus(_payment?.Status)}</h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Total Fare:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>
+                            ₦{_payment?.PaymentAmount?.toLocaleString("NGN")}
+                          </h6>
+                        </div>
+                      </div>
+                    </>
+                  </section>
                 </div>
               </div>
-
-              <div className=" basis-[48%]">
-                <div className="trip__summary__item">
-                  <h2 className="trip-title mb-2 font-semibold text-primary-main">
-                    CONTACT DETAILS
-                  </h2>
-                  <div className="flex flex-col">
-                    <section className="flex flex-col ">
-                      {bookingResponse?.Booking?.BookingContacts?.map(
-                        (_contact) => {
-                          return (
-                            <>
-                              <div className="trip__summary__details">
-                                <div className="f-1">
-                                  <h5>Name:</h5>
-                                </div>
-                                <div className="f-1">
-                                  <h6>{`${_contact?.Names[0]?.FirstName} ${_contact?.Names[0]?.LastName}`}</h6>
-                                </div>
-                              </div>
-                              <div className="trip__summary__details">
-                                <div className="f-1">
-                                  <h5>Email:</h5>
-                                </div>
-                                <div className="f-1">
-                                  <h6>{_contact?.EmailAddress}</h6>
-                                </div>
-                              </div>
-                              <div className="trip__summary__details">
-                                <div className="f-1">
-                                  <h5>Phone Number:</h5>
-                                </div>
-                                <div className="f-1">
-                                  <h6>{_contact?.HomePhone}</h6>
-                                </div>
-                              </div>
-                            </>
-                          );
-                        }
-                      )}
-                    </section>
-                  </div>
-                </div>
-              </div>
-            </section>
-          );
-        })}
-      </>
+            );
+          })}
+        </div>
+        <div className="basis-[48%]">
+          <div className="trip__summary__item">
+            <h2 className="trip-title mb-2 font-semibold text-primary-main">
+              CONTACT DETAILS
+            </h2>
+            <div className="flex flex-col">
+              <section className="flex flex-col ">
+                {bookingResponse?.Booking?.BookingContacts?.map((_contact) => {
+                  return (
+                    <>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Name:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>{`${_contact?.Names[0]?.FirstName} ${_contact?.Names[0]?.LastName}`}</h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Email:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>{_contact?.EmailAddress}</h6>
+                        </div>
+                      </div>
+                      <div className="trip__summary__details">
+                        <div className="f-1">
+                          <h5>Phone Number:</h5>
+                        </div>
+                        <div className="f-1">
+                          <h6>{_contact?.HomePhone}</h6>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
     );
   };
 
@@ -467,7 +455,7 @@ const CreditHome = (props) => {
     );
   };
 
-  const handleItenary = () => { 
+  const handleItenary = () => {
     let _JourneyOneTax = 0;
     let _JourneyOneFare = 0;
 
@@ -573,6 +561,7 @@ const CreditHome = (props) => {
         ...tripParams,
         LiftStatus: bookingResponse?.Booking?.Journeys[0]?.State,
       };
+      dispatch(setActionSource("modify"));
 
       if (bookingResponse?.Booking?.Journeys.length > 1) {
         const returnPayload = {
@@ -581,10 +570,10 @@ const CreditHome = (props) => {
         };
         dispatch(saveCreditTripParams(tripPayload));
         dispatch(saveCreditReturnParams(returnPayload));
-        router.push("/bookings/services");
+        router.push("/credit/manage-services");
       } else {
         dispatch(saveCreditTripParams(tripPayload));
-        router.push("/bookings/services");
+        router.push("/credit/manage-services");
       }
     }
   };
