@@ -39,6 +39,7 @@ const BookingPassengerBaggage = ({
     bookingSessionSSRs,
     bookingSessionReturnSSRs,
   } = useSelector(bookingSelector);
+  
 
   useEffect(() => {
     async function setDefaultSSRS() {
@@ -87,19 +88,19 @@ const BookingPassengerBaggage = ({
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation
     );
-    return `${name} (${code})`;
+    return ` ${code} `;
   };
 
   return (
     <Fragment>
       <section className="flex flex-col">
-        <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs">
+        {/* <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs">
           EXTRA BAGGAGE{" "}
           <span className="italic">
             (Do you require any extra checked in baggage allowance. Its cheaper
             online than at the airport)
           </span>
-        </h2>
+        </h2> */}
 
         {bookingResponse?.Booking?.Journeys?.length > 0 && (
           <section
@@ -111,7 +112,7 @@ const BookingPassengerBaggage = ({
                 : ""
             }`}
           >
-            <div className="flex h-16 border-b mb-6">
+            {/* <div className="flex h-16 border-b mb-6">
               {bookingResponse?.Booking?.Journeys?.length > 0 && (
                 <button className={`ssr__tab active-ssr`}>
                   <figure>
@@ -138,14 +139,14 @@ const BookingPassengerBaggage = ({
                   </div>
                 </button>
               )}
-            </div>
-            <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
+            </div> */}
+            <section className="grid grid-cols-1">
               {activeSSRS.length > 0 && (
                 <>
                   {activeSSRS.map((_list) => {
                     return _list?.AvailablePaxSSRList.filter((_SSR) => {
                       return ALLOWED__SSRS.includes(_SSR?.SSRCode);
-                    }).map((_SSRITEM) => {
+                    }).map((_SSRITEM, index) => {
                       const _ARRIVAL =
                         bookingResponse?.Booking?.Journeys[0]?.Segments[0]
                           ?.ArrivalStation;
@@ -168,18 +169,38 @@ const BookingPassengerBaggage = ({
                       );
 
                       return (
-                        <BoookingBaggageCard
-                          passenger={passenger}
-                          newSelection={newSelection}
-                          setNewSelection={setNewSelection}
-                          selectedSSRs={selectedSSRs}
-                          setSSRs={setSSRs}
-                          SSRItem={_SSRITEM}
-                          ArrivalStation={_ARRIVAL}
-                          DepartureStation={_DEPARTURE}
-                          _limit={passengerGoSSRs?.length}
-                          schedueIndex={0}
-                        />
+
+                        <div className=" w-full flex flex-col " >
+                          {index === 0 && ( 
+                            <div className=" w-full px-5 flex justify-between items-center border-b border-[#261F5E1A] py-3 " >
+                              <p className=" font-bold text-[#261F5E] " >Departure</p>
+                              <div className=" font-bold text-xs text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md " >
+                              {!isLoading &&
+                                resolveAbbreviation(
+                                  bookingResponse?.Booking?.Journeys[0]?.Segments[0]
+                                    ?.DepartureStation
+                                )} - {!isLoading &&
+                                resolveAbbreviation(
+                                  bookingResponse?.Booking?.Journeys[0].Segments[0]
+                                    ?.ArrivalStation
+                                )}
+                              </div>
+                            </div>
+                          )}
+                          <BoookingBaggageCard
+                            passenger={passenger}
+                            newSelection={newSelection}
+                            setNewSelection={setNewSelection}
+                            selectedSSRs={selectedSSRs}
+                            setSSRs={setSSRs}
+                            SSRItem={_SSRITEM}
+                            ArrivalStation={_ARRIVAL}
+                            DepartureStation={_DEPARTURE}
+                            _limit={passengerGoSSRs?.length}
+                            schedueIndex={0}
+                          />
+
+                        </div>
                       );
                     });
                   })}
@@ -199,7 +220,7 @@ const BookingPassengerBaggage = ({
                 : ""
             }`}
           >
-            <div className="flex h-16 border-b mb-6">
+            {/* <div className="flex h-16 border-b mb-6">
               {bookingResponse?.Booking?.Journeys?.length > 1 && (
                 <button className={`ssr__tab active-ssr`}>
                   <figure>
@@ -226,15 +247,15 @@ const BookingPassengerBaggage = ({
                   </div>
                 </button>
               )}
-            </div>
+            </div> */}
 
-            <section className="grid grid-cols-1 sm:grid-cols-2 tab:grid-cols-3 gap-10 mb-7">
+            <section className="grid grid-cols-1">
               {activeReturnSSRS.length > 0 && activeReturnSSRS.length > 0 && (
                 <>
                   {activeReturnSSRS.map((_list) => {
                     return _list?.AvailablePaxSSRList.filter((_SSR) => {
                       return ALLOWED__SSRS.includes(_SSR?.SSRCode);
-                    }).map((_SSRITEM) => {
+                    }).map((_SSRITEM, index) => {
                       const _ARRIVAL =
                         bookingResponse?.Booking?.Journeys[1]?.Segments[0]
                           ?.ArrivalStation;
@@ -256,19 +277,37 @@ const BookingPassengerBaggage = ({
                         }
                       );
 
-                      return (
-                        <BookingReturnBaggageCard
-                          passenger={passenger}
-                          returnNewSelection={returnNewSelection}
-                          setReturnNewSelection={setReturnNewSelection}
-                          selectedReturnSSRs={selectedReturnSSRs}
-                          setReturnSSRs={setReturnSSRs}
-                          SSRItem={_SSRITEM}
-                          ArrivalStation={_ARRIVAL}
-                          DepartureStation={_DEPARTURE}
-                          _limit={passengerReturnSSRs?.length}
-                          schedueIndex={1}
-                        />
+                      return ( 
+                        <div className=" w-full flex flex-col " >
+                          {index=== 0 && ( 
+                            <div className=" w-full px-5 flex justify-between items-center border-b border-[#261F5E1A] py-3 " >
+                              <p className=" font-bold text-[#261F5E] " >Return</p>
+                              <div className=" font-bold text-xs text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md " >
+                              {!isLoading &&
+                                resolveAbbreviation(
+                                  bookingResponse?.Booking?.Journeys[1]?.Segments[0]
+                                    ?.DepartureStation
+                                )} - {!isLoading &&
+                                resolveAbbreviation(
+                                  bookingResponse?.Booking?.Journeys[1].Segments[0]
+                                    ?.ArrivalStation
+                                )}
+                              </div>
+                            </div>
+                          )}
+                          <BookingReturnBaggageCard
+                            passenger={passenger}
+                            returnNewSelection={returnNewSelection}
+                            setReturnNewSelection={setReturnNewSelection}
+                            selectedReturnSSRs={selectedReturnSSRs}
+                            setReturnSSRs={setReturnSSRs}
+                            SSRItem={_SSRITEM}
+                            ArrivalStation={_ARRIVAL}
+                            DepartureStation={_DEPARTURE}
+                            _limit={passengerReturnSSRs?.length}
+                            schedueIndex={1}
+                          />
+                        </div>
                       );
                     });
                   })}

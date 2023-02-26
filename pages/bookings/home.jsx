@@ -360,6 +360,11 @@ const ManageBookings = (props) => {
   const PaymentContact = () => {
     return (
       <section className=" mx-6 mt-6 flex flex-col justify-between">
+        {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
+          return (
+            <ManagePassengerItem passenger={_pax} paxIndex={_paxIndex} />
+          );
+        })}
         <div className=" w-full mt-8 ">
           <div className="trip__summary__item relative "> 
             <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
@@ -413,11 +418,6 @@ const ManageBookings = (props) => {
             </div>
           </div>
         </div>
-        {bookingResponse?.Booking?.Passengers.map((_pax, _paxIndex) => {
-          return (
-            <ManagePassengerItem passenger={_pax} paxIndex={_paxIndex} />
-          );
-        })}
         <div className="w-full mt-8 ">
           <div className="trip__summary__item relative ">
             <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " >
@@ -428,78 +428,66 @@ const ManageBookings = (props) => {
             </h2> */}
             <div className="flex flex-col mt-[45px]">
               <section className="flex flex-col">
-                {bookingResponse?.Booking?.Payments?.map((_payment) => {
+                {bookingResponse?.Booking?.Payments?.map((_payment, index) => {
                   return (
-                    <>
-                    <div className=" grid lg:grid-cols-4 grid-cols-2 gap-4 " >
-                      <div>
-                        <p className=" text-[#5F5996] text-sm font-medium " >Type:</p>
-                        <p className=" text-[#261F5E] mt-1 font-bold ">
-                            {paymentConfigs &&
-                              resolvePaymnet(_payment?.PaymentMethodCode)}</p>
-                      </div>
-                      <div>
-                        <p className=" text-[#5F5996] text-sm font-medium " >Date:</p>
-                        <p className=" text-[#261F5E] mt-1 font-bold "> 
-                          {format(
-                                new Date(_payment?.ApprovalDate),
-                                "d MMMM yyyy"
-                              )}</p>
-                      </div>
-                      <div>
-                        <p className=" text-[#5F5996] text-sm font-medium " >Status:</p>
-                        <p className=" text-[#261F5E] mt-1 font-bold ">
-                          {formatPaymentStatus(_payment?.Status)}</p>
-                      </div>
-                      <div>
-                        <p className=" text-[#5F5996] text-sm font-medium " >Total Fare:</p>
-                        <p className=" text-[#261F5E] mt-1 font-bold ">
-                          ₦{_payment?.PaymentAmount?.toLocaleString("NGN")}</p>
-                      </div>
-                    </div>
-                      {/* <div className="trip__summary__details">
-                        <div className="f-1">
-                          <h5>Type:</h5>
-                        </div>
-                        <div className="f-1">
-                          <h6>
-                            {paymentConfigs &&
-                              resolvePaymnet(_payment?.PaymentMethodCode)}
-                          </h6>
-                        </div>
-                      </div> */}
-                      {/* <div className="trip__summary__details">
-                        <div className="f-1">
-                          <h5>Date:</h5>
-                        </div>
-                        <div className="f-1">
-                          <h6>
-                            {format(
-                              new Date(_payment?.ApprovalDate),
-                              "d MMMM yyyy"
-                            )}
-                          </h6>
-                        </div>
-                      </div> */}
-                      {/* 28 October 2022 */}
-                      {/* <div className="trip__summary__details">
-                        <div className="f-1">
-                          <h5>Status:</h5>
-                        </div>
-                        <div className="f-1">
-                          <h6>{formatPaymentStatus(_payment?.Status)}</h6>
-                        </div>
-                      </div> */}
-                      {/* <div className="trip__summary__details">
-                        <div className="f-1">
-                          <h5>Total Fare:</h5>
-                        </div>
-                        <div className="f-1">
-                          <h6>
-                            ₦{_payment?.PaymentAmount?.toLocaleString("NGN")}
-                          </h6>
-                        </div>
-                      </div> */}
+                    <> 
+                      {index === 0 ? ( 
+                        <div className=" pb-5 grid lg:grid-cols-4 grid-cols-2 gap-4 " >
+                          <div>
+                            <p className=" text-[#5F5996] text-sm font-medium " >Type:</p>
+                            <p className=" text-[#261F5E] mt-1 font-bold ">
+                                {paymentConfigs &&
+                                  resolvePaymnet(_payment?.PaymentMethodCode)}</p>
+                          </div>
+                          <div>
+                            <p className=" text-[#5F5996] text-sm font-medium " >Date:</p>
+                            <p className=" text-[#261F5E] mt-1 font-bold "> 
+                              {format(
+                                    new Date(_payment?.ApprovalDate),
+                                    "d MMMM yyyy"
+                                  )}</p>
+                          </div>
+                          <div>
+                            <p className=" text-[#5F5996] text-sm font-medium " >Status:</p>
+                            <p className=" text-[#261F5E] mt-1 font-bold ">
+                              {formatPaymentStatus(_payment?.Status)}</p>
+                          </div>
+                          <div>
+                            <p className=" text-[#5F5996] text-sm font-medium " >Total Fare:</p>
+                            <p className=" text-[#261F5E] mt-1 font-bold ">
+                              ₦{_payment?.PaymentAmount?.toLocaleString("NGN")}</p>
+                          </div>
+                        </div> 
+                      ): (
+
+                        <div className=" border-t pb-5 grid lg:grid-cols-4 grid-cols-2 gap-4 " >
+                            <div>
+                              <p className=" text-[#5F5996] text-sm font-medium " >Type:</p>
+                              <p className=" text-[#261F5E] mt-1 font-bold ">
+                                  {paymentConfigs &&
+                                    resolvePaymnet(_payment?.PaymentMethodCode)}</p>
+                            </div>
+                            <div>
+                              <p className=" text-[#5F5996] text-sm font-medium " >Date:</p>
+                              <p className=" text-[#261F5E] mt-1 font-bold "> 
+                                {format(
+                                      new Date(_payment?.ApprovalDate),
+                                      "d MMMM yyyy"
+                                    )}</p>
+                            </div>
+                            <div>
+                              <p className=" text-[#5F5996] text-sm font-medium " >Status:</p>
+                              <p className=" text-[#261F5E] mt-1 font-bold ">
+                                {formatPaymentStatus(_payment?.Status)}</p>
+                            </div>
+                            <div>
+                              <p className=" text-[#5F5996] text-sm font-medium " >Total Fare:</p>
+                              <p className=" text-[#261F5E] mt-1 font-bold ">
+                                ₦{_payment?.PaymentAmount?.toLocaleString("NGN")}</p>
+                            </div>
+                          </div> 
+                      ) 
+                    }
                     </>
                   );
                 })}

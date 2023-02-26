@@ -4,8 +4,9 @@ import { Checkbox } from "antd";
 import PassengerAccordion from "../../bookings/components/PassengerAccordion";
 import CheckinPassengerBaggage from "./CheckinPassengerBaggage";
 import { useSelector, useDispatch } from "react-redux";
-import { sessionSelector } from "redux/reducers/session";
+import { sessionSelector } from "redux/reducers/session"; 
 import { checkinSelector, setNewCheckinSSRs } from "redux/reducers/checkin";
+import { useGetLocationsQuery } from "services/widgetApi.js";
 import { v4 as uuid } from "uuid";
 
 const GoCheckinPassengerItem = ({
@@ -22,6 +23,7 @@ const GoCheckinPassengerItem = ({
   const [vpPreSelected, setVPPreSelected] = useState(false);
   const [hpPreSelected, setHPPreSelected] = useState(false);
   const { bookingResponse } = useSelector(sessionSelector);
+  const { data, isLoading } = useGetLocationsQuery();
   const { newCheckinSSRs, checkinSessionSSRs, goDifference } =
     useSelector(checkinSelector);
   const dispatch = useDispatch();
@@ -188,40 +190,71 @@ const GoCheckinPassengerItem = ({
     }
   };
 
-  return (
-    <PassengerAccordion passenger={passenger}>
-      <section className="flex flex-col">
-        {/* <div className="flex flex-col mt-">
-          <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-2">
-            Go SPECIAL ASSISTANCE
-          </h6>
 
-          <div className="flex items-center mb-5 primary-checkbox">
-            <Checkbox checked={wcChecked} onChange={onWCChange}>
-              <label className="text-[#101010] text-xs font-body">
-                <span className="font-bold">Wheelchair</span> - Customer can
-                climb stairs, Walk to & from seat but unable to walk long
-                distances, Requires Assistance To and From The Aircraft.
-              </label>
-            </Checkbox>
-          </div>
-          <div className="flex items-center mb-5 primary-checkbox">
-            <Checkbox checked={vpChecked} onChange={onVPChange}>
-              <label className="text-[#101010] text-xs font-body">
-                <span className="font-bold">Visually Impaired</span> - Customer
-                requires full assistance to aircraft and escort inflight
-              </label>
-            </Checkbox>
-          </div>
-          <div className="flex items-center mb-5 primary-checkbox">
-            <Checkbox checked={hpChecked} onChange={onHPChange}>
-              <label className="text-[#101010] text-xs font-body">
-                <span className="font-bold"> Hearing Impaired </span> - Customer
-                requires full assistance to aircraft and escort inflight
-              </label>
-            </Checkbox>
-          </div>
-        </div> */}
+  const resolveAbbreviation = (abrreviation) => {
+    const [{ name, code }] = data?.data?.items.filter(
+      (location) => location.code === abrreviation
+    );
+    return `${name} (${code})`;
+  };
+
+  console.log(selectedSSRs);
+
+  const _passengerName = `${passenger?.Names[0]?.FirstName}  ${passenger?.Names[0]?.LastName} `;
+
+  const _passengerType =
+    passenger?.PassengerTypeInfo?.PaxType === "ADT"
+      ? "ADULT"
+      : passenger?.PassengerTypeInfo?.PaxType === "CHD"
+      ? "CHILD"
+      : "INFANT";
+
+
+  return (
+    // <PassengerAccordion passenger={passenger}>
+
+
+    <div className=" w-full   lg:px-[32px] lg:my-6 mt-3 " >
+      <div className=" w-full bg-white rounded-md border border-[#261F5E] lg:border-[#9E9BBF] " >
+        <div className=" w-full py-2 rounded-t-md px-7 text-[#261F5E] bg-[#F3F3F7] flex items-center  " > 
+        <div className=" w-fit mr-auto " >
+
+          <p>{_passengerType} {passenger?.typeCount}</p>
+          <p className=" font-bold !text-lg text-[#261F5E] " >{_passengerName}</p>
+        </div>
+
+        {bookingResponse?.Booking?.Journeys?.length > 0 ? (
+            bookingResponse?.Booking?.Journeys?.filter((_item, _itemIndex) => {
+              return parseInt(_itemIndex) === parseInt(passenger?.journey);
+            }).map((_journey, _journeyIndex) => {
+              const tabID = `${_journey?.Segments[0]?.DepartureStation.trim().toLowerCase()}${_journey?.Segments[0]?.ArrivalStation.trim().toLowerCase()}`;
+
+              return (
+                <div className=" w-fit flex items-center " >
+                   <p className=" font-bold text-[#261F5E] mr-2 " >Departing: </p>
+                   <div className=" font-bold text-xs flex items-center  text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md " >
+                       {!isLoading &&
+                        resolveAbbreviation(
+                          _journey?.Segments[0]?.DepartureStation
+                        )} - 
+                     
+                      {!isLoading &&
+                        resolveAbbreviation(
+                          _journey?.Segments[0]?.ArrivalStation
+                        )} 
+                  </div>
+                </div>
+
+              );
+            })
+          ) : (
+            <>
+               
+            </>
+          )}
+        </div>
+      <section className="flex flex-col"> 
+      
         <CheckinPassengerBaggage
           passenger={passenger}
           selectedSSRs={selectedSSRs}
@@ -230,7 +263,9 @@ const GoCheckinPassengerItem = ({
           setReturnSSRs={setReturnSSRs}
         />
       </section>
-    </PassengerAccordion>
+      </div>
+      </div>
+    // </PassengerAccordion>
   );
 };
 

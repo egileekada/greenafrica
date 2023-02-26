@@ -185,53 +185,124 @@ const BookingPassengerItem = ({
     }
   };
 
-  return (
-    <PassengerAccordion passenger={passenger}>
-      <section className="flex flex-col">
-        <div className="flex flex-col mt-">
-          <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-4">
-            SPECIAL ASSISTANCE{" "}
-            <span className="italic">
-              (Please let us know if you will require any special assistance at
-              the airport)
-            </span>
-          </h6>
 
-          <div className="flex items-center mb-5 primary-checkbox">
-            <Checkbox checked={wcChecked} onChange={onWCChange}>
-              <label className="text-[#101010] text-xs font-body">
-                <span className="font-bold">Wheelchair</span> - Customer can
-                climb stairs, Walk to & from seat but unable to walk long
-                distances, Requires Assistance To and From The Aircraft.
-              </label>
-            </Checkbox>
-          </div>
-          <div className="flex items-center mb-5 primary-checkbox">
-            <Checkbox checked={vpChecked} onChange={onVPChange}>
-              <label className="text-[#101010] text-xs font-body">
-                <span className="font-bold">Visually Impaired</span> - Customer
-                requires full assistance to aircraft and escort inflight
-              </label>
-            </Checkbox>
-          </div>
-          <div className="flex items-center mb-5 primary-checkbox">
+  const _passengerName = `${passenger?.Names[0]?.FirstName}  ${passenger?.Names[0]?.LastName} `;
+
+  const _passengerType =
+    passenger?.PassengerTypeInfo?.PaxType === "ADT"
+      ? "ADULT"
+      : passenger?.PassengerTypeInfo?.PaxType === "CHD"
+      ? "CHILD"
+      : "INFANT";
+
+
+  return (
+
+    <div className=" w-full   lg:px-[32px] lg:my-6 mt-3 " >
+    <div className=" w-full bg-white rounded-md border border-[#261F5E] lg:border-[#9E9BBF] " >
+      <div className=" w-full py-2 rounded-t-md px-7 text-[#261F5E] bg-[#F3F3F7] flex flex-col  " > 
+        <p>{_passengerType} {passenger?.typeCount}</p>
+        <p className=" font-bold !text-lg text-[#261F5E] " >{_passengerName}</p>
+      </div>
+      <div className=" rounded-b-md  w-full flex lg:flex-row flex-col-reverse " >
+        <div className=" w-full py-6 lg:px-8 px-4 border-r border-[#261F5E1A] " >
+          <p className=" font-bold text-[#261F5E] " >Special Assistance</p>
+          <div className=" flex items-center my-4 " > 
             <Checkbox checked={hpChecked} onChange={onHPChange}>
-              <label className="text-[#101010] text-xs font-body">
-                <span className="font-bold"> Hearing Impaired </span> - Customer
-                requires full assistance to aircraft and escort inflight
+              <label className=" -mt-2 ">
+                <p className="ml-2 text-[#26205E] font-medium text-[14px] "> 
+                  <span className=" font-bold " >Hearing Impaired</span>  - Customer requires full assistance to aircraft and escort inflight
+                </p>
               </label>
             </Checkbox>
           </div>
+          <div className=" flex items-center my-4 " > 
+            <Checkbox checked={wcChecked} onChange={onWCChange}>
+              <label className=" -mt-2 ">
+                <p className="ml-2 text-[#26205E] font-medium text-[14px] "> 
+                  <span className=" font-bold " >Wheelchair</span> - Customer can climb stairs, Walk to & from seat but unable to walk long distances, Requires  Assistance To and From The Aircraft.
+                </p>
+              </label>
+            </Checkbox>
+          </div>
+          <div className=" flex items-center my-4 " > 
+            <Checkbox checked={vpChecked} onChange={onVPChange}>
+              <label className=" -mt-2 ">
+                <p className="ml-2 text-[#26205E] font-medium text-[14px] "> 
+                  <span className=" font-bold " >Visually Impaired</span> - Customer requires full assistance to aircraft and escort inflight
+                </p>
+              </label>
+            </Checkbox>
+          </div>
+          {/* <p className=" font-bold text-[#261F5E] mt-4 " >Insurance</p>
+          <div className=" my-4 " > 
+            <Checkbox checked={insChecked}  onChange={onInsuranceChange}>
+            <label className="check-label">
+              <p className="ml-2 text-[#26205E]">
+                Travel Insurance ( ₦{INSCHARGE.toLocaleString()})
+              </p>
+            </label>
+          </Checkbox>
+          </div> */}
         </div>
-        <BookingPassengerBaggage
-          passenger={passenger}
-          selectedSSRs={selectedSSRs}
-          setSSRs={setSSRs}
-          selectedReturnSSRs={selectedReturnSSRs}
-          setReturnSSRs={setReturnSSRs}
-        />
-      </section>
-    </PassengerAccordion>
+        <div className=" w-full " >
+          <BookingPassengerBaggage
+            passenger={passenger}
+            selectedSSRs={selectedSSRs}
+            setSSRs={setSSRs}
+            selectedReturnSSRs={selectedReturnSSRs}
+            setReturnSSRs={setReturnSSRs}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+    // <PassengerAccordion passenger={passenger}>
+    //   <section className="flex flex-col">
+    //     <div className="flex flex-col mt-">
+    //       <h6 className="text-left text-[#8F8CA4] font-header text-xs font-bold mb-4">
+    //         SPECIAL ASSISTANCE{" "}
+    //         <span className="italic">
+    //           (Please let us know if you will require any special assistance at
+    //           the airport)
+    //         </span>
+    //       </h6>
+
+    //       <div className="flex items-center mb-5 primary-checkbox">
+    //         <Checkbox checked={wcChecked} onChange={onWCChange}>
+    //           <label className="text-[#101010] text-xs font-body">
+    //             <span className="font-bold">Wheelchair</span> - Customer can
+    //             climb stairs, Walk to & from seat but unable to walk long
+    //             distances, Requires Assistance To and From The Aircraft.
+    //           </label>
+    //         </Checkbox>
+    //       </div>
+    //       <div className="flex items-center mb-5 primary-checkbox">
+    //         <Checkbox checked={vpChecked} onChange={onVPChange}>
+    //           <label className="text-[#101010] text-xs font-body">
+    //             <span className="font-bold">Visually Impaired</span> - Customer
+    //             requires full assistance to aircraft and escort inflight
+    //           </label>
+    //         </Checkbox>
+    //       </div>
+    //       <div className="flex items-center mb-5 primary-checkbox">
+    //         <Checkbox checked={hpChecked} onChange={onHPChange}>
+    //           <label className="text-[#101010] text-xs font-body">
+    //             <span className="font-bold"> Hearing Impaired </span> - Customer
+    //             requires full assistance to aircraft and escort inflight
+    //           </label>
+    //         </Checkbox>
+    //       </div>
+    //     </div>
+    //     <BookingPassengerBaggage
+    //       passenger={passenger}
+    //       selectedSSRs={selectedSSRs}
+    //       setSSRs={setSSRs}
+    //       selectedReturnSSRs={selectedReturnSSRs}
+    //       setReturnSSRs={setReturnSSRs}
+    //     />
+    //   </section>
+    // </PassengerAccordion>
   );
 };
 

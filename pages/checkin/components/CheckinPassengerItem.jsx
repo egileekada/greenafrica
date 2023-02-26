@@ -10,23 +10,44 @@ const CheckinPassengerItem = ({
   setReturnSSRs,
   selectedReturnSSRs,
 }) => {
-  return parseInt(passenger?.journey) === 0 ? (
+
+
+  console.log(passenger);
+
+  const _passengerType =
+    passenger?.type === "ADT"
+      ? "ADULT"
+      : passenger?.type === "CHD"
+      ? "CHILD"
+      : "INFANT";
+
+  // return parseInt(passenger?.journey) === 0 ? (
+  //       <GoCheckinPassengerItem
+  //         passenger={passenger}
+  //         selectedSSRs={selectedSSRs}
+  //         setSSRs={setSSRs}
+  //         setReturnSSRs={setReturnSSRs}
+  //         selectedReturnSSRs={selectedReturnSSRs}
+  //       /> 
+  // ) : (
+  //   <ReturnCheckinPassengerItem
+  //     passenger={passenger}
+  //     selectedSSRs={selectedSSRs}
+  //     setSSRs={setSSRs}
+  //     setReturnSSRs={setReturnSSRs}
+  //     selectedReturnSSRs={selectedReturnSSRs}
+  //   />
+  // );
+
+  return(
     <GoCheckinPassengerItem
       passenger={passenger}
       selectedSSRs={selectedSSRs}
       setSSRs={setSSRs}
       setReturnSSRs={setReturnSSRs}
       selectedReturnSSRs={selectedReturnSSRs}
-    />
-  ) : (
-    <ReturnCheckinPassengerItem
-      passenger={passenger}
-      selectedSSRs={selectedSSRs}
-      setSSRs={setSSRs}
-      setReturnSSRs={setReturnSSRs}
-      selectedReturnSSRs={selectedReturnSSRs}
-    />
-  );
+    />  
+);
 };
 
 CheckinPassengerItem.defaultProps = {

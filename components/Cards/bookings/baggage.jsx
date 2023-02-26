@@ -168,7 +168,7 @@ const BoookingBaggageCard = ({
 
   return (
     <Fragment>
-      <section className="baggage__card">
+      {/* <section className="baggage__card">
         <figure>
           <BaggageIcon />
         </figure>
@@ -178,14 +178,24 @@ const BoookingBaggageCard = ({
         <p className="font-header  text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}
-        </p>
+        </p> */}
 
+        <section className=" flex items-center justify-center border-b border-[#261F5E1A] py-2 ">
+        {/* <figure>
+          <BaggageIcon />
+        </figure> */}
+        <p className="font-body text-primary-main flex justify-end w-28 text-sm font-medium mr-3 ">{KG}kg Checked</p>
         <Counter
           value={value}
           onValueChange={onValueChange}
           onValueDecrement={onValueDecrement}
           onValueIncrement={onValueIncrement}
         />
+
+        <p className=" text-primary-main md:flex justify-start w-28 hidden font-bold ml-3 ">
+          {" "}
+          ₦{totalFare.toLocaleString()}
+        </p>
       </section>
     </Fragment>
   );

@@ -91,10 +91,10 @@ const ManagePassengerItem = ({download, signature, passenger, paxIndex, Journey,
 
   return (
     <>
-      {_Seats.length > 0
+      {_Baggages?.length >= 0
         ? bookingResponse?.Booking?.Journeys.map((_journey) => {
             return _journey?.Segments.map((_segment) => {
-              return _segment?.PaxSeats[paxIndex]?.DepartureStation ? (
+              return _segment?.PaxSeats[paxIndex]?.DepartureStation && (
                 <div className="w-full mt-8 ">
                   <div className="trip__summary__item relative !pb-0 !px-0 ">
                     <div className=" w-full bg-[#F3F3F7] h-[48px] flex items-center px-6 text-[#261F5E] font-bold rounded-t-md absolute top-0 inset-x-0 " > 
@@ -285,7 +285,7 @@ const ManagePassengerItem = ({download, signature, passenger, paxIndex, Journey,
                     )}
                   </div>
                 </div>
-          ) : null;
+          ) 
         });
       })
     : null}

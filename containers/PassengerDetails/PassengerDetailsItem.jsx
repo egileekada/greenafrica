@@ -189,13 +189,22 @@ const PassengerDetailsItem = ({
 
   console.log(sessionStateResponse);
 
+
+  const _passengerType =
+    passenger?.type === "ADT"
+      ? "ADULT"
+      : passenger?.type === "CHD"
+      ? "CHILD"
+      : "INFANT";
+
   return (
     <section className="flex flex-col">
       {SSRAvailabilityResponse ? (
           <div className=" w-full   lg:px-[32px] lg:my-6 mt-3 " >
             <div className=" w-full bg-white rounded-md border border-[#261F5E] lg:border-[#9E9BBF] " >
-              <div className=" w-full h-[48px] rounded-t-md px-7 bg-[#F3F3F7] flex items-center " > 
-                <p className=" font-bold text-[#261F5E] " >{`${passenger?.firstName}  ${passenger?.lastName} `}</p>
+              <div className=" w-full py-2 rounded-t-md px-7 text-[#261F5E] bg-[#F3F3F7] flex flex-col  " > 
+                <p>{_passengerType} {passenger?.typeCount}</p>
+                <p className=" font-bold !text-lg text-[#261F5E] " >{`${passenger?.firstName}  ${passenger?.lastName} `}</p>
               </div>
               <div className=" rounded-b-md  w-full flex lg:flex-row flex-col-reverse " >
                 <div className=" w-full py-6 lg:px-8 px-4 border-r border-[#261F5E1A] " >

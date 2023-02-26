@@ -104,11 +104,18 @@ const CheckinPassengerBaggage = ({
   return (
     <Fragment>
       <section className="flex flex-col">
-        <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs">
+        {/* <h2 className="text-left text-[#8F8CA4] font-header font-bold text-xs">
         EXTRA BAGGAGE <span className="italic">(Do you require any extra checked in baggage allowance. Its cheaper online than at the airport)</span>
-        </h2>
+        </h2> */}
 
-        <div className="flex h-16 border-b mb-6">
+
+        {/* <div className=" w-full px-5 flex justify-between items-center border-b border-[#261F5E1A] py-3 " >
+            <p className=" font-bold text-[#261F5E] " >Departure </p>
+            <div className=" font-bold text-xs text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md " >
+              {selectedSessionJourney[0].departureStation+" - "+selectedSessionJourney[0].arrivalStation}
+            </div>
+          </div> */}
+        {/* <div className="flex h-16 border-b mb-6">
           {bookingResponse?.Booking?.Journeys?.length > 0 ? (
             bookingResponse?.Booking?.Journeys?.filter((_item, _itemIndex) => {
               return parseInt(_itemIndex) === parseInt(passenger?.journey);
@@ -116,36 +123,45 @@ const CheckinPassengerBaggage = ({
               const tabID = `${_journey?.Segments[0]?.DepartureStation.trim().toLowerCase()}${_journey?.Segments[0]?.ArrivalStation.trim().toLowerCase()}`;
 
               return (
-                <button
-                  className={`ssr__tab ${
-                    tabID === activeTab ? "active-ssr" : ""
-                  } `}
-                  onClick={() => {
-                    setActiveTab(tabID);
-                    setSchedueIndex(_journeyIndex);
-                  }}
-                >
-                  <figure>
-                    <FlightIcon />
-                  </figure>
-                  <div className="flex items-center ml-[10px] ">
-                    <p className="font-header text-sm mr-[6px] font-bold">
-                      {!isLoading &&
-                        resolveAbbreviation(
-                          _journey?.Segments[0]?.DepartureStation
-                        )}
-                    </p>
-                    <figure className="flex items-center justify-center -mb-1">
-                      <ArrowIcon />
-                    </figure>
-                    <p className="font-header text-sm ml-[6px] font-bold">
-                      {!isLoading &&
-                        resolveAbbreviation(
-                          _journey?.Segments[0]?.ArrivalStation
-                        )}
-                    </p>
-                  </div>
-                </button>
+                <>
+                </>
+                // <div className=" w-full px-5 flex justify-between items-center py-3 " >
+                //   <p className=" font-bold text-[#261F5E] " >Departure </p>
+                //   <div className=" font-bold text-xs flex items-center  text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md " >
+                //       {!isLoading &&
+                //         resolveAbbreviation(
+                //           _journey?.Segments[0]?.DepartureStation
+                //         )} - 
+                     
+                //       {!isLoading &&
+                //         resolveAbbreviation(
+                //           _journey?.Segments[0]?.ArrivalStation
+                //         )} 
+                //   </div>
+                // </div>
+                // <div
+                //   className='w-full px-5 flex justify-between items-center border-b border-[#261F5E1A] py-3'
+                //   onClick={() => {
+                //     setActiveTab(tabID);
+                //     setSchedueIndex(_journeyIndex);
+                //   }}
+                // > 
+                //   <p className=" font-bold text-[#261F5E] " >Departing </p>
+                //   <div className=" font-bold text-xs text-[#47FF5A] bg-[#26205E] px-2 py-1 rounded-md flex  ">
+                //     {<p className="font-header text-sm mr-[6px] font-bold">
+                //       {!isLoading &&
+                //         resolveAbbreviation(
+                //           _journey?.Segments[0]?.DepartureStation
+                //         )}
+                //     </p> +" - "+
+                //     <p className="font-header text-sm ml-[6px] font-bold">
+                //       {!isLoading &&
+                //         resolveAbbreviation(
+                //           _journey?.Segments[0]?.ArrivalStation
+                //         )}
+                //     </p>}
+                //   </div>
+                // </div>
               );
             })
           ) : (
@@ -153,7 +169,7 @@ const CheckinPassengerBaggage = ({
               <p className="text-xs mt-2 text-">No Journey </p>
             </>
           )}
-        </div>
+        </div> */}
 
         {/* <div className="flex flex-col">
           <p>selectedSSRs length:: {selectedSSRs.length}</p>

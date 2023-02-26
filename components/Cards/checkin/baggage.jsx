@@ -168,14 +168,14 @@ const CheckinBaggageCard = ({
 
   return (
     <Fragment>
-      <section className="baggage__card">
-        <figure>
+      <section className="baggage__card !bg-white ">
+        {/* <figure>
           <BaggageIcon />
-        </figure>
-        <p className="font-body text-primary-main mt-4 text-xs mb-1">
+        </figure> */}
+        <p className="font-body !font-medium text-primary-main  text-xs mb-1">
           Extra Bag Up to {KG}kg
         </p>
-        <p className="font-header  text-primary-main text-xl mb-3">
+        <p className="font-header font-medium text-primary-main text-xl mb-3">
           {" "}
           ₦{totalFare.toLocaleString()}
         </p>
