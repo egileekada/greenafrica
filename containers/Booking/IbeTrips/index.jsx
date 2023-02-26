@@ -22,14 +22,8 @@ const IbeTrips = ({ flightSchedule, schedueIndex, liftStatus }) => {
     >
       <h2 className="text-primary-main font-extrabold text-base mb-8 uppercase">
         {parseInt(schedueIndex) === 0
-          ? `DEPARTURE ON ${format(
-              new Date(tripParams?.beginDate),
-              "EEEE, LLLL dd yyyy"
-            )}`
-          : `RETURN ON ${format(
-              new Date(returnParams?.returnDate),
-              "EEEE, LLLL dd yyyy"
-            )}`}
+          ? `DEPARTING  `
+          : `RETURNING `}
       </h2>
 
       <Fragment>

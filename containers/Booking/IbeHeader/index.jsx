@@ -6,6 +6,7 @@ import CaretRight from "assets/svgs/caretright.svg";
 import Spinner from "components/Spinner";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import { useSelector, useDispatch } from "react-redux";
+import Calendar from "assets/svgs/Calendar-Date.svg";
 
 import {
   bookingSelector,
@@ -39,6 +40,7 @@ const BookingIbeHeader = () => {
   } = useSelector(bookingSelector);
 
   const _length = window.innerWidth > 1200 ? 7 : 3;
+  const [currentDate, setCurrentDate] = useState();
 
   var indexOfLastPost = currentPage * length;
   var indexOfFirstPost = indexOfLastPost - length;
@@ -192,6 +194,12 @@ const BookingIbeHeader = () => {
     }
   };
 
+  useEffect(()=>{
+
+    let date = new Date(tripParams?.beginDate).toDateString().slice(3)
+    setCurrentDate(date) 
+  },[])
+
   return (
     <section
       className={`ibe__flight__info ${
@@ -203,6 +211,14 @@ const BookingIbeHeader = () => {
       } `}
     >
       <section className="ibe__flight__info__destination">
+
+        <div className=" w-fit " > 
+          <div className=" w-[55px] h-[55px] rounded-full bg-[#47FF5A1A] p-2 " >
+            <div className=" bg-[#47FF5A] w-full h-full flex justify-center items-center rounded-full " >
+              <FlightIcon />
+            </div>
+          </div>
+        </div>
         <p className="mx-4">
           {tripParams?.departureStation &&
             resolveAbbreviation(tripParams?.departureStation)}
@@ -213,11 +229,17 @@ const BookingIbeHeader = () => {
         <p className="mx-4">
           {tripParams?.arrivalStation &&
             resolveAbbreviation(tripParams?.arrivalStation)}
-        </p>
-
-        <figure className="flightCircle">
-          <FlightIcon />
-        </figure>
+        </p> 
+        <div className=" ml-auto flex items-center " >
+            <div className=" w-[36px] h-[36px] rounded-full bg-[#C9C9C930] hidden md:flex justify-center items-center " >
+              <Calendar />
+            </div>
+            <div className=" mx-[4px] hidden md:block " >
+              <p className=" !text-sm !font-black " >{(currentDate+"").toUpperCase()}</p>
+              <p className=" !text-sm !font-medium !text-[#A49FDC] " >1 PASSENGER</p>
+            </div>
+            {/* <Setting /> */}
+          </div>
       </section>
       <section className="ibe__flight__info__dates">
         {lowFareAvailabilityLoading ? (
@@ -226,13 +248,15 @@ const BookingIbeHeader = () => {
           </section>
         ) : (
           <section className="flex items-center w-full">
-            <button
-              className={`pl-4 sm:pl-0 hover:bg-gray-400 flex h-16 lg:h-4 w-8 lg:w-4 items-center justify-center`}
-              onClick={onPrev}
-            >
-              <CaretLeft />
-            </button>
-            <section className="flex items-center w-full mx-4 ">
+            <div className=" lg:w-fit " > 
+              <button
+                className={`pl-4 sm:pl-0 lg:border rounded-full flex outline-none border-[#261F5E]  h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                onClick={onPrev}
+              >
+                <CaretLeft />
+              </button>
+            </div>
+            <section className="flex items-center w-full mx-0 md:mx-4">
               {currentFDateList?.length > 0 ? (
                 currentFDateList.map((_dateItem, i) => {
                   return (
@@ -250,15 +274,15 @@ const BookingIbeHeader = () => {
                               new Date(tripParams?.beginDate),
                               "yyyy-MM-dd"
                             )
-                              ? "active"
+                              ? "active w-full h-full border-b-[6px] border-[#47FF5A]  "
                               : ""
                           }`}
                           onClick={FetchNewTrips.bind(this, _dateItem)}
                         >
-                          <h6 className="text-center">
+                          <h6 className="text-center !font-medium md:!text-[14px]">
                             {format(new Date(_dateItem?.date), "ccc, MMM dd")}
                           </h6>
-                          <p>
+                          <p className="!font-black !text-base lg:!text-[22px] " >
                             {" "}
                             ₦
                             {parseInt(_dateItem?.cost) > -1
@@ -276,13 +300,14 @@ const BookingIbeHeader = () => {
                 <p className="errorText text-lg"> No date available</p>
               )}
             </section>
-
-            <button
-              className={`pr-4 sm:pr-0 hover:bg-gray-400 flex  h-16 lg:h-4 w-8 lg:w-4 items-center justify-center`}
-              onClick={onNext}
-            >
-              <CaretRight />
-            </button>
+            <div className=" w-fit " > 
+              <button
+                className={`pr-4 sm:pr-0 hover:bg-gray-400 lg:border flex outline-none rounded-full border-[#261F5E] h-16 lg:h-8 w-8 lg:w-8 items-center justify-center`}
+                onClick={onNext}
+              >
+                <CaretRight />
+              </button>
+            </div>
           </section>
         )}
       </section>

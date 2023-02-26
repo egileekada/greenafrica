@@ -79,9 +79,9 @@ const ManageUpdateItenary = () => {
           </figure>
         </button>
       </nav>
-      <section className="w-full pt-20 lg:pt-0">
-        <section className="ga__section bg-normal">
-          <div className="ga__section__main standalone">
+      <section className="w-full pt-20 lg:pt-0 !px-12 ">
+        <section className="ga__section  bg-normal">
+          <div className="ga__section__main ">
             <h2 className="text-primary-main font-extrabold text-2xl mb-4 text-center">
               UPDATE ITINERARY
             </h2>
