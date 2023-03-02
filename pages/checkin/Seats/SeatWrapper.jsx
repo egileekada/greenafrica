@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PlaneSeats from "./PlaneSeats";
 import Spinner from "components/Spinner";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector, tryUpdateSeat } from "redux/reducers/session";
 
 import ProfileIcon from "assets/svgs/profile.svg";
@@ -14,7 +14,7 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass, setCost }) => {
     selectedPassengers,
     bookingResponse,
   } = useSelector(sessionSelector);
-
+  const dispatch = useDispatch();
   const [key] = useState(Math.random());
   const [pasengerState, setPassengerState] = useState(null);
   const [passengerNumber, setpassengerNumber] = useState(null);
@@ -72,7 +72,8 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass, setCost }) => {
       tryUpdateSeat({
         passengerNumber: passengerNumber,
         arrivalStation:
-          bookingResponse?.Journeys[ticketIndex].Segments[0].ArrivalStation,
+          bookingResponse?.Booking?.Journeys[ticketIndex].Segments[0]
+            .ArrivalStation,
       })
     );
     setSeatSelected(false);
@@ -138,28 +139,31 @@ const SeatWrapper = ({ ticketIndex, setShow, productClass, setCost }) => {
                             {passenger.Names[0].FirstName}{" "}
                             {passenger.Names[0].LastName}
                           </h5>
-                          <h6 className="text-base text-[#261F5E] font-title">
-                            {selectedSeat[passenger.PassengerNumber]
-                              ?.seatDesignator?.length > 0
-                              ? `Seat Number: ${
-                                  selectedSeat[passenger.PassengerNumber]
-                                    ?.seatDesignator
-                                }`
-                              : "No Seat Selected"}
-                          </h6>
-                          {selectedSeat[index]?.seatDesignator.length > 0 && (
-                            <img
-                              src="/images/delete.svg"
-                              alt="remove seat"
-                              role="button"
-                              width="30"
-                              height="30"
-                              className="ml-2"
-                              onClick={() =>
-                                resetSeat(passenger.PassengerNumber)
-                              }
-                            />
-                          )}
+                          <div className="flex">
+                            <h6 className="text-[13px] text-[#261F5E] font-title">
+                              {selectedSeat[passenger.PassengerNumber]
+                                ?.seatDesignator?.length > 0
+                                ? `Seat Number: ${
+                                    selectedSeat[passenger.PassengerNumber]
+                                      ?.seatDesignator
+                                  }`
+                                : "No Seat Selected"}
+                            </h6>
+                            {selectedSeat[index]?.seatDesignator?.length >
+                              0 && (
+                              <img
+                                src="/images/delete.svg"
+                                alt="remove seat"
+                                role="button"
+                                width="20"
+                                height="20"
+                                className="ml-2"
+                                onClick={() =>
+                                  resetSeat(passenger.PassengerNumber)
+                                }
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
                     </label>

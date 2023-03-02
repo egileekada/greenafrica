@@ -1677,7 +1677,8 @@ export const GetBookingDetails = () => async (dispatch, getState) => {
         getBookingBy: 0,
         getBookingBySpecified: true,
         getByRecordLocator: {
-          recordLocator: currentPaymentState?.verifyPaymentResponse?.data?.pnr,
+          recordLocator: "NY6SKA",
+          // recordLocator: currentPaymentState?.verifyPaymentResponse?.data?.pnr,
         },
       },
     },

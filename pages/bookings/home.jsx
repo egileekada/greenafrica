@@ -71,6 +71,8 @@ const ManageBookings = (props) => {
     ScrollToTop();
   }, []);
 
+  const parsed = router.asPath.split(/\?/)[1];
+
   async function fetchBookingDetails(pnr) {
     if (signature) {
       if (pnr) {
@@ -125,7 +127,9 @@ const ManageBookings = (props) => {
     if (router.isReady) {
       //check if pnr is encrypted
       if (bookingId !== undefined) {
-        fetchBookingDetails(decryptPnr(bookingId));
+        let parsedBookingId = parsed.split("bookingId=").pop();
+
+        fetchBookingDetails(decryptPnr(parsedBookingId));
       } else if (!props.pnr) {
         router.push("/bookings");
       } else {

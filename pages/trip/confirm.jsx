@@ -16,7 +16,8 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import IbeAdbar from "containers/IbeAdbar";
 import { encryptPnr } from "lib/utils";
-import ReactToPrint from "react-to-print";
+import { atcb_action } from "add-to-calendar-button";
+import "add-to-calendar-button/assets/css/atcb.css";
 import { useRouter } from "next/router";
 import LogoIcon from "assets/svgs/logo.svg";
 import {
@@ -266,6 +267,41 @@ const TripConfirm = () => {
     );
   };
 
+  // Generate add booking to calendar data
+  const myData = [];
+
+  bookingResponse?.Booking?.Journeys.forEach((journey) => {
+    const data = {
+      name: `Flight to ${
+        !locationLoading &&
+        resolveAbbreviation(journey.Segments[0].ArrivalStation)
+      } (${journey.Segments[0].FlightDesignator?.CarrierCode} ${
+        journey.Segments[0].FlightDesignator?.FlightNumber
+      })`,
+      description: `Green Africa flight ${
+        journey.Segments[0].FlightDesignator?.CarrierCode
+      } ${journey.Segments[0].FlightDesignator?.FlightNumber} | ${
+        !locationLoading &&
+        resolveAbbreviation(journey.Segments[0].DepartureStation)
+      } (${journey.Segments[0].DepartureStation}) ${format(
+        new Date(journey.Segments[0]?.STD),
+        "hh:mm bbb"
+      )} (local time) - ${
+        !locationLoading &&
+        resolveAbbreviation(journey.Segments[0].ArrivalStation)
+      } (${journey.Segments[0].ArrivalStation}) ${format(
+        new Date(journey.Segments[0]?.STA),
+        "hh:mm bbb"
+      )} (local time)
+        
+      Booking number: ${bookingResponse?.Booking?.RecordLocator}`,
+      startDate: format(new Date(journey.Segments[0]?.STD), "yyyy-MM-dd"),
+      startTime: format(new Date(journey.Segments[0]?.STD), "HH:mm"),
+      endTime: format(new Date(journey.Segments[0]?.STA), "HH:mm"),
+    };
+    myData.push(data);
+  });
+
   return (
     <BaseLayout>
       <nav className="top__bar logo-holder">
@@ -303,6 +339,26 @@ const TripConfirm = () => {
 
                     {/* CTA */}
                     <section className="flex  flex-wrap md:flex-nowrap items-center px-6 lg:px-12">
+                      <button
+                        className="btn btn-primary font-title block h-full mb-3 md:mb-0 md:mr-3"
+                        onClick={() =>
+                          atcb_action({
+                            name: "name",
+                            dates: myData,
+                            options: [
+                              "Apple",
+                              "Google",
+                              "iCal",
+                              "Microsoft365",
+                              "Outlook.com",
+                              "Yahoo",
+                            ],
+                            iCalFileName: "Reminder-Event",
+                          })
+                        }
+                      >
+                        Add to Calendar
+                      </button>
                       <Link
                         href={`/bookings/home?bookingId=${encryptPnr(
                           bookingResponse?.Booking?.RecordLocator
