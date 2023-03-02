@@ -103,13 +103,7 @@ const CreditPassengerBaggage = ({
 
         {bookingResponse?.Booking?.Journeys?.length > 0 && (
           <section
-            className={`flex flex-col mt-4 ${
-              creditTripParams
-                ? parseInt(creditTripParams?.LiftStatus) !== 0
-                  ? "pointer-events-none opacity-50 cursor-not-allowed"
-                  : ""
-                : ""
-            }`}
+            className={`flex flex-col mt-4`}
           >
             <div className="flex h-16 border-b mb-6">
               {bookingResponse?.Booking?.Journeys?.length > 0 && (
