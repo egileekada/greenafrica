@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Fragment, useState, useEffect } from "react";
+import Link from "next/link";
 import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
@@ -300,6 +301,19 @@ const CreditHome = (props) => {
         >
           Change Flight
         </button>
+
+        <Link href="/credit/seat-selection">
+          <a
+            className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 text-center ${
+              checkedIn || _disabled
+                ? "pointer-events-none opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+          >
+            Seat Management
+          </a>
+        </Link>
+
         <button
           onClick={handleServices}
           className={`basis-full md:basis-auto btn btn-outline mb-3 md:mb-0 md:mr-3 ${
