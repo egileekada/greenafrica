@@ -6,7 +6,7 @@ import { sessionSelector } from "redux/reducers/session";
 import { creditSelector, setNewBookingReturnSSRs } from "redux/reducers/credit";
 import { uniqueId } from "lodash";
 
-const BookingReturnBaggageCard = ({
+const CreditReturnBaggageCard = ({
   passenger,
   returnNewSelection,
   setReturnNewSelection,
@@ -193,7 +193,7 @@ const BookingReturnBaggageCard = ({
   );
 };
 
-BookingReturnBaggageCard.defaultProps = {
+CreditReturnBaggageCard.defaultProps = {
   SSRItem: {},
   passenger: {},
   returnNewSelection: false,
@@ -204,4 +204,4 @@ BookingReturnBaggageCard.defaultProps = {
   _limit: 0,
 };
 
-export default BookingReturnBaggageCard;
+export default CreditReturnBaggageCard;
