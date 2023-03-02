@@ -4,7 +4,7 @@ import BaseLayout from "layouts/Base";
 import FlightIcon from "assets/svgs/FlightTwo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
-import IbeAdbar from "containers/IbeAdbar";
+import CreditBar from "containers/IbeSidebar/Creditbar";
 import SkeletonLoader from "components/SkeletonLoader";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -754,7 +754,7 @@ const CreditHome = (props) => {
               </div>
 
               <div className="ga__section__side">
-                <IbeAdbar />
+                <CreditBar />
               </div>
             </section>
           )}

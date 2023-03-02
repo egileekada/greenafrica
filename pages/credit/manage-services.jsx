@@ -28,6 +28,7 @@ import {
 import { useResellSSRMutation } from "services/bookingApi";
 import { notification } from "antd";
 import LogoIcon from "assets/svgs/logo.svg";
+import CreditBar from "containers/IbeSidebar/Creditbar";
 
 import CreditPassengerItem from "./components/CreditPassengerItem";
 
@@ -434,7 +435,7 @@ const PassengerDetails = () => {
                 <SkeletonLoader />
                 <SkeletonLoader />
               </>
-            ) : bookingState  ? (
+            ) : bookingState ? (
               <>
                 <h2 className="text-primary-main font-extrabold text-2xl mb-8">
                   Additional Services{" "}
@@ -475,12 +476,14 @@ const PassengerDetails = () => {
                       </button>
                     </div>
                   )}
-
                 </section>
               </>
             ) : (
               <p className="errorText">No State in Session</p>
             )}
+          </div>
+          <div className="ga__section__side">
+            <CreditBar />
           </div>
         </section>
       </section>

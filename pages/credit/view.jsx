@@ -12,7 +12,7 @@ import WorkIcon from "assets/svgs/work.svg";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { setManagedPnrWithoutPayment } from "redux/reducers/booking";
-
+import CreditBar from "containers/IbeSidebar/Creditbar";
 import { creditSelector } from "redux/reducers/credit";
 import { sessionSelector } from "redux/reducers/session";
 import { format, differenceInMinutes } from "date-fns";
@@ -334,7 +334,7 @@ const TripView = () => {
       </nav>
       <section className="w-full">
         <section className="ga__section">
-          <div className="ga__section__main flex-grow">
+          <div className="ga__section__main">
             <section className="flex flex-col mt-16 lg:mt-0">
               <section className="flex flex-col">
                 {creditGoTrip?.journey &&
@@ -394,6 +394,9 @@ const TripView = () => {
                 {/* Terms */}
               </section>
             </section>
+          </div>
+          <div className="ga__section__side">
+            <CreditBar />
           </div>
         </section>
       </section>

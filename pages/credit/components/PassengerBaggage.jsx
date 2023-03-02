@@ -78,14 +78,12 @@ const CreditPassengerBaggage = ({
   }, []);
 
   const proceedToSeatSelection = () => {
-    router.push("/trip/payment");
+    router.push("/credit/payment");
   };
 
   const ALLOWED__SSRS = ["X20", "X15", "X10"];
 
   const resolveAbbreviation = (abrreviation) => {
-    console.log("dta", data?.data);
-    console.log("abrreviation", abrreviation);
     const [{ name, code }] = data?.data?.items.filter(
       (location) => location.code === abrreviation
     );
