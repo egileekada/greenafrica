@@ -309,11 +309,11 @@ const ManageBookings = (props) => {
     return (
       <section className="flex mx-6 mt-6 justify-between">
         <div className="basis-[48%]">
-          {bookingResponse?.Booking?.Payments?.map((_payment) => { 
+          {bookingResponse?.Booking?.Payments?.map((_payment) => {
             return (
               <div className="trip__summary__item !mb-6">
                 <h2 className="trip-title mb-2 font-semibold text-primary-main">
-                  PAYMENT DETAILS 
+                  PAYMENT DETAILS
                 </h2>
                 <div className="flex flex-col">
                   <section className="flex flex-col">
@@ -366,7 +366,6 @@ const ManageBookings = (props) => {
               </div>
             );
           })}
-         
         </div>
         <div className="basis-[48%]">
           <div className="trip__summary__item">
@@ -409,8 +408,6 @@ const ManageBookings = (props) => {
             </div>
           </div>
         </div>
-
-       
       </section>
     );
   };
@@ -420,9 +417,11 @@ const ManageBookings = (props) => {
       <>
         {bookingResponse?.Booking?.Journeys?.length > 0 ? (
           <>
-            {bookingResponse?.Booking?.Journeys.map((_journey, _index) => (
-              <SingleJourneyItem journey={_journey} journeyIndex={_index} />
-            ))}
+            {bookingResponse?.Booking?.Journeys.map((_journey, _index) => {
+              return (
+                <SingleJourneyItem journey={_journey} journeyIndex={_index} />
+              );
+            })}
             <PageCTA />
             <PassengersSection />
             <PaymentContact />

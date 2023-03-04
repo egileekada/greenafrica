@@ -401,9 +401,8 @@ const TripView = () => {
                       ?.BalanceDue
                   ) > 0
                 ) {
-                  router.push(`/credit/payment`);
+                  router.push(`/credit/services`);
                 } else {
-                  console.log("commmitin without payment");
                   bookingCommitWithoutPayment()
                     .unwrap()
                     .then((data) => {

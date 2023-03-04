@@ -28,7 +28,6 @@ import { useCheckCreditShellQuery } from "services/widgetApi";
 import toast from "react-hot-toast";
 import Popup from "components/Popup";
 
-
 const validationSchema = Yup.object().shape({
   pnr: Yup.string()
     .length(6, "Booking Reference must be exactly 6 values")
@@ -96,7 +95,10 @@ const TripPayment = () => {
         setTotalFare(data?.data?.balanceDue);
       } else {
         console.log("data?.data?", data?.data);
-        router.push(`/bookings/home?pnr=${data?.data?.pnr}`);
+        const _recordLocator =
+          bookingCommitResponse?.BookingUpdateResponseData?.Success
+            ?.RecordLocator;
+        router.push(`/bookings/home?pnr=${_recordLocator}`);
       }
       setCreditQuery(null);
       setCreditModal(false);
@@ -247,7 +249,7 @@ const TripPayment = () => {
     };
   }, [config]);
 
-   const handleCreditModal = () => {
+  const handleCreditModal = () => {
     setCreditModal(false);
   };
 
