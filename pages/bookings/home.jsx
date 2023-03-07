@@ -128,8 +128,7 @@ const ManageBookings = (props) => {
       //check if pnr is encrypted
       if (bookingId !== undefined) {
         let parsedBookingId = parsed.split("bookingId=").pop();
-
-        fetchBookingDetails(decryptPnr(parsedBookingId));
+        fetchBookingDetails(decryptPnr(parsedBookingId, "/bookings"));
       } else if (!props.pnr) {
         router.push("/bookings");
       } else {

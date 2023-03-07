@@ -90,7 +90,7 @@ const CreditHome = (props) => {
     if (router.isReady) {
       //check if pnr is encrypted
       if (bookingId !== undefined) {
-        fetchBookingDetails(decryptPnr(bookingId));
+        fetchBookingDetails(decryptPnr(bookingId, "/credit"));
       } else if (!props.pnr) {
         router.push("/credit");
       } else {
