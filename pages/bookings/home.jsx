@@ -16,7 +16,7 @@ import {
   bookingSelector,
   saveTripParams,
   saveReturnParams,
-  setManageBookingPnr
+  setManageBookingPnr,
 } from "redux/reducers/booking";
 import { paymentSelector } from "redux/reducers/payment";
 import { useRouter } from "next/router";
@@ -143,7 +143,6 @@ const ManageBookings = (props) => {
         }
       })
       .catch((e) => {
-        console.log(e);
         notification.error({
           message: "Error",
           description: "Signature creation failed",
@@ -708,7 +707,7 @@ const ManageBookings = (props) => {
           )}
 
         <section className="w-full checkin">
-          {bookingResponseLoading ? (
+          {bookingResponseLoading || isLoading ? (
             <div className="px-12 py-12">
               <SkeletonLoader />
               <SkeletonLoader />
