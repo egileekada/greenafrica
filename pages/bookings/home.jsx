@@ -10,11 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   sessionSelector,
   GetBookingDetailsWithPNR,
+  saveClientSignature,
 } from "redux/reducers/session";
 import {
   bookingSelector,
   saveTripParams,
   saveReturnParams,
+  setManageBookingPnr
 } from "redux/reducers/booking";
 import { paymentSelector } from "redux/reducers/payment";
 import { useRouter } from "next/router";
@@ -23,7 +25,6 @@ import { format, differenceInMinutes } from "date-fns";
 import { timeConvert } from "utils/common";
 import { decryptPnr } from "lib/utils";
 import ManagePassengerItem from "containers/Booking/components/PassengerItem";
-import { setManageBookingPnr } from "redux/reducers/booking";
 import { atcb_action } from "add-to-calendar-button";
 import "add-to-calendar-button/assets/css/atcb.css";
 import {
@@ -33,7 +34,10 @@ import {
 import PageFares from "./components/PageFares";
 import LogoIcon from "assets/svgs/logo.svg";
 import Spinner from "components/Spinner";
-import { useGetAccountByReferenceMutation } from "services/bookingApi";
+import {
+  useGetAccountByReferenceMutation,
+  useStartSessionMutation,
+} from "services/bookingApi";
 import { notification } from "antd";
 
 const ManageBookings = (props) => {
@@ -49,6 +53,7 @@ const ManageBookings = (props) => {
   const { data, isLoading: locationLoading } = useGetLocationsQuery();
   const { data: paymentConfigs } = useGetPaymentConfigsQuery();
   const [getAccountByReference] = useGetAccountByReferenceMutation();
+  const [getCreds, { isLoading }] = useStartSessionMutation();
 
   const { bookingId } = router.query;
 
@@ -73,8 +78,8 @@ const ManageBookings = (props) => {
 
   const parsed = router.asPath.split(/\?/)[1];
 
-  async function fetchBookingDetails(pnr) {
-    if (signature) {
+  async function fetchBookingDetails(pnr, newsignature = signature) {
+    if (newsignature) {
       if (pnr) {
         setStatePnr(pnr);
         dispatch(setManageBookingPnr(pnr));
@@ -82,7 +87,7 @@ const ManageBookings = (props) => {
 
         const payload = {
           header: {
-            signature: signature,
+            signature: newsignature,
             messageContractVersion: "",
             enableExceptionStackTrace: true,
             contractVersion: 0,
@@ -123,12 +128,39 @@ const ManageBookings = (props) => {
     }
   }
 
+  const requestSignature = async (parsedBookingId) => {
+    getCreds()
+      .unwrap()
+      .then((data) => {
+        const credvalue = data.signature;
+        window.localStorage.setItem("clientSignature", credvalue);
+        dispatch(saveClientSignature(credvalue));
+        if (data && !isLoading) {
+          fetchBookingDetails(
+            decryptPnr(parsedBookingId, "/bookings"),
+            data.signature
+          );
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        notification.error({
+          message: "Error",
+          description: "Signature creation failed",
+        });
+      });
+  };
+
   useEffect(() => {
     if (router.isReady) {
       //check if pnr is encrypted
       if (bookingId !== undefined) {
         let parsedBookingId = parsed.split("bookingId=").pop();
-        fetchBookingDetails(decryptPnr(parsedBookingId, "/bookings"));
+        if (signature) {
+          fetchBookingDetails(decryptPnr(parsedBookingId, "/bookings"));
+        } else {
+          requestSignature(parsedBookingId);
+        }
       } else if (!props.pnr) {
         router.push("/bookings");
       } else {
