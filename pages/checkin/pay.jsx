@@ -56,6 +56,7 @@ const CheckinPayment = () => {
 
   const [initPayment] = useInitiatePaymentMutation();
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(false);
   const [creditModal, setCreditModal] = useState(false);
   const [creditQuery, setCreditQuery] = useState(null);
   const [totalFare, setTotalFare] = useState();
@@ -75,17 +76,24 @@ const CheckinPayment = () => {
 
   useEffect(() => {
     if (data) {
-      toast.success("Payment with credit shell succesful");
       const isBalanceDue = data?.data?.isBalanceDue;
       const _balanceDue = data?.data?.balanceDue;
 
       if (isBalanceDue && _balanceDue > 0) {
+        toast.success(
+          `You still have a balance of ₦${_balanceDue.toLocaleString()} to pay, kindly use any of our payment channels`
+        );
         setTotalFare(data?.data?.balanceDue);
+        setCreditQuery(null);
+        setCreditModal(false);
+        setChecking(false);
       } else {
+        toast.success("Payment with credit shell succesful");
+        setCreditQuery(null);
+        setCreditModal(false);
+        setChecking(false);
         router.push(`/checkin/home?pnr=${bookingState?.RecordLocator}`);
       }
-      setCreditQuery(null);
-      setCreditModal(false);
     }
   }, [data]);
 
@@ -202,6 +210,7 @@ const CheckinPayment = () => {
       };
 
       setCreditQuery(payload);
+      setChecking(true);
     },
   });
 
@@ -369,10 +378,10 @@ const CheckinPayment = () => {
                   <div className="my-3 lg:ml-auto">
                     <button
                       type="submit"
-                      disabled={isLoading}
+                      disabled={isLoading || checking}
                       className="btn btn-primary font-bold block w-full"
                     >
-                      {isLoading ? "Processing.." : "Confirm"}
+                      {isLoading || checking ? "Processing.." : "Confirm"}
                     </button>
                   </div>
                 </div>

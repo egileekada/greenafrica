@@ -42,7 +42,7 @@ const TripPayment = () => {
   const dispatch = useDispatch();
   const [totalFare, setTotalFare] = useState();
   const [selected, setSelected] = useState(1);
-
+  const [checking, setChecking] = useState(false);
   const [creditModal, setCreditModal] = useState(false);
   const [creditQuery, setCreditQuery] = useState(null);
 
@@ -86,22 +86,27 @@ const TripPayment = () => {
 
   useEffect(() => {
     if (data) {
-      toast.success("Payment with credit shell succesful");
-
       const isBalanceDue = data?.data?.isBalanceDue;
       const _balanceDue = data?.data?.balanceDue;
 
       if (isBalanceDue && _balanceDue > 0) {
+        toast.success(
+          `You still have a balance of ₦${_balanceDue.toLocaleString()} to pay, kindly use any of our payment channels`
+        );
         setTotalFare(data?.data?.balanceDue);
+        setCreditQuery(null);
+        setCreditModal(false);
+        setChecking(false);
       } else {
-        console.log("data?.data?", data?.data);
+        toast.success("Payment with credit shell succesful");
+        setCreditQuery(null);
+        setCreditModal(false);
+        setChecking(false);
         const _recordLocator =
           bookingCommitResponse?.BookingUpdateResponseData?.Success
             ?.RecordLocator;
-        router.push(`/bookings/home?pnr=${_recordLocator}`);
+        router.push(`/trip/confirm-trip?pnr=${_recordLocator}`);
       }
-      setCreditQuery(null);
-      setCreditModal(false);
     }
   }, [data]);
 
@@ -271,6 +276,7 @@ const TripPayment = () => {
       };
 
       setCreditQuery(payload);
+      setChecking(true);
     },
   });
 
@@ -458,10 +464,10 @@ const TripPayment = () => {
                   <div className="my-3 lg:ml-auto">
                     <button
                       type="submit"
-                      disabled={isLoading}
+                      disabled={isLoading || checking}
                       className="btn btn-primary font-bold block w-full"
                     >
-                      {isLoading ? "Processing.." : "Confirm"}
+                      {isLoading || checking ? "Processing.." : "Confirm"}
                     </button>
                   </div>
                 </div>
