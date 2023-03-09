@@ -105,7 +105,8 @@ const TripPayment = () => {
         const _recordLocator =
           bookingCommitResponse?.BookingUpdateResponseData?.Success
             ?.RecordLocator;
-        router.push(`/bookings/home?pnr=${_recordLocator}`);
+        // router.push(`/bookings/home?pnr=${_recordLocator}`);
+       router.push("/trip/confirm");
       }
     }
   }, [data]);
