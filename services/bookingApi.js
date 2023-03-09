@@ -340,6 +340,23 @@ export const bookingApi = createApi({
         body: payload,
       }),
     }),
+    startSession: builder.mutation({
+      query: () => ({
+        url: "/Session/Logon",
+        method: "POST",
+        body: {
+          logonRequestData: {
+            domainCode: "",
+            agentName: "",
+            password: "",
+            locationCode: "",
+            roleCode: "",
+            terminalInfo: "",
+            clientName: "",
+          },
+        },
+      }),
+    }),
   }),
 });
 
@@ -361,4 +378,5 @@ export const {
   useUpdatePassengerInfoMutation,
   useUpdateContactInfoMutation,
   useGetAccountByReferenceMutation,
+  useStartSessionMutation,
 } = bookingApi;
