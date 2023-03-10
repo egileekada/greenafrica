@@ -21,8 +21,47 @@ import { useRouter } from "next/router";
 import { useInitiatePaymentMutation } from "services/widgetApi";
 import LogoIcon from "assets/svgs/logo.svg";
 
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import FormError from "components/formError";
+import { useCheckCreditShellQuery } from "services/widgetApi";
+import toast from "react-hot-toast";
+import Popup from "components/Popup";
+
+const validationSchema = Yup.object().shape({
+  pnr: Yup.string()
+    .length(6, "Booking Reference must be exactly 6 values")
+    .required("Required"),
+  email: Yup.string()
+    .email("Must be a valid email address")
+    .required("Required"),
+});
+
 const TripPayment = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const [totalFare, setTotalFare] = useState();
+  const [selected, setSelected] = useState(1);
+  const [checking, setChecking] = useState(false);
+  const [creditModal, setCreditModal] = useState(false);
+  const [creditQuery, setCreditQuery] = useState(null);
+
+  const {
+    bookingCommitLoading,
+    bookingCommitResponse,
+    sessionContact,
+    sellSSRResponse,
+    bookingState,
+    signature,
+  } = useSelector(sessionSelector);
+
+  const { gatewaysLoading, gatewaysResponse, paymentLoading } =
+    useSelector(paymentSelector);
+
+  const { data, isLoading } = useCheckCreditShellQuery(creditQuery, {
+    skip: creditQuery ? false : true,
+  });
+
   const [config, setConfig] = useState({
     reference: "",
     email: "",
@@ -45,20 +84,31 @@ const TripPayment = () => {
     console.log("closed");
   };
 
-  const dispatch = useDispatch();
-  const [totalFare, setTotalFare] = useState();
-  const [selected, setSelected] = useState(1);
-  const {
-    bookingCommitLoading,
-    bookingCommitResponse,
-    sessionContact,
-    sellSSRResponse,
-    bookingState,
-    signature,
-  } = useSelector(sessionSelector);
+  useEffect(() => {
+    if (data) {
+      const isBalanceDue = data?.data?.isBalanceDue;
+      const _balanceDue = data?.data?.balanceDue;
 
-  const { gatewaysLoading, gatewaysResponse, paymentLoading } =
-    useSelector(paymentSelector);
+      if (isBalanceDue && _balanceDue > 0) {
+        toast.success(
+          `You still have a balance of ₦${_balanceDue.toLocaleString()} to pay, kindly use any of our payment channels`
+        );
+        setTotalFare(data?.data?.balanceDue);
+        setCreditQuery(null);
+        setCreditModal(false);
+        setChecking(false);
+      } else {
+        toast.success("Payment with credit shell succesful");
+        setCreditQuery(null);
+        setCreditModal(false);
+        setChecking(false);
+        const _recordLocator =
+          bookingCommitResponse?.BookingUpdateResponseData?.Success
+            ?.RecordLocator;
+        router.push(`/trip/confirm-trip?pnr=${_recordLocator}`);
+      }
+    }
+  }, [data]);
 
   useEffect(() => {
     async function checkForSession() {
@@ -120,40 +170,44 @@ const TripPayment = () => {
 
   const handlePayment = async () => {
     if (bookingCommitResponse) {
-      const payload = {
-        customer_name: sessionContact?.firstName,
-        customer_email: sessionContact?.email,
-        amount: totalFare * 100,
-        pnr: bookingCommitResponse?.BookingUpdateResponseData?.Success
-          ?.RecordLocator,
-        gateway_type_id: selected,
-        payment_origin: "booking",
-        signature,
-      };
+      if (parseInt(selected) === 3) {
+        setCreditModal(true);
+      } else {
+        const payload = {
+          customer_name: sessionContact?.firstName,
+          customer_email: sessionContact?.email,
+          amount: totalFare * 100,
+          pnr: bookingCommitResponse?.BookingUpdateResponseData?.Success
+            ?.RecordLocator,
+          gateway_type_id: selected,
+          payment_origin: "booking",
+          signature,
+        };
 
-      const gateway = gatewaysResponse?.data?.items.filter(
-        (gate) => gate.id === selected
-      );
+        const gateway = gatewaysResponse?.data?.items.filter(
+          (gate) => gate.id === selected
+        );
 
-      await initPayment(payload)
-        .unwrap()
-        .then((data) => {
-          setConfig({
-            ...config,
-            tx_ref: data?.data?.reference,
-            amount: gateway[0]?.code === "PS" ? totalFare * 100 : totalFare,
-            email: bookingState?.BookingContacts[0].EmailAddress,
-            publicKey: gateway[0].public_key,
-            public_key: gateway[0].public_key,
-            reference: data?.data?.reference,
-            currency: "NGN",
-            customer: {
+        await initPayment(payload)
+          .unwrap()
+          .then((data) => {
+            setConfig({
+              ...config,
+              tx_ref: data?.data?.reference,
+              amount: gateway[0]?.code === "PS" ? totalFare * 100 : totalFare,
               email: bookingState?.BookingContacts[0].EmailAddress,
-              name: sessionContact?.firstName,
-            },
-          });
-        })
-        .catch((error) => console.log(error));
+              publicKey: gateway[0].public_key,
+              public_key: gateway[0].public_key,
+              reference: data?.data?.reference,
+              currency: "NGN",
+              customer: {
+                email: bookingState?.BookingContacts[0].EmailAddress,
+                name: sessionContact?.firstName,
+              },
+            });
+          })
+          .catch((error) => console.log(error));
+      }
     } else {
       notification.error({
         message: "Error",
@@ -199,6 +253,32 @@ const TripPayment = () => {
       storageRef.current = false;
     };
   }, [config]);
+
+  const handleCreditModal = () => {
+    setCreditModal(false);
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      pnr: "",
+      email: "",
+    },
+    validationSchema,
+    enableReinitialize: true,
+    onSubmit: async (values) => {
+      formik.setSubmitting(true);
+
+      const payload = {
+        reference: values.pnr,
+        email: values.email,
+        creditShell: true,
+        signature: signature,
+      };
+
+      setCreditQuery(payload);
+      setChecking(true);
+    },
+  });
 
   return (
     <BaseLayout>
@@ -304,6 +384,98 @@ const TripPayment = () => {
           </section>
         )}
       </section>
+      <Popup
+        display={creditModal}
+        closeModal={handleCreditModal}
+        top={true}
+        width="w-[600px]"
+      >
+        <section className="w-full bg-white rounded-xl ">
+          <div className="flex flex-col items-center justify-center">
+            <div className="w-full p-10">
+              <p className="text-primary-main font-medium text-base mb-4 text-center">
+                Provide your credit shell email & PNR
+              </p>
+              <form onSubmit={formik.handleSubmit}>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="my-3 col-span-2">
+                    <div
+                      className={`${
+                        formik.touched.pnr && formik.errors.pnr
+                          ? "border border-[#de0150]"
+                          : "border-gray-300"
+                      } relative rounded-md z-0 border-2 pt-4 px-4`}
+                    >
+                      <input
+                        type="text"
+                        id="pnr"
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent  appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" "
+                        name="pnr"
+                        autoFocus
+                        value={formik.values.pnr}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                      <label
+                        htmlFor="pnr"
+                        className="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 -z-10 origin-[0] peer-focus:left-4 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 uppercase"
+                      >
+                        Booking Reference
+                      </label>
+                    </div>
+                    <FormError
+                      touched={formik.touched.pnr}
+                      message={formik.errors.pnr}
+                    />
+                  </div>
+
+                  <div className="my-3 col-span-2">
+                    <div
+                      className={`${
+                        formik.touched.email && formik.errors.email
+                          ? "border border-[#de0150]"
+                          : "border-gray-300"
+                      } relative rounded-md z-0 border border-2 pt-4 px-4`}
+                    >
+                      <input
+                        type="email"
+                        id="email"
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent  appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" "
+                        name="email"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.email}
+                      />
+                      <label
+                        htmlFor="email"
+                        className="absolute text-base text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 -z-10 origin-[0] peer-focus:left-4 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 uppercase"
+                      >
+                        Email
+                      </label>
+                    </div>
+                    <FormError
+                      touched={formik.touched.email}
+                      message={formik.errors.email}
+                    />
+                  </div>
+
+                  <div className="my-3 lg:ml-auto">
+                    <button
+                      type="submit"
+                      disabled={isLoading || checking}
+                      className="btn btn-primary font-bold block w-full"
+                    >
+                      {isLoading || checking ? "Processing.." : "Confirm"}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </Popup>
     </BaseLayout>
   );
 };

@@ -223,7 +223,8 @@ const PassengerDetails = () => {
       });
 
       if (Extras?.length > 0) {
-        const _Arrival = bookingState?.Journeys[0]?.Segments[0]?.ArrivalStation;
+        const _Arrival =
+          bookingState?.Journeys[0]?.Segments[0]?.ArrivalStation;
         const _Departure =
           bookingState?.Journeys[0]?.Segments[0]?.DepartureStation;
         const existingReturnSSRs = [...newBookingReturnSSRs];
@@ -475,8 +476,6 @@ const PassengerDetails = () => {
                       </button>
                     </div>
                   )}
-
-                  {/* <p>{JSON.stringify(newBookingSSRs)}</p> */}
                 </section>
               </>
             ) : (
@@ -493,3 +492,7 @@ const PassengerDetails = () => {
 };
 
 export default PassengerDetails;
+                  {
+                    /* <p>{JSON.stringify(newBookingSSRs)}</p> */
+                  }
+

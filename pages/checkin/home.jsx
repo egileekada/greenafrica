@@ -58,7 +58,7 @@ const CheckInDetails = (props) => {
       //check if pnr is encrypted
       if (bookingId !== undefined) {
         let parsedBookingId = parsed.split("bookingId=").pop();
-        initSession(decryptPnr(parsedBookingId));
+        initSession(decryptPnr(parsedBookingId, "/checkin"));
       } else if (!props.pnr) {
         router.push("/checkin");
       } else {

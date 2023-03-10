@@ -9,6 +9,7 @@ import LogoIcon from "assets/svgs/logo.svg";
 import AeroIcon from "assets/svgs/aero.svg";
 import DottedLine from "assets/svgs/dotted-line.svg";
 import WorkIcon from "assets/svgs/work.svg";
+import CreditBar from "containers/IbeSidebar/Creditbar";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -302,8 +303,7 @@ const TripView = () => {
 
       JourneyTwoSegmentSSRRequest = {
         flightDesignator: {
-          carrierCode:
-            creditReturnTrip?.segment?.FlightDesignator?.CarrierCode,
+          carrierCode: creditReturnTrip?.segment?.FlightDesignator?.CarrierCode,
           flightNumber:
             creditReturnTrip?.segment?.FlightDesignator?.FlightNumber,
           opSuffix: "",
@@ -357,7 +357,6 @@ const TripView = () => {
       },
     };
 
-  
     ResellNewJourney(requestPayload)
       .unwrap()
       .then((data) => {
@@ -402,9 +401,8 @@ const TripView = () => {
                       ?.BalanceDue
                   ) > 0
                 ) {
-                  router.push(`/credit/payment`);
+                  router.push(`/credit/services`);
                 } else {
-                  console.log('commmitin without payment')
                   bookingCommitWithoutPayment()
                     .unwrap()
                     .then((data) => {
@@ -414,7 +412,7 @@ const TripView = () => {
                             ?.RecordLocator
                         )
                       );
-                     router.push(
+                      router.push(
                         {
                           pathname: "/credit/home",
                           query: {
@@ -450,7 +448,7 @@ const TripView = () => {
       .catch((err) => {
         const errText =
           err?.response?.data?.BookingUpdateResponseData?.Error?.ErrorText;
-        console.log(' errText', errText);
+        console.log(" errText", errText);
         notification.error({
           message: "Error",
           description: errText ? errText : "Sell Request failed",
@@ -477,7 +475,7 @@ const TripView = () => {
       </nav>
       <section className="w-full">
         <section className="ga__section">
-          <div className="ga__section__main flex-grow">
+          <div className="ga__section__main">
             <section className="flex flex-col mt-16 lg:mt-0">
               <section className="flex flex-col">
                 {creditGoTrip?.journey &&
@@ -537,6 +535,9 @@ const TripView = () => {
                 {/* Terms */}
               </section>
             </section>
+          </div>
+          <div className="ga__section__side">
+            <CreditBar />
           </div>
         </section>
       </section>
