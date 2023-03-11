@@ -197,7 +197,7 @@ const TripView = (props) => {
                             return (
                               <>
                                 <h2 className="text-primary-main font-extrabold text-base md:text-2xl mb-8">
-                                  YOUR TRIP TO{" "}
+                                Kindly verify information about your trip to{" "}
                                   {_segment &&
                                     resolveAbbreviation(
                                       _segment?.ArrivalStation
@@ -232,7 +232,7 @@ const TripView = (props) => {
                                 {/* TripInfo */}
                                 <section className="ibe__trip__item tripView">
                                   <div className="basis-full flex  flex-col min-h-[54px] ">
-                                    <p className="tripType self-center underline underline-offset-4">
+                                    <p className="tripType self-center underline-offset-4">
                                       {_segment?.FlightDesignator?.CarrierCode}
                                       &nbsp;
                                       {_segment?.FlightDesignator?.FlightNumber}
@@ -423,9 +423,9 @@ const TripView = (props) => {
             </section>
           </div>
 
-          <div className="ga__section__side">
+          {/* <div className="ga__section__side">
             <IbeSidebar enableEdit={true} />
-          </div>
+          </div> */}
         </section>
       </section>
       {/* <nav className="nav bg-primary-main fit-x-bleed  items-center justify-between py-7 flex lg:hidden fixed w-full z-50 bottom-0">
