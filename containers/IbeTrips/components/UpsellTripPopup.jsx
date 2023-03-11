@@ -322,7 +322,7 @@ const IbeTripPopup = ({
         ) : (
           <>
             <section className="w-full bg-white rounded-xl z-[200] flex flex-col">
-              <div className="bg-primary-main text-center mx-4 mt-3 flex items-center justify-between px-[27px] py-[21px] rounded-xl">
+              <div className="bg-primary-main text-center mx-4 mt-4 flex items-center justify-between px-[27px] py-[21px] rounded-xl">
                 <h3 className="text-white text-xl !font-bold">
                   Upgrade your fare and enjoy more benefits{" "}
                 </h3>
@@ -344,19 +344,19 @@ const IbeTripPopup = ({
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium " >Online Check-In</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal " >Online Check-In</p>
                   </div>
                   <div className=" flex mt-3 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Hand Luggage (7KG)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Free Hand Luggage (7KG)</p>
                   </div>
                   <div className=" flex mt-3 items-center mb-14  " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Automatically Allocated Seat (Pay For Preferred Seat)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Automatically Allocated Seat (Pay For Preferred Seat)</p>
                   </div>
                     <button  style={{ fontSize: "16px" }} disabled={svr?.AvailableCount === 0 || selected?.ProductClass === "GC" ? true: false}
                       onClick={handleSell.bind(this, "savr")} className={` ${svr?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GS" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[55px] mt-auto rounded-xl w-full `} >{svr?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GC"? "gSaver": selected?.ProductClass === "GS" ? "Continue With gSaver" : "Switch To gSaver"}</button>
@@ -370,25 +370,25 @@ const IbeTripPopup = ({
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Online Check-In</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Online Check-In</p>
                   </div>
-                  <div className=" flex mt-3 items-center " >
+                  <div className=" flex mt-4 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Checked Baggage :15kg. Extra N500/KG</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Checked Baggage :15kg. Extra N500/KG</p>
                   </div>
-                  <div className=" flex mt-3 items-center " >
+                  <div className=" flex mt-4 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Standard Seat (Pay for Non Standard)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Free Standard Seat (Pay for Non Standard)</p>
                   </div>
-                  <div className=" flex mt-3 items-center mb-14  " >
+                  <div className=" flex mt-4 items-center mb-14  " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Hand Luggage (7KG)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Free Hand Luggage (7KG)</p>
                   </div>
                   <div className=" w-full mt-auto " >
 {/* 
@@ -411,13 +411,15 @@ const IbeTripPopup = ({
                     <div className='w-full flex justify-between items-center mb-4' > 
                       <div> 
                         <p style={{ fontSize: "20px" }} className=" -mb-1 font-black" >{selected?.RuleNumber.toLowerCase() === "savr" ? "+"+clsc?.AmountDifference?.toLocaleString() :selected?.RuleNumber.toLowerCase() === "clsc" || selected?.RuleNumber.toLowerCase() === "flex" ? "" : "+"+clsc?.ExtraAmount?.toLocaleString()}</p>
-                        {selected?.RuleNumber.toLowerCase() !== "clsc" || selected?.RuleNumber.toLowerCase() !== "flex" && (
+                        {selected?.RuleNumber.toLowerCase() === "clsc" || selected?.RuleNumber.toLowerCase() !== "flex" && (
                           <p style={{ fontSize: "14px" }} className=" font-normal  " >more per person</p>
                         )}
                         </div>
-                        <div className=" text-[#47FF5A] bg-primary-main h-[37px] w-[97px] pt-1 pl-2 flex justify-center items-center !font-semibold font-body px-3 rounded-tl-[24px] " > 
-                          Save 20%
-                        </div>
+                        {selected?.RuleNumber.toLowerCase() === "clsc" || selected?.RuleNumber.toLowerCase() !== "flex" && (
+                          <div className=" text-[#47FF5A] bg-primary-main h-[37px] w-[97px] pt-1 pl-2 flex justify-center items-center !font-semibold font-body px-3 rounded-tl-[24px] " > 
+                            Save 20%
+                          </div>
+                        )}
                       </div>
                     <button style={{ fontSize: "16px" }} disabled={clsc?.AvailableCount === 0 || selected?.ProductClass === "Gf" ? true: false}
                       onClick={handleSell.bind(this, "clsc")} className={` ${clsc?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GC" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[55px] rounded-xl w-full `} >{clsc?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GF" ? "gClassic" : selected?.ProductClass === "GC" ? "Continue With gClassic" : "Switch To gClassic"}</button>
@@ -432,31 +434,31 @@ const IbeTripPopup = ({
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Online Check-In</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Online Check-In</p>
                   </div>
-                  <div className=" flex mt-3 items-center " >
+                  <div className=" flex mt-4 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Airport Check-In</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Free Airport Check-In</p>
                   </div>
-                  <div className=" flex mt-3 items-center " >
+                  <div className=" flex mt-4 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Checked Baggage</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Free Checked Baggage</p>
                   </div>
-                  <div className=" flex mt-3 items-center " >
+                  <div className=" flex mt-4 items-center " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Seat Selection</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Free Seat Selection</p>
                   </div>
-                  <div className=" flex mt-3 items-center mb-14  " >
+                  <div className=" flex mt-4 items-center mb-14  " >
                       <figure className=" mr-2 " >
                         <CheckIcon />
                       </figure>
-                      <p style={{ fontSize: "14px" }} className=" font-title !font-medium ">Free Hand Luggage (7KG)</p>
+                      <p style={{ fontSize: "14px" }} className=" font-title !font-normal ">Free Hand Luggage (7KG)</p>
                   </div>
                   <div className=" w-full mt-auto " > 
                   <div className='w-full flex justify-between items-center mb-4 ' > 
@@ -468,9 +470,12 @@ const IbeTripPopup = ({
                         <p style={{ fontSize: "14px" }} className=" font-normal text-sm  " >more per person</p> 
                       )}
                     </div>
-                    <div className=" text-[#47FF5A] bg-primary-main h-[37px] w-[97px] pt-1 pl-2 flex justify-center items-center !font-semibold font-body px-3 rounded-tl-[24px] " > 
-                      Save 30%
-                    </div>
+
+                    {selected?.RuleNumber.toLowerCase() !== "flex" && (
+                      <div className=" text-[#47FF5A] bg-primary-main h-[37px] w-[97px] pt-1 pl-2 flex justify-center items-center !font-semibold font-body px-3 rounded-tl-[24px] " > 
+                        Save 30%
+                      </div>
+                    )}
                   </div>
                     <button disabled={flex?.AvailableCount === 0 ? true: false} style={{ fontSize: "16px" }}
                       onClick={handleSell.bind(this, "flex")} className={` ${flex?.AvailableCount === 0 ? "border text-[#261F5E] border-[#261F5E]  " :selected?.ProductClass === "GF" ? "bg-[#261F5E] text-[#47FF5A] ": " border text-[#261F5E] border-[#261F5E] "} font-bold h-[55px] rounded-xl w-full `} >{flex?.AvailableCount === 0 ? "Sold Out": selected?.ProductClass === "GF" ? "Continue With gSaver" : "Switch To gFlex"}</button>

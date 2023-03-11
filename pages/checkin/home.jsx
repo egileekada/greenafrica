@@ -282,6 +282,8 @@ const CheckInDetails = (props) => {
       });
   };
 
+  console.log(bookingResponse?.Booking?.Passengers);
+
   const triggerDownloadBoardingPass = (
     id,
     departureStation,
