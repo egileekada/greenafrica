@@ -467,7 +467,7 @@ const TripPayment = () => {
                       disabled={isLoading || checking}
                       className="btn btn-primary font-bold block w-full"
                     >
-                      {isLoading || checking ? "Processing.." : "Confirm"}
+                      {isLoading || checking ? "Processing.." : "Pay"}
                     </button>
                   </div>
                 </div>

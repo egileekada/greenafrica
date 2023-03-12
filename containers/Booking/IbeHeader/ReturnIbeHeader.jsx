@@ -193,9 +193,8 @@ const ReturnBookingIbeHeader = () => {
   };
 
 
-  useEffect(()=>{
-
-    let date = new Date(tripParams?.beginDate).toDateString().slice(3)
+  useEffect(()=>{ 
+    let date = new Date(returnParams?.returnDate).toDateString().slice(3)
     setCurrentDate(date) 
   },[])
 

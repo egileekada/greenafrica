@@ -167,9 +167,9 @@ const PassengerDetails = () => {
       <section className="w-full">
         <section className="ga__section">
           <div className="ga__section__main">
-            <h2 className="text-black font-extrabold text-2xl mb-8">
+            {/* <h2 className="text-black font-extrabold text-2xl mb-8">
               Additional Services{" "}
-            </h2>
+            </h2> */}
 
             {SSRAvailabilityLoading ? (
               <section className="flex flex-col">
@@ -201,7 +201,7 @@ const PassengerDetails = () => {
                           <p className=" font-medium text-[#5F5B82] text-sm">Starts from ₦3,500</p>
                         </div>
                         <div className=" md:hidden block ml-auto " >
-                          <p className=" font-medium text-[#5F5B82] text-sm">From N3,500</p> 
+                          <p className=" font-medium text-[#5F5B82] text-sm">From ₦3,500</p> 
                         </div>
                       </div>
                       <div className=" w-full lg:py-0 py-3 px-3 justify-center items-center lg:border-l lg:border-t-0 lg:border-b-0 border-[#9E9BBF33]  flex " >
@@ -210,15 +210,15 @@ const PassengerDetails = () => {
                         </div>
                         <div className=" md:hidden flex items-center  " > 
                           <BagSmall />
-                          <p className=" font-bold ml-4 text-[#261F5E]" >10kg Checked Bag</p>
+                          <p className=" font-bold ml-4 text-[#261F5E]" >15kg Checked</p>
                         </div>
                         <div className=" md:block hidden ml-5 " >
-                          <p className=" font-bold text-[#261F5E]" >10kg Checked Bag</p>
+                          <p className=" font-bold text-[#261F5E]" >15kg Checked</p>
                           <p className=" font-medium text-[#5F5B82] my-1 text-sm">Up to 2 pieces</p>
-                          <p className=" font-medium text-[#5F5B82] text-sm">Starts from ₦3,500</p>
+                          <p className=" font-medium text-[#5F5B82] text-sm">Starts from ₦9,000</p>
                         </div>
                         <div className=" md:hidden block ml-auto " >
-                          <p className=" font-medium text-[#5F5B82] text-sm">From N3,500</p> 
+                          <p className=" font-medium text-[#5F5B82] text-sm">From ₦9,000</p> 
                         </div>
                       </div>
                       <div className=" w-full flex justify-center items-center lg:border-l  lg:py-0 py-3 px-3  " >
@@ -227,15 +227,15 @@ const PassengerDetails = () => {
                         </div>
                         <div className=" md:hidden flex items-center  " > 
                           <BagSmall />
-                          <p className=" font-bold ml-4 text-[#261F5E]" >10kg Checked Bag</p>
+                          <p className=" font-bold ml-4 text-[#261F5E]" >20kg Checked</p>
                         </div>
                         <div className=" md:block hidden ml-5 " >
-                          <p className=" font-bold text-[#261F5E]" >10kg Checked Bag</p>
+                          <p className=" font-bold text-[#261F5E]" >20kg Checked</p>
                           <p className=" font-medium text-[#5F5B82] my-1 text-sm">Up to 2 pieces</p>
-                          <p className=" font-medium text-[#5F5B82] text-sm">Starts from ₦3,500</p>
+                          <p className=" font-medium text-[#5F5B82] text-sm">Starts from ₦12,000</p>
                         </div>
                         <div className=" md:hidden block ml-auto " >
-                          <p className=" font-medium text-[#5F5B82] text-sm">From N3,500</p> 
+                          <p className=" font-medium text-[#5F5B82] text-sm">From ₦12,000</p> 
                         </div>
                       </div>
                     </div>

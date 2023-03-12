@@ -108,7 +108,7 @@ const SeatWrapper = ({
                         </h5>
                         <h6 className="text-base text-[#261F5E] font-title">
                           {selectedSeat[index]?.seatDesignator.length > 0
-                            ? `Seat Number: ${selectedSeat[index].seatDesignator}`
+                            ? `Seat No.: ${selectedSeat[index].seatDesignator}`
                             : "No Seat Selected"}
                         </h6>
                       </div>

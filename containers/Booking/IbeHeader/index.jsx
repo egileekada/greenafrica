@@ -195,7 +195,7 @@ const BookingIbeHeader = () => {
   };
 
   useEffect(()=>{
-
+    console.log(tripParams);
     let date = new Date(tripParams?.beginDate).toDateString().slice(3)
     setCurrentDate(date) 
   },[])

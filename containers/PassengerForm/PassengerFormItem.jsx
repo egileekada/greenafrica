@@ -183,7 +183,7 @@ const PassengerFormItem = ({
               <option value="">Select</option>
               {salutations.map((salutation, index) => (
                 <option value={salutation.title} key={index}>
-                  {salutation.title}
+                  {" "}{salutation.title}
                 </option>
               ))}
             </select>
